@@ -13,6 +13,7 @@ import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
 import hu.zsof.restaurantappjetpacknew.ui.homelist.HomeListScreen
 import hu.zsof.restaurantappjetpacknew.ui.login.LoginScreen
+import hu.zsof.restaurantappjetpacknew.ui.newplace.NewPlaceDialogScreen
 import hu.zsof.restaurantappjetpacknew.ui.register.RegisterScreen
 import hu.zsof.restaurantappjetpacknew.util.Constants.AUTH_GRAPH_ROUTE
 import hu.zsof.restaurantappjetpacknew.util.Constants.MAIN_GRAPH_ROUTE
@@ -68,10 +69,14 @@ fun NavGraphBuilder.mainNavGraph(
             ),
         ) {
             HomeListScreen(
+                onFabClick = { navController.navigate(NavigationScreen.NewPlace.route) },
                 /*  argument = navController.currentBackStackEntry?.arguments
                       ?.getString(NavigationScreen.Home.Args.username) ?: "",
                  */
             )
+        }
+        composable(route = NavigationScreen.NewPlace.route) {
+            NewPlaceDialogScreen()
         }
         /*composable(route = NavigationScreen.Profile.route) {
             Box(

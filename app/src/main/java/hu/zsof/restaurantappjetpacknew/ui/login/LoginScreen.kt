@@ -35,10 +35,10 @@ fun LoginScreen(
     onLoginClick: (String) -> Unit,
     onRegisterClick: () -> Unit,
 ) {
-    var emailValue by remember { mutableStateOf("") }
+    var emailValue by remember { mutableStateOf("a") }
     var isEmailError by remember { mutableStateOf(false) }
 
-    var passwordValue by remember { mutableStateOf("") }
+    var passwordValue by remember { mutableStateOf("a") }
     var isPasswordVisible by remember { mutableStateOf(false) }
     var isPasswordError by remember { mutableStateOf(false) }
 

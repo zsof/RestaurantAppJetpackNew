@@ -93,4 +93,20 @@
         <item>Bár</item>
         <item>Gyorsétterem</item>
     </string-array>
+
+    <string-array name="filter_options">
+        <item>Glutén mentes</item>
+        <item>Laktóz mentes</item>
+        <item>Vegetáriánus</item>
+        <item>Vegán</item>
+        <item>Gyors étterem</item>
+    </string-array>
+
+    <string-array name="filter_option_right">
+        <item>Parkolási lehetőség</item>
+        <item>Családbarát</item>
+        <item>Kutyabarát</item>
+        <item>Kiszállítás</item>
+        <item>Kártyás fizetés</item>
+    </string-array>
 </resources>

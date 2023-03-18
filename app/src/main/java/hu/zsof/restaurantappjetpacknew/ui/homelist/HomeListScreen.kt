@@ -20,7 +20,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -32,13 +31,18 @@ import hu.zsof.restaurantappjetpacknew.model.enums.Price
 @Composable
 fun HomeListScreen(
     viewModel: HomeViewModel = hiltViewModel(),
+    onFabClick: () -> Unit,
 ) {
     val places = viewModel.places
 
     val listState = rememberLazyListState()
     Scaffold(
         floatingActionButton = {
-            FloatingActionButton(onClick = { /*TODO*/ }) {
+            FloatingActionButton(
+                onClick = onFabClick,
+                modifier = Modifier.padding(PaddingValues(bottom = 44.dp)),
+            ) {
+                println("fab")
                 Icon(imageVector = Icons.Filled.Add, contentDescription = null)
             }
         },
@@ -159,11 +163,12 @@ private fun HomeListData(
     }
 }
 
-@ExperimentalMaterial3Api
+/*@ExperimentalMaterial3Api
 @Preview(showBackground = true)
 @Composable
 fun HomeListScreen_Preview() {
     HomeListScreen(
         viewModel = HomeViewModel(),
+        navController = NavHostController()
     )
-}
+}*/

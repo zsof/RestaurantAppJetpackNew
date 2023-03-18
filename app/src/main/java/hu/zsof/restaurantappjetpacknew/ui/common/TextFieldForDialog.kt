@@ -6,10 +6,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActionScope
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ErrorOutline
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,14 +18,11 @@ import androidx.compose.ui.unit.dp
 
 @ExperimentalMaterial3Api
 @Composable
-fun NormalTextField(
+fun TextFieldForDialog(
     value: String,
     label: String,
     onValueChange: (String) -> Unit,
-    leadingIcon: @Composable (() -> Unit)?,
-    trailingIcon: @Composable (() -> Unit)?,
     modifier: Modifier = Modifier,
-    isError: Boolean = false,
     placeholder: String,
     keyboardOptions: KeyboardOptions,
     onDone: (KeyboardActionScope.() -> Unit)?,
@@ -41,22 +35,9 @@ fun NormalTextField(
         onValueChange = onValueChange,
         label = { Text(text = label) },
         shape = shape,
-        leadingIcon = leadingIcon,
-        trailingIcon = if (isError) {
-            {
-                Icon(imageVector = Icons.Default.ErrorOutline, contentDescription = null)
-            }
-        } else {
-            {
-                if (trailingIcon != null) {
-                    trailingIcon()
-                }
-            }
-        },
         modifier = modifier
             .fillMaxWidth().padding(vertical = 4.dp),
         singleLine = true,
-        isError = isError,
         textStyle = TextStyle(color = Color.Black),
         placeholder = { Text(text = placeholder) },
         keyboardOptions = keyboardOptions,
@@ -69,16 +50,13 @@ fun NormalTextField(
 @ExperimentalMaterial3Api
 @Preview
 @Composable
-fun NormalTextView_Error_Preview() {
-    NormalTextField(
+fun TextFieldForDialog_Preview() {
+    TextFieldForDialog(
         value = "abc",
         label = "Mennyiség (kg)",
         onValueChange = {},
-        leadingIcon = {},
-        trailingIcon = {},
         onDone = {},
         keyboardOptions = KeyboardOptions(),
-        isError = true,
         placeholder = "alma",
     )
 }

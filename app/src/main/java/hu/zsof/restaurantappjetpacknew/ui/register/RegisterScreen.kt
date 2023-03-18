@@ -110,7 +110,6 @@ fun RegisterScreen(
                 label = stringResource(id = R.string.user_name),
                 onValueChange = { newValue ->
                     userNameValue = newValue
-                    isEmailError = false
                 },
                 leadingIcon = {
                     Icon(
@@ -132,7 +131,6 @@ fun RegisterScreen(
                 label = stringResource(id = R.string.nickname),
                 onValueChange = { newValue ->
                     nickNameValue = newValue
-                    isEmailError = false
                 },
                 leadingIcon = {
                     Icon(
