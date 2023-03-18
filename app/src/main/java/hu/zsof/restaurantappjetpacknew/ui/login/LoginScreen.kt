@@ -24,7 +24,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import hu.zsof.restaurantappjetpacknew.R
-import hu.zsof.restaurantappjetpacknew.ui.common.ButtonText
+import hu.zsof.restaurantappjetpacknew.ui.common.LoginButton
 import hu.zsof.restaurantappjetpacknew.ui.common.NormalTextField
 import hu.zsof.restaurantappjetpacknew.ui.common.PasswordTextField
 
@@ -101,7 +101,7 @@ fun LoginScreen(
                 onDone = { },
             )
             Spacer(modifier = Modifier.height(10.dp))
-            ButtonText(
+            LoginButton(
                 onClick = {
                     if (emailValue.isEmpty()) {
                         isEmailError = true

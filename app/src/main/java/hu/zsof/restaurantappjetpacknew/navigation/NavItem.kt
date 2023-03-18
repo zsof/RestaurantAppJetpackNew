@@ -16,6 +16,6 @@ enum class NavItem(
     FAVOURITES(R.string.favs, Icons.Outlined.Favorite, null),
     PROFILE(R.string.profile, Icons.Outlined.Person, NavigationScreen.Profile.route),
     LOGOUT(R.string.logout, Icons.Outlined.ExitToApp, NavigationScreen.Login.route),
-    LOGIN(R.string.log_in, null, null),
-    REGISTER(R.string.logout, null, null),
+   /* LOGIN(R.string.log_in, null, null),
+    REGISTER(R.string.logout, null, null),*/
 }

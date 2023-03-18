@@ -6,12 +6,16 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import androidx.navigation.navArgument
+import hu.zsof.restaurantappjetpacknew.ui.homelist.HomeListScreen
 import hu.zsof.restaurantappjetpacknew.ui.login.LoginScreen
 import hu.zsof.restaurantappjetpacknew.ui.register.RegisterScreen
 import hu.zsof.restaurantappjetpacknew.util.Constants.AUTH_GRAPH_ROUTE
+import hu.zsof.restaurantappjetpacknew.util.Constants.MAIN_GRAPH_ROUTE
 import hu.zsof.restaurantappjetpacknew.util.Constants.ROOT_GRAPH_ROUTE
 
 @ExperimentalMaterial3Api
@@ -27,8 +31,8 @@ fun NavGraphBuilder.authNavGraph(
         ) {
             LoginScreen(
                 onLoginClick = {
-                    // navController.navigate(NavigationScreen.Home.passUsername(it))
-                    navController.navigate(NavigationScreen.Register.route)
+                    navController.navigate(NavigationScreen.Home.passUsername(it))
+                    // navController.navigate(NavigationScreen.Register.route)
                     println("login")
                 },
                 onRegisterClick = {
@@ -46,7 +50,6 @@ fun NavGraphBuilder.authNavGraph(
         }
     }
 }
-/*
 
 @ExperimentalMaterial3Api
 fun NavGraphBuilder.mainNavGraph(
@@ -64,16 +67,13 @@ fun NavGraphBuilder.mainNavGraph(
                 },
             ),
         ) {
-            HomeScreen(
-                argument = navController.currentBackStackEntry?.arguments
-                    ?.getString(NavigationScreen.Home.Args.username) ?: "",
-                onLogout = {
-                    navController.popBackStack(route = NavigationScreen.Login.route, inclusive = false)
-                },
-                //  onMenuItemClick = { navController.navigate(it) }
+            HomeListScreen(
+                /*  argument = navController.currentBackStackEntry?.arguments
+                      ?.getString(NavigationScreen.Home.Args.username) ?: "",
+                 */
             )
         }
-        composable(route = NavigationScreen.Profile.route) {
+        /*composable(route = NavigationScreen.Profile.route) {
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center,
@@ -81,19 +81,16 @@ fun NavGraphBuilder.mainNavGraph(
                 Text(text = "Profile")
             }
         }
-       */
-/* composable(route = NavigationScreen.Settings.route) {
+ composable(route = NavigationScreen.Settings.route) {
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center,
             ) {
                 Text(text = "Settings")
             }
-        }*//*
-
+        }*/
     }
 }
-*/
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @ExperimentalMaterial3Api
@@ -111,7 +108,7 @@ fun NavGraph(
             route = ROOT_GRAPH_ROUTE,
         ) {
             authNavGraph(navController = navController)
-            // mainNavGraph(navController = navController)
+            mainNavGraph(navController = navController)
         }
     }
 }

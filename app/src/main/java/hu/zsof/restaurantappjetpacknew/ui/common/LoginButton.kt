@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun ButtonText(
+fun LoginButton(
     onClick: () -> Unit,
     text: String,
 ) {
@@ -46,7 +46,7 @@ fun ButtonText(
 @Composable
 fun TextButton_Preview() {
     Box(modifier = Modifier.fillMaxSize()) {
-        ButtonText(
+        LoginButton(
             onClick = {},
             text = "Button",
         )
