@@ -4,7 +4,7 @@ package hu.zsof.restaurantappjetpacknew.ui.login
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import hu.zsof.restaurantapp.network.request.LoginDataRequest
-import hu.zsof.restaurantapp.network.response.LoggedUserResponse
+import hu.zsof.restaurantappjetpacknew.network.response.LoggedUserResponse
 import hu.zsof.restaurantapp.repository.AuthRepository
 import hu.zsof.restaurantapp.util.extensions.SharedPreference
 import javax.inject.Inject
