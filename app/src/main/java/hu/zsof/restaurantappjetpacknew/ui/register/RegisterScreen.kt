@@ -11,10 +11,12 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Person2
 import androidx.compose.material.icons.outlined.Games
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
@@ -26,10 +28,12 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import hu.zsof.restaurantappjetpacknew.R
 import hu.zsof.restaurantappjetpacknew.ui.common.LoginButton
 import hu.zsof.restaurantappjetpacknew.ui.common.NormalTextField
 import hu.zsof.restaurantappjetpacknew.ui.common.PasswordTextField
+import kotlinx.coroutines.launch
 
 @ExperimentalMaterial3Api
 @Preview(showBackground = true)
@@ -47,17 +51,10 @@ fun RegisterScreen(
     modifier: Modifier = Modifier,
     onLoginClick: () -> Unit,
     onRegisterClick: (String) -> Unit,
+    viewModel: RegisterViewModel = hiltViewModel(),
 ) {
-    var emailValue by remember { mutableStateOf("") }
-    var isEmailError by remember { mutableStateOf(false) }
-
-    var userNameValue by remember { mutableStateOf("") }
-
-    var nickNameValue by remember { mutableStateOf("") }
-
-    var passwordValue by remember { mutableStateOf("") }
-    var isPasswordVisible by remember { mutableStateOf(false) }
-    var isPasswordError by remember { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
+    val context = LocalContext.current
 
     Box(
         modifier = modifier
@@ -83,13 +80,13 @@ fun RegisterScreen(
             )
             Spacer(modifier = Modifier.height(20.dp))
             NormalTextField(
-                value = emailValue,
+                value = viewModel.email.value,
                 label = stringResource(id = R.string.email_address),
                 onValueChange = { newValue ->
-                    emailValue = newValue
-                    isEmailError = false
+                    viewModel.email.value = newValue
+                    viewModel.validateEmail()
                 },
-                isError = isEmailError,
+                isError = viewModel.isEmailError.value,
                 leadingIcon = {
                     Icon(
                         imageVector = Icons.Default.Email,
@@ -106,11 +103,13 @@ fun RegisterScreen(
             )
             Spacer(modifier = Modifier.height(10.dp))
             NormalTextField(
-                value = userNameValue,
+                value = viewModel.userName.value,
                 label = stringResource(id = R.string.user_name),
                 onValueChange = { newValue ->
-                    userNameValue = newValue
+                    viewModel.userName.value = newValue
+                    viewModel.validateUserName()
                 },
+                isError = viewModel.isUserNameError.value,
                 leadingIcon = {
                     Icon(
                         imageVector = Icons.Default.Person,
@@ -127,10 +126,10 @@ fun RegisterScreen(
             )
             Spacer(modifier = Modifier.height(10.dp))
             NormalTextField(
-                value = nickNameValue,
+                value = viewModel.nickName.value,
                 label = stringResource(id = R.string.nickname),
                 onValueChange = { newValue ->
-                    nickNameValue = newValue
+                    viewModel.nickName.value = newValue
                 },
                 leadingIcon = {
                     Icon(
@@ -148,26 +147,36 @@ fun RegisterScreen(
             )
             Spacer(modifier = Modifier.height(10.dp))
             PasswordTextField(
-                value = passwordValue,
+                value = viewModel.password.value,
                 label = stringResource(id = R.string.password_text),
                 onValueChange = { newValue ->
-                    passwordValue = newValue
-                    isPasswordError = false
+                    viewModel.password.value = newValue
+                    viewModel.validatePassword()
                 },
-                isError = isPasswordError,
-                isVisible = isPasswordVisible,
-                onVisibilityChanged = { isPasswordVisible = !isPasswordVisible },
+                isError = viewModel.isPasswordError.value,
+                isVisible = viewModel.isPasswordVisible.value,
+                onVisibilityChanged = {
+                    viewModel.isPasswordVisible.value = !viewModel.isPasswordVisible.value
+                },
                 onDone = { },
             )
             Spacer(modifier = Modifier.height(10.dp))
             LoginButton(
                 onClick = {
-                    if (emailValue.isEmpty()) {
-                        isEmailError = true
-                    } else if (passwordValue.isEmpty()) {
-                        isPasswordError = true
-                    } else {
-                        onRegisterClick(emailValue)
+                    scope.launch {
+                        val response = viewModel.register()
+                        if (response.isSuccess) {
+                            /* Toast.makeText(
+                                 context,
+                                 response.successMessage + R.string.please_sign_in_text,
+                                 Toast.LENGTH_SHORT,
+                             )*/
+                            println("sikeres ${response.successMessage}")
+                            // onRegisterClick(viewModel.userName.value)
+                        } else {
+                            // Toast.makeText(context, response.error, Toast.LENGTH_LONG)
+                            println("sikertelen ${response.error}")
+                        }
                     }
                 },
                 text = stringResource(R.string.register),

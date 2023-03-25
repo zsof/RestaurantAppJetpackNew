@@ -9,7 +9,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.outlined.Games
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,10 +24,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import hu.zsof.restaurantappjetpacknew.R
 import hu.zsof.restaurantappjetpacknew.ui.common.LoginButton
 import hu.zsof.restaurantappjetpacknew.ui.common.NormalTextField
 import hu.zsof.restaurantappjetpacknew.ui.common.PasswordTextField
+import kotlinx.coroutines.launch
 
 @ExperimentalMaterial3Api
 @Composable
@@ -34,14 +37,9 @@ fun LoginScreen(
     modifier: Modifier = Modifier,
     onLoginClick: (String) -> Unit,
     onRegisterClick: () -> Unit,
+    viewModel: LoginViewModel = hiltViewModel(),
 ) {
-    var emailValue by remember { mutableStateOf("a") }
-    var isEmailError by remember { mutableStateOf(false) }
-
-    var passwordValue by remember { mutableStateOf("a") }
-    var isPasswordVisible by remember { mutableStateOf(false) }
-    var isPasswordError by remember { mutableStateOf(false) }
-
+    val scope = rememberCoroutineScope()
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -66,13 +64,13 @@ fun LoginScreen(
             )
             Spacer(modifier = Modifier.height(20.dp))
             NormalTextField(
-                value = emailValue,
+                value = viewModel.email.value,
                 label = stringResource(id = R.string.email_address),
                 onValueChange = { newValue ->
-                    emailValue = newValue
-                    isEmailError = false
+                    viewModel.email.value = newValue
+                    viewModel.validateEmail()
                 },
-                isError = isEmailError,
+                isError = viewModel.isEmailError.value,
                 leadingIcon = {
                     Icon(
                         imageVector = Icons.Default.Email,
@@ -89,26 +87,29 @@ fun LoginScreen(
             )
             Spacer(modifier = Modifier.height(10.dp))
             PasswordTextField(
-                value = passwordValue,
+                value = viewModel.password.value,
                 label = stringResource(id = R.string.password_text),
                 onValueChange = { newValue ->
-                    passwordValue = newValue
-                    isPasswordError = false
+                    viewModel.password.value = newValue
+                    viewModel.validatePassword()
                 },
-                isError = isPasswordError,
-                isVisible = isPasswordVisible,
-                onVisibilityChanged = { isPasswordVisible = !isPasswordVisible },
+                isError = viewModel.isPasswordError.value,
+                isVisible = viewModel.isPasswordVisible.value,
+                onVisibilityChanged = {
+                    viewModel.isPasswordVisible.value = !viewModel.isPasswordVisible.value
+                },
                 onDone = { },
             )
             Spacer(modifier = Modifier.height(10.dp))
             LoginButton(
                 onClick = {
-                    if (emailValue.isEmpty()) {
-                        isEmailError = true
-                    } else if (passwordValue.isEmpty()) {
-                        isPasswordError = true
-                    } else {
-                        onLoginClick(emailValue)
+                    scope.launch {
+                        val response = viewModel.login()
+                        if (response.isSuccess) {
+                            onLoginClick(viewModel.email.value)
+                        } else {
+                            println("login failed ${response.error}")
+                        }
                     }
                 },
                 text = stringResource(R.string.log_in),

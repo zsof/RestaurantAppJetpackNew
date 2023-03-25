@@ -1,30 +1,57 @@
-/*
 package hu.zsof.restaurantappjetpacknew.ui.login
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import hu.zsof.restaurantapp.network.request.LoginDataRequest
-import hu.zsof.restaurantappjetpacknew.network.response.LoggedUserResponse
 import hu.zsof.restaurantappjetpacknew.network.repository.AuthRepository
-import hu.zsof.restaurantapp.util.extensions.SharedPreference
+import hu.zsof.restaurantappjetpacknew.network.request.LoginDataRequest
+import hu.zsof.restaurantappjetpacknew.network.response.LoggedUserResponse
+import hu.zsof.restaurantappjetpacknew.util.Constants
+import java.util.regex.Pattern
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val authRepository: AuthRepository,
-    private val sharedPref: SharedPreference,
+    // private val sharedPref: SharedPreference,
 ) : ViewModel() {
 
-    suspend fun login(loginDataRequest: LoginDataRequest): LoggedUserResponse {
-        return authRepository.loginUser(loginDataRequest)
+    var email = mutableStateOf("test@test.hu")
+    var isEmailError = mutableStateOf(false)
+
+    var password = mutableStateOf("Alma1234")
+    var isPasswordVisible = mutableStateOf(false)
+    var isPasswordError = mutableStateOf(false)
+
+    suspend fun login(): LoggedUserResponse {
+        return authRepository.loginUser(LoginDataRequest(email.value, password.value))
     }
 
-    fun <T> setAppPreference(key: String, value: T) {
-        sharedPref.setPreference(key, value)
+    fun validateEmail() {
+        val pattern = Pattern.compile(Constants.EMAIL_PATTERN, Pattern.CASE_INSENSITIVE)
+
+        if (pattern.matcher(email.value).matches()) {
+            isEmailError.value = email.value.isEmpty()
+        } else {
+            isEmailError.value = false
+        }
     }
 
-    fun <T> getAppPreference(key: String): T {
-        return sharedPref.getPreference(key)
+    fun validatePassword() {
+        val pattern = Pattern.compile(Constants.PASSWORD_PATTERN)
+
+        if (pattern.matcher(password.value).matches()) {
+            isPasswordError.value = password.value.isEmpty()
+        } else {
+            isPasswordError.value = false
+        }
     }
+
+    /* fun <T> setAppPreference(key: String, value: T) {
+         sharedPref.setPreference(key, value)
+     }
+
+     fun <T> getAppPreference(key: String): T {
+         return sharedPref.getPreference(key)
+     }*/
 }
-*/

@@ -11,15 +11,13 @@ import dagger.hilt.components.SingletonComponent
 import hu.zsof.restaurantappjetpacknew.BuildConfig
 import hu.zsof.restaurantappjetpacknew.network.ApiService
 import hu.zsof.restaurantappjetpacknew.util.Constants
-import okhttp3.Interceptor
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.Response
+import okhttp3.*
 import okhttp3.ResponseBody.Companion.toResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
 import org.json.JSONObject
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.IOException
 import java.util.concurrent.TimeUnit
 import java.util.prefs.Preferences
 import javax.inject.Singleton
@@ -28,11 +26,11 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class InjectModule {
 
-   /* @Singleton
-    @Provides
-    fun provideStateService(): LocalDataStateService {
-        return LocalDataStateService
-    }*/
+    /* @Singleton
+     @Provides
+     fun provideStateService(): LocalDataStateService {
+         return LocalDataStateService
+     }*/
 
     @Singleton
     @Provides
@@ -48,7 +46,7 @@ class InjectModule {
             .connectTimeout(15, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
             .addInterceptor(interceptor)
-            .addInterceptor(ReceivedCookiesInterceptor())
+            .addInterceptor(BasicAuthInterceptor("test@test.hu", "Alma1234"))
             .addInterceptor(AddCookiesInterceptor())
             // .addInterceptor(ErrorInterceptor(context))
             .build()
@@ -68,14 +66,49 @@ class InjectModule {
 
         override fun intercept(chain: Interceptor.Chain): Response {
             val originalResponse: Response = chain.proceed(chain.request())
+            println("originalresp $originalResponse")
             if (originalResponse.headers("Authorization").isNotEmpty()) {
                 val token = originalResponse.headers("Authorization")
 
                 Preferences.userRoot().put("bearer", token[0])
-                println(token[0])
+                println("token ${token[0]}")
             }
             return originalResponse
         }
+    }
+
+    // todo
+    class BasicAuthInterceptor(username: String, password: String) : Interceptor {
+        private val credentials: String = Credentials.basic(username, password)
+
+        @Throws(IOException::class)
+        override fun intercept(chain: Interceptor.Chain): Response {
+            val request: Request = chain.request()
+            val authenticatedRequest: Request = request.newBuilder()
+                .header("Authorization", credentials).build()
+            if (authenticatedRequest.headers("Authorization").isNotEmpty()) {
+                val token = authenticatedRequest.headers("Authorization")
+
+                println("token $token")
+                Preferences.userRoot().put("bearer", token[0])
+            }
+            println("auht $authenticatedRequest")
+            return chain.proceed(authenticatedRequest)
+        }
+       /* @Throws(IOException::class)
+        override fun intercept(chain: Interceptor.Chain): Response {
+            val request: Request = chain.request()
+            val authenticatedRequest: Request = request.newBuilder()
+                .header("Authorization", credentials).build()
+            if (authenticatedRequest.headers("Authorization").isNotEmpty()) {
+                val token = authenticatedRequest.headers("Authorization")
+
+                println("token $token")
+                Preferences.userRoot().put("bearer", token[0])
+            }
+            println("auht $authenticatedRequest")
+            return chain.proceed(authenticatedRequest)
+        }*/
     }
 
     class AddCookiesInterceptor : Interceptor {
@@ -85,7 +118,7 @@ class InjectModule {
             val token = Preferences.userRoot().get("bearer", "")
             if (token.isNotEmpty()) {
                 println("Bearer ->$token")
-                builder.addHeader("Bearer", token)
+                builder.addHeader("Authorization", "Bearer $token")
                 // Timber.tag("OkHttp").d("Adding Header: %s", cookie)
             } else {
                 println("ERROR: NO TOKEN ADDED")
