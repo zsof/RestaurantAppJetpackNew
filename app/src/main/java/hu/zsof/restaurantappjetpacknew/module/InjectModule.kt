@@ -63,15 +63,16 @@ class InjectModule {
         return retrofit.create(ApiService::class.java)
     }
 
+    // TODO
     class ReceivedCookiesInterceptor : Interceptor {
 
         override fun intercept(chain: Interceptor.Chain): Response {
             val originalResponse: Response = chain.proceed(chain.request())
-            if (originalResponse.headers("Set-Cookie").isNotEmpty()) {
-                val cookies = originalResponse.headers("Set-Cookie")
+            if (originalResponse.headers("Authorization").isNotEmpty()) {
+                val token = originalResponse.headers("Authorization")
 
-                Preferences.userRoot().put("cookie", cookies[0])
-                println(cookies[0])
+                Preferences.userRoot().put("bearer", token[0])
+                println(token[0])
             }
             return originalResponse
         }
@@ -81,13 +82,13 @@ class InjectModule {
 
         override fun intercept(chain: Interceptor.Chain): Response {
             val builder: Request.Builder = chain.request().newBuilder()
-            val cookie = Preferences.userRoot().get("cookie", "")
-            if (cookie.isNotEmpty()) {
-                println("Cookie ->$cookie")
-                builder.addHeader("Cookie", cookie)
+            val token = Preferences.userRoot().get("bearer", "")
+            if (token.isNotEmpty()) {
+                println("Bearer ->$token")
+                builder.addHeader("Bearer", token)
                 // Timber.tag("OkHttp").d("Adding Header: %s", cookie)
             } else {
-                println("ERROR: NO COOKIE ADDED")
+                println("ERROR: NO TOKEN ADDED")
             }
             // This is done so I know which headers are being added; this interceptor is used after the normal logging of OkHttp
             return chain.proceed(builder.build())
@@ -104,7 +105,7 @@ class InjectModule {
 
                 // To show Toast
                 val errorBody = errorBodyResponse?.let { JSONObject(it) }
-                backgroundThreadToast(context, errorBody?.getString("errorMessage"))
+                backgroundThreadToast(context, errorBody?.getString("message"))
 
                 // To not crash
                 val body = errorBodyResponse?.toResponseBody(originalResponse.body?.contentType())

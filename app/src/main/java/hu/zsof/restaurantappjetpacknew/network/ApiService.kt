@@ -56,7 +56,10 @@ interface ApiService {
     suspend fun acceptPlaceFromInReview(@Path("id") placeId: Long): Place
 
     @POST("places-review/report/{id}")
-    suspend fun reportProblemPlaceInReview(@Path("id") placeId: Long): PlaceInReview
+    suspend fun reportProblemPlaceInReview(
+        @Path("id") placeId: Long,
+        @Body problemMessage: String,
+    ): PlaceInReview
 
     @DELETE("places-review/places/{id}")
     suspend fun deletePlaceFromInReview(@Path("id") placeId: Long)
