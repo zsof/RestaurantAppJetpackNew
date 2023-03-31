@@ -12,7 +12,7 @@ enum class NavItem(
     var route: String?,
 ) {
     HOME(title = R.string.home, icon = Icons.Outlined.Home, route = NavigationScreen.Home.route),
-    MAP(R.string.map, Icons.Outlined.Place, null),
+    MAP(R.string.map, Icons.Outlined.Place, NavigationScreen.Map.route),
     FAVOURITES(R.string.favs, Icons.Outlined.Favorite, null),
     PROFILE(R.string.profile, Icons.Outlined.Person, NavigationScreen.Profile.route),
     LOGOUT(R.string.logout, Icons.Outlined.ExitToApp, NavigationScreen.Login.route),

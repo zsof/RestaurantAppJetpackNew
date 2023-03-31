@@ -22,6 +22,7 @@ class AuthRepository @Inject constructor(private val apiService: ApiService) {
             apiService.loginUser(loginDataRequest)
         } catch (e: Exception) {
             e.printStackTrace()
+            println("autreps failed ${e.message}")
             LoggedUserResponse(false, e.localizedMessage ?: "Network error")
         }
     }

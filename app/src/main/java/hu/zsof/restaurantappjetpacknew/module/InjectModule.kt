@@ -34,7 +34,10 @@ class InjectModule {
 
     @Singleton
     @Provides
-    operator fun invoke(/*@ApplicationContext context: Context*/): ApiService {
+    operator fun invoke(/*@ApplicationContext context: Context*/
+        /*email: String,
+        password: String,*/
+    ): ApiService {
         val interceptor = HttpLoggingInterceptor()
         if (BuildConfig.DEBUG) {
             interceptor.level = HttpLoggingInterceptor.Level.BODY
@@ -89,26 +92,26 @@ class InjectModule {
             if (authenticatedRequest.headers("Authorization").isNotEmpty()) {
                 val token = authenticatedRequest.headers("Authorization")
 
-                println("token $token")
+                println("token $token credential $credentials")
                 Preferences.userRoot().put("bearer", token[0])
             }
             println("auht $authenticatedRequest")
             return chain.proceed(authenticatedRequest)
         }
-       /* @Throws(IOException::class)
-        override fun intercept(chain: Interceptor.Chain): Response {
-            val request: Request = chain.request()
-            val authenticatedRequest: Request = request.newBuilder()
-                .header("Authorization", credentials).build()
-            if (authenticatedRequest.headers("Authorization").isNotEmpty()) {
-                val token = authenticatedRequest.headers("Authorization")
+        /* @Throws(IOException::class)
+         override fun intercept(chain: Interceptor.Chain): Response {
+             val request: Request = chain.request()
+             val authenticatedRequest: Request = request.newBuilder()
+                 .header("Authorization", credentials).build()
+             if (authenticatedRequest.headers("Authorization").isNotEmpty()) {
+                 val token = authenticatedRequest.headers("Authorization")
 
-                println("token $token")
-                Preferences.userRoot().put("bearer", token[0])
-            }
-            println("auht $authenticatedRequest")
-            return chain.proceed(authenticatedRequest)
-        }*/
+                 println("token $token")
+                 Preferences.userRoot().put("bearer", token[0])
+             }
+             println("auht $authenticatedRequest")
+             return chain.proceed(authenticatedRequest)
+         }*/
     }
 
     class AddCookiesInterceptor : Interceptor {

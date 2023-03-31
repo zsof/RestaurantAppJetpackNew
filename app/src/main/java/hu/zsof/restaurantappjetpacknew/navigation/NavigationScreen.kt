@@ -14,4 +14,5 @@ sealed class NavigationScreen(val route: String) {
     object Profile : NavigationScreen(route = "profile")
 
     object NewPlace : NavigationScreen(route = "newPlace")
+    object Map : NavigationScreen(route = "map")
 }
