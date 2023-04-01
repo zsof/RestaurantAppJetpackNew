@@ -42,7 +42,6 @@ fun HomeListScreen(
                 onClick = onFabClick,
                 modifier = Modifier.padding(PaddingValues(bottom = 44.dp)),
             ) {
-                println("fab")
                 Icon(imageVector = Icons.Filled.Add, contentDescription = null)
             }
         },

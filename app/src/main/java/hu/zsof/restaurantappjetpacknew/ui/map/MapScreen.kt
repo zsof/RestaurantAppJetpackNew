@@ -15,7 +15,7 @@ import com.google.maps.android.compose.*
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 @ExperimentalMaterial3Api
-fun MapScreen() {
+fun MapScreen(onLongClick: (latLng: LatLng) -> Unit) {
     val context = LocalContext.current
 
     val multiplePermissionState = rememberMultiplePermissionsState(
@@ -25,7 +25,7 @@ fun MapScreen() {
         ),
     )
 
-    LocationPermissions(multiplePermissionState = multiplePermissionState)
+    LocationPermissions(multiplePermissionState = multiplePermissionState, onLongClick)
 
     LaunchedEffect(Unit) {
         multiplePermissionState.launchMultiplePermissionRequest()
@@ -36,6 +36,7 @@ fun MapScreen() {
 @Composable
 fun LocationPermissions(
     multiplePermissionState: MultiplePermissionsState,
+    onLongClick: (latLng: LatLng) -> Unit,
 ) {
     PermissionsRequired(
         multiplePermissionsState = multiplePermissionState,
@@ -82,6 +83,7 @@ fun LocationPermissions(
             cameraPositionState = CameraPositionState(
                 CameraPosition(LatLng(47.497913, 19.040236), 11f, 0f, 0f), // Budapest
             ),
+            onMapLongClick = { onLongClick(it) },
         )
     }
 }

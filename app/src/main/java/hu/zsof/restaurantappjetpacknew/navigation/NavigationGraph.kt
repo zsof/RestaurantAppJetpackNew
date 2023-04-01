@@ -70,7 +70,7 @@ fun NavGraphBuilder.mainNavGraph(
             ),
         ) {
             HomeListScreen(
-                onFabClick = { navController.navigate(NavigationScreen.NewPlace.route) },
+                onFabClick = { navController.navigate(NavigationScreen.Map.route) },
                 /*  argument = navController.currentBackStackEntry?.arguments
                       ?.getString(NavigationScreen.Home.Args.username) ?: "",
                  */
@@ -80,7 +80,7 @@ fun NavGraphBuilder.mainNavGraph(
             NewPlaceDialogScreen()
         }
         composable(route = NavigationScreen.Map.route) {
-            MapScreen()
+            MapScreen(onLongClick = { navController.navigate(NavigationScreen.NewPlace.route) })
         }
         /*composable(route = NavigationScreen.Profile.route) {
             Box(
