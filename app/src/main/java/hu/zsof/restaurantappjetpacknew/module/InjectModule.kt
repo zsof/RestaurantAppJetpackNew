@@ -17,7 +17,6 @@ import okhttp3.logging.HttpLoggingInterceptor
 import org.json.JSONObject
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.io.IOException
 import java.util.concurrent.TimeUnit
 import java.util.prefs.Preferences
 import javax.inject.Singleton
@@ -49,9 +48,7 @@ class InjectModule {
             .connectTimeout(15, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
             .addInterceptor(interceptor)
-            .addInterceptor(BasicAuthInterceptor("test@test.hu", "Alma1234"))
-            .addInterceptor(AddCookiesInterceptor())
-            // .addInterceptor(ErrorInterceptor(context))
+            .addInterceptor(AuthInterceptor())
             .build()
 
         val retrofit =
@@ -64,70 +61,31 @@ class InjectModule {
         return retrofit.create(ApiService::class.java)
     }
 
-    // TODO
-    class ReceivedCookiesInterceptor : Interceptor {
+    class AuthInterceptor : Interceptor {
 
         override fun intercept(chain: Interceptor.Chain): Response {
-            val originalResponse: Response = chain.proceed(chain.request())
-            println("originalresp $originalResponse")
-            if (originalResponse.headers("Authorization").isNotEmpty()) {
-                val token = originalResponse.headers("Authorization")
+            // add bearer token to requests if user logged in already
+            val tokenForRequest = Preferences.userRoot().get("bearer", "")
+            val originalResponse: Response
 
-                Preferences.userRoot().put("bearer", token[0])
-                println("token ${token[0]}")
+            if (tokenForRequest.isNotBlank()) {
+                val request = chain.request()
+                val authenticatedRequest: Request = request.newBuilder()
+                    .header("Authorization", tokenForRequest).build()
+
+                // send to backend
+                originalResponse = chain.proceed(authenticatedRequest)
+            } else {
+                // send to backend without token
+                originalResponse = chain.proceed(chain.request())
+            }
+
+            // get authorization token from backend when login from response
+            val token = originalResponse.headers["Authorization"]
+            if (token != null) {
+                Preferences.userRoot().put("bearer", token)
             }
             return originalResponse
-        }
-    }
-
-    // todo
-    class BasicAuthInterceptor(username: String, password: String) : Interceptor {
-        private val credentials: String = Credentials.basic(username, password)
-
-        @Throws(IOException::class)
-        override fun intercept(chain: Interceptor.Chain): Response {
-            val request: Request = chain.request()
-            val authenticatedRequest: Request = request.newBuilder()
-                .header("Authorization", credentials).build()
-            if (authenticatedRequest.headers("Authorization").isNotEmpty()) {
-                val token = authenticatedRequest.headers("Authorization")
-
-                println("token $token credential $credentials")
-                Preferences.userRoot().put("bearer", token[0])
-            }
-            println("auht $authenticatedRequest")
-            return chain.proceed(authenticatedRequest)
-        }
-        /* @Throws(IOException::class)
-         override fun intercept(chain: Interceptor.Chain): Response {
-             val request: Request = chain.request()
-             val authenticatedRequest: Request = request.newBuilder()
-                 .header("Authorization", credentials).build()
-             if (authenticatedRequest.headers("Authorization").isNotEmpty()) {
-                 val token = authenticatedRequest.headers("Authorization")
-
-                 println("token $token")
-                 Preferences.userRoot().put("bearer", token[0])
-             }
-             println("auht $authenticatedRequest")
-             return chain.proceed(authenticatedRequest)
-         }*/
-    }
-
-    class AddCookiesInterceptor : Interceptor {
-
-        override fun intercept(chain: Interceptor.Chain): Response {
-            val builder: Request.Builder = chain.request().newBuilder()
-            val token = Preferences.userRoot().get("bearer", "")
-            if (token.isNotEmpty()) {
-                println("Bearer ->$token")
-                builder.addHeader("Authorization", "Bearer $token")
-                // Timber.tag("OkHttp").d("Adding Header: %s", cookie)
-            } else {
-                println("ERROR: NO TOKEN ADDED")
-            }
-            // This is done so I know which headers are being added; this interceptor is used after the normal logging of OkHttp
-            return chain.proceed(builder.build())
         }
     }
 

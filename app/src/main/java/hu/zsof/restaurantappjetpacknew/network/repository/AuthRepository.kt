@@ -1,5 +1,6 @@
 package hu.zsof.restaurantappjetpacknew.network.repository
 
+import android.util.Base64
 import hu.zsof.restaurantappjetpacknew.network.ApiService
 import hu.zsof.restaurantappjetpacknew.network.request.LoginDataRequest
 import hu.zsof.restaurantappjetpacknew.network.response.LoggedUserResponse
@@ -17,12 +18,14 @@ class AuthRepository @Inject constructor(private val apiService: ApiService) {
         }
     }
 
+    // @RequiresApi(Build.VERSION_CODES.O)
     suspend fun loginUser(loginDataRequest: LoginDataRequest): LoggedUserResponse {
         return try {
-            apiService.loginUser(loginDataRequest)
+            val simpleData = "${loginDataRequest.email}:${loginDataRequest.password}"
+            val encodedData = android.util.Base64.encodeToString(simpleData.toByteArray(), Base64.NO_WRAP)
+            apiService.loginUser("Basic $encodedData")
         } catch (e: Exception) {
             e.printStackTrace()
-            println("autreps failed ${e.message}")
             LoggedUserResponse(false, e.localizedMessage ?: "Network error")
         }
     }
