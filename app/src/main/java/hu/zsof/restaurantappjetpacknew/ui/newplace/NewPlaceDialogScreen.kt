@@ -1,7 +1,8 @@
 package hu.zsof.restaurantappjetpacknew.ui.newplace
 
 import android.annotation.SuppressLint
-import android.util.Log
+import android.content.Context
+import android.location.Geocoder
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -11,6 +12,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -24,14 +26,29 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.google.android.gms.maps.model.LatLng
 import hu.zsof.restaurantappjetpacknew.R
+import hu.zsof.restaurantappjetpacknew.model.enums.Price
+import hu.zsof.restaurantappjetpacknew.network.repository.LocalDataStateService
+import hu.zsof.restaurantappjetpacknew.network.request.PlaceDataRequest
 import hu.zsof.restaurantappjetpacknew.ui.common.NormalTextField
 import hu.zsof.restaurantappjetpacknew.ui.common.TextFieldForDialog
+import java.util.*
 
 @SuppressLint("ResourceType")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NewPlaceDialogScreen() {
+fun NewPlaceDialogScreen(viewModel: NewPlaceDialogViewModel = hiltViewModel()) {
+    val context = LocalContext.current
+
+    val latLang: LatLng = try {
+        LocalDataStateService.getLatLng()
+    } catch (e: Exception) {
+        e.printStackTrace()
+        LatLng(0.0, 0.0)
+    }
+
     var dialogOpen by remember {
         mutableStateOf(true)
     }
@@ -42,10 +59,17 @@ fun NewPlaceDialogScreen() {
 
     val filterOptions = stringArrayResource(id = R.array.filter_options)
     val filterOptionsRight = stringArrayResource(id = R.array.filter_option_right)
+    val (selectedOption: String, onOptionSelected: (String) -> Unit) = remember {
+        mutableStateOf(
+            filterOptions[0],
+            // filterOptionsRight[0]
+        )
+    }
 
     var sliderValue by remember {
         mutableStateOf(0f)
     }
+    var priceValue = Price.LOW
 
     var placeNameValue by remember { mutableStateOf("") }
     var placeNameError by remember { mutableStateOf(false) }
@@ -74,7 +98,8 @@ fun NewPlaceDialogScreen() {
             ) {
                 Column(
                     horizontalAlignment = Alignment.Start,
-                    modifier = Modifier.padding(all = 16.dp)
+                    modifier = Modifier
+                        .padding(all = 16.dp)
                         .verticalScroll(rememberScrollState()),
                 ) {
                     Text(
@@ -232,7 +257,18 @@ fun NewPlaceDialogScreen() {
                             },
                             onValueChangeFinished = {
                                 // this is called when the user completed selecting the value
-                                Log.d("Addnew", "sliderValue = $sliderValue")
+                                priceValue = when (sliderValue) {
+                                    0f -> {
+                                        Price.LOW
+                                    }
+                                    5.0f -> {
+                                        Price.MIDDLE
+                                    }
+                                    else -> {
+                                        Price.HIGH
+                                    }
+                                }
+                                println("Addnew sliderValue = $sliderValue $priceValue")
                             },
                             valueRange = 0f..10f,
                             steps = 1,
@@ -282,6 +318,7 @@ fun NewPlaceDialogScreen() {
                                         checked = checked,
                                         onCheckedChange = { checkedNew ->
                                             checked = checkedNew
+                                            println("chechckob $checked  $checkedNew  $filter ")
                                         },
                                     )
                                     Text(
@@ -315,6 +352,32 @@ fun NewPlaceDialogScreen() {
                             } else if (addressValue.isEmpty()) {
                                 addressError = true
                             } else {
+                                viewModel.addNewPlace(
+                                    PlaceDataRequest(
+                                        name = placeNameValue,
+                                        address = addressValue,
+                                        web = websiteValue,
+                                        email = emailValue,
+                                        phoneNumber = phoneValue,
+                                        // type = selectedOptionText,
+                                        price = priceValue,
+                                        /* filter = CustomFilter(
+                                             glutenFree = glutenFreeAdd.isChecked,
+                                             lactoseFree = lactoseFreeAdd.isChecked,
+                                             vegetarian = vegetarianAdd.isChecked,
+                                             vegan = veganAdd.isChecked,
+                                             fastFood = fastFoodAdd.isChecked,
+                                             parkingAvailable = parkingAdd.isChecked,
+                                             dogFriendly = dogAdd.isChecked,
+                                             familyPlace = familyPlaceAdd.isChecked,
+                                             delivery = deliveryAdd.isChecked,
+                                             creditCard = creditCardAdd.isChecked,
+                                         ),*/
+                                        latitude = latLang.latitude,
+                                        longitude = latLang.longitude,
+                                    ),
+                                    image = "",
+                                )
                                 dialogOpen = false
                             }
                         }) {
@@ -328,6 +391,13 @@ fun NewPlaceDialogScreen() {
             }
         }
     }
+}
+
+fun getAddress(latLng: LatLng, context: Context): String? {
+    val geocoder = Geocoder(context, Locale.getDefault())
+    val addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1)
+
+    return addresses?.get(0)?.getAddressLine(0)
 }
 
 @ExperimentalMaterial3Api

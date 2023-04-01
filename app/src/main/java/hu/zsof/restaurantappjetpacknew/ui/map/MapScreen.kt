@@ -11,6 +11,7 @@ import com.google.accompanist.permissions.*
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
+import hu.zsof.restaurantappjetpacknew.network.repository.LocalDataStateService
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
@@ -83,7 +84,10 @@ fun LocationPermissions(
             cameraPositionState = CameraPositionState(
                 CameraPosition(LatLng(47.497913, 19.040236), 11f, 0f, 0f), // Budapest
             ),
-            onMapLongClick = { onLongClick(it) },
+            onMapLongClick = {
+                LocalDataStateService.setLatLng(it)
+                onLongClick(it)
+            },
         )
     }
 }

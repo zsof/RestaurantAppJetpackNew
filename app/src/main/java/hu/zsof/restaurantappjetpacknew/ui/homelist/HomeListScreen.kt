@@ -5,7 +5,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -14,6 +13,8 @@ import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -33,9 +34,14 @@ fun HomeListScreen(
     viewModel: HomeViewModel = hiltViewModel(),
     onFabClick: () -> Unit,
 ) {
-    val places = viewModel.places
+    // State
+    val places = viewModel.places.observeAsState(listOf())
+    // API call
+    LaunchedEffect(key1 = Unit) {
+        viewModel.showPlaces()
+    }
 
-    val listState = rememberLazyListState()
+    // val listState = rememberLazyListState()
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
@@ -52,13 +58,10 @@ fun HomeListScreen(
                     .background(MaterialTheme.colorScheme.background),
             ) {
                 LazyColumn(
-                    state = listState,
                     contentPadding = PaddingValues(8.dp),
                 ) {
-                    items(
-                        items = places,
-                    ) { restaurant ->
-                        HomeListData(place = restaurant)
+                    items(places.value) {
+                        HomeListItem(place = it)
                     }
                 }
             }
@@ -68,7 +71,7 @@ fun HomeListScreen(
 
 @ExperimentalMaterial3Api
 @Composable
-private fun HomeListData(
+private fun HomeListItem(
     place: Place,
 ) {
     Card(
