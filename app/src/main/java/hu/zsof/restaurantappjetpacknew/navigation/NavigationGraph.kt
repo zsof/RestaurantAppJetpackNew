@@ -46,7 +46,6 @@ fun NavGraphBuilder.authNavGraph(
         }
         composable(route = NavigationScreen.Register.route) {
             RegisterScreen(
-                onRegisterClick = { navController.navigate(NavigationScreen.Home.passUsername(it)) },
                 onLoginClick = { navController.navigate(NavigationScreen.Login.route) },
             )
         }

@@ -30,4 +30,11 @@ object Constants {
     const val ROOT_GRAPH_ROUTE = "root"
     const val AUTH_GRAPH_ROUTE = "auth"
     const val MAIN_GRAPH_ROUTE = "main"
+
+    /**
+     * User tpye
+     */
+    const val ROLE_ADMIN = "ROLE_ADMIN"
+    const val ROLE_OWNER = "ROLE_OWNER"
+    const val ROLE_USER = "ROLE_USER"
 }

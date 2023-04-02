@@ -10,11 +10,11 @@
     <string name="no_account">Nincs még fiókja?</string>
     <string name="user_name">Felhasználó név</string>
     <string name="register">Regisztráció</string>
-    <string name="home">Kezdőlap</string>
+    <string name="home">Lista</string>
     <string name="map">Térkép</string>
-    <string name="favs">Kedvencek</string>
+    <string name="favs">Favs</string>
     <string name="profile">Profil</string>
-    <string name="logout">Kilépés</string>
+    <string name="logout">Kilép</string>
     <string name="add_button">Add button</string>
     <string name="search">Keresés</string>
     <string name="sign_in_with_google">Belépés Google fiókkal</string>

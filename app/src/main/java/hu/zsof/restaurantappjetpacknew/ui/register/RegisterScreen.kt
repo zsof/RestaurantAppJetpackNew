@@ -41,7 +41,6 @@ import kotlinx.coroutines.launch
 fun RegisterScreen_Preview() {
     RegisterScreen(
         onLoginClick = { },
-        onRegisterClick = { },
     )
 }
 
@@ -50,7 +49,6 @@ fun RegisterScreen_Preview() {
 fun RegisterScreen(
     modifier: Modifier = Modifier,
     onLoginClick: () -> Unit,
-    onRegisterClick: (String) -> Unit,
     viewModel: RegisterViewModel = hiltViewModel(),
 ) {
     val scope = rememberCoroutineScope()
@@ -166,11 +164,6 @@ fun RegisterScreen(
                     scope.launch {
                         val response = viewModel.register()
                         if (response.isSuccess) {
-                            /* Toast.makeText(
-                                 context,
-                                 response.successMessage + R.string.please_sign_in_text,
-                                 Toast.LENGTH_SHORT,
-                             )*/
                             println("sikeres ${response.successMessage}")
                             // onRegisterClick(viewModel.userName.value)
                         } else {

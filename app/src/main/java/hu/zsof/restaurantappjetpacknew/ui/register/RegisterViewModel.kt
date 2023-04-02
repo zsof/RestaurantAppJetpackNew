@@ -36,6 +36,7 @@ class RegisterViewModel @Inject constructor(
                 userName.value,
                 nickName.value,
             ),
+            isAdmin = false,
         )
     }
 

@@ -6,5 +6,5 @@ data class LoggedUserResponse(
     val isSuccess: Boolean = false,
     val successMessage: String = "",
     val error: String = "",
-    val user: User? = null,
+    val user: User = User(),
 )

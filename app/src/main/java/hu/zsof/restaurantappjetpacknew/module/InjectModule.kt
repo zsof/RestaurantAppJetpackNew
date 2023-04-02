@@ -7,6 +7,7 @@ import android.widget.Toast
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import hu.zsof.restaurantappjetpacknew.BuildConfig
 import hu.zsof.restaurantappjetpacknew.network.ApiService
@@ -33,9 +34,8 @@ class InjectModule {
 
     @Singleton
     @Provides
-    operator fun invoke(/*@ApplicationContext context: Context*/
-        /*email: String,
-        password: String,*/
+    operator fun invoke(
+        @ApplicationContext context: Context,
     ): ApiService {
         val interceptor = HttpLoggingInterceptor()
         if (BuildConfig.DEBUG) {
@@ -49,6 +49,7 @@ class InjectModule {
             .readTimeout(30, TimeUnit.SECONDS)
             .addInterceptor(interceptor)
             .addInterceptor(AuthInterceptor())
+           // .addInterceptor(ErrorInterceptor(context))
             .build()
 
         val retrofit =
@@ -97,8 +98,10 @@ class InjectModule {
                 // To get custom error messages from server
                 val errorBodyResponse = originalResponse.body?.string()
 
+                println("errorbodyresp $errorBodyResponse")
                 // To show Toast
                 val errorBody = errorBodyResponse?.let { JSONObject(it) }
+                println("errorbody $errorBody")
                 backgroundThreadToast(context, errorBody?.getString("message"))
 
                 // To not crash

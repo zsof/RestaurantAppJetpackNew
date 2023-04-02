@@ -79,7 +79,7 @@ interface ApiService {
      * Auth
      */
     @POST("auth/register")
-    suspend fun registerUser(@Body loginDataRequest: LoginDataRequest): NetworkResponse
+    suspend fun registerUser(@Body loginDataRequest: LoginDataRequest, @Header("isAdmin") isAdmin: Boolean): NetworkResponse
 
     @POST("auth/login")
     suspend fun loginUser(@Header("Authorization") encodedBasic: String): LoggedUserResponse
