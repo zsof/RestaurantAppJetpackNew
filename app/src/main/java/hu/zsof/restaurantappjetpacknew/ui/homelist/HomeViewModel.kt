@@ -5,12 +5,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import hu.zsof.restaurantappjetpacknew.model.Place
+import hu.zsof.restaurantappjetpacknew.model.User
 import hu.zsof.restaurantappjetpacknew.network.repository.PlaceRepository
+import hu.zsof.restaurantappjetpacknew.network.repository.UserRepository
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(private val placeRepository: PlaceRepository) :
+class HomeViewModel @Inject constructor(
+    private val placeRepository: PlaceRepository,
+    private val userRepository: UserRepository,
+) :
     ViewModel() {
     // val places = mutableListOf<Place>()
 
@@ -20,22 +25,8 @@ class HomeViewModel @Inject constructor(private val placeRepository: PlaceReposi
             places.postValue(placeRepository.getAllPlace())
         }
     }
-    /* init {
-         loadData()
-     }
 
-     fun loadData() {
-         places.add(Place(id = 1, name = "Stefánia étterem", address = "1146 Budapest Stefánia út", rate = 4.0f, price = Price.LOW))
-         places.add(Place(id = 2, name = "Frei Café", address = "Budapest Örs vezér tere 25", rate = 4.5f, price = Price.HIGH))
-         places.add(Place(id = 3, name = "Vapiano", address = "Budapest Vörösmarty tér 3", rate = 3.0f, price = Price.MIDDLE))
-         places.add(Place(id = 1, name = "Stefánia étterem", address = "1146 Budapest Stefánia út", rate = 4.0f, price = Price.LOW))
-         places.add(Place(id = 2, name = "Frei Café", address = "Budapest Örs vezér tere 25", rate = 4.5f, price = Price.HIGH))
-         places.add(Place(id = 1, name = "Stefánia étterem", address = "1146 Budapest Stefánia út", rate = 4.0f, price = Price.LOW))
-         places.add(Place(id = 3, name = "Vapiano", address = "Budapest Vörösmarty tér 3", rate = 3.0f, price = Price.MIDDLE))
-         places.add(Place(id = 2, name = "Frei Café", address = "Budapest Örs vezér tere 25", rate = 4.5f, price = Price.HIGH))
-         places.add(Place(id = 3, name = "Vapiano", address = "Budapest Vörösmarty tér 3", rate = 3.0f, price = Price.MIDDLE))
-         places.add(Place(id = 1, name = "Stefánia étterem", address = "1146 Budapest Stefánia út", rate = 4.0f, price = Price.LOW))
-         places.add(Place(id = 2, name = "Frei Café", address = "Budapest Örs vezér tere 25", rate = 4.5f, price = Price.HIGH))
-         places.add(Place(id = 3, name = "Vapiano", address = "Budapest Vörösmarty tér 3", rate = 3.0f, price = Price.MIDDLE))
-     }*/
+    suspend fun addOrRemoveFavPlace(placeId: Long): User? {
+        return userRepository.addOrRemoveFavPlace(placeId)
+    }
 }

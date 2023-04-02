@@ -20,4 +20,6 @@ data class Place(
     var longitude: Double? = 0.0,
     var usersNumber: Int = 0,
     var openDetails: OpenDetails = OpenDetails(),
+    var creatorName: String = "",
+    var creatorId: Long = 0,
 ) : Serializable

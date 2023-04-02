@@ -7,13 +7,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.PushPin
-import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.outlined.Favorite
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,6 +23,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import hu.zsof.restaurantappjetpacknew.R
 import hu.zsof.restaurantappjetpacknew.model.Place
 import hu.zsof.restaurantappjetpacknew.model.enums.Price
+import kotlinx.coroutines.launch
 
 @ExperimentalMaterial3Api
 @Composable
@@ -41,7 +38,6 @@ fun HomeListScreen(
         viewModel.showPlaces()
     }
 
-    // val listState = rememberLazyListState()
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
@@ -73,7 +69,13 @@ fun HomeListScreen(
 @Composable
 private fun HomeListItem(
     place: Place,
+    viewModel: HomeViewModel = hiltViewModel(),
 ) {
+    val coroutineScope = rememberCoroutineScope()
+
+    val isFav = remember { mutableStateOf(false) }
+    val favouriteIcon =
+        if (isFav.value) Icons.Default.Favorite else Icons.Default.FavoriteBorder
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -139,11 +141,27 @@ private fun HomeListItem(
                         style = TextStyle(fontStyle = FontStyle.Italic),
                     )
                     Spacer(modifier = Modifier.weight(1f))
-                    Icon(
+                    IconButton(onClick = {
+                        coroutineScope.launch {
+                            if (isFav.value) {
+                                viewModel.addOrRemoveFavPlace(place.id)
+                                isFav.value = false
+                            } else {
+                                viewModel.addOrRemoveFavPlace(place.id)
+                                isFav.value = true
+                            }
+                        }
+                    }) {
+                        Icon(
+                            imageVector = favouriteIcon,
+                            contentDescription = null,
+                        )
+                    }
+                    /*Icon(
                         imageVector = Icons.Outlined.Favorite,
                         contentDescription = null,
                         tint = Color(0xFFF44336),
-                    )
+                    )*/
                 }
                 Row() {
                     Icon(

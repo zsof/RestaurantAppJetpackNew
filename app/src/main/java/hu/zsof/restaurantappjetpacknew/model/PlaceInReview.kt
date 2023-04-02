@@ -21,4 +21,6 @@ data class PlaceInReview(
     var usersNumber: Int = 0,
     var openDetails: OpenDetails = OpenDetails(),
     var problem: String = "",
+    var creatorName: String = "",
+    var creatorId: Long = 0,
 ) : Serializable
