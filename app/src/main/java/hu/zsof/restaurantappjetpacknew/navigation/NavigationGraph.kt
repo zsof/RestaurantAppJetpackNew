@@ -11,11 +11,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
+import hu.zsof.restaurantappjetpacknew.ui.favorite.FavoriteListScreen
 import hu.zsof.restaurantappjetpacknew.ui.homelist.HomeListScreen
 import hu.zsof.restaurantappjetpacknew.ui.login.LoginScreen
 import hu.zsof.restaurantappjetpacknew.ui.map.MapScreen
 import hu.zsof.restaurantappjetpacknew.ui.newplace.NewPlaceDialogScreen
 import hu.zsof.restaurantappjetpacknew.ui.register.RegisterScreen
+import hu.zsof.restaurantappjetpacknew.ui.review.ReviewPlaceListScreen
 import hu.zsof.restaurantappjetpacknew.util.Constants.AUTH_GRAPH_ROUTE
 import hu.zsof.restaurantappjetpacknew.util.Constants.MAIN_GRAPH_ROUTE
 import hu.zsof.restaurantappjetpacknew.util.Constants.ROOT_GRAPH_ROUTE
@@ -81,6 +83,17 @@ fun NavGraphBuilder.mainNavGraph(
         composable(route = NavigationScreen.Map.route) {
             MapScreen(onLongClick = { navController.navigate(NavigationScreen.NewPlace.route) })
         }
+
+        composable(route = NavigationScreen.ReviewPlace.route) {
+            ReviewPlaceListScreen()
+        }
+
+        composable(NavigationScreen.FavPlace.route) {
+            FavoriteListScreen()
+        }
+
+       /* composable(route = NavigationScreen.Logout.route) {
+        }*/
         /*composable(route = NavigationScreen.Profile.route) {
             Box(
                 modifier = Modifier.fillMaxSize(),

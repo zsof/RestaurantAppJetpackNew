@@ -49,7 +49,7 @@ class InjectModule {
             .readTimeout(30, TimeUnit.SECONDS)
             .addInterceptor(interceptor)
             .addInterceptor(AuthInterceptor())
-           // .addInterceptor(ErrorInterceptor(context))
+            .addInterceptor(ErrorInterceptor(context))
             .build()
 
         val retrofit =
@@ -67,18 +67,17 @@ class InjectModule {
         override fun intercept(chain: Interceptor.Chain): Response {
             // add bearer token to requests if user logged in already
             val tokenForRequest = Preferences.userRoot().get("bearer", "")
-            val originalResponse: Response
 
-            if (tokenForRequest.isNotBlank()) {
+            val originalResponse: Response = if (tokenForRequest.isNotBlank()) {
                 val request = chain.request()
                 val authenticatedRequest: Request = request.newBuilder()
                     .header("Authorization", tokenForRequest).build()
 
                 // send to backend
-                originalResponse = chain.proceed(authenticatedRequest)
+                chain.proceed(authenticatedRequest)
             } else {
                 // send to backend without token
-                originalResponse = chain.proceed(chain.request())
+                chain.proceed(chain.request())
             }
 
             // get authorization token from backend when login from response
@@ -102,7 +101,7 @@ class InjectModule {
                 // To show Toast
                 val errorBody = errorBodyResponse?.let { JSONObject(it) }
                 println("errorbody $errorBody")
-                backgroundThreadToast(context, errorBody?.getString("message"))
+                backgroundThreadToast(context, errorBody?.getString("error"))
 
                 // To not crash
                 val body = errorBodyResponse?.toResponseBody(originalResponse.body?.contentType())

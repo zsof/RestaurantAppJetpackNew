@@ -15,4 +15,7 @@ sealed class NavigationScreen(val route: String) {
 
     object NewPlace : NavigationScreen(route = "newPlace")
     object Map : NavigationScreen(route = "map")
+    object FavPlace : NavigationScreen(route = "favPlace")
+    object ReviewPlace : NavigationScreen(route = "reviewPlace")
+    object Logout : NavigationScreen(route = "logout")
 }

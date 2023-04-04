@@ -20,7 +20,7 @@ import hu.zsof.restaurantappjetpacknew.util.Constants.ROLE_ADMIN
 fun BottomNavBar(
     navController: NavController,
 ) {
-    val bottomNavItems = NavItem.values()
+    val bottomBottomNavItems = BottomNavItem.values()
     var isAdminValue = false
 
     /* AnimatedVisibility(
@@ -32,7 +32,6 @@ fun BottomNavBar(
 
     val isAdmin = LocalDataStateService.userType.observeAsState().value
     if (isAdmin != null) {
-        println(isAdmin)
         if (isAdmin == ROLE_ADMIN) {
             isAdminValue = true
         }
@@ -43,7 +42,7 @@ fun BottomNavBar(
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         if (isAdminValue) {
-            bottomNavItems.filter { it.isAdminVisible }.forEach { item ->
+            bottomBottomNavItems.filter { it.forAdminIsVisible }.forEach { item ->
                 val currentRoute = item.route == navBackStackEntry?.destination?.route
                 NavigationBarItem(
                     icon = { item.icon?.let { Icon(imageVector = it, contentDescription = null) } },
@@ -74,7 +73,7 @@ fun BottomNavBar(
                 )
             }
         } else {
-            bottomNavItems.forEach { item ->
+            bottomBottomNavItems.filter { it.forUserIsVisible }.forEach { item ->
                 val currentRoute = item.route == navBackStackEntry?.destination?.route
                 NavigationBarItem(
                     icon = { item.icon?.let { Icon(imageVector = it, contentDescription = null) } },
