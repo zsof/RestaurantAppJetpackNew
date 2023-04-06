@@ -4,10 +4,13 @@ import android.Manifest
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.permissions.*
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
@@ -38,6 +41,7 @@ fun MapScreen(onLongClick: (latLng: LatLng) -> Unit) {
 fun LocationPermissions(
     multiplePermissionState: MultiplePermissionsState,
     onLongClick: (latLng: LatLng) -> Unit,
+    viewModel: MapViewModel = hiltViewModel(),
 ) {
     PermissionsRequired(
         multiplePermissionsState = multiplePermissionState,
@@ -88,6 +92,23 @@ fun LocationPermissions(
                 LocalDataStateService.setLatLng(it)
                 onLongClick(it)
             },
+        ) {
+            PlaceMarkers(viewModel)
+        }
+    }
+}
+
+@Composable
+fun PlaceMarkers(viewModel: MapViewModel) {
+    LaunchedEffect(key1 = Unit) {
+        viewModel.requestPlaceData()
+    }
+    val places = viewModel.places.observeAsState(listOf())
+    for (place in places.value) {
+        Marker(
+            state = MarkerState(LatLng(place.latitude, place.longitude)),
+            title = place.name,
+            icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED),
         )
     }
 }

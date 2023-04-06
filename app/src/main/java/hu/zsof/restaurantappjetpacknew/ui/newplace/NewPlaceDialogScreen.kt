@@ -1,8 +1,8 @@
 package hu.zsof.restaurantappjetpacknew.ui.newplace
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.location.Geocoder
+import android.os.Build
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -73,7 +73,16 @@ fun NewPlaceDialogScreen(viewModel: NewPlaceDialogViewModel = hiltViewModel()) {
 
     var placeNameValue by remember { mutableStateOf("") }
     var placeNameError by remember { mutableStateOf(false) }
-    var addressValue by remember { mutableStateOf("") }
+    var addressValue = ""
+    Geocoder(context, Locale.getDefault()).getAddress(
+        LocalDataStateService.getLatLng().latitude,
+        LocalDataStateService.getLatLng().longitude,
+    ) { address: android.location.Address? ->
+        if (address != null) {
+            println("address $address  $address")
+            addressValue = address.getAddressLine(0)
+        }
+    }
     var addressError by remember { mutableStateOf(false) }
     var websiteValue by remember { mutableStateOf("") }
     var emailValue by remember { mutableStateOf("") }
@@ -135,9 +144,10 @@ fun NewPlaceDialogScreen(viewModel: NewPlaceDialogViewModel = hiltViewModel()) {
                     NormalTextField(
                         value = addressValue,
                         label = stringResource(id = R.string.address_text),
-                        onValueChange = { newValue ->
+                        onValueChange = {
+                            /* newValue ->
                             addressValue = newValue
-                            addressError = false
+                            addressError = false*/
                         },
                         isError = addressError,
                         keyboardOptions = KeyboardOptions(
@@ -393,11 +403,38 @@ fun NewPlaceDialogScreen(viewModel: NewPlaceDialogViewModel = hiltViewModel()) {
     }
 }
 
-fun getAddress(latLng: LatLng, context: Context): String? {
+/*fun getAddress(latLng: LatLng, context: Context): String? {
+    val geocodeListener = Geocoder.GeocodeListener { addresses ->
+        addresses[0].getAddressLine(0)
+    }
     val geocoder = Geocoder(context, Locale.getDefault())
-    val addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1)
 
-    return addresses?.get(0)?.getAddressLine(0)
+    if (Build.VERSION.SDK_INT >= 33) {
+        geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1, geocodeListener)
+    } else {
+        val addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1)
+        // For Android SDK < 33, the addresses list will be still obtained from the getFromLocation() method
+        return addresses?.get(0)?.getAddressLine(0)
+    }
+}*/
+
+@Suppress("DEPRECATION")
+fun Geocoder.getAddress(
+    latitude: Double,
+    longitude: Double,
+    address: (android.location.Address?) -> Unit,
+) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        getFromLocation(latitude, longitude, 1) { address(it.firstOrNull()) }
+        return
+    }
+
+    try {
+        address(getFromLocation(latitude, longitude, 1)?.firstOrNull())
+    } catch (e: Exception) {
+        // will catch if there is an internet problem
+        address(null)
+    }
 }
 
 @ExperimentalMaterial3Api
