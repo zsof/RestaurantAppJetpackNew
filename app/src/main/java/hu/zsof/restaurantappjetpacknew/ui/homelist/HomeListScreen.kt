@@ -10,7 +10,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -33,12 +32,16 @@ fun HomeListScreen(
     viewModel: HomeViewModel = hiltViewModel(),
     onFabClick: () -> Unit,
 ) {
-    // State
+    // LaunchedEffect should be used when you want that some action must be taken
+    // when your composable is first launched/relaunched (or when the key parameter has changed).
+    // For example, when you want to request some data from your ViewModel or run some sort of animation
+
+    // Use rememberCoroutineScope() when you are using coroutines and need to cancel and relaunch the coroutine after an event
+    // Use LaunchedEffect() when you are using coroutines and need to cancel
+    // and relaunch the coroutine every time your parameter changes and it isn’t stored in a mutable state.
+
     val places = viewModel.places.observeAsState(listOf())
-    // API call
-    LaunchedEffect(key1 = Unit) {
-        viewModel.showPlaces()
-    }
+    viewModel.showPlaces()
 
     Scaffold(
         floatingActionButton = {
@@ -52,7 +55,7 @@ fun HomeListScreen(
         content = { padding ->
             Column(
                 modifier = Modifier
-                    .padding(padding)
+                    .padding(0.dp, 0.dp, 0.dp, 38.dp)
                     .background(MaterialTheme.colorScheme.background),
             ) {
                 LazyColumn(
@@ -93,103 +96,99 @@ private fun HomeListItem(
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
         shape = RoundedCornerShape(8.dp),
     ) {
-        Row(modifier = Modifier.padding(8.dp)) {
-            Column(verticalArrangement = Arrangement.Center) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_launcher_foreground),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(100.dp, 100.dp),
-
-                )
-            }
-            Column() {
-                Row() {
-                    Text(
-                        modifier = Modifier
-                            .padding(start = 8.dp, top = 8.dp, end = 8.dp),
-                        text = place.name,
-                        style = TextStyle(fontWeight = FontWeight.Bold),
-                        fontSize = 20.sp,
-                    )
-                }
-                Row() {
-                    Icon(
-                        imageVector = Icons.Filled.Star,
+        Column(modifier = Modifier.padding(8.dp)) {
+            Row(modifier = Modifier.padding(0.dp, 8.dp, 8.dp, 8.dp)) {
+                Column(modifier = Modifier.padding(0.dp, 0.dp, 8.dp, 0.dp)) {
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_launcher_round),
                         contentDescription = null,
                         modifier = Modifier
-                            .size(30.dp),
-                        tint = Color(0xFFFFC107),
-
-                    )
-                    Text(
-                        text = place.rate.toString(),
-                        style = TextStyle(
-                            fontStyle = FontStyle.Italic,
-                            fontWeight = FontWeight.Bold,
-                        ),
-                        modifier = Modifier
-                            .padding(8.dp),
-                        fontSize = 16.sp,
+                            .size(70.dp, 70.dp),
                     )
                 }
-                Row() {
-                    Text(
-                        modifier = Modifier
-                            .padding(8.dp),
-                        text = when (place.price) {
-                            Price.LOW -> {
-                                "$"
+                Column() {
+                    Row() {
+                        Text(
+                            modifier = Modifier
+                                .padding(start = 8.dp, top = 8.dp, end = 8.dp),
+                            text = place.name,
+                            style = TextStyle(fontWeight = FontWeight.Bold),
+                            fontSize = 20.sp,
+                            maxLines = 3,
+                        )
+                        Spacer(modifier = Modifier.weight(1f))
+                        IconButton(onClick = {
+                            coroutineScope.launch {
+                                if (favIdList?.contains(place.id) == true) {
+                                    viewModel.addOrRemoveFavPlace(place.id)
+                                } else {
+                                    viewModel.addOrRemoveFavPlace(place.id)
+                                }
                             }
-                            Price.MIDDLE -> {
-                                "$$"
-                            }
-                            else -> "$$$"
-                        },
-                        style = TextStyle(fontStyle = FontStyle.Italic),
-                    )
-                    Spacer(modifier = Modifier.weight(1f))
-                    IconButton(onClick = {
-                        coroutineScope.launch {
-                            if (favIdList?.contains(place.id) == true) {
-                                viewModel.addOrRemoveFavPlace(place.id)
-                            } else {
-                                viewModel.addOrRemoveFavPlace(place.id)
-                            }
+                        }) {
+                            Icon(
+                                imageVector = favouriteIcon,
+                                contentDescription = null,
+                            )
                         }
-                    }) {
+                    }
+                    Row() {
                         Icon(
-                            imageVector = favouriteIcon,
+                            imageVector = Icons.Filled.Star,
                             contentDescription = null,
+                            modifier = Modifier
+                                .size(34.dp)
+                                .padding(2.dp, 4.dp, 0.dp, 0.dp),
+                            tint = Color(0xFFFFC107),
+
+                        )
+                        Text(
+                            text = place.rate.toString(),
+                            style = TextStyle(
+                                fontStyle = FontStyle.Italic,
+                                fontWeight = FontWeight.Bold,
+                            ),
+                            modifier = Modifier
+                                .padding(8.dp, 8.dp, 8.dp, 8.dp),
+                            fontSize = 16.sp,
+                        )
+                        Text(
+                            modifier = Modifier
+                                .padding(16.dp, 8.dp, 0.dp, 0.dp),
+                            text = when (place.price) {
+                                Price.LOW -> {
+                                    "$"
+                                }
+                                Price.MIDDLE -> {
+                                    "$$"
+                                }
+                                else -> "$$$"
+                            },
+                            fontSize = 16.sp,
+                            style = TextStyle(
+                                fontStyle = FontStyle.Italic,
+                                fontWeight = FontWeight.Bold,
+                            ),
                         )
                     }
                 }
-                Row() {
-                    Icon(
-                        imageVector = Icons.Filled.PushPin,
-                        contentDescription = null,
-                        tint = Color(0xFFF44336),
-                    )
-                    Text(
-                        modifier = Modifier
-                            .padding(8.dp),
-                        text = place.address,
-                        style = TextStyle(fontStyle = FontStyle.Italic),
-                        fontSize = 18.sp,
-                        maxLines = 3,
-                    )
-                }
+            }
+            Row() {
+                Icon(
+                    imageVector = Icons.Filled.PushPin,
+                    contentDescription = null,
+                    tint = Color(0xFFF44336),
+                    modifier = Modifier.padding(4.dp, 8.dp, 0.dp, 0.dp),
+                )
+                Text(
+                    modifier = Modifier
+                        .padding(8.dp, 0.dp),
+                    text = place.address,
+                    style = TextStyle(fontStyle = FontStyle.Italic),
+                    fontSize = 18.sp,
+                    maxLines = 3,
+                )
             }
         }
     }
 }
-
-/*@ExperimentalMaterial3Api
-@Preview(showBackground = true)
-@Composable
-fun HomeListScreen_Preview() {
-    HomeListScreen(
-        viewModel = HomeViewModel(),
-        navController = NavHostController()
-    )
-}*/
