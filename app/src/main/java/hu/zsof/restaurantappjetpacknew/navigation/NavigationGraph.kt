@@ -4,13 +4,12 @@ import android.annotation.SuppressLint
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.navigation
-import androidx.navigation.navArgument
+import androidx.navigation.compose.*
 import hu.zsof.restaurantappjetpacknew.ui.favorite.FavoriteListScreen
 import hu.zsof.restaurantappjetpacknew.ui.homelist.HomeListScreen
 import hu.zsof.restaurantappjetpacknew.ui.login.LoginScreen
@@ -35,13 +34,10 @@ fun NavGraphBuilder.authNavGraph(
         ) {
             LoginScreen(
                 onLoginClick = {
-                    navController.navigate(NavigationScreen.Home.passUsername(it))
-                    // navController.navigate(NavigationScreen.Register.route)
-                    println("login")
+                    navController.navigate(NavigationScreen.Home.route)
                 },
                 onRegisterClick = {
                     navController.navigate(NavigationScreen.Register.route)
-                    println("register")
                 },
 
             )
@@ -64,17 +60,9 @@ fun NavGraphBuilder.mainNavGraph(
     ) {
         composable(
             route = NavigationScreen.Home.route,
-            arguments = listOf(
-                navArgument(NavigationScreen.Home.Args.username) {
-                    type = NavType.StringType
-                },
-            ),
         ) {
             HomeListScreen(
                 onFabClick = { navController.navigate(NavigationScreen.Map.route) },
-                /*  argument = navController.currentBackStackEntry?.arguments
-                      ?.getString(NavigationScreen.Home.Args.username) ?: "",
-                 */
             )
         }
         composable(route = NavigationScreen.NewPlace.route) {
@@ -91,25 +79,6 @@ fun NavGraphBuilder.mainNavGraph(
         composable(NavigationScreen.FavPlace.route) {
             FavoriteListScreen()
         }
-
-       /* composable(route = NavigationScreen.Logout.route) {
-        }*/
-        /*composable(route = NavigationScreen.Profile.route) {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center,
-            ) {
-                Text(text = "Profile")
-            }
-        }
- composable(route = NavigationScreen.Settings.route) {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center,
-            ) {
-                Text(text = "Settings")
-            }
-        }*/
     }
 }
 
@@ -120,8 +89,31 @@ fun NavGraph(
     navController: NavHostController,
 
 ) {
+    val bottomBarState = rememberSaveable { (mutableStateOf(true)) }
+    // Subscribe to navBackStackEntry, required to get current route
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+
+    // Control BottomBar
+    when (navBackStackEntry?.destination?.route) {
+        "login" -> {
+            // Hide BottomBar
+            bottomBarState.value = false
+        }
+        "register" -> {
+            bottomBarState.value = false
+        }
+        else -> {
+            bottomBarState.value = true
+        }
+    }
+
     Scaffold(
-        bottomBar = { BottomNavBar(navController = navController) },
+        bottomBar = {
+            BottomNavBar(
+                navController = navController,
+                bottomBarState = bottomBarState,
+            )
+        },
     ) {
         NavHost(
             navController = navController,
