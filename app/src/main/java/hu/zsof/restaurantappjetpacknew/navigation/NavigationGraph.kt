@@ -1,12 +1,17 @@
 package hu.zsof.restaurantappjetpacknew.navigation
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.*
@@ -115,13 +120,20 @@ fun NavGraph(
             )
         },
     ) {
-        NavHost(
-            navController = navController,
-            startDestination = AUTH_GRAPH_ROUTE,
-            route = ROOT_GRAPH_ROUTE,
+        // Apply the padding globally to the whole BottomNavScreensController
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(0.dp, 0.dp, 0.dp, 36.dp),
         ) {
-            authNavGraph(navController = navController)
-            mainNavGraph(navController = navController)
+            NavHost(
+                navController = navController,
+                startDestination = AUTH_GRAPH_ROUTE,
+                route = ROOT_GRAPH_ROUTE,
+            ) {
+                authNavGraph(navController = navController)
+                mainNavGraph(navController = navController)
+            }
         }
     }
 }
