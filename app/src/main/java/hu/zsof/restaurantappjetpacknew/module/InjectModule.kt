@@ -13,7 +13,6 @@ import hu.zsof.restaurantappjetpacknew.BuildConfig
 import hu.zsof.restaurantappjetpacknew.network.ApiService
 import hu.zsof.restaurantappjetpacknew.util.Constants
 import okhttp3.*
-import okhttp3.ResponseBody.Companion.toResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
 import org.json.JSONObject
 import retrofit2.Retrofit
@@ -93,20 +92,23 @@ class InjectModule {
 
         override fun intercept(chain: Interceptor.Chain): Response {
             val originalResponse: Response = chain.proceed(chain.request())
+
             if (!originalResponse.isSuccessful) {
                 // To get custom error messages from server
-                val errorBodyResponse = originalResponse.body?.string()
 
-                println("errorbodyresp $errorBodyResponse")
-                // To show Toast
-                val errorBody = errorBodyResponse?.let { JSONObject(it) }
-                println("errorbody $errorBody")
-                backgroundThreadToast(context, errorBody?.getString("error"))
+                val errorBodyResponse = originalResponse.peekBody(2048).string()
+                if (errorBodyResponse.isNotEmpty()) {
+                    val errorBody = JSONObject(errorBodyResponse)
 
-                // To not crash
-                val body = errorBodyResponse?.toResponseBody(originalResponse.body?.contentType())
-
-                return originalResponse.newBuilder().body(body).build()
+                    // To show Toast
+                    backgroundThreadToast(context, errorBody.getString("error"))
+                } else {
+                    if (originalResponse.code == 401) {
+                        backgroundThreadToast(context, "Belépés sikertelen.")
+                    } else {
+                        backgroundThreadToast(context, "Váratlan hiba történt")
+                    }
+                }
             }
             return originalResponse
         }
