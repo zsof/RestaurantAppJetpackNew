@@ -32,7 +32,6 @@ import hu.zsof.restaurantappjetpacknew.model.enums.Price
 fun FavoriteListScreen(
     viewModel: FavoriteViewModel = hiltViewModel(),
 ) {
-    // TODO a szivecskét be kell színezni az apiból jövő adatok alapján
     // State
     val places = viewModel.favPlaces.observeAsState(listOf())
     // API call

@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import hu.zsof.restaurantappjetpacknew.model.Place
-import hu.zsof.restaurantappjetpacknew.model.User
 import hu.zsof.restaurantappjetpacknew.network.repository.PlaceRepository
 import hu.zsof.restaurantappjetpacknew.network.repository.UserRepository
 import kotlinx.coroutines.launch
@@ -17,8 +16,6 @@ class HomeViewModel @Inject constructor(
     private val userRepository: UserRepository,
 ) :
     ViewModel() {
-    // val places = mutableListOf<Place>()
-
     var places = MutableLiveData<List<Place>>()
     fun showPlaces() {
         viewModelScope.launch {
@@ -26,7 +23,16 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    suspend fun addOrRemoveFavPlace(placeId: Long): User? {
-        return userRepository.addOrRemoveFavPlace(placeId)
+    suspend fun addOrRemoveFavPlace(placeId: Long) {
+        val user = userRepository.addOrRemoveFavPlace(placeId)
+        favPlaceIds.postValue(user?.favPlaceIds)
+    }
+
+    var favPlaceIds = MutableLiveData<List<Long>?>()
+    fun getUser() {
+        viewModelScope.launch {
+            val user = userRepository.getUserProfile()
+            favPlaceIds.postValue(user?.favPlaceIds)
+        }
     }
 }

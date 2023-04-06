@@ -9,8 +9,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -73,9 +75,15 @@ private fun HomeListItem(
 ) {
     val coroutineScope = rememberCoroutineScope()
 
-    val isFav = remember { mutableStateOf(false) }
-    val favouriteIcon =
-        if (isFav.value) Icons.Default.Favorite else Icons.Default.FavoriteBorder
+    viewModel.getUser()
+    val favIdList = viewModel.favPlaceIds.observeAsState().value
+
+    val favouriteIcon = if (favIdList?.contains(place.id) == true) {
+        Icons.Default.Favorite
+    } else {
+        Icons.Default.FavoriteBorder
+    }
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -143,12 +151,10 @@ private fun HomeListItem(
                     Spacer(modifier = Modifier.weight(1f))
                     IconButton(onClick = {
                         coroutineScope.launch {
-                            if (isFav.value) {
+                            if (favIdList?.contains(place.id) == true) {
                                 viewModel.addOrRemoveFavPlace(place.id)
-                                isFav.value = false
                             } else {
                                 viewModel.addOrRemoveFavPlace(place.id)
-                                isFav.value = true
                             }
                         }
                     }) {
@@ -157,11 +163,6 @@ private fun HomeListItem(
                             contentDescription = null,
                         )
                     }
-                    /*Icon(
-                        imageVector = Icons.Outlined.Favorite,
-                        contentDescription = null,
-                        tint = Color(0xFFF44336),
-                    )*/
                 }
                 Row() {
                     Icon(
