@@ -89,7 +89,6 @@ class InjectModule {
     }
 
     class ErrorInterceptor(private val context: Context) : Interceptor {
-
         override fun intercept(chain: Interceptor.Chain): Response {
             val originalResponse: Response = chain.proceed(chain.request())
 
@@ -106,7 +105,7 @@ class InjectModule {
                     if (originalResponse.code == 401) {
                         backgroundThreadToast(context, "Belépés sikertelen.")
                     } else {
-                        backgroundThreadToast(context, "Váratlan hiba történt")
+                        backgroundThreadToast(context, "Váratlan hiba történt.")
                     }
                 }
             }

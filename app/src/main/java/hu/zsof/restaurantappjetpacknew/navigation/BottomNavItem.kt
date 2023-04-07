@@ -33,5 +33,9 @@ enum class BottomNavItem(
         NavigationScreen.ReviewPlace.route,
         forUserIsVisible = false,
     ),
-    LOGOUT(R.string.logout, Icons.Outlined.ExitToApp, NavigationScreen.Login.route),
+    LOGOUT(
+        R.string.logout,
+        Icons.Outlined.ExitToApp,
+        NavigationScreen.Logout.route,
+    ),
 }

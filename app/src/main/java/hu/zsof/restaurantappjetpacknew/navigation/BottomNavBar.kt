@@ -19,6 +19,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import hu.zsof.restaurantappjetpacknew.network.repository.LocalDataStateService
 import hu.zsof.restaurantappjetpacknew.ui.theme.PurpleGrey40
 import hu.zsof.restaurantappjetpacknew.util.Constants.ROLE_ADMIN
+import java.util.prefs.Preferences
 
 @Composable
 fun BottomNavBar(
@@ -67,17 +68,21 @@ fun BottomNavBar(
                                 item.route?.let {
                                     navController.navigate(it) {
                                         navController.graph.startDestinationRoute?.let { route ->
-                                            popUpTo(route) {
-                                                saveState = true
+                                            if (it == NavigationScreen.Logout.route) {
+                                                Preferences.userRoot().put("bearer", "")
+                                                popUpTo(NavigationScreen.Login.route)
+                                            } else {
+                                                popUpTo(route) {
+                                                    saveState = true
+                                                }
                                             }
                                         }
+
                                         launchSingleTop = true
                                         restoreState = true
                                     }
                                 }
                             },
-                            /*selectedContentColor = LocalContentColor.current,
-                unselectedContentColor = LocalContentColor.current,*/
                             alwaysShowLabel = true,
                         )
                     }
@@ -105,17 +110,21 @@ fun BottomNavBar(
                                 item.route?.let {
                                     navController.navigate(it) {
                                         navController.graph.startDestinationRoute?.let { route ->
-                                            popUpTo(route) {
-                                                saveState = true
+                                            if (it == NavigationScreen.Logout.route) {
+                                                Preferences.userRoot().put("bearer", "")
+                                                popUpTo(NavigationScreen.Login.route)
+                                            } else {
+                                                popUpTo(route) {
+                                                    saveState = true
+                                                }
                                             }
                                         }
+
                                         launchSingleTop = true
                                         restoreState = true
                                     }
                                 }
                             },
-                            /*selectedContentColor = LocalContentColor.current,
-                unselectedContentColor = LocalContentColor.current,*/
                             alwaysShowLabel = true,
                         )
                     }
