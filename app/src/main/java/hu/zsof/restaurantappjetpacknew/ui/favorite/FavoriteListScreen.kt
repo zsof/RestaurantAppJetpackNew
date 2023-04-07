@@ -11,8 +11,8 @@ import androidx.compose.material.icons.filled.PushPin
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -32,7 +32,9 @@ fun FavoriteListScreen(
     viewModel: FavoriteViewModel = hiltViewModel(),
 ) {
     val places = viewModel.favPlaces.observeAsState(listOf())
-    viewModel.showFavPlaces()
+    LaunchedEffect(key1 = "FavList") {
+        viewModel.showFavPlaces()
+    }
 
     Scaffold(
         content = { padding ->
@@ -59,8 +61,6 @@ private fun FavListItem(
     place: Place,
     viewModel: FavoriteViewModel = hiltViewModel(),
 ) {
-    val coroutineScope = rememberCoroutineScope()
-
     Card(
         modifier = Modifier
             .fillMaxWidth()

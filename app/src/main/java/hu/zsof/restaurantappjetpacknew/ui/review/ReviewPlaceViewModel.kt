@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import hu.zsof.restaurantappjetpacknew.model.PlaceInReview
-import hu.zsof.restaurantappjetpacknew.model.User
 import hu.zsof.restaurantappjetpacknew.network.repository.PlaceInReviewRepository
 import hu.zsof.restaurantappjetpacknew.network.repository.UserRepository
 import kotlinx.coroutines.launch
@@ -24,9 +23,5 @@ class ReviewPlaceViewModel @Inject constructor(
         viewModelScope.launch {
             placesInReview.postValue(placeInReviewRepository.getAllPlaceFromInReview())
         }
-    }
-
-    suspend fun addOrRemoveFavPlace(placeId: Long): User? {
-        return userRepository.addOrRemoveFavPlace(placeId)
     }
 }

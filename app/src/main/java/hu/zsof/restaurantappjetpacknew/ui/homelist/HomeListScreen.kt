@@ -10,8 +10,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -24,7 +24,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import hu.zsof.restaurantappjetpacknew.R
 import hu.zsof.restaurantappjetpacknew.model.Place
 import hu.zsof.restaurantappjetpacknew.model.enums.Price
-import kotlinx.coroutines.launch
 
 @ExperimentalMaterial3Api
 @Composable
@@ -41,7 +40,12 @@ fun HomeListScreen(
     // and relaunch the coroutine every time your parameter changes and it isn’t stored in a mutable state.
 
     val places = viewModel.places.observeAsState(listOf())
-    viewModel.showPlaces()
+    // A homeScreen minden változáskor lefut, ezáltal a viewmodelles dolgok is, ha nem lennének launchedeffectben
+    LaunchedEffect(key1 = "HomeList") {
+        viewModel.showPlaces()
+        // Ha ez a homeListItem-ben lenne, akkor meg minden egyes item-re lefutna, de elég egyszer lekérni ezt
+        viewModel.getUser()
+    }
 
     Scaffold(
         floatingActionButton = {
@@ -76,9 +80,6 @@ private fun HomeListItem(
     place: Place,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
-    val coroutineScope = rememberCoroutineScope()
-
-    viewModel.getUser()
     val favIdList = viewModel.favPlaceIds.observeAsState().value
 
     val favouriteIcon = if (favIdList?.contains(place.id) == true) {
@@ -118,12 +119,11 @@ private fun HomeListItem(
                         )
                         Spacer(modifier = Modifier.weight(1f))
                         IconButton(onClick = {
-                            coroutineScope.launch {
-                                if (favIdList?.contains(place.id) == true) {
-                                    viewModel.addOrRemoveFavPlace(place.id)
-                                } else {
-                                    viewModel.addOrRemoveFavPlace(place.id)
-                                }
+                            // Ide nem kell launchedeffect, mert ez csak akkor fut le, ha gombnyomás történik, ez már nem a homescreen content-jében van, hanem a gombbéban
+                            if (favIdList?.contains(place.id) == true) {
+                                viewModel.addOrRemoveFavPlace(place.id)
+                            } else {
+                                viewModel.addOrRemoveFavPlace(place.id)
                             }
                         }) {
                             Icon(

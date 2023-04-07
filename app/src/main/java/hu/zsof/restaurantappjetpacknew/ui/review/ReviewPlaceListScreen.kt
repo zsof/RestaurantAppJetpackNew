@@ -11,8 +11,8 @@ import androidx.compose.material.icons.filled.PushPin
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -31,7 +31,9 @@ fun ReviewPlaceListScreen(
     viewModel: ReviewPlaceViewModel = hiltViewModel(),
 ) {
     val places = viewModel.placesInReview.observeAsState(listOf())
-    viewModel.showPlacesInReview()
+    LaunchedEffect(key1 = 1) {
+        viewModel.showPlacesInReview()
+    }
 
     Scaffold(
         content = { padding ->
@@ -58,8 +60,6 @@ private fun ReviewListItem(
     placeInReview: PlaceInReview,
     viewModel: ReviewPlaceViewModel = hiltViewModel(),
 ) {
-    val coroutineScope = rememberCoroutineScope()
-
     Card(
         modifier = Modifier
             .fillMaxWidth()

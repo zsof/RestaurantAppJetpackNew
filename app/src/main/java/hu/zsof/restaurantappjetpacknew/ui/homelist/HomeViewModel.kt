@@ -16,6 +16,7 @@ class HomeViewModel @Inject constructor(
     private val userRepository: UserRepository,
 ) :
     ViewModel() {
+
     var places = MutableLiveData<List<Place>>()
     fun showPlaces() {
         viewModelScope.launch {
@@ -23,9 +24,11 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    suspend fun addOrRemoveFavPlace(placeId: Long) {
-        val user = userRepository.addOrRemoveFavPlace(placeId)
-        favPlaceIds.postValue(user?.favPlaceIds)
+    fun addOrRemoveFavPlace(placeId: Long) {
+        viewModelScope.launch {
+            val user = userRepository.addOrRemoveFavPlace(placeId)
+            favPlaceIds.postValue(user?.favPlaceIds)
+        }
     }
 
     var favPlaceIds = MutableLiveData<List<Long>?>()
