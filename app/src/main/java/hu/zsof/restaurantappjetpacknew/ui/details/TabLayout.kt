@@ -83,10 +83,11 @@ fun Tabs(pagerState: PagerState) {
 @Composable
 fun TabsContent(pagerState: PagerState, placeId: Long) {
     HorizontalPager(state = pagerState) { page ->
+        println("horizontal $placeId")
         when (page) {
-            0 -> TabContentScreen(data = "Hello $placeId")
-            1 -> TabContentScreen(data = "Welcome to Shopping Screen")
-            2 -> TabContentScreen(data = "Welcome to Settings Screen")
+            0 -> DetailsScreen(placeId = placeId)
+            1 -> TabContentScreen(data = "Welcome to Image Screen")
+            2 -> TabContentScreen(data = "Welcome to Comments Screen")
         }
     }
 }

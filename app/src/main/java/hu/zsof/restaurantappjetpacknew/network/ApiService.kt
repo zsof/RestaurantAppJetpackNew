@@ -25,7 +25,7 @@ interface ApiService {
     suspend fun getAllPlaceInMap(): List<PlaceMapResponse>
 
     @GET("places/{placeId}")
-    suspend fun getPlaceById(@Path("id") placeId: Long): Place
+    suspend fun getPlaceById(@Path("placeId") placeId: Long): Place
 
     @POST("places/filter")
     suspend fun filterPlaces(@Body filter: FilterRequest): List<Place>
