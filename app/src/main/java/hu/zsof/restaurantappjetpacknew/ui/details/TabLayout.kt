@@ -25,14 +25,14 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun TabLayout() {
+fun TabLayout(placeId: Long) {
     val pagerState = rememberPagerState(pageCount = 3)
 
     Column(
         modifier = Modifier.background(Color.White),
     ) {
         Tabs(pagerState = pagerState)
-        TabsContent(pagerState = pagerState)
+        TabsContent(pagerState = pagerState, placeId = placeId)
     }
 }
 
@@ -81,10 +81,10 @@ fun Tabs(pagerState: PagerState) {
 
 @ExperimentalPagerApi
 @Composable
-fun TabsContent(pagerState: PagerState) {
+fun TabsContent(pagerState: PagerState, placeId: Long) {
     HorizontalPager(state = pagerState) { page ->
         when (page) {
-            0 -> TabContentScreen(data = "Welcome to Home Screen")
+            0 -> TabContentScreen(data = "Hello $placeId")
             1 -> TabContentScreen(data = "Welcome to Shopping Screen")
             2 -> TabContentScreen(data = "Welcome to Settings Screen")
         }

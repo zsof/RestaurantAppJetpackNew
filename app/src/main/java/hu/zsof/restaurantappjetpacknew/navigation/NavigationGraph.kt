@@ -12,7 +12,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.*
+import androidx.navigation.navArgument
 import hu.zsof.restaurantappjetpacknew.ui.details.TabLayout
 import hu.zsof.restaurantappjetpacknew.ui.favorite.FavoriteListScreen
 import hu.zsof.restaurantappjetpacknew.ui.homelist.HomeListScreen
@@ -67,7 +69,7 @@ fun NavGraphBuilder.mainNavGraph(
         ) {
             HomeListScreen(
                 onFabClick = { navController.navigate(NavigationScreen.Map.route) },
-                onClickPlaceItem = { navController.navigate(NavigationScreen.Details.route) },
+                onClickPlaceItem = { navController.navigate(NavigationScreen.Details.passPlaceId(it)) },
             )
         }
         composable(route = NavigationScreen.NewPlace.route) {
@@ -97,8 +99,18 @@ fun NavGraphBuilder.mainNavGraph(
 
             )
         }
-        composable(route = NavigationScreen.Details.route) {
-            TabLayout()
+        composable(
+            route = NavigationScreen.Details.route,
+            arguments = listOf(
+                navArgument(NavigationScreen.Details.Args.placeId) {
+                    type = NavType.LongType
+                },
+            ),
+        ) {
+            TabLayout(
+                placeId = navController.currentBackStackEntry?.arguments?.getLong(NavigationScreen.Details.Args.placeId)
+                    ?: 0,
+            )
         }
     }
 }

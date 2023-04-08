@@ -96,7 +96,9 @@ private fun HomeListItem(
             .fillMaxWidth()
             .padding(4.dp)
             .clickable(
-                onClick = { onClickPlaceItem(place.id) },
+                onClick = {
+                    onClickPlaceItem(place.id)
+                },
             ),
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
         shape = RoundedCornerShape(8.dp),

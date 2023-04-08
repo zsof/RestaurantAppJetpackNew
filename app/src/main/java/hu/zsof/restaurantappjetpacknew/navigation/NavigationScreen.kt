@@ -10,5 +10,10 @@ sealed class NavigationScreen(val route: String) {
     object FavPlace : NavigationScreen(route = "favPlace")
     object ReviewPlace : NavigationScreen(route = "reviewPlace")
     object Logout : NavigationScreen(route = "logout")
-    object Details : NavigationScreen(route = "details")
+    object Details : NavigationScreen(route = "details/{${Args.placeId}}") {
+        fun passPlaceId(placeId: Long) = "details/$placeId"
+        object Args {
+            const val placeId = "placeId"
+        }
+    }
 }
