@@ -87,12 +87,12 @@
     <string name="review">Ellenőrzés</string>
 
     <string-array name="category_items">
-        <item>Étterem</item>
-        <item>Kávézó</item>
-        <item>Pékség</item>
-        <item>Cukrászda</item>
-        <item>Bár</item>
-        <item>Gyorsétterem</item>
+        <item>Restaurant</item>
+        <item>Cafe</item>
+        <item>Bakery</item>
+        <item>Patisserie</item>
+        <item>Bar</item>
+        <item>Fast_Food</item>
     </string-array>
 
     <string-array name="filter_options">

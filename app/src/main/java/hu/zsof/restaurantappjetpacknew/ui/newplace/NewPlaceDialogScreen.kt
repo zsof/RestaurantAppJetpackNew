@@ -30,6 +30,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.android.gms.maps.model.LatLng
 import hu.zsof.restaurantappjetpacknew.R
 import hu.zsof.restaurantappjetpacknew.model.enums.Price
+import hu.zsof.restaurantappjetpacknew.model.enums.Type
 import hu.zsof.restaurantappjetpacknew.network.repository.LocalDataStateService
 import hu.zsof.restaurantappjetpacknew.network.request.PlaceDataRequest
 import hu.zsof.restaurantappjetpacknew.ui.common.NormalTextField
@@ -243,6 +244,7 @@ fun NewPlaceDialogScreen(viewModel: NewPlaceDialogViewModel = hiltViewModel()) {
                                         text = { Text(text = selectionOption) },
                                         onClick = {
                                             selectedOptionText = selectionOption
+                                            println("selected $selectedOptionText  $selectedOption")
                                             expanded = false
                                         },
                                     )
@@ -278,7 +280,6 @@ fun NewPlaceDialogScreen(viewModel: NewPlaceDialogViewModel = hiltViewModel()) {
                                         Price.HIGH
                                     }
                                 }
-                                println("Addnew sliderValue = $sliderValue $priceValue")
                             },
                             valueRange = 0f..10f,
                             steps = 1,
@@ -369,7 +370,6 @@ fun NewPlaceDialogScreen(viewModel: NewPlaceDialogViewModel = hiltViewModel()) {
                                         web = websiteValue,
                                         email = emailValue,
                                         phoneNumber = phoneValue,
-                                        // type = selectedOptionText,
                                         price = priceValue,
                                         /* filter = CustomFilter(
                                              glutenFree = glutenFreeAdd.isChecked,
@@ -383,6 +383,7 @@ fun NewPlaceDialogScreen(viewModel: NewPlaceDialogViewModel = hiltViewModel()) {
                                              delivery = deliveryAdd.isChecked,
                                              creditCard = creditCardAdd.isChecked,
                                          ),*/
+                                        type = Type.getByName(selectedOptionText),
                                         latitude = latLang.latitude,
                                         longitude = latLang.longitude,
                                     ),

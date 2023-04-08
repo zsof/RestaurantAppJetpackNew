@@ -178,7 +178,7 @@ private fun HomeListItem(
                     imageVector = Icons.Filled.PushPin,
                     contentDescription = null,
                     tint = Color(0xFFF44336),
-                    modifier = Modifier.padding(4.dp, 8.dp, 0.dp, 0.dp),
+                    modifier = Modifier.padding(4.dp, 4.dp, 0.dp, 0.dp),
                 )
                 Text(
                     modifier = Modifier
