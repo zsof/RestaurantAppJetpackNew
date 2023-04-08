@@ -80,11 +80,21 @@ fun NavGraphBuilder.mainNavGraph(
         }
 
         composable(route = NavigationScreen.ReviewPlace.route) {
-            ReviewPlaceListScreen()
+            ReviewPlaceListScreen(
+                //  onClickPlaceItem = { navController.navigate(NavigationScreen.Details.passPlaceId(it)) },
+            )
         }
 
         composable(NavigationScreen.FavPlace.route) {
-            FavoriteListScreen()
+            FavoriteListScreen(
+                onClickPlaceItem = {
+                    navController.navigate(
+                        NavigationScreen.Details.passPlaceId(
+                            it,
+                        ),
+                    )
+                },
+            )
         }
         composable(
             route = NavigationScreen.Logout.route,

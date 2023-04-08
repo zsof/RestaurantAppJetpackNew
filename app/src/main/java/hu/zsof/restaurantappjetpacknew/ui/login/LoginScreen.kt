@@ -31,6 +31,7 @@ import hu.zsof.restaurantappjetpacknew.ui.common.LoginButton
 import hu.zsof.restaurantappjetpacknew.ui.common.NormalTextField
 import hu.zsof.restaurantappjetpacknew.ui.common.PasswordTextField
 import hu.zsof.restaurantappjetpacknew.util.Constants.ROLE_ADMIN
+import hu.zsof.restaurantappjetpacknew.util.Constants.ROLE_USER
 import kotlinx.coroutines.launch
 
 @ExperimentalMaterial3Api
@@ -110,8 +111,9 @@ fun LoginScreen(
                         if (response.isSuccess) {
                             onLoginClick(viewModel.email.value)
                             if (response.user.userType == ROLE_ADMIN) {
-                                println("response ${response.user.userType}")
                                 LocalDataStateService.userType.postValue(ROLE_ADMIN)
+                            } else if (response.user.userType == ROLE_USER) {
+                                LocalDataStateService.userType.postValue(ROLE_USER)
                             }
                         } else {
                             println("login failed ${response.error}")

@@ -1,13 +1,8 @@
 package hu.zsof.restaurantappjetpacknew.ui.details
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Tab
-import androidx.compose.material.TabRow
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.TabRowDefaults
@@ -26,7 +21,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun TabLayout(placeId: Long) {
-    val pagerState = rememberPagerState(pageCount = 3)
+    val pagerState = rememberPagerState(pageCount = 3, infiniteLoop = true)
 
     Column(
         modifier = Modifier.background(Color.White),
@@ -59,9 +54,6 @@ fun Tabs(pagerState: PagerState) {
     ) {
         list.forEachIndexed { index, _ ->
             Tab(
-                icon = {
-                    Icon(imageVector = list[index].second, contentDescription = null)
-                },
                 text = {
                     Text(
                         list[index].first,

@@ -85,6 +85,7 @@
     <string name="closed">Zárva</string>
     <string name="not_set">Nincs megadva</string>
     <string name="review">Ellenőrzés</string>
+    <string name="not_provided_info">Not provided</string>
 
     <string-array name="category_items">
         <item>Restaurant</item>

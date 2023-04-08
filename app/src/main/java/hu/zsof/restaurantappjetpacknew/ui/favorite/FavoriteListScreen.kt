@@ -2,6 +2,7 @@ package hu.zsof.restaurantappjetpacknew.ui.favorite
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -30,6 +31,7 @@ import hu.zsof.restaurantappjetpacknew.model.enums.Price
 @Composable
 fun FavoriteListScreen(
     viewModel: FavoriteViewModel = hiltViewModel(),
+    onClickPlaceItem: (Long) -> Unit,
 ) {
     val places = viewModel.favPlaces.observeAsState(listOf())
     LaunchedEffect(key1 = "FavList") {
@@ -47,7 +49,7 @@ fun FavoriteListScreen(
                     contentPadding = PaddingValues(8.dp),
                 ) {
                     items(places.value) {
-                        FavListItem(place = it)
+                        FavListItem(place = it, onClickPlaceItem = onClickPlaceItem)
                     }
                 }
             }
@@ -60,13 +62,15 @@ fun FavoriteListScreen(
 private fun FavListItem(
     place: Place,
     viewModel: FavoriteViewModel = hiltViewModel(),
+    onClickPlaceItem: (Long) -> Unit,
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(4.dp),
-        /*.clickable(onClick = { selectRestaurant(restaurant.id) }
-        ),*/
+            .padding(4.dp)
+            .clickable(
+                onClick = { onClickPlaceItem(place.id) },
+            ),
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
         shape = RoundedCornerShape(8.dp),
     ) {

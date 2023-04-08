@@ -19,6 +19,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import hu.zsof.restaurantappjetpacknew.network.repository.LocalDataStateService
 import hu.zsof.restaurantappjetpacknew.ui.theme.PurpleGrey40
 import hu.zsof.restaurantappjetpacknew.util.Constants.ROLE_ADMIN
+import hu.zsof.restaurantappjetpacknew.util.Constants.ROLE_USER
 import java.util.prefs.Preferences
 
 @Composable
@@ -28,13 +29,7 @@ fun BottomNavBar(
 ) {
     val bottomBottomNavItems = BottomNavItem.values()
 
-    var isAdminValue = false
-    val isAdmin = LocalDataStateService.userType.observeAsState().value
-    if (isAdmin != null) {
-        if (isAdmin == ROLE_ADMIN) {
-            isAdminValue = true
-        }
-    }
+    val userType = LocalDataStateService.userType.observeAsState().value
     AnimatedVisibility(
         visible = bottomBarState.value,
         enter = slideInVertically(initialOffsetY = { it }),
@@ -44,7 +39,8 @@ fun BottomNavBar(
                 containerColor = PurpleGrey40,
             ) {
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
-                if (isAdminValue) {
+                if (userType == ROLE_ADMIN) {
+                    println("usr admin")
                     bottomBottomNavItems.filter { it.forAdminIsVisible }.forEach { item ->
                         val currentRoute = item.route == navBackStackEntry?.destination?.route
                         NavigationBarItem(
@@ -86,7 +82,8 @@ fun BottomNavBar(
                             alwaysShowLabel = true,
                         )
                     }
-                } else {
+                } else if (userType == ROLE_USER) {
+                    println("else user")
                     bottomBottomNavItems.filter { it.forUserIsVisible }.forEach { item ->
                         val currentRoute = item.route == navBackStackEntry?.destination?.route
                         NavigationBarItem(

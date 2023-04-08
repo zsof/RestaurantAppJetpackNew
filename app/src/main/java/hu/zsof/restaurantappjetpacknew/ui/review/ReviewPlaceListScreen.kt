@@ -29,6 +29,7 @@ import hu.zsof.restaurantappjetpacknew.model.enums.Price
 @Composable
 fun ReviewPlaceListScreen(
     viewModel: ReviewPlaceViewModel = hiltViewModel(),
+    // onClickPlaceItem: (Long) -> Unit,
 ) {
     val places = viewModel.placesInReview.observeAsState(listOf())
     LaunchedEffect(key1 = 1) {
@@ -46,7 +47,7 @@ fun ReviewPlaceListScreen(
                     contentPadding = PaddingValues(8.dp),
                 ) {
                     items(places.value) {
-                        ReviewListItem(placeInReview = it)
+                        ReviewListItem(placeInReview = it /*onClickPlaceItem = onClickPlaceItem*/)
                     }
                 }
             }
@@ -59,13 +60,15 @@ fun ReviewPlaceListScreen(
 private fun ReviewListItem(
     placeInReview: PlaceInReview,
     viewModel: ReviewPlaceViewModel = hiltViewModel(),
+    /* onClickPlaceItem: (Long) -> Unit,*/
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(4.dp),
-        /*.clickable(onClick = { selectRestaurant(restaurant.id) }
-        ),*/
+            /*.clickable(
+                onClick = { onClickPlaceItem(placeInReview.id) },
+            ),*/
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
         shape = RoundedCornerShape(8.dp),
     ) {
