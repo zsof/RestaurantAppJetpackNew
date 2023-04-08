@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.*
+import hu.zsof.restaurantappjetpacknew.ui.details.TabLayout
 import hu.zsof.restaurantappjetpacknew.ui.favorite.FavoriteListScreen
 import hu.zsof.restaurantappjetpacknew.ui.homelist.HomeListScreen
 import hu.zsof.restaurantappjetpacknew.ui.login.LoginScreen
@@ -66,6 +67,7 @@ fun NavGraphBuilder.mainNavGraph(
         ) {
             HomeListScreen(
                 onFabClick = { navController.navigate(NavigationScreen.Map.route) },
+                onClickPlaceItem = { navController.navigate(NavigationScreen.Details.route) },
             )
         }
         composable(route = NavigationScreen.NewPlace.route) {
@@ -94,6 +96,9 @@ fun NavGraphBuilder.mainNavGraph(
                 },
 
             )
+        }
+        composable(route = NavigationScreen.Details.route) {
+            TabLayout()
         }
     }
 }

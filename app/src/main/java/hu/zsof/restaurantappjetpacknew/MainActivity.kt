@@ -18,7 +18,6 @@ class MainActivity : ComponentActivity() {
             RestaurantAppJetpackNewTheme {
                 val navController = rememberNavController()
                 NavGraph(navController = navController)
-                println("navgraph $navController")
             }
         }
     }

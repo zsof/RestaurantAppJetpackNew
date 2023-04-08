@@ -2,6 +2,7 @@ package hu.zsof.restaurantappjetpacknew.ui.homelist
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -30,6 +31,7 @@ import hu.zsof.restaurantappjetpacknew.model.enums.Price
 fun HomeListScreen(
     viewModel: HomeViewModel = hiltViewModel(),
     onFabClick: () -> Unit,
+    onClickPlaceItem: (Long) -> Unit,
 ) {
     // LaunchedEffect should be used when you want that some action must be taken
     // when your composable is first launched/relaunched (or when the key parameter has changed).
@@ -66,7 +68,7 @@ fun HomeListScreen(
                     contentPadding = PaddingValues(8.dp),
                 ) {
                     items(places.value) {
-                        HomeListItem(place = it)
+                        HomeListItem(place = it, onClickPlaceItem = onClickPlaceItem)
                     }
                 }
             }
@@ -79,6 +81,7 @@ fun HomeListScreen(
 private fun HomeListItem(
     place: Place,
     viewModel: HomeViewModel = hiltViewModel(),
+    onClickPlaceItem: (Long) -> Unit,
 ) {
     val favIdList = viewModel.favPlaceIds.observeAsState().value
 
@@ -91,9 +94,10 @@ private fun HomeListItem(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(4.dp),
-        /*.clickable(onClick = { selectRestaurant(restaurant.id) }
-        ),*/
+            .padding(4.dp)
+            .clickable(
+                onClick = { onClickPlaceItem(place.id) },
+            ),
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
         shape = RoundedCornerShape(8.dp),
     ) {

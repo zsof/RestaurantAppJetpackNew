@@ -80,7 +80,6 @@ fun NewPlaceDialogScreen(viewModel: NewPlaceDialogViewModel = hiltViewModel()) {
         LocalDataStateService.getLatLng().longitude,
     ) { address: android.location.Address? ->
         if (address != null) {
-            println("address $address  $address")
             addressValue = address.getAddressLine(0)
         }
     }
