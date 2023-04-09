@@ -2,7 +2,11 @@ package hu.zsof.restaurantappjetpacknew.ui.newplace
 
 import android.annotation.SuppressLint
 import android.location.Geocoder
+import android.net.Uri
 import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -17,6 +21,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -28,12 +33,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.AsyncImage
 import com.google.android.gms.maps.model.LatLng
 import hu.zsof.restaurantappjetpacknew.R
 import hu.zsof.restaurantappjetpacknew.model.enums.Price
@@ -61,6 +66,10 @@ fun NewPlaceDialogScreen(viewModel: NewPlaceDialogViewModel = hiltViewModel()) {
         mutableStateOf(true)
     }
 
+    val selectedImageUri = remember {
+        mutableStateOf<Uri?>(null)
+    }
+
     val photoDialogOpen = remember {
         mutableStateOf(false)
     }
@@ -68,6 +77,7 @@ fun NewPlaceDialogScreen(viewModel: NewPlaceDialogViewModel = hiltViewModel()) {
         ChoosePhotoDialog(
             setShowPhotoPickerDialog = photoDialogOpen.value,
             onDismiss = { photoDialogOpen.value = false },
+            selectedImageUri = selectedImageUri,
         )
     }
 
@@ -324,12 +334,20 @@ fun NewPlaceDialogScreen(viewModel: NewPlaceDialogViewModel = hiltViewModel()) {
                         Spacer(Modifier.size(ButtonDefaults.IconSpacing))
                         Text("Image")
                     }
+                    // TODO nem jelenik meg
+                    AsyncImage(
+                        model = selectedImageUri,
+                        contentDescription = null,
+                        modifier = Modifier.fillMaxWidth(),
+                        contentScale = ContentScale.Crop,
+                    )
                     Text(
                         text = stringResource(id = R.string.filters),
                         style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold),
                         modifier = Modifier.padding(start = 10.dp),
                     )
                     Spacer(modifier = Modifier.height(10.dp))
+
                     Row() {
                         Column(horizontalAlignment = Alignment.Start) {
                             filterOptions.forEach { filter ->
@@ -462,9 +480,13 @@ fun Geocoder.getAddress(
 fun ChoosePhotoDialog(
     setShowPhotoPickerDialog: Boolean,
     onDismiss: () -> Unit,
-/*  onClickChoosePhoto: () -> Unit,
-  onClickTakePhoto: () -> Unit,*/
+    selectedImageUri: MutableState<Uri?>,
 ) {
+    val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia(),
+        onResult = { uri -> selectedImageUri.value = uri },
+    )
+
     if (setShowPhotoPickerDialog) {
         Dialog(
             onDismissRequest = onDismiss,
@@ -538,7 +560,13 @@ fun ChoosePhotoDialog(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(8.dp)
-                            .clickable(onClick = { }),
+                            .clickable(
+                                onClick = {
+                                    singlePhotoPickerLauncher.launch(
+                                        PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly),
+                                    )
+                                },
+                            ),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.Start,
 
@@ -563,13 +591,4 @@ fun ChoosePhotoDialog(
             }
         }
     }
-}
-
-@ExperimentalMaterial3Api
-@Preview(showBackground = true)
-@Composable
-fun AddDialog_Preview() {
-    NewPlaceDialogScreen(
-        /*dialogOpen = {},*/
-    )
 }
