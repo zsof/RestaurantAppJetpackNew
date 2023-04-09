@@ -2,6 +2,7 @@ package hu.zsof.restaurantappjetpacknew.ui.review
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -29,7 +30,7 @@ import hu.zsof.restaurantappjetpacknew.model.enums.Price
 @Composable
 fun ReviewPlaceListScreen(
     viewModel: ReviewPlaceViewModel = hiltViewModel(),
-    // onClickPlaceItem: (Long) -> Unit,
+    onClickPlaceItem: (Long) -> Unit,
 ) {
     val places = viewModel.placesInReview.observeAsState(listOf())
     LaunchedEffect(key1 = 1) {
@@ -47,7 +48,7 @@ fun ReviewPlaceListScreen(
                     contentPadding = PaddingValues(8.dp),
                 ) {
                     items(places.value) {
-                        ReviewListItem(placeInReview = it /*onClickPlaceItem = onClickPlaceItem*/)
+                        ReviewListItem(placeInReview = it, onClickPlaceItem = onClickPlaceItem)
                     }
                 }
             }
@@ -60,15 +61,15 @@ fun ReviewPlaceListScreen(
 private fun ReviewListItem(
     placeInReview: PlaceInReview,
     viewModel: ReviewPlaceViewModel = hiltViewModel(),
-    /* onClickPlaceItem: (Long) -> Unit,*/
+    onClickPlaceItem: (Long) -> Unit,
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(4.dp),
-            /*.clickable(
+            .padding(4.dp)
+            .clickable(
                 onClick = { onClickPlaceItem(placeInReview.id) },
-            ),*/
+            ),
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
         shape = RoundedCornerShape(8.dp),
     ) {

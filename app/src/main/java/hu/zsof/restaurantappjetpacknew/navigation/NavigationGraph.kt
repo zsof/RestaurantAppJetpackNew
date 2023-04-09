@@ -22,6 +22,7 @@ import hu.zsof.restaurantappjetpacknew.ui.login.LoginScreen
 import hu.zsof.restaurantappjetpacknew.ui.map.MapScreen
 import hu.zsof.restaurantappjetpacknew.ui.newplace.NewPlaceDialogScreen
 import hu.zsof.restaurantappjetpacknew.ui.register.RegisterScreen
+import hu.zsof.restaurantappjetpacknew.ui.review.ReviewDetailsScreen
 import hu.zsof.restaurantappjetpacknew.ui.review.ReviewPlaceListScreen
 import hu.zsof.restaurantappjetpacknew.util.Constants.AUTH_GRAPH_ROUTE
 import hu.zsof.restaurantappjetpacknew.util.Constants.MAIN_GRAPH_ROUTE
@@ -81,7 +82,13 @@ fun NavGraphBuilder.mainNavGraph(
 
         composable(route = NavigationScreen.ReviewPlace.route) {
             ReviewPlaceListScreen(
-                //  onClickPlaceItem = { navController.navigate(NavigationScreen.Details.passPlaceId(it)) },
+                onClickPlaceItem = {
+                    navController.navigate(
+                        NavigationScreen.ReviewDetails.passPlaceId(
+                            it,
+                        ),
+                    )
+                },
             )
         }
 
@@ -118,6 +125,19 @@ fun NavGraphBuilder.mainNavGraph(
             ),
         ) {
             TabLayout(
+                placeId = navController.currentBackStackEntry?.arguments?.getLong(NavigationScreen.Details.Args.placeId)
+                    ?: 0,
+            )
+        }
+        composable(
+            route = NavigationScreen.ReviewDetails.route,
+            arguments = listOf(
+                navArgument(NavigationScreen.ReviewDetails.Args.placeId) {
+                    type = NavType.LongType
+                },
+            ),
+        ) {
+            ReviewDetailsScreen(
                 placeId = navController.currentBackStackEntry?.arguments?.getLong(NavigationScreen.Details.Args.placeId)
                     ?: 0,
             )

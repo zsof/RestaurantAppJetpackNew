@@ -3,16 +3,23 @@ package hu.zsof.restaurantappjetpacknew.ui.newplace
 import android.annotation.SuppressLint
 import android.location.Geocoder
 import android.os.Build
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Camera
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -52,6 +59,16 @@ fun NewPlaceDialogScreen(viewModel: NewPlaceDialogViewModel = hiltViewModel()) {
 
     var dialogOpen by remember {
         mutableStateOf(true)
+    }
+
+    val photoDialogOpen = remember {
+        mutableStateOf(false)
+    }
+    if (photoDialogOpen.value) {
+        ChoosePhotoDialog(
+            setShowPhotoPickerDialog = photoDialogOpen.value,
+            onDismiss = { photoDialogOpen.value = false },
+        )
     }
 
     var expanded by remember { mutableStateOf(false) }
@@ -288,6 +305,25 @@ fun NewPlaceDialogScreen(viewModel: NewPlaceDialogViewModel = hiltViewModel()) {
 
                     Spacer(modifier = Modifier.height(10.dp))
 
+                    Button(
+                        onClick = {
+                            photoDialogOpen.value = true
+                        },
+                        contentPadding = PaddingValues(
+                            start = 20.dp,
+                            top = 12.dp,
+                            end = 20.dp,
+                            bottom = 12.dp,
+                        ),
+                    ) {
+                        Icon(
+                            Icons.Filled.Camera,
+                            contentDescription = "Camera",
+                            modifier = Modifier.size(ButtonDefaults.IconSize),
+                        )
+                        Spacer(Modifier.size(ButtonDefaults.IconSpacing))
+                        Text("Image")
+                    }
                     Text(
                         text = stringResource(id = R.string.filters),
                         style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold),
@@ -403,21 +439,6 @@ fun NewPlaceDialogScreen(viewModel: NewPlaceDialogViewModel = hiltViewModel()) {
     }
 }
 
-/*fun getAddress(latLng: LatLng, context: Context): String? {
-    val geocodeListener = Geocoder.GeocodeListener { addresses ->
-        addresses[0].getAddressLine(0)
-    }
-    val geocoder = Geocoder(context, Locale.getDefault())
-
-    if (Build.VERSION.SDK_INT >= 33) {
-        geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1, geocodeListener)
-    } else {
-        val addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1)
-        // For Android SDK < 33, the addresses list will be still obtained from the getFromLocation() method
-        return addresses?.get(0)?.getAddressLine(0)
-    }
-}*/
-
 @Suppress("DEPRECATION")
 fun Geocoder.getAddress(
     latitude: Double,
@@ -434,6 +455,113 @@ fun Geocoder.getAddress(
     } catch (e: Exception) {
         // will catch if there is an internet problem
         address(null)
+    }
+}
+
+@Composable
+fun ChoosePhotoDialog(
+    setShowPhotoPickerDialog: Boolean,
+    onDismiss: () -> Unit,
+/*  onClickChoosePhoto: () -> Unit,
+  onClickTakePhoto: () -> Unit,*/
+) {
+    if (setShowPhotoPickerDialog) {
+        Dialog(
+            onDismissRequest = onDismiss,
+
+            properties = DialogProperties(
+                dismissOnClickOutside = true,
+                dismissOnBackPress = true,
+                usePlatformDefaultWidth = false,
+            ),
+        ) {
+            Surface(
+                modifier = Modifier
+                    .padding(32.dp)
+                    .wrapContentHeight(),
+                shape = RoundedCornerShape(8.dp),
+            ) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier
+                        .padding(all = 16.dp),
+                ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Text(
+                            text = stringResource(R.string.photo_picker_title),
+                            style = TextStyle(
+                                fontSize = 24.sp,
+                                fontWeight = FontWeight.Bold,
+                            ),
+                        )
+                        Icon(
+                            imageVector = Icons.Filled.Close,
+                            contentDescription = null,
+                            tint = colorResource(android.R.color.darker_gray),
+                            modifier = Modifier
+                                .width(30.dp)
+                                .height(30.dp)
+                                .clickable(onClick = onDismiss),
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(20.dp))
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(8.dp)
+                            .clickable(onClick = {}),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Start,
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.camera),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .width(42.dp)
+                                .height(42.dp)
+                                .padding(0.dp, 0.dp, 8.dp, 0.dp),
+                        )
+                        Text(
+                            text = stringResource(R.string.take_photo),
+                            style = TextStyle(
+                                fontSize = 18.sp,
+                                fontStyle = FontStyle.Italic,
+                            ),
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(10.dp))
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(8.dp)
+                            .clickable(onClick = { }),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Start,
+
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.gallery),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .width(42.dp)
+                                .height(42.dp)
+                                .padding(0.dp, 0.dp, 8.dp, 0.dp),
+                        )
+                        Text(
+                            text = stringResource(R.string.choose_gallery),
+                            style = TextStyle(
+                                fontSize = 18.sp,
+                                fontStyle = FontStyle.Italic,
+                            ),
+                        )
+                    }
+                }
+            }
+        }
     }
 }
 

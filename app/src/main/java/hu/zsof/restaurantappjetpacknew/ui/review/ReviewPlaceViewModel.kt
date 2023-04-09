@@ -24,4 +24,11 @@ class ReviewPlaceViewModel @Inject constructor(
             placesInReview.postValue(placeInReviewRepository.getAllPlaceFromInReview())
         }
     }
+
+    val reviewPlaceById = MutableLiveData<PlaceInReview>()
+    fun getReviewPlaceById(placeId: Long) {
+        viewModelScope.launch {
+            reviewPlaceById.postValue(placeInReviewRepository.getPlaceByIdFromInReview(placeId))
+        }
+    }
 }
