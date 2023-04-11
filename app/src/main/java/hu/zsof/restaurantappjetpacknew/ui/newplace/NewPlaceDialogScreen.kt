@@ -15,11 +15,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Camera
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.outlined.PhotoCamera
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -39,12 +40,10 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
-import com.google.android.gms.maps.model.LatLng
 import hu.zsof.restaurantappjetpacknew.R
 import hu.zsof.restaurantappjetpacknew.model.enums.Price
 import hu.zsof.restaurantappjetpacknew.model.enums.Type
 import hu.zsof.restaurantappjetpacknew.network.repository.LocalDataStateService
-import hu.zsof.restaurantappjetpacknew.network.request.PlaceDataRequest
 import hu.zsof.restaurantappjetpacknew.ui.common.NormalTextField
 import hu.zsof.restaurantappjetpacknew.ui.common.TextFieldForDialog
 import java.util.*
@@ -55,36 +54,19 @@ import java.util.*
 fun NewPlaceDialogScreen(viewModel: NewPlaceDialogViewModel = hiltViewModel()) {
     val context = LocalContext.current
 
-    val latLang: LatLng = try {
-        LocalDataStateService.getLatLng()
-    } catch (e: Exception) {
-        e.printStackTrace()
-        LatLng(0.0, 0.0)
-    }
-
-    var dialogOpen by remember {
-        mutableStateOf(true)
-    }
-
-    val selectedImageUri = remember {
-        mutableStateOf<Uri?>(null)
-    }
-
-    val photoDialogOpen = remember {
-        mutableStateOf(false)
-    }
-    if (photoDialogOpen.value) {
+    if (viewModel.photoDialogOpen.value) {
         ChoosePhotoDialog(
-            setShowPhotoPickerDialog = photoDialogOpen.value,
-            onDismiss = { photoDialogOpen.value = false },
-            selectedImageUri = selectedImageUri,
+            setShowPhotoPickerDialog = viewModel.photoDialogOpen.value,
+            onDismiss = { viewModel.photoDialogOpen.value = false },
+            selectedImageUri = viewModel.selectedImageUri,
         )
+        if (viewModel.selectedImageUri.value != null) {
+            viewModel.photoDialogOpen.value = false
+        }
     }
 
-    var expanded by remember { mutableStateOf(false) }
     val categoryOptions = stringArrayResource(id = R.array.category_items)
     var selectedOptionText by remember { mutableStateOf(categoryOptions[0]) }
-
     val filterOptions = stringArrayResource(id = R.array.filter_options)
     val filterOptionsRight = stringArrayResource(id = R.array.filter_option_right)
     val (selectedOption: String, onOptionSelected: (String) -> Unit) = remember {
@@ -94,31 +76,18 @@ fun NewPlaceDialogScreen(viewModel: NewPlaceDialogViewModel = hiltViewModel()) {
         )
     }
 
-    var sliderValue by remember {
-        mutableStateOf(0f)
-    }
-    var priceValue = Price.LOW
-
-    var placeNameValue by remember { mutableStateOf("") }
-    var placeNameError by remember { mutableStateOf(false) }
-    var addressValue = ""
     Geocoder(context, Locale.getDefault()).getAddress(
         LocalDataStateService.getLatLng().latitude,
         LocalDataStateService.getLatLng().longitude,
     ) { address: android.location.Address? ->
         if (address != null) {
-            addressValue = address.getAddressLine(0)
+            viewModel.addressValue = address.getAddressLine(0)
         }
     }
-    var addressError by remember { mutableStateOf(false) }
-    var websiteValue by remember { mutableStateOf("") }
-    var emailValue by remember { mutableStateOf("") }
-    var phoneValue by remember { mutableStateOf("") }
 
-    if (dialogOpen) {
+    if (viewModel.dialogOpen.value) {
         Dialog(
-            onDismissRequest = { dialogOpen = false },
-
+            onDismissRequest = { viewModel.dialogOpen.value = false },
             properties = DialogProperties(
                 dismissOnClickOutside = false,
                 dismissOnBackPress = true,
@@ -150,13 +119,13 @@ fun NewPlaceDialogScreen(viewModel: NewPlaceDialogViewModel = hiltViewModel()) {
                     )
                     Spacer(modifier = Modifier.height(20.dp))
                     NormalTextField(
-                        value = placeNameValue,
+                        value = viewModel.placeNameValue.value,
                         label = stringResource(id = R.string.place_name_text),
                         onValueChange = { newValue ->
-                            placeNameValue = newValue
-                            placeNameError = false
+                            viewModel.placeNameValue.value = newValue
+                            viewModel.placeNameError.value = false
                         },
-                        isError = placeNameError,
+                        isError = viewModel.placeNameError.value,
                         leadingIcon = null,
                         trailingIcon = {},
                         keyboardOptions = KeyboardOptions(
@@ -169,14 +138,14 @@ fun NewPlaceDialogScreen(viewModel: NewPlaceDialogViewModel = hiltViewModel()) {
                     )
                     Spacer(modifier = Modifier.height(10.dp))
                     NormalTextField(
-                        value = addressValue,
+                        value = viewModel.addressValue,
                         label = stringResource(id = R.string.address_text),
                         onValueChange = {
                             /* newValue ->
                             addressValue = newValue
                             addressError = false*/
                         },
-                        isError = addressError,
+                        isError = viewModel.addressError.value,
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Text,
                             imeAction = ImeAction.Next,
@@ -189,10 +158,10 @@ fun NewPlaceDialogScreen(viewModel: NewPlaceDialogViewModel = hiltViewModel()) {
                     )
                     Spacer(modifier = Modifier.height(10.dp))
                     TextFieldForDialog(
-                        value = websiteValue,
+                        value = viewModel.websiteValue.value,
                         label = stringResource(id = R.string.website_text),
                         onValueChange = { newValue ->
-                            websiteValue = newValue
+                            viewModel.websiteValue.value = newValue
                         },
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Uri,
@@ -203,10 +172,10 @@ fun NewPlaceDialogScreen(viewModel: NewPlaceDialogViewModel = hiltViewModel()) {
                     )
                     Spacer(modifier = Modifier.height(10.dp))
                     TextFieldForDialog(
-                        value = emailValue,
+                        value = viewModel.emailValue.value,
                         label = stringResource(id = R.string.email_address),
                         onValueChange = { newValue ->
-                            emailValue = newValue
+                            viewModel.emailValue.value = newValue
                         },
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Email,
@@ -217,10 +186,10 @@ fun NewPlaceDialogScreen(viewModel: NewPlaceDialogViewModel = hiltViewModel()) {
                     )
                     Spacer(modifier = Modifier.height(10.dp))
                     TextFieldForDialog(
-                        value = phoneValue,
+                        value = viewModel.phoneValue.value,
                         label = stringResource(id = R.string.phone_number_text),
                         onValueChange = { newValue ->
-                            phoneValue = newValue
+                            viewModel.phoneValue.value = newValue
                         },
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Phone,
@@ -241,9 +210,9 @@ fun NewPlaceDialogScreen(viewModel: NewPlaceDialogViewModel = hiltViewModel()) {
                         Spacer(Modifier.weight(1f))
 
                         ExposedDropdownMenuBox(
-                            expanded = expanded,
+                            expanded = viewModel.expanded.value,
                             onExpandedChange = {
-                                expanded = !expanded
+                                viewModel.expanded.value = !viewModel.expanded.value
                             },
                             modifier = Modifier.padding(start = 16.dp, end = 8.dp),
                         ) {
@@ -254,15 +223,15 @@ fun NewPlaceDialogScreen(viewModel: NewPlaceDialogViewModel = hiltViewModel()) {
                                 onValueChange = { },
                                 trailingIcon = {
                                     ExposedDropdownMenuDefaults.TrailingIcon(
-                                        expanded = expanded,
+                                        expanded = viewModel.expanded.value,
                                     )
                                 },
                                 colors = ExposedDropdownMenuDefaults.textFieldColors(),
                             )
                             ExposedDropdownMenu(
-                                expanded = expanded,
+                                expanded = viewModel.expanded.value,
                                 onDismissRequest = {
-                                    expanded = false
+                                    viewModel.expanded.value = false
                                 },
                             ) {
                                 categoryOptions.forEach { selectionOption ->
@@ -271,7 +240,7 @@ fun NewPlaceDialogScreen(viewModel: NewPlaceDialogViewModel = hiltViewModel()) {
                                         onClick = {
                                             selectedOptionText = selectionOption
                                             println("selected $selectedOptionText  $selectedOption")
-                                            expanded = false
+                                            viewModel.expanded.value = false
                                         },
                                     )
                                 }
@@ -289,13 +258,13 @@ fun NewPlaceDialogScreen(viewModel: NewPlaceDialogViewModel = hiltViewModel()) {
                         Spacer(Modifier.weight(1f))
 
                         Slider(
-                            value = sliderValue,
+                            value = viewModel.sliderValue.value,
                             onValueChange = { sliderValueNew ->
-                                sliderValue = sliderValueNew
+                                viewModel.sliderValue.value = sliderValueNew
                             },
                             onValueChangeFinished = {
                                 // this is called when the user completed selecting the value
-                                priceValue = when (sliderValue) {
+                                viewModel.priceValue = when (viewModel.sliderValue.value) {
                                     0f -> {
                                         Price.LOW
                                     }
@@ -317,7 +286,7 @@ fun NewPlaceDialogScreen(viewModel: NewPlaceDialogViewModel = hiltViewModel()) {
 
                     Button(
                         onClick = {
-                            photoDialogOpen.value = true
+                            viewModel.photoDialogOpen.value = true
                         },
                         contentPadding = PaddingValues(
                             start = 20.dp,
@@ -325,20 +294,22 @@ fun NewPlaceDialogScreen(viewModel: NewPlaceDialogViewModel = hiltViewModel()) {
                             end = 20.dp,
                             bottom = 12.dp,
                         ),
+                        modifier = Modifier.align(CenterHorizontally),
                     ) {
                         Icon(
-                            Icons.Filled.Camera,
+                            Icons.Outlined.PhotoCamera,
                             contentDescription = "Camera",
                             modifier = Modifier.size(ButtonDefaults.IconSize),
                         )
                         Spacer(Modifier.size(ButtonDefaults.IconSpacing))
                         Text("Image")
                     }
-                    // TODO nem jelenik meg
                     AsyncImage(
-                        model = selectedImageUri,
+                        model = viewModel.selectedImageUri.value,
                         contentDescription = null,
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(8.dp, 12.dp),
                         contentScale = ContentScale.Crop,
                     )
                     Text(
@@ -404,45 +375,36 @@ fun NewPlaceDialogScreen(viewModel: NewPlaceDialogViewModel = hiltViewModel()) {
 
                     Row() {
                         Spacer(Modifier.weight(1f))
-                        TextButton(onClick = { dialogOpen = false }) {
+                        TextButton(onClick = { viewModel.dialogOpen.value = false }) {
                             Text(
                                 text = stringResource(id = R.string.cancel_btn),
                                 style = TextStyle(fontSize = 16.sp),
                             )
                         }
                         TextButton(onClick = {
-                            if (placeNameValue.isEmpty()) {
-                                placeNameError = true
-                            } else if (addressValue.isEmpty()) {
-                                addressError = true
+                            if (viewModel.placeNameValue.value.isEmpty()) {
+                                viewModel.placeNameError.value = true
+                            } else if (viewModel.addressValue.isEmpty()) {
+                                viewModel.addressError.value = true
                             } else {
                                 viewModel.addNewPlace(
-                                    PlaceDataRequest(
-                                        name = placeNameValue,
-                                        address = addressValue,
-                                        web = websiteValue,
-                                        email = emailValue,
-                                        phoneNumber = phoneValue,
-                                        price = priceValue,
-                                        /* filter = CustomFilter(
-                                             glutenFree = glutenFreeAdd.isChecked,
-                                             lactoseFree = lactoseFreeAdd.isChecked,
-                                             vegetarian = vegetarianAdd.isChecked,
-                                             vegan = veganAdd.isChecked,
-                                             fastFood = fastFoodAdd.isChecked,
-                                             parkingAvailable = parkingAdd.isChecked,
-                                             dogFriendly = dogAdd.isChecked,
-                                             familyPlace = familyPlaceAdd.isChecked,
-                                             delivery = deliveryAdd.isChecked,
-                                             creditCard = creditCardAdd.isChecked,
-                                         ),*/
-                                        type = Type.getByName(selectedOptionText),
-                                        latitude = latLang.latitude,
-                                        longitude = latLang.longitude,
-                                    ),
-                                    image = "",
+                                    typeValue = Type.getByName(selectedOptionText),
+                                    priceValue = viewModel.priceValue,
+                                    /* filter = CustomFilter(
+                                         glutenFree = glutenFreeAdd.isChecked,
+                                         lactoseFree = lactoseFreeAdd.isChecked,
+                                         vegetarian = vegetarianAdd.isChecked,
+                                         vegan = veganAdd.isChecked,
+                                         fastFood = fastFoodAdd.isChecked,
+                                         parkingAvailable = parkingAdd.isChecked,
+                                         dogFriendly = dogAdd.isChecked,
+                                         familyPlace = familyPlaceAdd.isChecked,
+                                         delivery = deliveryAdd.isChecked,
+                                         creditCard = creditCardAdd.isChecked,
+                                     ),*/
+                                    image = viewModel.selectedImageUri.value.toString(),
                                 )
-                                dialogOpen = false
+                                viewModel.dialogOpen.value = false
                             }
                         }) {
                             Text(
@@ -504,7 +466,7 @@ fun ChoosePhotoDialog(
                 shape = RoundedCornerShape(8.dp),
             ) {
                 Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
+                    horizontalAlignment = CenterHorizontally,
                     modifier = Modifier
                         .padding(all = 16.dp),
                 ) {
