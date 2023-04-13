@@ -11,8 +11,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -25,10 +24,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import hu.zsof.restaurantappjetpacknew.R
 import hu.zsof.restaurantappjetpacknew.model.Place
 import hu.zsof.restaurantappjetpacknew.model.enums.Price
 
+@OptIn(ExperimentalPermissionsApi::class)
 @ExperimentalMaterial3Api
 @Composable
 fun HomeListScreen(
@@ -52,6 +53,39 @@ fun HomeListScreen(
         viewModel.getUser()
     }
 
+/*    val permissionStateCamera =
+        rememberPermissionState(permission = Manifest.permission.CAMERA)
+    val emptyImageUri = Uri.parse("file://dev/null")
+    var imageUri by remember { mutableStateOf(emptyImageUri) }
+    if (imageUri != emptyImageUri) {
+        Box() {
+            Image(
+                modifier = Modifier.fillMaxSize(),
+                painter = rememberImagePainter(imageUri),
+                contentDescription = "Captured image",
+            )
+            Button(
+                modifier = Modifier.align(Alignment.BottomCenter),
+                onClick = {
+                    imageUri = emptyImageUri
+                },
+            ) {
+                Text("Remove image")
+            }
+        }
+    } else {
+        CameraPermission(
+            permissionState = permissionStateCamera,
+
+            onImageFile = { file ->
+                imageUri = file.toUri()
+            },
+        )
+    }*/
+    /*CameraPermission(
+        permissionState = permissionStateCamera,
+    )*/
+
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
@@ -67,6 +101,9 @@ fun HomeListScreen(
                     .padding(0.dp, 0.dp, 0.dp, 38.dp)
                     .background(MaterialTheme.colorScheme.background),
             ) {
+              /*  Button(onClick = { permissionStateCamera.launchPermissionRequest() }) {
+                    Text(text = "Camera")
+                }*/
                 LazyColumn(
                     contentPadding = PaddingValues(8.dp),
                 ) {
@@ -78,6 +115,114 @@ fun HomeListScreen(
         },
     )
 }
+/*
+
+@OptIn(ExperimentalPermissionsApi::class)
+@Composable
+fun CameraPermission(
+    permissionState: PermissionState,
+    onImageFile: (File) -> Unit = { },
+    cameraSelector: CameraSelector = CameraSelector.DEFAULT_BACK_CAMERA,
+) {
+    PermissionRequired(
+        permissionState = permissionState,
+        permissionNotGrantedContent = {
+            // if there was already a Manifest.permission request, but the user rejected it
+            if (permissionState.permissionRequested) {
+                AlertDialog(
+                    onDismissRequest = {
+                    },
+                    confirmButton = {
+                        Button(onClick = { permissionState.launchPermissionRequest() }) {
+                            Text("Request permission")
+                        }
+                    },
+                    text = { Text("Using the camera is important for this feature to be available. Please grant the permission.") },
+                )
+            }
+        },
+        // if the user has already denied permission twice
+        permissionNotAvailableContent = {
+        },
+    ) {
+        val context = LocalContext.current
+        val lifecycleOwner = LocalLifecycleOwner.current
+        val coroutineScope = rememberCoroutineScope()
+        var previewUseCase by remember { mutableStateOf<UseCase>(Preview.Builder().build()) }
+        val imageCaptureUseCase by remember {
+            mutableStateOf<ImageCapture>(
+                ImageCapture.Builder()
+                    .setCaptureMode(CAPTURE_MODE_MAXIMIZE_QUALITY)
+                    .build(),
+            )
+        }
+
+        Box {
+            CameraPreview(
+                modifier = Modifier.fillMaxSize(),
+                onUseCase = {
+                    previewUseCase = it
+                },
+            )
+            Button(
+                modifier = Modifier
+                    .wrapContentSize()
+                    .padding(16.dp)
+                    .align(Alignment.BottomCenter),
+                onClick = {
+                    coroutineScope.launch {
+                        onImageFile(imageCaptureUseCase.takePicture(context.executor))
+                    }
+                },
+            ) {
+                Text("Click!")
+            }
+        }
+        LaunchedEffect(previewUseCase) {
+            val cameraProvider = context.getCameraProvider()
+            try {
+                // Must unbind the use-cases before rebinding them.
+                cameraProvider.unbindAll()
+                cameraProvider.bindToLifecycle(
+                    lifecycleOwner,
+                    cameraSelector,
+                    previewUseCase,
+                    imageCaptureUseCase,
+                )
+            } catch (ex: Exception) {
+                Log.e("CameraCapture", "Failed to bind camera use cases", ex)
+            }
+        }
+    }
+}
+
+@Composable
+fun CameraPreview(
+    modifier: Modifier,
+    onUseCase: (UseCase) -> Unit = { },
+) {
+    AndroidView(
+        modifier = modifier,
+        factory = { context ->
+            val previewView = PreviewView(context).apply {
+                this.scaleType = scaleType
+                layoutParams = ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                )
+            }
+            onUseCase(
+                Preview.Builder()
+                    .build()
+                    .also {
+                        it.setSurfaceProvider(previewView.surfaceProvider)
+                    },
+            )
+            previewView
+        },
+    )
+}
+*/
 
 @ExperimentalMaterial3Api
 @Composable

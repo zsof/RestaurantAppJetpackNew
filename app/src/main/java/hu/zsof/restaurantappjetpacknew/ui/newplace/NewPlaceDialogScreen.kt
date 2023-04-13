@@ -2,7 +2,6 @@ package hu.zsof.restaurantappjetpacknew.ui.newplace
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.location.Geocoder
 import android.net.Uri
 import android.os.Build
@@ -10,7 +9,6 @@ import android.provider.Settings.*
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -55,7 +53,6 @@ import hu.zsof.restaurantappjetpacknew.ui.common.TextFieldForDialog
 import java.io.File
 import java.util.*
 
-@RequiresApi(Build.VERSION_CODES.R)
 @SuppressLint("ResourceType")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -436,7 +433,6 @@ fun NewPlaceDialogScreen(viewModel: NewPlaceDialogViewModel = hiltViewModel()) {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.R)
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun ChoosePhotoDialog(
@@ -609,15 +605,16 @@ fun GalleryPermission(
                         viewModel.galleryPermissionOpen.value = false
                     },
                     text = { Text("You could not use this function because the permission was denied. Please go to Settings and add permission to use the Gallery") },
-                    confirmButton = { // todo check telón amin api 30 alatt van - ne jelenjen meg gomb
-                        if (Build.VERSION.SDK_INT >= 30) {
-                            Button(onClick = {
-                                val i = Intent(ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
-                                context.startActivity(i)
-                            }) {
-                                Text("Go to Settings")
-                            }
-                        }
+                    confirmButton = {
+                        // The Google Play store has a policy that limits usage of MANAGE_EXTERNAL_STORAGE
+                        /*  if (Build.VERSION.SDK_INT >= 30) {
+                              Button(onClick = {
+                                  val i = Intent(ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
+                                  context.startActivity(i)
+                              }) {
+                                  Text("Go to Settings")
+                              }
+                          }*/
                     },
                 )
             },
@@ -662,16 +659,7 @@ fun CameraPermission(
                         viewModel.cameraPermissionOpen.value = false
                     },
                     text = { Text("You can't use this feature because the permission was denied. Please go to Settings and add permission to use the Camera") },
-                    confirmButton = { // todo check telón amin api 30 alatt van - ne jelenjen meg gomb
-                        if (Build.VERSION.SDK_INT >= 30) {
-                            Button(onClick = {
-                                val intent = Intent(ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
-                                context.startActivity(intent)
-                            }) {
-                                Text("Go to Settings")
-                            }
-                        }
-                    },
+                    confirmButton = {},
                 )
             },
         ) {
