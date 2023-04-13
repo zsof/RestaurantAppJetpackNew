@@ -445,18 +445,21 @@ fun ChoosePhotoDialog(
     selectedImageUri: MutableState<Uri?>,
     viewModel: NewPlaceDialogViewModel,
 ) {
-    val permissionState =
+    val permissionStateGallery =
         rememberPermissionState(permission = Manifest.permission.READ_EXTERNAL_STORAGE)
-
     GalleryPermission(
-        permissionState = permissionState,
+        permissionState = permissionStateGallery,
         selectedImageUri = selectedImageUri,
         viewModel,
     )
 
-    LaunchedEffect(Unit) {
-        permissionState.launchPermissionRequest()
-    }
+    val permissionStateCamera =
+        rememberPermissionState(permission = Manifest.permission.CAMERA)
+    CameraPermission(
+        permissionState = permissionStateCamera,
+        selectedImageUri = selectedImageUri,
+        viewModel,
+    )
 
     if (showPhotoPickerDialog) {
         Dialog(
@@ -503,11 +506,15 @@ fun ChoosePhotoDialog(
                     }
                     Spacer(modifier = Modifier.height(20.dp))
                     Row(
+                        verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(8.dp)
-                            .clickable(onClick = {}),
-                        verticalAlignment = Alignment.CenterVertically,
+                            .clickable(onClick = {
+                                permissionStateCamera.launchPermissionRequest()
+                                viewModel.cameraPermissionOpen.value =
+                                    true // Necessary to be able to close the dialog
+                            }),
                         horizontalArrangement = Arrangement.Start,
                     ) {
                         Image(
@@ -533,7 +540,9 @@ fun ChoosePhotoDialog(
                             .padding(8.dp)
                             .clickable(
                                 onClick = {
-                                    viewModel.galleryPermissionOpen.value = true
+                                    permissionStateGallery.launchPermissionRequest()
+                                    viewModel.galleryPermissionOpen.value =
+                                        true // Necessary to be able to close the dialog
                                 },
                             ),
                         verticalAlignment = Alignment.CenterVertically,
@@ -575,36 +584,25 @@ fun GalleryPermission(
     )
 
     val context = LocalContext.current
+
     if (viewModel.galleryPermissionOpen.value) {
         PermissionRequired(
             permissionState = permissionState,
             permissionNotGrantedContent = {
-                val textToShow = if (permissionState.shouldShowRationale) {
-                    // If the user has denied the permission but the rationale can be shown,
-                    // then gently explain why the app requires this permission
-                    "Using the gallery is important for this app. Please grant the permission."
-                } else {
-                    // If it's the first time the user lands on this feature, or the user
-                    // doesn't want to be asked again for this permission, explain that the
-                    // permission is required
-                    "Using the gallery required for this feature to be available. " +
-                        "Please grant the permission"
+                // if there was already a Manifest.permission request, but the user rejected it
+                if (permissionState.permissionRequested) {
+                    AlertDialog(
+                        onDismissRequest = {},
+                        confirmButton = {
+                            Button(onClick = { permissionState.launchPermissionRequest() }) {
+                                Text("Request permission")
+                            }
+                        },
+                        text = { Text("Using the gallery is important for this feature to be available. Please grant the permission.") },
+                    )
                 }
-                AlertDialog(
-                    onDismissRequest = {
-                        // Dismiss the dialog when the user clicks outside the dialog or on the back
-                        // button. If you want to disable that functionality, simply use an empty
-                        // onCloseRequest.
-                        // openDialog.value = false
-                    },
-                    confirmButton = {
-                        Button(onClick = { permissionState.launchPermissionRequest() }) {
-                            Text("Request permission")
-                        }
-                    },
-                    text = { Text(textToShow) },
-                )
             },
+            // if the user has already denied permission twice
             permissionNotAvailableContent = {
                 AlertDialog(
                     onDismissRequest = {
@@ -627,6 +625,56 @@ fun GalleryPermission(
             singlePhotoPickerLauncher.launch(
                 PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly),
             )
+        }
+    }
+}
+
+@OptIn(ExperimentalPermissionsApi::class)
+@Composable
+fun CameraPermission(
+    permissionState: PermissionState,
+    selectedImageUri: MutableState<Uri?>,
+    viewModel: NewPlaceDialogViewModel,
+) {
+    val context = LocalContext.current
+    if (viewModel.cameraPermissionOpen.value) {
+        PermissionRequired(
+            permissionState = permissionState,
+            permissionNotGrantedContent = {
+                // if there was already a Manifest.permission request, but the user rejected it
+                if (permissionState.permissionRequested) {
+                    AlertDialog(
+                        onDismissRequest = {
+                        },
+                        confirmButton = {
+                            Button(onClick = { permissionState.launchPermissionRequest() }) {
+                                Text("Request permission")
+                            }
+                        },
+                        text = { Text("Using the camera is important for this feature to be available. Please grant the permission.") },
+                    )
+                }
+            },
+            // if the user has already denied permission twice
+            permissionNotAvailableContent = {
+                AlertDialog(
+                    onDismissRequest = {
+                        viewModel.cameraPermissionOpen.value = false
+                    },
+                    text = { Text("You can't use this feature because the permission was denied. Please go to Settings and add permission to use the Camera") },
+                    confirmButton = { // todo check telón amin api 30 alatt van - ne jelenjen meg gomb
+                        if (Build.VERSION.SDK_INT >= 30) {
+                            Button(onClick = {
+                                val intent = Intent(ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
+                                context.startActivity(intent)
+                            }) {
+                                Text("Go to Settings")
+                            }
+                        }
+                    },
+                )
+            },
+        ) {
         }
     }
 }

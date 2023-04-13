@@ -34,6 +34,7 @@ class NewPlaceDialogViewModel @Inject constructor(
     var expanded = mutableStateOf(false)
 
     var galleryPermissionOpen = mutableStateOf(false)
+    var cameraPermissionOpen = mutableStateOf(false)
 
     val photoDialogOpen = mutableStateOf(false)
     val selectedImageUri = mutableStateOf<Uri?>(null)

@@ -6,7 +6,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.permissions.*
@@ -20,8 +19,6 @@ import hu.zsof.restaurantappjetpacknew.network.repository.LocalDataStateService
 @Composable
 @ExperimentalMaterial3Api
 fun MapScreen(onLongClick: (latLng: LatLng) -> Unit) {
-    val context = LocalContext.current
-
     val multiplePermissionState = rememberMultiplePermissionsState(
         permissions = listOf(
             Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -31,6 +28,7 @@ fun MapScreen(onLongClick: (latLng: LatLng) -> Unit) {
 
     LocationPermissions(multiplePermissionState = multiplePermissionState, onLongClick)
 
+    // This way, the permission request is immediately started when the Screen is loaded (it could also be started by pressing a button)
     LaunchedEffect(Unit) {
         multiplePermissionState.launchMultiplePermissionRequest()
     }
@@ -46,33 +44,22 @@ fun LocationPermissions(
     PermissionsRequired(
         multiplePermissionsState = multiplePermissionState,
         permissionsNotGrantedContent = {
-            val textToShow = if (multiplePermissionState.shouldShowRationale) {
-                // If the user has denied the permission but the rationale can be shown,
-                // then gently explain why the app requires this permission
-                "The location is important for this app. Please grant the permission."
-            } else {
-                // If it's the first time the user lands on this feature, or the user
-                // doesn't want to be asked again for this permission, explain that the
-                // permission is required
-                "Location permission required for this feature to be available. " +
-                    "Please grant the permission"
+            // if there was already a Manifest.permission request, but the user rejected it
+            if (multiplePermissionState.permissionRequested) {
+                AlertDialog(
+                    onDismissRequest = {},
+                    confirmButton = {
+                        Button(onClick = { multiplePermissionState.launchMultiplePermissionRequest() }) {
+                            Text("Request permission")
+                        }
+                    },
+                    text = { Text("The Location is important for this app. Please grant the Permission.") },
+                )
             }
-            AlertDialog(
-                onDismissRequest = {
-                    // Dismiss the dialog when the user clicks outside the dialog or on the back
-                    // button. If you want to disable that functionality, simply use an empty
-                    // onCloseRequest.
-                    // openDialog.value = false
-                },
-                confirmButton = {
-                    Button(onClick = { multiplePermissionState.launchMultiplePermissionRequest() }) {
-                        Text("Request permission")
-                    }
-                },
-                text = { Text(textToShow) },
-            )
         },
-        permissionsNotAvailableContent = {},
+        // if the user has already denied permission twice
+        permissionsNotAvailableContent = { // TODO
+        },
     ) {
         GoogleMap(
             modifier = Modifier
