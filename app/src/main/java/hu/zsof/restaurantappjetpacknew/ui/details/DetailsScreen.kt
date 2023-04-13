@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import hu.zsof.restaurantappjetpacknew.R
+import hu.zsof.restaurantappjetpacknew.util.extension.imageUrl
 
 @Composable
 fun DetailsScreen(
@@ -41,7 +42,7 @@ fun DetailsScreen(
     ) {
         if (place != null) {
             AsyncImage(
-                model = "https://media.geeksforgeeks.org/wp-content/uploads/20210101144014/gfglogo.png",
+                model = place.image.imageUrl(),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier

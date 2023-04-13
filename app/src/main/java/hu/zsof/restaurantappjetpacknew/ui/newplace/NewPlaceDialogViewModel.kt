@@ -23,7 +23,7 @@ class NewPlaceDialogViewModel @Inject constructor(
     private val resourceRepository: ResourceRepository,
 ) : ViewModel() {
 
-    val latLang: LatLng = try {
+    private val latLang: LatLng = try {
         LocalDataStateService.getLatLng()
     } catch (e: Exception) {
         e.printStackTrace()
@@ -32,6 +32,8 @@ class NewPlaceDialogViewModel @Inject constructor(
 
     var dialogOpen = mutableStateOf(true)
     var expanded = mutableStateOf(false)
+
+    var galleryPermissionOpen = mutableStateOf(false)
 
     val photoDialogOpen = mutableStateOf(false)
     val selectedImageUri = mutableStateOf<Uri?>(null)
@@ -78,7 +80,7 @@ class NewPlaceDialogViewModel @Inject constructor(
                     resourceRepository.addNewImage(
                         filePath = image,
                         type = "place",
-                        typeId = placeResponse.id,
+                        itemId = placeResponse.id,
                     )
                 }
             }

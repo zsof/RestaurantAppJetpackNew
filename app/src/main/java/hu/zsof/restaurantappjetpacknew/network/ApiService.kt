@@ -72,7 +72,7 @@ interface ApiService {
     suspend fun addNewImage(
         @Part file: MultipartBody.Part,
         @Part("type") type: String,
-        @Part("typeId") typeId: String,
+        @Part("itemId") typeId: String,
     )
 
     /**

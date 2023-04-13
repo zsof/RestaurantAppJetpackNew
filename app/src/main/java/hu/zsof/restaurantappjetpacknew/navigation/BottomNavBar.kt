@@ -40,7 +40,6 @@ fun BottomNavBar(
             ) {
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                 if (userType == ROLE_ADMIN) {
-                    println("usr admin")
                     bottomBottomNavItems.filter { it.forAdminIsVisible }.forEach { item ->
                         val currentRoute = item.route == navBackStackEntry?.destination?.route
                         NavigationBarItem(

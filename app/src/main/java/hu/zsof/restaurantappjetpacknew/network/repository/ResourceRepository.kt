@@ -8,10 +8,9 @@ import java.io.File
 import javax.inject.Inject
 
 class ResourceRepository @Inject constructor(private val apiService: ApiService) {
-
     suspend fun addNewImage(
         filePath: String,
-        typeId: Long,
+        itemId: Long,
         type: String,
     ) {
         return try {
@@ -27,9 +26,10 @@ class ResourceRepository @Inject constructor(private val apiService: ApiService)
             apiService.addNewImage(
                 multipartFile,
                 type,
-                typeId.toString(),
+                itemId.toString(),
             )
         } catch (e: Exception) {
+            println("körte ${e.message}")
             e.printStackTrace()
         }
     }

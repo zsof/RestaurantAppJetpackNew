@@ -1,12 +1,16 @@
 package hu.zsof.restaurantappjetpacknew.ui.newplace
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.location.Geocoder
 import android.net.Uri
 import android.os.Build
+import android.provider.Settings.*
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -40,14 +44,18 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
+import com.google.accompanist.permissions.*
+import com.google.maps.android.compose.*
 import hu.zsof.restaurantappjetpacknew.R
 import hu.zsof.restaurantappjetpacknew.model.enums.Price
 import hu.zsof.restaurantappjetpacknew.model.enums.Type
 import hu.zsof.restaurantappjetpacknew.network.repository.LocalDataStateService
 import hu.zsof.restaurantappjetpacknew.ui.common.NormalTextField
 import hu.zsof.restaurantappjetpacknew.ui.common.TextFieldForDialog
+import java.io.File
 import java.util.*
 
+@RequiresApi(Build.VERSION_CODES.R)
 @SuppressLint("ResourceType")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -56,9 +64,10 @@ fun NewPlaceDialogScreen(viewModel: NewPlaceDialogViewModel = hiltViewModel()) {
 
     if (viewModel.photoDialogOpen.value) {
         ChoosePhotoDialog(
-            setShowPhotoPickerDialog = viewModel.photoDialogOpen.value,
+            showPhotoPickerDialog = viewModel.photoDialogOpen.value,
             onDismiss = { viewModel.photoDialogOpen.value = false },
             selectedImageUri = viewModel.selectedImageUri,
+            viewModel = viewModel,
         )
         if (viewModel.selectedImageUri.value != null) {
             viewModel.photoDialogOpen.value = false
@@ -74,6 +83,14 @@ fun NewPlaceDialogScreen(viewModel: NewPlaceDialogViewModel = hiltViewModel()) {
             filterOptions[0],
             // filterOptionsRight[0]
         )
+    }
+
+    // TODO error
+    val imageFilePath: String = if (viewModel.selectedImageUri.value != null) {
+        val path = viewModel.selectedImageUri.value.toString().split(':')[1]
+        File(path).path
+    } else {
+        ""
     }
 
     Geocoder(context, Locale.getDefault()).getAddress(
@@ -402,7 +419,7 @@ fun NewPlaceDialogScreen(viewModel: NewPlaceDialogViewModel = hiltViewModel()) {
                                          delivery = deliveryAdd.isChecked,
                                          creditCard = creditCardAdd.isChecked,
                                      ),*/
-                                    image = viewModel.selectedImageUri.value.toString(),
+                                    image = imageFilePath.toString(),
                                 )
                                 viewModel.dialogOpen.value = false
                             }
@@ -419,37 +436,29 @@ fun NewPlaceDialogScreen(viewModel: NewPlaceDialogViewModel = hiltViewModel()) {
     }
 }
 
-@Suppress("DEPRECATION")
-fun Geocoder.getAddress(
-    latitude: Double,
-    longitude: Double,
-    address: (android.location.Address?) -> Unit,
-) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        getFromLocation(latitude, longitude, 1) { address(it.firstOrNull()) }
-        return
-    }
-
-    try {
-        address(getFromLocation(latitude, longitude, 1)?.firstOrNull())
-    } catch (e: Exception) {
-        // will catch if there is an internet problem
-        address(null)
-    }
-}
-
+@RequiresApi(Build.VERSION_CODES.R)
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun ChoosePhotoDialog(
-    setShowPhotoPickerDialog: Boolean,
+    showPhotoPickerDialog: Boolean,
     onDismiss: () -> Unit,
     selectedImageUri: MutableState<Uri?>,
+    viewModel: NewPlaceDialogViewModel,
 ) {
-    val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.PickVisualMedia(),
-        onResult = { uri -> selectedImageUri.value = uri },
+    val permissionState =
+        rememberPermissionState(permission = Manifest.permission.READ_EXTERNAL_STORAGE)
+
+    GalleryPermission(
+        permissionState = permissionState,
+        selectedImageUri = selectedImageUri,
+        viewModel,
     )
 
-    if (setShowPhotoPickerDialog) {
+    LaunchedEffect(Unit) {
+        permissionState.launchPermissionRequest()
+    }
+
+    if (showPhotoPickerDialog) {
         Dialog(
             onDismissRequest = onDismiss,
 
@@ -524,9 +533,7 @@ fun ChoosePhotoDialog(
                             .padding(8.dp)
                             .clickable(
                                 onClick = {
-                                    singlePhotoPickerLauncher.launch(
-                                        PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly),
-                                    )
+                                    viewModel.galleryPermissionOpen.value = true
                                 },
                             ),
                         verticalAlignment = Alignment.CenterVertically,
@@ -552,5 +559,93 @@ fun ChoosePhotoDialog(
                 }
             }
         }
+    }
+}
+
+@OptIn(ExperimentalPermissionsApi::class)
+@Composable
+fun GalleryPermission(
+    permissionState: PermissionState,
+    selectedImageUri: MutableState<Uri?>,
+    viewModel: NewPlaceDialogViewModel,
+) {
+    val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia(),
+        onResult = { uri -> selectedImageUri.value = uri },
+    )
+
+    val context = LocalContext.current
+    if (viewModel.galleryPermissionOpen.value) {
+        PermissionRequired(
+            permissionState = permissionState,
+            permissionNotGrantedContent = {
+                val textToShow = if (permissionState.shouldShowRationale) {
+                    // If the user has denied the permission but the rationale can be shown,
+                    // then gently explain why the app requires this permission
+                    "Using the gallery is important for this app. Please grant the permission."
+                } else {
+                    // If it's the first time the user lands on this feature, or the user
+                    // doesn't want to be asked again for this permission, explain that the
+                    // permission is required
+                    "Using the gallery required for this feature to be available. " +
+                        "Please grant the permission"
+                }
+                AlertDialog(
+                    onDismissRequest = {
+                        // Dismiss the dialog when the user clicks outside the dialog or on the back
+                        // button. If you want to disable that functionality, simply use an empty
+                        // onCloseRequest.
+                        // openDialog.value = false
+                    },
+                    confirmButton = {
+                        Button(onClick = { permissionState.launchPermissionRequest() }) {
+                            Text("Request permission")
+                        }
+                    },
+                    text = { Text(textToShow) },
+                )
+            },
+            permissionNotAvailableContent = {
+                AlertDialog(
+                    onDismissRequest = {
+                        viewModel.galleryPermissionOpen.value = false
+                    },
+                    text = { Text("You could not use this function because the permission was denied. Please go to Settings and add permission to use the Gallery") },
+                    confirmButton = { // todo check telón amin api 30 alatt van - ne jelenjen meg gomb
+                        if (Build.VERSION.SDK_INT >= 30) {
+                            Button(onClick = {
+                                val i = Intent(ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
+                                context.startActivity(i)
+                            }) {
+                                Text("Go to Settings")
+                            }
+                        }
+                    },
+                )
+            },
+        ) {
+            singlePhotoPickerLauncher.launch(
+                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly),
+            )
+        }
+    }
+}
+
+@Suppress("DEPRECATION")
+fun Geocoder.getAddress(
+    latitude: Double,
+    longitude: Double,
+    address: (android.location.Address?) -> Unit,
+) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        getFromLocation(latitude, longitude, 1) { address(it.firstOrNull()) }
+        return
+    }
+
+    try {
+        address(getFromLocation(latitude, longitude, 1)?.firstOrNull())
+    } catch (e: Exception) {
+        // will catch if there is an internet problem
+        address(null)
     }
 }

@@ -13,7 +13,6 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val authRepository: AuthRepository,
-    // private val sharedPref: SharedPreference,
 ) : ViewModel() {
 
     var email = mutableStateOf("test@test.hu")
