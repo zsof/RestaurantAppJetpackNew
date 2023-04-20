@@ -1,5 +1,6 @@
 package hu.zsof.restaurantappjetpacknew.ui.review
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,6 +15,10 @@ class ReviewPlaceViewModel @Inject constructor(
     private val placeInReviewRepository: PlaceInReviewRepository,
 ) :
     ViewModel() {
+
+    var problemMessage = mutableStateOf("")
+    var problemMessageError = mutableStateOf(false)
+    val problemDialogOpen = mutableStateOf(false)
 
     var placesInReview = MutableLiveData<List<PlaceInReview>>()
     fun showPlacesInReview() {
@@ -35,13 +40,14 @@ class ReviewPlaceViewModel @Inject constructor(
         viewModelScope.launch {
             placeInReviewRepository.acceptPlaceFromInReview(placeId)
             isPlaceAccepted.value = true
-
-            println("viewmodel ${isPlaceAccepted.value}")
         }
     }
-    fun reportProblem(placeId: Long, problemMessage: String) {
+
+    val isPlaceReported = MutableLiveData(false)
+    fun reportProblem(placeId: Long) {
         viewModelScope.launch {
-            placeInReviewRepository.reportProblemPlaceInReview(placeId, problemMessage)
+            placeInReviewRepository.reportProblemPlaceInReview(placeId, problemMessage.value)
+            isPlaceReported.value = true
         }
     }
 }

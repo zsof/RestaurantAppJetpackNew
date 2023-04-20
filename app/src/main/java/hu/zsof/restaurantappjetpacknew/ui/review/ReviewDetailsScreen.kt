@@ -1,5 +1,6 @@
 package hu.zsof.restaurantappjetpacknew.ui.review
 
+import android.content.Context
 import android.widget.Toast
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.updateTransition
@@ -8,6 +9,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
@@ -17,10 +20,7 @@ import androidx.compose.material.icons.outlined.Map
 import androidx.compose.material.icons.outlined.Phone
 import androidx.compose.material.icons.outlined.Web
 import androidx.compose.material.ripple.rememberRipple
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -35,11 +35,17 @@ import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import hu.zsof.restaurantappjetpacknew.R
+import hu.zsof.restaurantappjetpacknew.model.enums.FabButton
+import hu.zsof.restaurantappjetpacknew.ui.common.NormalTextField
 
 @Composable
 fun ReviewDetailsScreen(
@@ -58,13 +64,13 @@ fun ReviewDetailsScreen(
     val items = listOf(
         FabItem(
             icon = ImageBitmap.imageResource(id = R.drawable.ic_report_problem),
-            identifier = Identifier.REPORT.name,
+            identifier = FabButton.REPORT.name,
             color = Color.Red,
 
         ),
         FabItem(
             icon = ImageBitmap.imageResource(id = R.drawable.ic_accept),
-            identifier = Identifier.ACCEPT.name,
+            identifier = FabButton.ACCEPT.name,
             color = Color.Green,
 
         ),
@@ -199,10 +205,20 @@ fun MultiFloatingButton(
     if (isPlaceAccept.value == true && !acceptBtnIsClicked.value) {
         Toast.makeText(
             context,
-            "The place has accepted!",
+            "The place has accepted successfully!",
             Toast.LENGTH_SHORT,
         ).show()
         acceptBtnIsClicked.value = true
+    }
+
+    if (viewModel.problemDialogOpen.value) {
+        ProblemDialog(
+            showProblemMessageDialog = viewModel.problemDialogOpen.value,
+            onDismiss = { viewModel.problemDialogOpen.value = false },
+            viewModel = viewModel,
+            placeId = placeId,
+            context = context,
+        )
     }
 
     Column(horizontalAlignment = Alignment.End) {
@@ -210,7 +226,7 @@ fun MultiFloatingButton(
             items.forEach {
                 Fab(item = it, onFabItemClick = { fabItem ->
                     when (fabItem.identifier) {
-                        Identifier.ACCEPT.name -> {
+                        FabButton.ACCEPT.name -> {
                             if (!acceptBtnIsClicked.value) {
                                 viewModel.acceptPlace(placeId)
                             } else {
@@ -221,7 +237,8 @@ fun MultiFloatingButton(
                                 ).show()
                             }
                         }
-                        Identifier.REPORT.name -> {
+                        FabButton.REPORT.name -> {
+                            viewModel.problemDialogOpen.value = true
                         }
                     }
                 }, color = it.color)
@@ -281,14 +298,83 @@ fun Fab(item: FabItem, onFabItemClick: (FabItem) -> Unit, color: Color) {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ProblemDialog(
+    onDismiss: () -> Unit,
+    viewModel: ReviewPlaceViewModel,
+    showProblemMessageDialog: Boolean,
+    placeId: Long,
+    context: Context,
+) {
+    val isPlaceReported = viewModel.isPlaceReported.observeAsState()
+    if (isPlaceReported.value == true) {
+        Toast.makeText(
+            context,
+            "This place has reported successfully!",
+            Toast.LENGTH_SHORT,
+        ).show()
+        viewModel.problemDialogOpen.value = false
+    }
+
+    if (showProblemMessageDialog) {
+        Dialog(
+            onDismissRequest = onDismiss,
+
+            properties = DialogProperties(
+                dismissOnClickOutside = true,
+                dismissOnBackPress = true,
+                usePlatformDefaultWidth = false,
+            ),
+        ) {
+            Surface(
+                modifier = Modifier
+                    .padding(32.dp)
+                    .wrapContentHeight(),
+                shape = RoundedCornerShape(8.dp),
+            ) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier
+                        .padding(all = 16.dp),
+                ) {
+                    NormalTextField(
+                        value = viewModel.problemMessage.value,
+                        label = stringResource(id = R.string.problem_message),
+                        onValueChange = { newValue ->
+                            viewModel.problemMessage.value = newValue
+                        },
+                        isError = viewModel.problemMessageError.value,
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Text,
+                            imeAction = ImeAction.Done,
+                        ),
+                        leadingIcon = {},
+                        trailingIcon = { },
+                        onDone = { },
+                        placeholder = stringResource(id = R.string.problem_hint),
+                    )
+
+                    Row(modifier = Modifier.padding(top = 16.dp)) {
+                        Button(onClick = onDismiss, modifier = Modifier.padding(16.dp, 0.dp)) {
+                            Text(text = stringResource(R.string.cancel))
+                        }
+                        Spacer(modifier = Modifier.weight(1f))
+                        Button(onClick = {
+                            viewModel.reportProblem(placeId)
+                        }, modifier = Modifier.padding(16.dp, 0.dp)) {
+                            Text(text = stringResource(R.string.send))
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
 enum class MultiFloatingState {
     EXPANDED,
     COLLAPSED,
-}
-
-enum class Identifier {
-    ACCEPT,
-    REPORT,
 }
 
 class FabItem(

@@ -2,6 +2,8 @@
     <string name="app_name">RestaurantAppJetpackNew</string>
 
     <string name="welcome_text">Üdvözlünk a RestaurApp-ban!</string>
+    <string name="problem_hint">Mi a probléma a hellyel?</string>
+    <string name="problem_message">Probléma</string>
     <string name="email_address">Email cím</string>
     <string name="password_text">Jelszó</string>
     <string name="log_in">Bejelentkezés</string>
@@ -89,6 +91,8 @@
     <string name="take_photo">Take a Photo</string>
     <string name="choose_gallery">Choose from Gallery</string>
     <string name="photo_picker_title">Photo picker</string>
+    <string name="send">Küldés</string>
+    <string name="cancel">Mégse</string>
 
     <string-array name="category_items">
         <item>Restaurant</item>
