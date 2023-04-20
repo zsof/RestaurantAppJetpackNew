@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PushPin
+import androidx.compose.material.icons.filled.ReportProblem
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -93,6 +94,14 @@ private fun ReviewListItem(
                             fontSize = 20.sp,
                             maxLines = 3,
                         )
+                        Spacer(modifier = Modifier.weight(1f))
+
+                        if (!placeInReview.problem.isNullOrEmpty()) {
+                            Icon(
+                                imageVector = Icons.Filled.ReportProblem,
+                                contentDescription = null,
+                            )
+                        }
                     }
                     Row() {
                         Icon(
