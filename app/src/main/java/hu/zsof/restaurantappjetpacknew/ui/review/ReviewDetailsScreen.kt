@@ -15,6 +15,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.QuestionMark
+import androidx.compose.material.icons.filled.ReportProblem
 import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material.icons.outlined.Map
 import androidx.compose.material.icons.outlined.Phone
@@ -76,6 +77,26 @@ fun ReviewDetailsScreen(
         ),
     )
 
+    val showProblemDialog = remember {
+        mutableStateOf(false)
+    }
+
+    if (showProblemDialog.value) {
+        AlertDialog(
+            onDismissRequest = { showProblemDialog.value = false },
+            confirmButton = {
+                Button(onClick = { showProblemDialog.value = false }) {
+                    Text(stringResource(R.string.ok_btn))
+                }
+            },
+            // TODO valamiért a "" is visszajön backendtpl "szöveg"  <-- így, ezt meg kellene szüntetni
+            text = {
+                placeInReview?.problem?.substringAfter('"')
+                    ?.let { Text(text = it.substringBeforeLast('"')) }
+            },
+        )
+    }
+
     Scaffold(
         floatingActionButton = {
             MultiFloatingButton(
@@ -107,15 +128,29 @@ fun ReviewDetailsScreen(
                             .align(Alignment.CenterHorizontally),
                     )
 
-                    Text(
-                        text = placeInReview.name,
-                        style = MaterialTheme.typography.h5,
-                        fontWeight = FontWeight.Bold,
-                        fontStyle = FontStyle.Italic,
-                        modifier = Modifier
-                            .align(Alignment.CenterHorizontally)
-                            .padding(16.dp),
-                    )
+                    // TODO nincs középen!!!! arghhhh
+                    Row(horizontalArrangement = Arrangement.Center) {
+                        Text(
+                            text = placeInReview.name,
+                            style = MaterialTheme.typography.h5,
+                            fontWeight = FontWeight.Bold,
+                            fontStyle = FontStyle.Italic,
+                            modifier = Modifier
+                                // .align(Alignment.CenterHorizontally)
+                                .padding(16.dp),
+                        )
+
+                        if (!placeInReview.problem.isNullOrEmpty()) {
+                            IconButton(onClick = {
+                                showProblemDialog.value = true
+                            }) {
+                                Icon(
+                                    imageVector = Icons.Filled.ReportProblem,
+                                    contentDescription = null,
+                                )
+                            }
+                        }
+                    }
 
                     Row(horizontalArrangement = Arrangement.Start) {
                         Icon(
@@ -357,7 +392,7 @@ fun ProblemDialog(
 
                     Row(modifier = Modifier.padding(top = 16.dp)) {
                         Button(onClick = onDismiss, modifier = Modifier.padding(16.dp, 0.dp)) {
-                            Text(text = stringResource(R.string.cancel))
+                            Text(text = stringResource(R.string.cancel_btn))
                         }
                         Spacer(modifier = Modifier.weight(1f))
                         Button(onClick = {

@@ -92,7 +92,6 @@
     <string name="choose_gallery">Choose from Gallery</string>
     <string name="photo_picker_title">Photo picker</string>
     <string name="send">Küldés</string>
-    <string name="cancel">Mégse</string>
 
     <string-array name="category_items">
         <item>Restaurant</item>
