@@ -73,14 +73,6 @@ fun NewPlaceDialogScreen(viewModel: NewPlaceDialogViewModel = hiltViewModel()) {
 
     val categoryOptions = stringArrayResource(id = R.array.category_items)
     var selectedOptionText by remember { mutableStateOf(categoryOptions[0]) }
-    val filterOptions = stringArrayResource(id = R.array.filter_options)
-    val filterOptionsRight = stringArrayResource(id = R.array.filter_option_right)
-    val (selectedOption: String, onOptionSelected: (String) -> Unit) = remember {
-        mutableStateOf(
-            filterOptions[0],
-            // filterOptionsRight[0]
-        )
-    }
 
     // TODO error
     val imageFilePath: String = if (viewModel.selectedImageUri.value != null) {
@@ -224,9 +216,9 @@ fun NewPlaceDialogScreen(viewModel: NewPlaceDialogViewModel = hiltViewModel()) {
                         Spacer(Modifier.weight(1f))
 
                         ExposedDropdownMenuBox(
-                            expanded = viewModel.expanded.value,
+                            expanded = viewModel.expandedCategoryMenu.value,
                             onExpandedChange = {
-                                viewModel.expanded.value = !viewModel.expanded.value
+                                viewModel.expandedCategoryMenu.value = !viewModel.expandedCategoryMenu.value
                             },
                             modifier = Modifier.padding(start = 16.dp, end = 8.dp),
                         ) {
@@ -237,15 +229,15 @@ fun NewPlaceDialogScreen(viewModel: NewPlaceDialogViewModel = hiltViewModel()) {
                                 onValueChange = { },
                                 trailingIcon = {
                                     ExposedDropdownMenuDefaults.TrailingIcon(
-                                        expanded = viewModel.expanded.value,
+                                        expanded = viewModel.expandedCategoryMenu.value,
                                     )
                                 },
                                 colors = ExposedDropdownMenuDefaults.textFieldColors(),
                             )
                             ExposedDropdownMenu(
-                                expanded = viewModel.expanded.value,
+                                expanded = viewModel.expandedCategoryMenu.value,
                                 onDismissRequest = {
-                                    viewModel.expanded.value = false
+                                    viewModel.expandedCategoryMenu.value = false
                                 },
                             ) {
                                 categoryOptions.forEach { selectionOption ->
@@ -253,7 +245,7 @@ fun NewPlaceDialogScreen(viewModel: NewPlaceDialogViewModel = hiltViewModel()) {
                                         text = { Text(text = selectionOption) },
                                         onClick = {
                                             selectedOptionText = selectionOption
-                                            viewModel.expanded.value = false
+                                            viewModel.expandedCategoryMenu.value = false
                                         },
                                     )
                                 }

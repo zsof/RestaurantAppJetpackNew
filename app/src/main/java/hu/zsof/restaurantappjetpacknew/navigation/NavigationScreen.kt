@@ -6,6 +6,7 @@ sealed class NavigationScreen(val route: String) {
     object Home : NavigationScreen(route = "home")
     object Profile : NavigationScreen(route = "profile")
     object NewPlace : NavigationScreen(route = "newPlace")
+    object FilterPlace : NavigationScreen(route = "filterPlace")
     object Map : NavigationScreen(route = "map")
     object FavPlace : NavigationScreen(route = "favPlace")
     object ReviewPlace : NavigationScreen(route = "reviewPlace")

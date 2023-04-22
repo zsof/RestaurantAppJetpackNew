@@ -32,6 +32,11 @@ object Constants {
     const val MAIN_GRAPH_ROUTE = "main"
 
     /**
+     * Nav controller
+     */
+    const val FILTERED_PLACES = "filtered_items"
+
+    /**
      * User tpye
      */
     const val ROLE_ADMIN = "ROLE_ADMIN"

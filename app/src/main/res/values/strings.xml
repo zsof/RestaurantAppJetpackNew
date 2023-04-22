@@ -66,7 +66,7 @@
     <string name="invalid_fields">Invalid mezők</string>
     <string name="warning_invalid_email_or_phone">Invalid Email cím vagy Telefonszám!</string>
     <string name="rating">Értékelés</string>
-    <string name="filter_places_dialog">Szűrés</string>
+    <string name="filter_places_name">Szűrés</string>
     <string name="filter_btn">Szűrés</string>
     <string name="no_internet_connection">Nincs internet kapcsolat</string>
     <string name="clear_filters">Szűrők törlése</string>

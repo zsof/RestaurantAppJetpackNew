@@ -17,6 +17,7 @@ import androidx.navigation.compose.*
 import androidx.navigation.navArgument
 import hu.zsof.restaurantappjetpacknew.ui.details.TabLayout
 import hu.zsof.restaurantappjetpacknew.ui.favorite.FavoriteListScreen
+import hu.zsof.restaurantappjetpacknew.ui.filter.FilterPlaceDialogScreen
 import hu.zsof.restaurantappjetpacknew.ui.homelist.HomeListScreen
 import hu.zsof.restaurantappjetpacknew.ui.login.LoginScreen
 import hu.zsof.restaurantappjetpacknew.ui.map.MapScreen
@@ -71,6 +72,8 @@ fun NavGraphBuilder.mainNavGraph(
             HomeListScreen(
                 onFabClick = { navController.navigate(NavigationScreen.Map.route) },
                 onClickPlaceItem = { navController.navigate(NavigationScreen.Details.passPlaceId(it)) },
+                onFilterClick = { navController.navigate(NavigationScreen.FilterPlace.route) },
+                navController = navController,
             )
         }
         composable(route = NavigationScreen.NewPlace.route) {
@@ -78,6 +81,12 @@ fun NavGraphBuilder.mainNavGraph(
         }
         composable(route = NavigationScreen.Map.route) {
             MapScreen(onLongClick = { navController.navigate(NavigationScreen.NewPlace.route) })
+        }
+
+        composable(route = NavigationScreen.FilterPlace.route) {
+            FilterPlaceDialogScreen(
+                navController = navController,
+            )
         }
 
         composable(route = NavigationScreen.ReviewPlace.route) {

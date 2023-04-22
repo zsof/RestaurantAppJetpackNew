@@ -32,7 +32,7 @@ class NewPlaceDialogViewModel @Inject constructor(
     }
 
     var dialogOpen = mutableStateOf(true)
-    var expanded = mutableStateOf(false)
+    var expandedCategoryMenu = mutableStateOf(false)
 
     var galleryPermissionOpen = mutableStateOf(false)
     var cameraPermissionOpen = mutableStateOf(false)

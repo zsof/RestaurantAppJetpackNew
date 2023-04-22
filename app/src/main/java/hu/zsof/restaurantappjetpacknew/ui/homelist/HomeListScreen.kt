@@ -13,21 +13,25 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import hu.zsof.restaurantappjetpacknew.R
 import hu.zsof.restaurantappjetpacknew.model.Place
 import hu.zsof.restaurantappjetpacknew.model.enums.Price
+import hu.zsof.restaurantappjetpacknew.network.repository.LocalDataStateService
 
 @OptIn(ExperimentalPermissionsApi::class)
 @ExperimentalMaterial3Api
@@ -36,6 +40,8 @@ fun HomeListScreen(
     viewModel: HomeViewModel = hiltViewModel(),
     onFabClick: () -> Unit,
     onClickPlaceItem: (Long) -> Unit,
+    onFilterClick: () -> Unit,
+    navController: NavHostController,
 ) {
     // LaunchedEffect should be used when you want that some action must be taken
     // when your composable is first launched/relaunched (or when the key parameter has changed).
@@ -52,6 +58,8 @@ fun HomeListScreen(
         // Ha ez a homeListItem-ben lenne, akkor meg minden egyes item-re lefutna, de elég egyszer lekérni ezt
         viewModel.getUser()
     }
+
+    val filteredPlaces = LocalDataStateService.filteredPlaces.observeAsState()
 
 /*    val permissionStateCamera =
         rememberPermissionState(permission = Manifest.permission.CAMERA)
@@ -101,14 +109,47 @@ fun HomeListScreen(
                     .padding(0.dp, 0.dp, 0.dp, 38.dp)
                     .background(MaterialTheme.colorScheme.background),
             ) {
-              /*  Button(onClick = { permissionStateCamera.launchPermissionRequest() }) {
-                    Text(text = "Camera")
-                }*/
-                LazyColumn(
-                    contentPadding = PaddingValues(8.dp),
+                /*  Button(onClick = { permissionStateCamera.launchPermissionRequest() }) {
+                      Text(text = "Camera")
+                  }*/
+
+                IconButton(
+                    onClick = onFilterClick,
+                    modifier = Modifier
+                        .align(Alignment.End)
+                        .padding(8.dp),
                 ) {
-                    items(places.value) {
-                        HomeListItem(place = it, onClickPlaceItem = onClickPlaceItem)
+                    Icon(
+                        imageVector = Icons.Filled.FilterAlt,
+                        contentDescription = null,
+                        modifier = Modifier.size(36.dp),
+                        tint = Color.DarkGray,
+                    )
+                }
+
+                println("filtered ${LocalDataStateService.filteredPlaces}")
+                if (!filteredPlaces.value.isNullOrEmpty()) {
+                    Text(
+                        text = stringResource(id = R.string.clear_filters),
+                        modifier = Modifier
+                            .align(Alignment.End)
+                            .padding(8.dp)
+                            .clickable(onClick = { LocalDataStateService.filteredPlaces.value = mutableListOf() }),
+                    )
+                    LazyColumn(
+                        contentPadding = PaddingValues(8.dp),
+                    ) {
+                        items(filteredPlaces.value!!) { filteredPlace ->
+                            HomeListItem(place = filteredPlace, onClickPlaceItem = onClickPlaceItem)
+                        }
+                    }
+                } else {
+                    LazyColumn(
+                        contentPadding = PaddingValues(8.dp),
+                    ) {
+                        items(places.value) {
+                            HomeListItem(place = it, onClickPlaceItem = onClickPlaceItem)
+                        }
                     }
                 }
             }
