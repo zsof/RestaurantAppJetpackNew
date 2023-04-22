@@ -253,7 +253,6 @@ fun NewPlaceDialogScreen(viewModel: NewPlaceDialogViewModel = hiltViewModel()) {
                                         text = { Text(text = selectionOption) },
                                         onClick = {
                                             selectedOptionText = selectionOption
-                                            println("selected $selectedOptionText  $selectedOption")
                                             viewModel.expanded.value = false
                                         },
                                     )
@@ -333,52 +332,8 @@ fun NewPlaceDialogScreen(viewModel: NewPlaceDialogViewModel = hiltViewModel()) {
                     )
                     Spacer(modifier = Modifier.height(10.dp))
 
-                    Row() {
-                        Column(horizontalAlignment = Alignment.Start) {
-                            filterOptions.forEach { filter ->
-                                var checked by remember {
-                                    mutableStateOf(false)
-                                }
-                                Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Checkbox(
-                                        checked = checked,
-                                        onCheckedChange = { checkedNew ->
-                                            checked = checkedNew
-                                        },
-                                    )
-                                    Text(
-                                        modifier = Modifier.padding(start = 2.dp),
-                                        text = filter,
-                                        style = TextStyle(fontSize = 14.sp),
-                                    )
-                                }
-                            }
-                        }
+                    PlaceFilter()
 
-                        Spacer(Modifier.weight(1f))
-
-                        Column {
-                            filterOptionsRight.forEach { filter ->
-                                var checked by remember {
-                                    mutableStateOf(false)
-                                }
-                                Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Checkbox(
-                                        checked = checked,
-                                        onCheckedChange = { checkedNew ->
-                                            checked = checkedNew
-                                            println("chechckob $checked  $checkedNew  $filter ")
-                                        },
-                                    )
-                                    Text(
-                                        modifier = Modifier.padding(start = 2.dp),
-                                        text = filter,
-                                        style = TextStyle(fontSize = 14.sp),
-                                    )
-                                }
-                            }
-                        }
-                    }
                     Spacer(modifier = Modifier.height(10.dp))
                     Text(
                         text = stringResource(id = R.string.opening_hours),
@@ -404,19 +359,7 @@ fun NewPlaceDialogScreen(viewModel: NewPlaceDialogViewModel = hiltViewModel()) {
                                 viewModel.addNewPlace(
                                     typeValue = Type.getByName(selectedOptionText),
                                     priceValue = viewModel.priceValue,
-                                    /* filter = CustomFilter(
-                                         glutenFree = glutenFreeAdd.isChecked,
-                                         lactoseFree = lactoseFreeAdd.isChecked,
-                                         vegetarian = vegetarianAdd.isChecked,
-                                         vegan = veganAdd.isChecked,
-                                         fastFood = fastFoodAdd.isChecked,
-                                         parkingAvailable = parkingAdd.isChecked,
-                                         dogFriendly = dogAdd.isChecked,
-                                         familyPlace = familyPlaceAdd.isChecked,
-                                         delivery = deliveryAdd.isChecked,
-                                         creditCard = creditCardAdd.isChecked,
-                                     ),*/
-                                    image = imageFilePath.toString(),
+                                    image = imageFilePath,
                                 )
                                 viewModel.dialogOpen.value = false
                             }

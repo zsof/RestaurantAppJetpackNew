@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.maps.model.LatLng
 import dagger.hilt.android.lifecycle.HiltViewModel
+import hu.zsof.restaurantappjetpacknew.model.CustomFilter
 import hu.zsof.restaurantappjetpacknew.model.enums.Price
 import hu.zsof.restaurantappjetpacknew.model.enums.Type
 import hu.zsof.restaurantappjetpacknew.network.repository.LocalDataStateService
@@ -51,10 +52,21 @@ class NewPlaceDialogViewModel @Inject constructor(
     var websiteValue = mutableStateOf("")
     var emailValue = mutableStateOf("")
     var phoneValue = mutableStateOf("")
+
+    var glutenFreeChecked = mutableStateOf(false)
+    var lactoseFreeChecked = mutableStateOf(false)
+    var vegetarianChecked = mutableStateOf(false)
+    var veganChecked = mutableStateOf(false)
+    var fastFoodChecked = mutableStateOf(false)
+    var parkingChecked = mutableStateOf(false)
+    var familyPlaceChecked = mutableStateOf(false)
+    var dogFriendlyChecked = mutableStateOf(false)
+    var deliveryChecked = mutableStateOf(false)
+    var creditCardChecked = mutableStateOf(false)
+
     fun addNewPlace(
         typeValue: Type,
         priceValue: Price,
-        // filterValue: CustomFilter,
         image: String,
     ) {
         try {
@@ -71,7 +83,18 @@ class NewPlaceDialogViewModel @Inject constructor(
                         phoneValue.value,
                         type = typeValue,
                         price = priceValue,
-                        // filter = filterValue,
+                        filter = CustomFilter(
+                            glutenFree = glutenFreeChecked.value,
+                            lactoseFree = lactoseFreeChecked.value,
+                            vegetarian = vegetarianChecked.value,
+                            vegan = veganChecked.value,
+                            fastFood = fastFoodChecked.value,
+                            parkingAvailable = parkingChecked.value,
+                            dogFriendly = dogFriendlyChecked.value,
+                            familyPlace = familyPlaceChecked.value,
+                            delivery = deliveryChecked.value,
+                            creditCard = creditCardChecked.value,
+                        ),
                         latitude = latLang.latitude,
                         longitude = latLang.longitude,
                     ),
