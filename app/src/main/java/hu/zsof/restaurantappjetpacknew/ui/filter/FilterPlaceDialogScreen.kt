@@ -37,7 +37,7 @@ fun FilterPlaceDialogScreen(
     viewModel: FilterPlaceDialogViewModel = hiltViewModel(),
     navController: NavHostController,
 ) {
-    val categoryOptions = stringArrayResource(id = R.array.category_items)
+    val categoryOptions = stringArrayResource(id = R.array.filter_category_items)
     var selectedOptionText by remember { mutableStateOf(categoryOptions[0]) }
 
     if (viewModel.dialogOpen.value) {

@@ -2,7 +2,7 @@ package hu.zsof.restaurantappjetpacknew.model.enums
 
 enum class Type {
     // TODO valami paraméter név + type, mert így fast_food kell a spinnerbe is h egyezzen, és a többnyelvűséget sem támogatja
-    RESTAURANT, CAFE, PATISSERIE, BAKERY, BAR, FAST_FOOD;
+    RESTAURANT, CAFE, PATISSERIE, BAKERY, BAR, FAST_FOOD, EMPTY;
 
     companion object {
 

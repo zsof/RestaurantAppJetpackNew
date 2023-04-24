@@ -93,7 +93,8 @@
     <string name="photo_picker_title">Photo picker</string>
     <string name="send">Küldés</string>
 
-    <string-array name="category_items">
+    <string-array name="filter_category_items">
+        <item>Empty</item>
         <item>Restaurant</item>
         <item>Cafe</item>
         <item>Bakery</item>
@@ -102,19 +103,13 @@
         <item>Fast_Food</item>
     </string-array>
 
-    <string-array name="filter_options">
-        <item>Glutén mentes</item>
-        <item>Laktóz mentes</item>
-        <item>Vegetáriánus</item>
-        <item>Vegán</item>
-        <item>Gyors étterem</item>
+    <string-array name="new_category_items">
+        <item>Restaurant</item>
+        <item>Cafe</item>
+        <item>Bakery</item>
+        <item>Patisserie</item>
+        <item>Bar</item>
+        <item>Fast_Food</item>
     </string-array>
 
-    <string-array name="filter_option_right">
-        <item>Parkolási lehetőség</item>
-        <item>Családbarát</item>
-        <item>Kutyabarát</item>
-        <item>Kiszállítás</item>
-        <item>Kártyás fizetés</item>
-    </string-array>
 </resources>

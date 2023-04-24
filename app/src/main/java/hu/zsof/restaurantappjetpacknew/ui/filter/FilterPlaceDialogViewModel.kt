@@ -32,9 +32,8 @@ class FilterPlaceDialogViewModel @Inject constructor(private val placeRepository
     var deliveryChecked = mutableStateOf(false)
     var creditCardChecked = mutableStateOf(false)
 
-    fun filterPlaces(typeValue: Type) = runBlocking {
+    fun filterPlaces(typeValue: Type?) = runBlocking {
         // TODO ez nem filtereződik ,valszeg backend rossz
-        println("sajkukac ${glutenFreeChecked.value}")
         placeRepository.filterPlaces(
             FilterRequest(
                 filter = CustomFilter(

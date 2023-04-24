@@ -71,7 +71,7 @@ fun NewPlaceDialogScreen(viewModel: NewPlaceDialogViewModel = hiltViewModel()) {
         }
     }
 
-    val categoryOptions = stringArrayResource(id = R.array.category_items)
+    val categoryOptions = stringArrayResource(id = R.array.new_category_items)
     var selectedOptionText by remember { mutableStateOf(categoryOptions[0]) }
 
     // TODO error
