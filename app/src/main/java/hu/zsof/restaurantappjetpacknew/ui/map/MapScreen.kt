@@ -13,7 +13,9 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
+import hu.zsof.restaurantappjetpacknew.model.convertToPlaceMapResponse
 import hu.zsof.restaurantappjetpacknew.network.repository.LocalDataStateService
+import hu.zsof.restaurantappjetpacknew.network.response.PlaceMapResponse
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
@@ -89,13 +91,41 @@ fun LocationPermissions(
 fun PlaceMarkers(viewModel: MapViewModel) {
     LaunchedEffect(key1 = Unit) {
         viewModel.requestPlaceData()
+        viewModel.getUser()
     }
+
     val places = viewModel.places.observeAsState(listOf())
-    for (place in places.value) {
+    val user = viewModel.userData.observeAsState().value
+    val favIdList = viewModel.favPlaceIds.observeAsState().value
+
+    // User által (profilban) beállított alap filterek, ha nincs benne semmi, marad a simma places
+    var userFilteredPlaces = mutableListOf<PlaceMapResponse>()
+    if (user != null) {
+        userFilteredPlaces = places.value.filter { place ->
+            user.filterItems.convertToList().compare(place.filterItems.convertToList())
+        }.toMutableList()
+    }
+
+    // Szűrőben beállított ideiglenes filterek
+    val globalFilteredPlaces = LocalDataStateService.filteredPlaces.observeAsState(listOf())
+
+    val mapPlacesToShow = if (!globalFilteredPlaces.value.isNullOrEmpty()) {
+        globalFilteredPlaces.value.convertToPlaceMapResponse()
+    } else {
+        userFilteredPlaces
+    }
+
+    for (place in mapPlacesToShow) {
+        val mapIcon = if (favIdList?.contains(place.id) == true) {
+            BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN)
+        } else {
+            BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)
+        }
+
         Marker(
             state = MarkerState(LatLng(place.latitude, place.longitude)),
             title = place.name,
-            icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED),
+            icon = mapIcon,
         )
     }
 }

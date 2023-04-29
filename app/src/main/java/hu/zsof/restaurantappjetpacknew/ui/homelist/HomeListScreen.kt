@@ -64,7 +64,7 @@ fun HomeListScreen(
         viewModel.getUser()
     }
 
-    val filteredPlaces = LocalDataStateService.filteredPlaces.observeAsState()
+    val globalFilteredPlaces = LocalDataStateService.filteredPlaces.observeAsState()
 
     Scaffold(
         floatingActionButton = {
@@ -95,7 +95,7 @@ fun HomeListScreen(
                     )
                 }
 
-                if (!filteredPlaces.value.isNullOrEmpty()) {
+                if (!globalFilteredPlaces.value.isNullOrEmpty()) {
                     Text(
                         text = stringResource(id = R.string.clear_filters),
                         modifier = Modifier
@@ -108,7 +108,7 @@ fun HomeListScreen(
                     LazyColumn(
                         contentPadding = PaddingValues(8.dp),
                     ) {
-                        items(filteredPlaces.value!!) { filteredPlace ->
+                        items(globalFilteredPlaces.value!!) { filteredPlace ->
                             HomeListItem(
                                 place = filteredPlace,
                                 onClickPlaceItem = onClickPlaceItem,
