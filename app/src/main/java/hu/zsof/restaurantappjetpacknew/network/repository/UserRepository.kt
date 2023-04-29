@@ -8,12 +8,12 @@ import javax.inject.Inject
 
 class UserRepository @Inject constructor(private val apiService: ApiService) {
 
-    suspend fun getUserProfile(): User? {
+    suspend fun getUserProfile(): User {
         return try {
             apiService.getUserProfile()
         } catch (e: Exception) {
             e.printStackTrace()
-            null
+            User()
         }
     }
 

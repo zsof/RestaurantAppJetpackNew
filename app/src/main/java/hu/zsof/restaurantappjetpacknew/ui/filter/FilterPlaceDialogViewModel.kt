@@ -33,7 +33,6 @@ class FilterPlaceDialogViewModel @Inject constructor(private val placeRepository
     var creditCardChecked = mutableStateOf(false)
 
     fun filterPlaces(typeValue: Type?) = runBlocking {
-        // TODO ez nem filtereződik ,valszeg backend rossz
         placeRepository.filterPlaces(
             FilterRequest(
                 filter = CustomFilter(

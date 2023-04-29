@@ -54,7 +54,6 @@ class ProfileViewModel @Inject constructor(
                     ),
                 ),
             )
-            // todo check if userProfile refreshes after update
         }
     }
 }

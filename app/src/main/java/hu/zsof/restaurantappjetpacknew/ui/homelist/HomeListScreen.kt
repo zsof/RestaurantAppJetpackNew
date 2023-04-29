@@ -47,11 +47,16 @@ fun HomeListScreen(
     // when your composable is first launched/relaunched (or when the key parameter has changed).
     // For example, when you want to request some data from your ViewModel or run some sort of animation
 
-    // Use rememberCoroutineScope() when you are using coroutines and need to cancel and relaunch the coroutine after an event
-    // Use LaunchedEffect() when you are using coroutines and need to cancel
-    // and relaunch the coroutine every time your parameter changes and it isn’t stored in a mutable state.
-
     val places = viewModel.places.observeAsState(listOf())
+    val user = viewModel.userData.observeAsState().value
+
+    var userFilteredPlaces = mutableListOf<Place>()
+    if (user != null) {
+        userFilteredPlaces = places.value.filter { place ->
+            user.filterItems.convertToList().compare(place.filter.convertToList())
+        }.toMutableList()
+    }
+
     // A homeScreen minden változáskor lefut, ezáltal a viewmodelles dolgok is, ha nem lennének launchedeffectben
     LaunchedEffect(key1 = "HomeList") {
         viewModel.showPlaces()
@@ -60,39 +65,6 @@ fun HomeListScreen(
     }
 
     val filteredPlaces = LocalDataStateService.filteredPlaces.observeAsState()
-
-/*    val permissionStateCamera =
-        rememberPermissionState(permission = Manifest.permission.CAMERA)
-    val emptyImageUri = Uri.parse("file://dev/null")
-    var imageUri by remember { mutableStateOf(emptyImageUri) }
-    if (imageUri != emptyImageUri) {
-        Box() {
-            Image(
-                modifier = Modifier.fillMaxSize(),
-                painter = rememberImagePainter(imageUri),
-                contentDescription = "Captured image",
-            )
-            Button(
-                modifier = Modifier.align(Alignment.BottomCenter),
-                onClick = {
-                    imageUri = emptyImageUri
-                },
-            ) {
-                Text("Remove image")
-            }
-        }
-    } else {
-        CameraPermission(
-            permissionState = permissionStateCamera,
-
-            onImageFile = { file ->
-                imageUri = file.toUri()
-            },
-        )
-    }*/
-    /*CameraPermission(
-        permissionState = permissionStateCamera,
-    )*/
 
     Scaffold(
         floatingActionButton = {
@@ -109,10 +81,6 @@ fun HomeListScreen(
                     .padding(0.dp, 0.dp, 0.dp, 38.dp)
                     .background(MaterialTheme.colorScheme.background),
             ) {
-                /*  Button(onClick = { permissionStateCamera.launchPermissionRequest() }) {
-                      Text(text = "Camera")
-                  }*/
-
                 IconButton(
                     onClick = onFilterClick,
                     modifier = Modifier
@@ -127,27 +95,31 @@ fun HomeListScreen(
                     )
                 }
 
-                println("filtered ${LocalDataStateService.filteredPlaces}")
                 if (!filteredPlaces.value.isNullOrEmpty()) {
                     Text(
                         text = stringResource(id = R.string.clear_filters),
                         modifier = Modifier
                             .align(Alignment.End)
                             .padding(8.dp)
-                            .clickable(onClick = { LocalDataStateService.filteredPlaces.value = mutableListOf() }),
+                            .clickable(onClick = {
+                                LocalDataStateService.filteredPlaces.value = mutableListOf()
+                            }),
                     )
                     LazyColumn(
                         contentPadding = PaddingValues(8.dp),
                     ) {
                         items(filteredPlaces.value!!) { filteredPlace ->
-                            HomeListItem(place = filteredPlace, onClickPlaceItem = onClickPlaceItem)
+                            HomeListItem(
+                                place = filteredPlace,
+                                onClickPlaceItem = onClickPlaceItem,
+                            )
                         }
                     }
                 } else {
                     LazyColumn(
                         contentPadding = PaddingValues(8.dp),
                     ) {
-                        items(places.value) {
+                        items(userFilteredPlaces) {
                             HomeListItem(place = it, onClickPlaceItem = onClickPlaceItem)
                         }
                     }
@@ -156,114 +128,6 @@ fun HomeListScreen(
         },
     )
 }
-/*
-
-@OptIn(ExperimentalPermissionsApi::class)
-@Composable
-fun CameraPermission(
-    permissionState: PermissionState,
-    onImageFile: (File) -> Unit = { },
-    cameraSelector: CameraSelector = CameraSelector.DEFAULT_BACK_CAMERA,
-) {
-    PermissionRequired(
-        permissionState = permissionState,
-        permissionNotGrantedContent = {
-            // if there was already a Manifest.permission request, but the user rejected it
-            if (permissionState.permissionRequested) {
-                AlertDialog(
-                    onDismissRequest = {
-                    },
-                    confirmButton = {
-                        Button(onClick = { permissionState.launchPermissionRequest() }) {
-                            Text("Request permission")
-                        }
-                    },
-                    text = { Text("Using the camera is important for this feature to be available. Please grant the permission.") },
-                )
-            }
-        },
-        // if the user has already denied permission twice
-        permissionNotAvailableContent = {
-        },
-    ) {
-        val context = LocalContext.current
-        val lifecycleOwner = LocalLifecycleOwner.current
-        val coroutineScope = rememberCoroutineScope()
-        var previewUseCase by remember { mutableStateOf<UseCase>(Preview.Builder().build()) }
-        val imageCaptureUseCase by remember {
-            mutableStateOf<ImageCapture>(
-                ImageCapture.Builder()
-                    .setCaptureMode(CAPTURE_MODE_MAXIMIZE_QUALITY)
-                    .build(),
-            )
-        }
-
-        Box {
-            CameraPreview(
-                modifier = Modifier.fillMaxSize(),
-                onUseCase = {
-                    previewUseCase = it
-                },
-            )
-            Button(
-                modifier = Modifier
-                    .wrapContentSize()
-                    .padding(16.dp)
-                    .align(Alignment.BottomCenter),
-                onClick = {
-                    coroutineScope.launch {
-                        onImageFile(imageCaptureUseCase.takePicture(context.executor))
-                    }
-                },
-            ) {
-                Text("Click!")
-            }
-        }
-        LaunchedEffect(previewUseCase) {
-            val cameraProvider = context.getCameraProvider()
-            try {
-                // Must unbind the use-cases before rebinding them.
-                cameraProvider.unbindAll()
-                cameraProvider.bindToLifecycle(
-                    lifecycleOwner,
-                    cameraSelector,
-                    previewUseCase,
-                    imageCaptureUseCase,
-                )
-            } catch (ex: Exception) {
-                Log.e("CameraCapture", "Failed to bind camera use cases", ex)
-            }
-        }
-    }
-}
-
-@Composable
-fun CameraPreview(
-    modifier: Modifier,
-    onUseCase: (UseCase) -> Unit = { },
-) {
-    AndroidView(
-        modifier = modifier,
-        factory = { context ->
-            val previewView = PreviewView(context).apply {
-                this.scaleType = scaleType
-                layoutParams = ViewGroup.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                )
-            }
-            onUseCase(
-                Preview.Builder()
-                    .build()
-                    .also {
-                        it.setSurfaceProvider(previewView.surfaceProvider)
-                    },
-            )
-            previewView
-        },
-    )
-}
-*/
 
 @ExperimentalMaterial3Api
 @Composable

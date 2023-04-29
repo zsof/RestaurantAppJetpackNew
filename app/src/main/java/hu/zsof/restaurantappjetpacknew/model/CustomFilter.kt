@@ -29,4 +29,40 @@ data class CustomFilter(
         map["creditCard"] = creditCard
         return map
     }
+
+    fun convertToList(): FilterList {
+        return FilterList(
+            mutableListOf(
+                glutenFree,
+                lactoseFree,
+                vegetarian,
+                vegan,
+                fastFood,
+                parkingAvailable,
+                dogFriendly,
+                familyPlace,
+                delivery,
+                creditCard,
+            ),
+        )
+    }
+}
+
+class FilterList(
+    val filters: MutableList<Boolean> = mutableListOf(),
+) {
+    fun compare(compareTo: FilterList): Boolean {
+        if (this.filters.size == compareTo.filters.size) {
+            for (i in 0 until filters.size) {
+                if (this.filters[i]) {
+                    if (!compareTo.filters[i]) {
+                        return false
+                    }
+                }
+            }
+            return true
+        } else {
+            return false
+        }
+    }
 }
