@@ -136,7 +136,6 @@ fun ReviewDetailsScreen(
                                 fontWeight = FontWeight.Bold,
                                 fontStyle = FontStyle.Italic,
                                 modifier = Modifier
-                                    // .align(Alignment.CenterHorizontally)
                                     .padding(16.dp),
                             )
 

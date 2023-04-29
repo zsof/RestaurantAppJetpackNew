@@ -22,6 +22,7 @@ import hu.zsof.restaurantappjetpacknew.ui.homelist.HomeListScreen
 import hu.zsof.restaurantappjetpacknew.ui.login.LoginScreen
 import hu.zsof.restaurantappjetpacknew.ui.map.MapScreen
 import hu.zsof.restaurantappjetpacknew.ui.newplace.NewPlaceDialogScreen
+import hu.zsof.restaurantappjetpacknew.ui.profile.ProfileScreen
 import hu.zsof.restaurantappjetpacknew.ui.register.RegisterScreen
 import hu.zsof.restaurantappjetpacknew.ui.review.ReviewDetailsScreen
 import hu.zsof.restaurantappjetpacknew.ui.review.ReviewPlaceListScreen
@@ -150,6 +151,9 @@ fun NavGraphBuilder.mainNavGraph(
                 placeId = navController.currentBackStackEntry?.arguments?.getLong(NavigationScreen.Details.Args.placeId)
                     ?: 0,
             )
+        }
+        composable(route = NavigationScreen.Profile.route) {
+            ProfileScreen()
         }
     }
 }

@@ -1,5 +1,6 @@
 package hu.zsof.restaurantappjetpacknew.ui.profile
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -15,6 +16,17 @@ class ProfileViewModel @Inject constructor(
     private val userRepository: UserRepository,
 ) :
     ViewModel() {
+
+    var glutenFreeChecked = mutableStateOf(false)
+    var lactoseFreeChecked = mutableStateOf(false)
+    var vegetarianChecked = mutableStateOf(false)
+    var veganChecked = mutableStateOf(false)
+    var fastFoodChecked = mutableStateOf(false)
+    var parkingChecked = mutableStateOf(false)
+    var familyPlaceChecked = mutableStateOf(false)
+    var dogFriendlyChecked = mutableStateOf(false)
+    var deliveryChecked = mutableStateOf(false)
+    var creditCardChecked = mutableStateOf(false)
 
     val userProfile = MutableLiveData<User>()
     fun getUserProfile() {
