@@ -41,7 +41,7 @@ fun PasswordTextField(
     }
 
     val shape =
-        RoundedCornerShape(topEnd = 20.dp, topStart = 20.dp, bottomStart = 20.dp, bottomEnd = 20.dp)
+        RoundedCornerShape(20.dp)
 
     OutlinedTextField(
         value = value.trim(),

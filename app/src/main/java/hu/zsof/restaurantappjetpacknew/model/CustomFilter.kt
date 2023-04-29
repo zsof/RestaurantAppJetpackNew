@@ -14,4 +14,19 @@ data class CustomFilter(
     var familyPlace: Boolean = false,
     var delivery: Boolean = false,
     var creditCard: Boolean = false,
-) : Serializable
+) : Serializable {
+    fun convertToMap(): MutableMap<String, Boolean> {
+        val map: MutableMap<String, Boolean> = mutableMapOf()
+        map["glutenFree"] = glutenFree
+        map["lactoseFree"] = lactoseFree
+        map["vegetarian"] = vegetarian
+        map["vegan"] = vegan
+        map["fastFood"] = fastFood
+        map["parkingAvailable"] = parkingAvailable
+        map["dogFriendly"] = dogFriendly
+        map["familyPlace"] = familyPlace
+        map["delivery"] = delivery
+        map["creditCard"] = creditCard
+        return map
+    }
+}

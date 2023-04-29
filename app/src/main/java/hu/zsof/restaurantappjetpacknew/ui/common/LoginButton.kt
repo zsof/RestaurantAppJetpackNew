@@ -18,15 +18,15 @@ fun LoginButton(
     text: String,
 ) {
     val shape =
-        RoundedCornerShape(topEnd = 20.dp, topStart = 20.dp, bottomStart = 20.dp, bottomEnd = 20.dp)
+        RoundedCornerShape(20.dp)
     Button(
         shape = shape,
         modifier = Modifier
             .fillMaxWidth()
-           /* .clickable(
-                onClick = onClick,
-                role = Role.Button,
-            )*/
+            /* .clickable(
+                 onClick = onClick,
+                 role = Role.Button,
+             )*/
             .height(80.dp)
             .padding(vertical = 16.dp),
         onClick = onClick,

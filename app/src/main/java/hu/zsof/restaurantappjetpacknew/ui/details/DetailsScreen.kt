@@ -25,8 +25,10 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import hu.zsof.restaurantappjetpacknew.R
+import hu.zsof.restaurantappjetpacknew.ui.common.TextChip
 import hu.zsof.restaurantappjetpacknew.util.extension.imageUrl
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun DetailsScreen(
     viewModel: DetailsViewModel = hiltViewModel(),
@@ -60,6 +62,18 @@ fun DetailsScreen(
                 modifier = Modifier.align(Alignment.CenterHorizontally).padding(16.dp),
             )
 
+            FlowRow(horizontalArrangement = Arrangement.Center) {
+                place.filter.convertToMap().forEach {
+                    println("one filter $it")
+                    if (it.value) {
+                        TextChip(
+                            isSelected = true,
+                            text = it.key,
+                        )
+                    }
+                }
+            }
+
             Row(horizontalArrangement = Arrangement.Start) {
                 Icon(
                     imageVector = Icons.Outlined.Map,
@@ -74,6 +88,7 @@ fun DetailsScreen(
                     maxLines = 3,
                 )
             }
+
             Row(horizontalArrangement = Arrangement.Start) {
                 Icon(
                     imageVector = Icons.Outlined.Web,
