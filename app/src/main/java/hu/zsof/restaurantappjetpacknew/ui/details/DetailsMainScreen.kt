@@ -30,7 +30,7 @@ import hu.zsof.restaurantappjetpacknew.util.extension.imageUrl
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun DetailsScreen(
+fun DetailsMainScreen(
     viewModel: DetailsViewModel = hiltViewModel(),
     placeId: Long,
 ) {
@@ -62,14 +62,15 @@ fun DetailsScreen(
                 modifier = Modifier.align(Alignment.CenterHorizontally).padding(16.dp),
             )
 
-            FlowRow(horizontalArrangement = Arrangement.Center) {
-                place.filter.convertToMap().forEach {
-                    println("one filter $it")
-                    if (it.value) {
-                        TextChip(
-                            isSelected = true,
-                            text = it.key,
-                        )
+            Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
+                FlowRow(horizontalArrangement = Arrangement.Center) {
+                    place.filter.convertToMap().forEach {
+                        if (it.value) {
+                            TextChip(
+                                isSelected = true,
+                                text = it.key,
+                            )
+                        }
                     }
                 }
             }

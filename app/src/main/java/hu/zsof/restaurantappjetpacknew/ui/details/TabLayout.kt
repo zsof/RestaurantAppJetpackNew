@@ -77,8 +77,8 @@ fun TabsContent(pagerState: PagerState, placeId: Long) {
     HorizontalPager(state = pagerState) { page ->
         println("horizontal $placeId")
         when (page) {
-            0 -> DetailsScreen(placeId = placeId)
-            1 -> TabContentScreen(data = "Welcome to Image Screen")
+            0 -> DetailsMainScreen(placeId = placeId)
+            1 -> DetailsImageScreen(placeId = placeId)
             2 -> TabContentScreen(data = "Welcome to Comments Screen")
         }
     }

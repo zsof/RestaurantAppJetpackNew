@@ -128,26 +128,27 @@ fun ReviewDetailsScreen(
                             .align(Alignment.CenterHorizontally),
                     )
 
-                    // TODO nincs középen!!!! arghhhh
-                    Row(horizontalArrangement = Arrangement.Center) {
-                        Text(
-                            text = placeInReview.name,
-                            style = MaterialTheme.typography.h5,
-                            fontWeight = FontWeight.Bold,
-                            fontStyle = FontStyle.Italic,
-                            modifier = Modifier
-                                // .align(Alignment.CenterHorizontally)
-                                .padding(16.dp),
-                        )
+                    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
+                        Row(horizontalArrangement = Arrangement.Center) {
+                            Text(
+                                text = placeInReview.name,
+                                style = MaterialTheme.typography.h5,
+                                fontWeight = FontWeight.Bold,
+                                fontStyle = FontStyle.Italic,
+                                modifier = Modifier
+                                    // .align(Alignment.CenterHorizontally)
+                                    .padding(16.dp),
+                            )
 
-                        if (!placeInReview.problem.isNullOrEmpty()) {
-                            IconButton(onClick = {
-                                showProblemDialog.value = true
-                            }) {
-                                Icon(
-                                    imageVector = Icons.Filled.ReportProblem,
-                                    contentDescription = null,
-                                )
+                            if (!placeInReview.problem.isNullOrEmpty()) {
+                                IconButton(onClick = {
+                                    showProblemDialog.value = true
+                                }) {
+                                    Icon(
+                                        imageVector = Icons.Filled.ReportProblem,
+                                        contentDescription = null,
+                                    )
+                                }
                             }
                         }
                     }

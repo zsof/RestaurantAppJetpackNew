@@ -1,5 +1,7 @@
 package hu.zsof.restaurantappjetpacknew.ui.details
 
+import android.net.Uri
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,6 +16,12 @@ class DetailsViewModel @Inject constructor(private val placeRepository: PlaceRep
     ViewModel() {
 
     val placeById = MutableLiveData<Place>()
+
+    var galleryPermissionOpen = mutableStateOf(false)
+    var cameraPermissionOpen = mutableStateOf(false)
+
+    val photoDialogOpen = mutableStateOf(false)
+    val selectedImageUri = mutableStateOf<Uri?>(null)
 
     fun getPlaceById(placeId: Long) {
         viewModelScope.launch {
