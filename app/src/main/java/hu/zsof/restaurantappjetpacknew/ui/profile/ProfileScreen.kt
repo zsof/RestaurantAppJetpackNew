@@ -47,6 +47,17 @@ fun ProfileScreen(
                 .align(Alignment.CenterHorizontally),
         )
         if (user != null) {
+            viewModel.glutenFreeChecked.value = user.filterItems.glutenFree
+            viewModel.lactoseFreeChecked.value = user.filterItems.lactoseFree
+            viewModel.vegetarianChecked.value = user.filterItems.vegetarian
+            viewModel.veganChecked.value = user.filterItems.vegan
+            viewModel.fastFoodChecked.value = user.filterItems.fastFood
+            viewModel.parkingChecked.value = user.filterItems.parkingAvailable
+            viewModel.familyPlaceChecked.value = user.filterItems.familyPlace
+            viewModel.dogFriendlyChecked.value = user.filterItems.dogFriendly
+            viewModel.deliveryChecked.value = user.filterItems.delivery
+            viewModel.creditCardChecked.value = user.filterItems.creditCard
+
             BaseProfile(user)
             Column(modifier = Modifier.padding(bottom = 44.dp)) {
                 Column(Modifier.verticalScroll(rememberScrollState())) {
@@ -58,6 +69,7 @@ fun ProfileScreen(
                     ) {
                         Button(
                             onClick = {
+                                viewModel.updateUserProfile()
                             },
                         ) {
                             Text(

@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import hu.zsof.restaurantappjetpacknew.model.CustomFilter
 import hu.zsof.restaurantappjetpacknew.model.User
 import hu.zsof.restaurantappjetpacknew.network.repository.UserRepository
 import hu.zsof.restaurantappjetpacknew.network.request.UserUpdateProfileRequest
@@ -35,9 +36,24 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
-    fun updateUserProfile(userUpdateProfileRequest: UserUpdateProfileRequest) {
+    fun updateUserProfile() {
         viewModelScope.launch {
-            userRepository.updateUserProfile(userUpdateProfileRequest)
+            userRepository.updateUserProfile(
+                UserUpdateProfileRequest(
+                    filters = CustomFilter(
+                        glutenFree = glutenFreeChecked.value,
+                        lactoseFree = lactoseFreeChecked.value,
+                        vegetarian = vegetarianChecked.value,
+                        vegan = veganChecked.value,
+                        fastFood = fastFoodChecked.value,
+                        parkingAvailable = parkingChecked.value,
+                        dogFriendly = dogFriendlyChecked.value,
+                        familyPlace = familyPlaceChecked.value,
+                        delivery = deliveryChecked.value,
+                        creditCard = creditCardChecked.value,
+                    ),
+                ),
+            )
             // todo check if userProfile refreshes after update
         }
     }

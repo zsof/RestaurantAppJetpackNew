@@ -10,4 +10,5 @@ data class User(
     val image: String? = null,
     val userType: String = ROLE_USER,
     val favPlaceIds: MutableList<Long> = mutableListOf(),
+    val filterItems: CustomFilter = CustomFilter(),
 )
