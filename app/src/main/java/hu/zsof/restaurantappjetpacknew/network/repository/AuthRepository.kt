@@ -22,7 +22,7 @@ class AuthRepository @Inject constructor(private val apiService: ApiService) {
     suspend fun loginUser(loginDataRequest: LoginDataRequest): LoggedUserResponse {
         return try {
             val simpleData = "${loginDataRequest.email}:${loginDataRequest.password}"
-            val encodedData = android.util.Base64.encodeToString(simpleData.toByteArray(), Base64.NO_WRAP)
+            val encodedData = Base64.encodeToString(simpleData.toByteArray(), Base64.NO_WRAP)
             apiService.loginUser("Basic $encodedData")
         } catch (e: Exception) {
             e.printStackTrace()

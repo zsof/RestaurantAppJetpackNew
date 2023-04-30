@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import hu.zsof.restaurantappjetpacknew.network.repository.AuthRepository
 import hu.zsof.restaurantappjetpacknew.network.request.LoginDataRequest
-import hu.zsof.restaurantappjetpacknew.network.response.LoggedUserResponse
 import hu.zsof.restaurantappjetpacknew.util.Constants
+import kotlinx.coroutines.runBlocking
 import java.util.regex.Pattern
 import javax.inject.Inject
 
@@ -22,8 +22,13 @@ class LoginViewModel @Inject constructor(
     var isPasswordVisible = mutableStateOf(false)
     var isPasswordError = mutableStateOf(false)
 
-    suspend fun login(): LoggedUserResponse {
-        return authRepository.loginUser(LoginDataRequest(email.value, password.value))
+    suspend fun login() = runBlocking {
+        return@runBlocking authRepository.loginUser(
+            LoginDataRequest(
+                email.value,
+                password.value,
+            ),
+        )
     }
 
     fun validateEmail() {
@@ -46,11 +51,11 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    /* fun <T> setAppPreference(key: String, value: T) {
-         sharedPref.setPreference(key, value)
-     }
+/* fun <T> setAppPreference(key: String, value: T) {
+     sharedPref.setPreference(key, value)
+ }
 
-     fun <T> getAppPreference(key: String): T {
-         return sharedPref.getPreference(key)
-     }*/
+ fun <T> getAppPreference(key: String): T {
+     return sharedPref.getPreference(key)
+ }*/
 }

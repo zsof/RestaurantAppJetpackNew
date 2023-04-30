@@ -13,6 +13,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -30,7 +31,9 @@ import hu.zsof.restaurantappjetpacknew.network.repository.LocalDataStateService
 import hu.zsof.restaurantappjetpacknew.ui.common.LoginButton
 import hu.zsof.restaurantappjetpacknew.ui.common.NormalTextField
 import hu.zsof.restaurantappjetpacknew.ui.common.PasswordTextField
+import hu.zsof.restaurantappjetpacknew.ui.common.showToast
 import hu.zsof.restaurantappjetpacknew.util.Constants.ROLE_ADMIN
+import hu.zsof.restaurantappjetpacknew.util.Constants.ROLE_OWNER
 import hu.zsof.restaurantappjetpacknew.util.Constants.ROLE_USER
 import kotlinx.coroutines.launch
 
@@ -42,7 +45,9 @@ fun LoginScreen(
     onRegisterClick: () -> Unit,
     viewModel: LoginViewModel = hiltViewModel(),
 ) {
+    val context = LocalContext.current
     val scope = rememberCoroutineScope()
+
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -108,18 +113,28 @@ fun LoginScreen(
                 onClick = {
                     scope.launch {
                         val response = viewModel.login()
+
                         if (response.isSuccess) {
+                            showToast(
+                                context = context,
+                                message = (response.successMessage),
+                            )
                             onLoginClick(viewModel.email.value)
-                            if (response.user.userType == ROLE_ADMIN) {
-                                LocalDataStateService.userType.postValue(ROLE_ADMIN)
-                            } else if (response.user.userType == ROLE_USER) {
-                                LocalDataStateService.userType.postValue(ROLE_USER)
+                            when (response.user.userType) {
+                                ROLE_ADMIN -> {
+                                    LocalDataStateService.userType.postValue(ROLE_ADMIN)
+                                }
+                                ROLE_USER -> {
+                                    LocalDataStateService.userType.postValue(ROLE_USER)
+                                }
+                                ROLE_OWNER -> {
+                                    LocalDataStateService.userType.postValue(ROLE_OWNER)
+                                }
                             }
-                        } else {
-                            println("login failed ${response.error}")
                         }
                     }
                 },
+
                 text = stringResource(R.string.log_in),
             )
 
@@ -190,14 +205,3 @@ fun LoginScreen(
         }
     }
 }
-
-/*@ExperimentalMaterial3Api
-@Preview(showBackground = true)
-@Composable
-fun LoginScreen_Preview() {
-    LoginScreen(
-        onLoginClick = { },
-        onRegisterClick = { },
-        navController = {}
-    )
-}*/

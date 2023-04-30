@@ -23,7 +23,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class InjectModule {
+class NetworkModule {
 
     /* @Singleton
      @Provides
@@ -118,7 +118,7 @@ class InjectModule {
                     Toast.makeText(
                         context,
                         msg,
-                        Toast.LENGTH_LONG,
+                        Toast.LENGTH_SHORT,
                     ).show()
                 }
             }

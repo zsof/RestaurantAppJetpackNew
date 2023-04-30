@@ -33,6 +33,7 @@ import hu.zsof.restaurantappjetpacknew.R
 import hu.zsof.restaurantappjetpacknew.ui.common.LoginButton
 import hu.zsof.restaurantappjetpacknew.ui.common.NormalTextField
 import hu.zsof.restaurantappjetpacknew.ui.common.PasswordTextField
+import hu.zsof.restaurantappjetpacknew.ui.common.showToast
 import kotlinx.coroutines.launch
 
 @ExperimentalMaterial3Api
@@ -164,11 +165,7 @@ fun RegisterScreen(
                     scope.launch {
                         val response = viewModel.register()
                         if (response.isSuccess) {
-                            println("sikeres ${response.successMessage}")
-                            // onRegisterClick(viewModel.userName.value)
-                        } else {
-                            // Toast.makeText(context, response.error, Toast.LENGTH_LONG)
-                            println("sikertelen ${response.error}")
+                            showToast(context, response.successMessage)
                         }
                     }
                 },

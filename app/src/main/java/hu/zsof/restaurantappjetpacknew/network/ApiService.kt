@@ -10,7 +10,7 @@ import hu.zsof.restaurantappjetpacknew.network.request.UserUpdateProfileRequest
 import hu.zsof.restaurantappjetpacknew.network.response.LoggedUserResponse
 import hu.zsof.restaurantappjetpacknew.network.response.NetworkResponse
 import hu.zsof.restaurantappjetpacknew.network.response.PlaceMapResponse
-import okhttp3.*
+import okhttp3.MultipartBody
 import retrofit2.http.*
 
 interface ApiService {
