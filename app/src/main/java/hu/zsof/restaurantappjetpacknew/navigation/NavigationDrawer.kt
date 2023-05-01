@@ -5,16 +5,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -29,34 +23,33 @@ fun Drawer(
     scaffoldState: ScaffoldState,
     scope: CoroutineScope,
 ) {
-    Column(modifier = Modifier.padding(bottom = 44.dp).fillMaxHeight()) {
-        Surface(
-            modifier = Modifier
-                .fillMaxWidth(1f),
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Text(text = "I", fontSize = 28.sp, fontWeight = FontWeight.Bold)
-                Spacer(modifier = Modifier.width(7.dp))
-                Icon(
-                    imageVector = Icons.Filled.Favorite,
-                    contentDescription = "",
-                    tint = Color.Red,
-                    modifier = Modifier.height(40.dp),
-                )
-                Spacer(modifier = Modifier.width(7.dp))
-                Text("Jetpack Compose", fontSize = 28.sp, fontWeight = FontWeight.Bold)
-            }
-        }
+    Column() {
+        /* Surface(
+             modifier = Modifier
+                 .fillMaxWidth(1f),
+         ) {
+             Row(
+                 modifier = Modifier.fillMaxWidth(),
+                 horizontalArrangement = Arrangement.Center,
+                 verticalAlignment = Alignment.CenterVertically,
+             ) {
+                 Text(text = "I", fontSize = 28.sp, fontWeight = FontWeight.Bold)
+                 Spacer(modifier = Modifier.width(7.dp))
+                 Icon(
+                     imageVector = Icons.Filled.Favorite,
+                     contentDescription = "",
+                     tint = Color.Red,
+                     modifier = Modifier.height(40.dp),
+                 )
+                 Spacer(modifier = Modifier.width(7.dp))
+                 Text("Jetpack Compose", fontSize = 28.sp, fontWeight = FontWeight.Bold)
+             }
+         }
+         Spacer(modifier = Modifier.height(10.dp))*/
 
-        Spacer(modifier = Modifier.height(10.dp))
-
+        Spacer(modifier = Modifier.height(20.dp))
         item.forEach() { item ->
             Row(
-                verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable(onClick = {
@@ -92,16 +85,21 @@ fun Drawer(
                 )
             }
         }
-        Spacer(modifier = Modifier.weight(1f))
-        Text(
-            text = "Decoding Jetpack-Compose",
-
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            textAlign = TextAlign.Center,
-            fontSize = 25.sp,
-            fontWeight = FontWeight.Bold,
-        )
-
-        Spacer(modifier = Modifier.height(30.dp))
     }
 }
+
+/*fun customShape(height: Float) = object : Shape {
+    override fun createOutline(
+        size: Size,
+        layoutDirection: LayoutDirection,
+        density: Density,
+    ): Outline {
+        return Outline.Rectangle(Rect(1000f, 0f, 200f, height))
+    }
+}
+
+@Composable
+fun Dp.toPx(): Float {
+    val density = LocalDensity.current.density
+    return this.value * density
+}*/

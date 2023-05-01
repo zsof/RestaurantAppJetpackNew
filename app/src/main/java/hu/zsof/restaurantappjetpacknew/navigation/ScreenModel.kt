@@ -38,6 +38,12 @@ class ScreenModel {
             route = "reviewPlace",
         )
 
+        object OwnPlace : NavigationScreen(
+            R.string.own_places,
+            Icons.Outlined.Edit,
+            route = "ownPlace",
+        )
+
         object Logout : NavigationScreen(
             R.string.logout,
             Icons.Outlined.ExitToApp,
@@ -86,6 +92,12 @@ class ScreenModel {
         NavigationScreen.Home,
         NavigationScreen.Map,
         NavigationScreen.ReviewPlace,
+    )
+
+    val ownerBottomNavItems = listOf(
+        NavigationScreen.Home,
+        NavigationScreen.Map,
+        NavigationScreen.OwnPlace,
     )
 
     val userBottomNavItems = listOf(

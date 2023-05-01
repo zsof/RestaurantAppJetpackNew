@@ -1,9 +1,7 @@
 package hu.zsof.restaurantappjetpacknew.navigation
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.DrawerValue
 import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberDrawerState
@@ -204,6 +202,7 @@ fun NavGraph(
         Scaffold(
             scaffoldState = scaffoldState,
             drawerGesturesEnabled = true,
+            // drawerShape = customShape(LocalConfiguration.current.screenHeightDp.dp.toPx()),
             drawerContent = {
                 CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
                     Drawer(
