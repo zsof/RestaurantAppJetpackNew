@@ -32,6 +32,7 @@ import hu.zsof.restaurantappjetpacknew.R
 import hu.zsof.restaurantappjetpacknew.model.Place
 import hu.zsof.restaurantappjetpacknew.model.enums.Price
 import hu.zsof.restaurantappjetpacknew.network.repository.LocalDataStateService
+import hu.zsof.restaurantappjetpacknew.util.Constants.ROLE_OWNER
 
 @OptIn(ExperimentalPermissionsApi::class)
 @ExperimentalMaterial3Api
@@ -67,12 +68,15 @@ fun HomeListScreen(
     val globalFilteredPlaces = LocalDataStateService.filteredPlaces.observeAsState()
 
     Scaffold(
+
         floatingActionButton = {
-            FloatingActionButton(
-                onClick = onFabClick,
-                modifier = Modifier.padding(PaddingValues(bottom = 44.dp)),
-            ) {
-                Icon(imageVector = Icons.Filled.Add, contentDescription = null)
+            if (user?.userType == ROLE_OWNER) {
+                FloatingActionButton(
+                    onClick = onFabClick,
+                    modifier = Modifier.padding(PaddingValues(bottom = 44.dp)),
+                ) {
+                    Icon(imageVector = Icons.Filled.Add, contentDescription = null)
+                }
             }
         },
         content = { padding ->

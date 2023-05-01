@@ -93,7 +93,9 @@ fun NavGraphBuilder.mainNavGraph(
             NewPlaceDialogScreen()
         }
         composable(route = ScreenModel.NavigationScreen.Map.route) {
-            MapScreen(onLongClick = { navController.navigate(ScreenModel.NavigationScreen.NewPlace.route) })
+            MapScreen(
+                onLongClick = { navController.navigate(ScreenModel.NavigationScreen.NewPlace.route) },
+            )
         }
 
         composable(route = ScreenModel.NavigationScreen.FilterPlace.route) {

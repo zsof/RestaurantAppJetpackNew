@@ -47,7 +47,9 @@ import coil.compose.AsyncImage
 import hu.zsof.restaurantappjetpacknew.R
 import hu.zsof.restaurantappjetpacknew.model.enums.FabButton
 import hu.zsof.restaurantappjetpacknew.ui.common.NormalTextField
+import hu.zsof.restaurantappjetpacknew.ui.common.TextChip
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun ReviewDetailsScreen(
     viewModel: ReviewPlaceViewModel = hiltViewModel(),
@@ -128,7 +130,10 @@ fun ReviewDetailsScreen(
                             .align(Alignment.CenterHorizontally),
                     )
 
-                    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier.fillMaxWidth(),
+                    ) {
                         Row(horizontalArrangement = Arrangement.Center) {
                             Text(
                                 text = placeInReview.name,
@@ -142,10 +147,26 @@ fun ReviewDetailsScreen(
                             if (!placeInReview.problem.isNullOrEmpty()) {
                                 IconButton(onClick = {
                                     showProblemDialog.value = true
-                                }) {
+                                }, modifier = Modifier.padding(top = 8.dp)) {
                                     Icon(
                                         imageVector = Icons.Filled.ReportProblem,
                                         contentDescription = null,
+                                    )
+                                }
+                            }
+                        }
+                    }
+
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier.fillMaxWidth(),
+                    ) {
+                        FlowRow(horizontalArrangement = Arrangement.Center) {
+                            placeInReview.filter.convertToMap().forEach {
+                                if (it.value) {
+                                    TextChip(
+                                        isSelected = true,
+                                        text = it.key,
                                     )
                                 }
                             }

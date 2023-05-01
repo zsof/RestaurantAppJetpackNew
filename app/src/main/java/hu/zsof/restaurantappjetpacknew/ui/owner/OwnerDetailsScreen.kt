@@ -27,7 +27,9 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import hu.zsof.restaurantappjetpacknew.R
+import hu.zsof.restaurantappjetpacknew.ui.common.TextChip
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun OwnerDetailsScreen(
     viewModel: OwnerPlaceViewModel = hiltViewModel(),
@@ -95,10 +97,26 @@ fun OwnerDetailsScreen(
                             if (!placeInReview.problem.isNullOrEmpty()) {
                                 IconButton(onClick = {
                                     showProblemDialog.value = true
-                                }) {
+                                }, modifier = Modifier.padding(top = 8.dp)) {
                                     Icon(
                                         imageVector = Icons.Filled.ReportProblem,
                                         contentDescription = null,
+                                    )
+                                }
+                            }
+                        }
+                    }
+
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier.fillMaxWidth(),
+                    ) {
+                        FlowRow(horizontalArrangement = Arrangement.Center) {
+                            placeInReview.filter.convertToMap().forEach {
+                                if (it.value) {
+                                    TextChip(
+                                        isSelected = true,
+                                        text = it.key,
                                     )
                                 }
                             }

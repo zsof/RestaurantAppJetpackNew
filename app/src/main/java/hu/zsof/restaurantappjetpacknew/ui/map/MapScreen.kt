@@ -16,6 +16,7 @@ import com.google.maps.android.compose.*
 import hu.zsof.restaurantappjetpacknew.model.convertToPlaceMapResponse
 import hu.zsof.restaurantappjetpacknew.network.repository.LocalDataStateService
 import hu.zsof.restaurantappjetpacknew.network.response.PlaceMapResponse
+import hu.zsof.restaurantappjetpacknew.util.Constants.ROLE_OWNER
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
@@ -28,7 +29,10 @@ fun MapScreen(onLongClick: (latLng: LatLng) -> Unit) {
         ),
     )
 
-    LocationPermissions(multiplePermissionState = multiplePermissionState, onLongClick)
+    LocationPermissions(
+        multiplePermissionState = multiplePermissionState,
+        onLongClick,
+    )
 
     // This way, the permission request is immediately started when the Screen is loaded (it could also be started by pressing a button)
     LaunchedEffect(Unit) {
@@ -43,6 +47,7 @@ fun LocationPermissions(
     onLongClick: (latLng: LatLng) -> Unit,
     viewModel: MapViewModel = hiltViewModel(),
 ) {
+    val userType = LocalDataStateService.userType.observeAsState().value
     PermissionsRequired(
         multiplePermissionsState = multiplePermissionState,
         permissionsNotGrantedContent = {
@@ -78,8 +83,10 @@ fun LocationPermissions(
                 CameraPosition(LatLng(47.497913, 19.040236), 11f, 0f, 0f), // Budapest
             ),
             onMapLongClick = {
-                LocalDataStateService.setLatLng(it)
-                onLongClick(it)
+                if (userType == ROLE_OWNER) {
+                    LocalDataStateService.setLatLng(it)
+                    onLongClick(it)
+                }
             },
         ) {
             PlaceMarkers(viewModel)
@@ -126,6 +133,11 @@ fun PlaceMarkers(viewModel: MapViewModel) {
             state = MarkerState(LatLng(place.latitude, place.longitude)),
             title = place.name,
             icon = mapIcon,
+            /*onInfoWindowClick = {
+                ScreenModel.NavigationScreen.Details.passPlaceId(
+                    place.id,
+                )
+            },*/
         )
     }
 }
