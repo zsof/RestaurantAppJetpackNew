@@ -31,7 +31,7 @@ interface ApiService {
     suspend fun filterPlaces(@Body filter: FilterRequest): List<Place>
 
     /**
-     * Place by Owner (role: owner, admin
+     * Place by Owner (role: owner, admin)
      */
 
     @POST("places-owner/new-place")
@@ -48,15 +48,15 @@ interface ApiService {
     @GET("places-owner/places-in-review")
     suspend fun getAllPlaceInReviewByOwner(): List<PlaceInReview>
 
+    @GET("places-owner/{id}")
+    suspend fun getPlaceByIdFromInReview(@Path("id") placeId: Long): PlaceInReview
+
     /**
      * Place in-review (role: admin)
      */
 
     @GET("places-review")
     suspend fun getAllPlaceFromInReview(): List<PlaceInReview>
-
-    @GET("places-review/{id}")
-    suspend fun getPlaceByIdFromInReview(@Path("id") placeId: Long): PlaceInReview
 
     @POST("places-review/accept/{id}")
     suspend fun acceptPlaceFromInReview(@Path("id") placeId: Long): Place

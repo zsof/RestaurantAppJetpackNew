@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PushPin
 import androidx.compose.material.icons.filled.ReportProblem
@@ -21,6 +22,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -31,13 +33,13 @@ import hu.zsof.restaurantappjetpacknew.R
 import hu.zsof.restaurantappjetpacknew.model.Place
 import hu.zsof.restaurantappjetpacknew.model.PlaceInReview
 import hu.zsof.restaurantappjetpacknew.model.enums.Price
-import hu.zsof.restaurantappjetpacknew.ui.review.ReviewPlaceViewModel
 
 @ExperimentalMaterial3Api
 @Composable
 fun OwnerPlaceListScreen(
     viewModel: OwnerPlaceViewModel = hiltViewModel(),
     onClickPlaceItem: (Long) -> Unit,
+    onClickPlaceInReviewItem: (Long) -> Unit,
 ) {
     val places = viewModel.ownerPlaces.observeAsState(listOf())
     val placesInReview = viewModel.ownerPlacesInReview.observeAsState(listOf())
@@ -53,13 +55,28 @@ fun OwnerPlaceListScreen(
                     .padding(0.dp, 0.dp, 0.dp, 38.dp)
                     .background(MaterialTheme.colorScheme.background),
             ) {
+                Text(
+                    text = stringResource(id = R.string.wait_for_accept),
+                    color = Color.Gray,
+                    modifier = Modifier
+                        .padding(16.dp, 8.dp, 0.dp, 0.dp),
+                )
                 LazyColumn(
                     contentPadding = PaddingValues(8.dp),
                 ) {
                     items(placesInReview.value) {
-                        OwnerListItemReview(placeInReview = it, onClickPlaceItem = onClickPlaceItem)
+                        OwnerListItemReview(
+                            placeInReview = it,
+                            onClickPlaceInReviewItem = onClickPlaceInReviewItem,
+                        )
                     }
                 }
+                Text(
+                    text = stringResource(id = R.string.accepted_places),
+                    color = Color.Gray,
+                    modifier = Modifier
+                        .padding(16.dp, 8.dp, 0.dp, 0.dp),
+                )
                 LazyColumn(
                     contentPadding = PaddingValues(8.dp),
                 ) {
@@ -178,15 +195,14 @@ private fun OwnerListItem(
 @Composable
 private fun OwnerListItemReview(
     placeInReview: PlaceInReview,
-    viewModel: ReviewPlaceViewModel = hiltViewModel(),
-    onClickPlaceItem: (Long) -> Unit,
+    onClickPlaceInReviewItem: (Long) -> Unit,
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(4.dp)
             .clickable(
-                onClick = { onClickPlaceItem(placeInReview.id) },
+                onClick = { onClickPlaceInReviewItem(placeInReview.id) },
             ),
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
         shape = RoundedCornerShape(8.dp),
@@ -195,7 +211,7 @@ private fun OwnerListItemReview(
             Row(modifier = Modifier.padding(0.dp, 8.dp, 8.dp, 8.dp)) {
                 Column(modifier = Modifier.padding(0.dp, 0.dp, 8.dp, 0.dp)) {
                     Image(
-                        painter = painterResource(id = hu.zsof.restaurantappjetpacknew.R.drawable.ic_launcher_round),
+                        painter = painterResource(id = R.drawable.ic_launcher_round),
                         contentDescription = null,
                         modifier = Modifier
                             .size(70.dp, 70.dp),

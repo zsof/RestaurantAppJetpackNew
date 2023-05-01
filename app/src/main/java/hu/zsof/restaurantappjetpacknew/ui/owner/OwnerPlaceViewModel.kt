@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import hu.zsof.restaurantappjetpacknew.model.Place
 import hu.zsof.restaurantappjetpacknew.model.PlaceInReview
+import hu.zsof.restaurantappjetpacknew.network.repository.PlaceInReviewRepository
 import hu.zsof.restaurantappjetpacknew.network.repository.PlaceOwnerRepository
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -13,6 +14,7 @@ import javax.inject.Inject
 @HiltViewModel
 class OwnerPlaceViewModel @Inject constructor(
     private val ownerRepository: PlaceOwnerRepository,
+    private val placeInReviewRepository: PlaceInReviewRepository,
 ) :
     ViewModel() {
 
@@ -35,6 +37,13 @@ class OwnerPlaceViewModel @Inject constructor(
     fun showPlacesInReview() {
         viewModelScope.launch {
             ownerPlacesInReview.postValue(ownerRepository.getAllPlaceInReviewByOwner())
+        }
+    }
+
+    val reviewPlaceById = MutableLiveData<PlaceInReview>()
+    fun getReviewPlaceById(placeId: Long) {
+        viewModelScope.launch {
+            reviewPlaceById.postValue(placeInReviewRepository.getPlaceByIdFromInReview(placeId))
         }
     }
 }

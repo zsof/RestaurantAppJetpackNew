@@ -25,6 +25,7 @@ import hu.zsof.restaurantappjetpacknew.ui.homelist.HomeListScreen
 import hu.zsof.restaurantappjetpacknew.ui.login.LoginScreen
 import hu.zsof.restaurantappjetpacknew.ui.map.MapScreen
 import hu.zsof.restaurantappjetpacknew.ui.newplace.NewPlaceDialogScreen
+import hu.zsof.restaurantappjetpacknew.ui.owner.OwnerDetailsScreen
 import hu.zsof.restaurantappjetpacknew.ui.owner.OwnerPlaceListScreen
 import hu.zsof.restaurantappjetpacknew.ui.profile.ProfileScreen
 import hu.zsof.restaurantappjetpacknew.ui.register.RegisterScreen
@@ -171,11 +172,31 @@ fun NavGraphBuilder.mainNavGraph(
             OwnerPlaceListScreen(
                 onClickPlaceItem = {
                     navController.navigate(
+                        ScreenModel.NavigationScreen.Details.passPlaceId(
+                            it,
+                        ),
+                    )
+                },
+                onClickPlaceInReviewItem = {
+                    navController.navigate(
                         ScreenModel.NavigationScreen.OwnerDetails.passPlaceId(
                             it,
                         ),
                     )
                 },
+            )
+        }
+        composable(
+            route = ScreenModel.NavigationScreen.OwnerDetails.route,
+            arguments = listOf(
+                navArgument(ScreenModel.NavigationScreen.OwnerDetails.Args.placeId) {
+                    type = NavType.LongType
+                },
+            ),
+        ) {
+            OwnerDetailsScreen(
+                placeId = navController.currentBackStackEntry?.arguments?.getLong(ScreenModel.NavigationScreen.OwnerDetails.Args.placeId)
+                    ?: 0,
             )
         }
     }

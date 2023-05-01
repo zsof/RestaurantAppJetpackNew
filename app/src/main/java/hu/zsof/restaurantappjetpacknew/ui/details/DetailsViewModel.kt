@@ -15,14 +15,14 @@ import javax.inject.Inject
 class DetailsViewModel @Inject constructor(private val placeRepository: PlaceRepository) :
     ViewModel() {
 
-    val placeById = MutableLiveData<Place>()
-
     var galleryPermissionOpen = mutableStateOf(false)
-    var cameraPermissionOpen = mutableStateOf(false)
 
+    var cameraPermissionOpen = mutableStateOf(false)
     val photoDialogOpen = mutableStateOf(false)
+
     val selectedImageUri = mutableStateOf<Uri?>(null)
 
+    val placeById = MutableLiveData<Place>()
     fun getPlaceById(placeId: Long) {
         viewModelScope.launch {
             placeById.postValue(placeRepository.getPlaceById(placeId))
