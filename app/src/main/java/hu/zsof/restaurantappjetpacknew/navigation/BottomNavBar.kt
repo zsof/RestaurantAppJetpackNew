@@ -26,8 +26,12 @@ import java.util.prefs.Preferences
 fun BottomNavBar(
     navController: NavController,
     bottomBarState: MutableState<Boolean>,
+    onNavigationIconClick: () -> Unit,
 ) {
-    val bottomBottomNavItems = BottomNavItem.values()
+    val adminBottomNavItems = ScreenModel().adminBottomNavItems
+    val userBottomNavItems = ScreenModel().userBottomNavItems
+    val navigationDrawerItems = ScreenModel().screensNavigationDrawer
+    val navigationDrawer = ScreenModel.NavigationScreen.Extra
 
     val userType = LocalDataStateService.userType.observeAsState().value
     AnimatedVisibility(
@@ -40,7 +44,7 @@ fun BottomNavBar(
             ) {
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                 if (userType == ROLE_ADMIN) {
-                    bottomBottomNavItems.filter { it.forAdminIsVisible }.forEach { item ->
+                    adminBottomNavItems.forEach { item ->
                         val currentRoute = item.route == navBackStackEntry?.destination?.route
                         NavigationBarItem(
                             icon = {
@@ -60,12 +64,12 @@ fun BottomNavBar(
                             },
                             selected = currentRoute,
                             onClick = {
-                                item.route?.let {
+                                item.route.let {
                                     navController.navigate(it) {
                                         navController.graph.startDestinationRoute?.let { route ->
-                                            if (it == NavigationScreen.Logout.route) {
+                                            if (it == ScreenModel.NavigationScreen.Logout.route) {
                                                 Preferences.userRoot().put("bearer", "")
-                                                popUpTo(NavigationScreen.Login.route)
+                                                popUpTo(ScreenModel.NavigationScreen.Login.route)
                                             } else {
                                                 popUpTo(route) {
                                                     saveState = true
@@ -82,8 +86,7 @@ fun BottomNavBar(
                         )
                     }
                 } else if (userType == ROLE_USER) {
-                    println("else user")
-                    bottomBottomNavItems.filter { it.forUserIsVisible }.forEach { item ->
+                    userBottomNavItems.forEach { item ->
                         val currentRoute = item.route == navBackStackEntry?.destination?.route
                         NavigationBarItem(
                             icon = {
@@ -103,12 +106,12 @@ fun BottomNavBar(
                             },
                             selected = currentRoute,
                             onClick = {
-                                item.route?.let {
+                                item.route.let {
                                     navController.navigate(it) {
                                         navController.graph.startDestinationRoute?.let { route ->
-                                            if (it == NavigationScreen.Logout.route) {
+                                            if (it == ScreenModel.NavigationScreen.Logout.route) {
                                                 Preferences.userRoot().put("bearer", "")
-                                                popUpTo(NavigationScreen.Login.route)
+                                                popUpTo(ScreenModel.NavigationScreen.Login.route)
                                             } else {
                                                 popUpTo(route) {
                                                     saveState = true
@@ -125,6 +128,25 @@ fun BottomNavBar(
                         )
                     }
                 }
+                NavigationBarItem(
+                    icon = {
+                        navigationDrawer.icon?.let {
+                            Icon(
+                                imageVector = it,
+                                contentDescription = null,
+                            )
+                        }
+                    },
+                    label = {
+                        Text(
+                            text = stringResource(navigationDrawer.title),
+                            color = Color.Black,
+                            fontSize = 16.sp,
+                        )
+                    },
+                    selected = navigationDrawer.route == navBackStackEntry?.destination?.route,
+                    onClick = onNavigationIconClick,
+                )
             }
         },
     )

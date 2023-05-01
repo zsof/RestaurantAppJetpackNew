@@ -4,8 +4,11 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.DrawerValue
+import androidx.compose.material.Scaffold
+import androidx.compose.material.rememberDrawerState
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
@@ -29,31 +32,32 @@ import hu.zsof.restaurantappjetpacknew.ui.review.ReviewPlaceListScreen
 import hu.zsof.restaurantappjetpacknew.util.Constants.AUTH_GRAPH_ROUTE
 import hu.zsof.restaurantappjetpacknew.util.Constants.MAIN_GRAPH_ROUTE
 import hu.zsof.restaurantappjetpacknew.util.Constants.ROOT_GRAPH_ROUTE
+import kotlinx.coroutines.launch
 
 @ExperimentalMaterial3Api
 fun NavGraphBuilder.authNavGraph(
     navController: NavHostController,
 ) {
     navigation(
-        startDestination = NavigationScreen.Login.route,
+        startDestination = ScreenModel.NavigationScreen.Login.route,
         route = AUTH_GRAPH_ROUTE,
     ) {
         composable(
-            route = NavigationScreen.Login.route,
+            route = ScreenModel.NavigationScreen.Login.route,
         ) {
             LoginScreen(
                 onLoginClick = {
-                    navController.navigate(NavigationScreen.Home.route)
+                    navController.navigate(ScreenModel.NavigationScreen.Home.route)
                 },
                 onRegisterClick = {
-                    navController.navigate(NavigationScreen.Register.route)
+                    navController.navigate(ScreenModel.NavigationScreen.Register.route)
                 },
 
             )
         }
-        composable(route = NavigationScreen.Register.route) {
+        composable(route = ScreenModel.NavigationScreen.Register.route) {
             RegisterScreen(
-                onLoginClick = { navController.navigate(NavigationScreen.Login.route) },
+                onLoginClick = { navController.navigate(ScreenModel.NavigationScreen.Login.route) },
             )
         }
     }
@@ -64,37 +68,43 @@ fun NavGraphBuilder.mainNavGraph(
     navController: NavHostController,
 ) {
     navigation(
-        startDestination = NavigationScreen.Home.route,
+        startDestination = ScreenModel.NavigationScreen.Home.route,
         route = MAIN_GRAPH_ROUTE,
     ) {
         composable(
-            route = NavigationScreen.Home.route,
+            route = ScreenModel.NavigationScreen.Home.route,
         ) {
             HomeListScreen(
-                onFabClick = { navController.navigate(NavigationScreen.Map.route) },
-                onClickPlaceItem = { navController.navigate(NavigationScreen.Details.passPlaceId(it)) },
-                onFilterClick = { navController.navigate(NavigationScreen.FilterPlace.route) },
+                onFabClick = { navController.navigate(ScreenModel.NavigationScreen.Map.route) },
+                onClickPlaceItem = {
+                    navController.navigate(
+                        ScreenModel.NavigationScreen.Details.passPlaceId(
+                            it,
+                        ),
+                    )
+                },
+                onFilterClick = { navController.navigate(ScreenModel.NavigationScreen.FilterPlace.route) },
                 navController = navController,
             )
         }
-        composable(route = NavigationScreen.NewPlace.route) {
+        composable(route = ScreenModel.NavigationScreen.NewPlace.route) {
             NewPlaceDialogScreen()
         }
-        composable(route = NavigationScreen.Map.route) {
-            MapScreen(onLongClick = { navController.navigate(NavigationScreen.NewPlace.route) })
+        composable(route = ScreenModel.NavigationScreen.Map.route) {
+            MapScreen(onLongClick = { navController.navigate(ScreenModel.NavigationScreen.NewPlace.route) })
         }
 
-        composable(route = NavigationScreen.FilterPlace.route) {
+        composable(route = ScreenModel.NavigationScreen.FilterPlace.route) {
             FilterPlaceDialogScreen(
                 navController = navController,
             )
         }
 
-        composable(route = NavigationScreen.ReviewPlace.route) {
+        composable(route = ScreenModel.NavigationScreen.ReviewPlace.route) {
             ReviewPlaceListScreen(
                 onClickPlaceItem = {
                     navController.navigate(
-                        NavigationScreen.ReviewDetails.passPlaceId(
+                        ScreenModel.NavigationScreen.ReviewDetails.passPlaceId(
                             it,
                         ),
                     )
@@ -102,11 +112,11 @@ fun NavGraphBuilder.mainNavGraph(
             )
         }
 
-        composable(NavigationScreen.FavPlace.route) {
+        composable(ScreenModel.NavigationScreen.FavPlace.route) {
             FavoriteListScreen(
                 onClickPlaceItem = {
                     navController.navigate(
-                        NavigationScreen.Details.passPlaceId(
+                        ScreenModel.NavigationScreen.Details.passPlaceId(
                             it,
                         ),
                     )
@@ -114,57 +124,59 @@ fun NavGraphBuilder.mainNavGraph(
             )
         }
         composable(
-            route = NavigationScreen.Logout.route,
+            route = ScreenModel.NavigationScreen.Logout.route,
         ) {
             LoginScreen(
                 onLoginClick = {
-                    navController.navigate(NavigationScreen.Home.route)
+                    navController.navigate(ScreenModel.NavigationScreen.Home.route)
                 },
                 onRegisterClick = {
-                    navController.navigate(NavigationScreen.Register.route)
+                    navController.navigate(ScreenModel.NavigationScreen.Register.route)
                 },
 
             )
         }
         composable(
-            route = NavigationScreen.Details.route,
+            route = ScreenModel.NavigationScreen.Details.route,
             arguments = listOf(
-                navArgument(NavigationScreen.Details.Args.placeId) {
+                navArgument(ScreenModel.NavigationScreen.Details.Args.placeId) {
                     type = NavType.LongType
                 },
             ),
         ) {
             TabLayout(
-                placeId = navController.currentBackStackEntry?.arguments?.getLong(NavigationScreen.Details.Args.placeId)
+                placeId = navController.currentBackStackEntry?.arguments?.getLong(ScreenModel.NavigationScreen.Details.Args.placeId)
                     ?: 0,
             )
         }
         composable(
-            route = NavigationScreen.ReviewDetails.route,
+            route = ScreenModel.NavigationScreen.ReviewDetails.route,
             arguments = listOf(
-                navArgument(NavigationScreen.ReviewDetails.Args.placeId) {
+                navArgument(ScreenModel.NavigationScreen.ReviewDetails.Args.placeId) {
                     type = NavType.LongType
                 },
             ),
         ) {
             ReviewDetailsScreen(
-                placeId = navController.currentBackStackEntry?.arguments?.getLong(NavigationScreen.Details.Args.placeId)
+                placeId = navController.currentBackStackEntry?.arguments?.getLong(ScreenModel.NavigationScreen.Details.Args.placeId)
                     ?: 0,
             )
         }
-        composable(route = NavigationScreen.Profile.route) {
+        composable(route = ScreenModel.NavigationScreen.Profile.route) {
             ProfileScreen()
         }
     }
 }
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@ExperimentalMaterial3Api
+@OptIn(ExperimentalMaterial3Api::class)
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun NavGraph(
     navController: NavHostController,
 
 ) {
+    val scaffoldState = rememberScaffoldState(rememberDrawerState(DrawerValue.Closed))
+    val scope = rememberCoroutineScope()
     val bottomBarState = rememberSaveable { (mutableStateOf(true)) }
     // Subscribe to navBackStackEntry, required to get current route
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -187,10 +199,25 @@ fun NavGraph(
         }
     }
     Scaffold(
+        scaffoldState = scaffoldState,
+        drawerGesturesEnabled = true,
+        drawerContent = {
+            Drawer(
+                item = ScreenModel().screensNavigationDrawer,
+                navController = navController,
+                scope = scope,
+                scaffoldState = scaffoldState,
+            )
+        },
         bottomBar = {
             BottomNavBar(
                 navController = navController,
                 bottomBarState = bottomBarState,
+                onNavigationIconClick = {
+                    scope.launch {
+                        scaffoldState.drawerState.open()
+                    }
+                },
             )
         },
     ) {

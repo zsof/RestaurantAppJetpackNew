@@ -26,7 +26,7 @@ import com.google.maps.android.compose.*
 import hu.zsof.restaurantappjetpacknew.R
 import hu.zsof.restaurantappjetpacknew.model.enums.Price
 import hu.zsof.restaurantappjetpacknew.model.enums.Type
-import hu.zsof.restaurantappjetpacknew.navigation.NavigationScreen
+import hu.zsof.restaurantappjetpacknew.navigation.ScreenModel
 import hu.zsof.restaurantappjetpacknew.network.repository.LocalDataStateService
 import java.util.*
 
@@ -168,7 +168,10 @@ fun FilterPlaceDialogScreen(
 
                     Row() {
                         Spacer(Modifier.weight(1f))
-                        TextButton(onClick = { viewModel.dialogOpen.value = false }) {
+                        TextButton(onClick = {
+                            navController.navigate(ScreenModel.NavigationScreen.Home.route)
+                            viewModel.dialogOpen.value = false
+                        }) {
                             Text(
                                 text = stringResource(id = R.string.cancel_btn),
                                 style = TextStyle(fontSize = 16.sp),
@@ -180,7 +183,7 @@ fun FilterPlaceDialogScreen(
                                     typeValue = Type.getByName(selectedOptionText),
                                 )
                                 LocalDataStateService.filteredPlaces.value = filterResult
-                                navController.navigate(NavigationScreen.Home.route)
+                                navController.navigate(ScreenModel.NavigationScreen.Home.route)
                                 viewModel.dialogOpen.value = false
                             },
                         ) {

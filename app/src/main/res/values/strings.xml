@@ -92,6 +92,7 @@
     <string name="choose_gallery">Choose from Gallery</string>
     <string name="photo_picker_title">Photo picker</string>
     <string name="send">Küldés</string>
+    <string name="extra">Továbbiak</string>
 
     <string-array name="filter_category_items">
         <item>Empty</item>
