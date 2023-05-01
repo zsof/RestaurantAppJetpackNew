@@ -42,6 +42,12 @@ interface ApiService {
     @DELETE("places-owner/places/{id}")
     suspend fun deletePlace(@Path("id") placeId: Long)
 
+    @GET("places-owner/places")
+    suspend fun getAllPlaceByOwner(): List<Place>
+
+    @GET("places-owner/places-in-review")
+    suspend fun getAllPlaceInReviewByOwner(): List<PlaceInReview>
+
     /**
      * Place in-review (role: admin)
      */

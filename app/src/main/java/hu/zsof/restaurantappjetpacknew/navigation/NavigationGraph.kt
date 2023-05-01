@@ -25,6 +25,7 @@ import hu.zsof.restaurantappjetpacknew.ui.homelist.HomeListScreen
 import hu.zsof.restaurantappjetpacknew.ui.login.LoginScreen
 import hu.zsof.restaurantappjetpacknew.ui.map.MapScreen
 import hu.zsof.restaurantappjetpacknew.ui.newplace.NewPlaceDialogScreen
+import hu.zsof.restaurantappjetpacknew.ui.owner.OwnerPlaceListScreen
 import hu.zsof.restaurantappjetpacknew.ui.profile.ProfileScreen
 import hu.zsof.restaurantappjetpacknew.ui.register.RegisterScreen
 import hu.zsof.restaurantappjetpacknew.ui.review.ReviewDetailsScreen
@@ -164,6 +165,18 @@ fun NavGraphBuilder.mainNavGraph(
         }
         composable(route = ScreenModel.NavigationScreen.Profile.route) {
             ProfileScreen()
+        }
+
+        composable(route = ScreenModel.NavigationScreen.OwnerPlace.route) {
+            OwnerPlaceListScreen(
+                onClickPlaceItem = {
+                    navController.navigate(
+                        ScreenModel.NavigationScreen.OwnerDetails.passPlaceId(
+                            it,
+                        ),
+                    )
+                },
+            )
         }
     }
 }

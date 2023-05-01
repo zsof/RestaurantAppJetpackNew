@@ -5,15 +5,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import hu.zsof.restaurantappjetpacknew.model.Place
+import hu.zsof.restaurantappjetpacknew.model.PlaceInReview
 import hu.zsof.restaurantappjetpacknew.network.repository.PlaceOwnerRepository
-import hu.zsof.restaurantappjetpacknew.network.repository.PlaceRepository
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class OwnerPlaceViewModel @Inject constructor(
     private val ownerRepository: PlaceOwnerRepository,
-    private val placeRepository: PlaceRepository,
 ) :
     ViewModel() {
 
@@ -27,7 +26,15 @@ class OwnerPlaceViewModel @Inject constructor(
 
     fun showPlaces() {
         viewModelScope.launch {
-            ownerPlaces.postValue(placeRepository.getAllPlace())
+            ownerPlaces.postValue(ownerRepository.getAllPlaceByOwner())
+        }
+    }
+
+    var ownerPlacesInReview = MutableLiveData<List<PlaceInReview>>()
+
+    fun showPlacesInReview() {
+        viewModelScope.launch {
+            ownerPlacesInReview.postValue(ownerRepository.getAllPlaceInReviewByOwner())
         }
     }
 }

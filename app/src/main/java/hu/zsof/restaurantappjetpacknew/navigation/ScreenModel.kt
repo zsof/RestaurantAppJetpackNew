@@ -38,10 +38,10 @@ class ScreenModel {
             route = "reviewPlace",
         )
 
-        object OwnPlace : NavigationScreen(
+        object OwnerPlace : NavigationScreen(
             R.string.own_places,
             Icons.Outlined.Edit,
-            route = "ownPlace",
+            route = "ownerPlace",
         )
 
         object Logout : NavigationScreen(
@@ -81,6 +81,15 @@ class ScreenModel {
                 const val placeId = "placeId"
             }
         }
+
+        object OwnerDetails :
+            NavigationScreen(route = "ownerDetails/{${Args.placeId}}") {
+            fun passPlaceId(placeId: Long) = "ownerDetails/$placeId"
+
+            object Args {
+                const val placeId = "placeId"
+            }
+        }
     }
 
     val screensNavigationDrawer = listOf(
@@ -97,7 +106,7 @@ class ScreenModel {
     val ownerBottomNavItems = listOf(
         NavigationScreen.Home,
         NavigationScreen.Map,
-        NavigationScreen.OwnPlace,
+        NavigationScreen.OwnerPlace,
     )
 
     val userBottomNavItems = listOf(
