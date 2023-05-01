@@ -9,9 +9,9 @@ import javax.inject.Inject
 
 class AuthRepository @Inject constructor(private val apiService: ApiService) {
 
-    suspend fun registerUser(loginDataRequest: LoginDataRequest, isAdmin: Boolean): NetworkResponse {
+    suspend fun registerUser(loginDataRequest: LoginDataRequest, isAdmin: Boolean, isOwner: Boolean): NetworkResponse {
         return try {
-            apiService.registerUser(loginDataRequest, isAdmin)
+            apiService.registerUser(loginDataRequest, isAdmin, isOwner)
         } catch (e: Exception) {
             e.printStackTrace()
             NetworkResponse(false, e.localizedMessage ?: "Network error")

@@ -3,8 +3,10 @@ package hu.zsof.restaurantappjetpacknew.ui.register
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Person
@@ -59,7 +61,8 @@ fun RegisterScreen(
         modifier = modifier
             .fillMaxSize()
             .padding(horizontal = 16.dp)
-            .background(MaterialTheme.colorScheme.background),
+            .background(MaterialTheme.colorScheme.background)
+            .verticalScroll(rememberScrollState()),
         contentAlignment = Alignment.TopCenter,
     ) {
         Column(
@@ -159,6 +162,20 @@ fun RegisterScreen(
                 },
                 onDone = { },
             )
+            Spacer(modifier = Modifier.height(10.dp))
+            Row(horizontalArrangement = Arrangement.Start, modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                Checkbox(
+                    checked = viewModel.isOwner.value,
+                    onCheckedChange = { checkedNew ->
+                        viewModel.isOwner.value = checkedNew
+                    },
+                )
+                Text(
+                    modifier = Modifier.padding(start = 2.dp),
+                    text = stringResource(id = R.string.register_as_owner),
+                    style = TextStyle(fontSize = 14.sp),
+                )
+            }
             Spacer(modifier = Modifier.height(10.dp))
             LoginButton(
                 onClick = {

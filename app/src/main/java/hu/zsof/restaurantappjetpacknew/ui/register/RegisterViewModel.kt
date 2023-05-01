@@ -28,6 +28,8 @@ class RegisterViewModel @Inject constructor(
     var password = mutableStateOf("")
     var isPasswordVisible = mutableStateOf(false)
     var isPasswordError = mutableStateOf(false)
+
+    var isOwner = mutableStateOf(false)
     suspend fun register(): NetworkResponse {
         return authRepository.registerUser(
             LoginDataRequest(
@@ -37,6 +39,7 @@ class RegisterViewModel @Inject constructor(
                 nickName.value,
             ),
             isAdmin = false,
+            isOwner = isOwner.value,
         )
     }
 
