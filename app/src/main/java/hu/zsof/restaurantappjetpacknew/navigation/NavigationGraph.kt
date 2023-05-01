@@ -12,6 +12,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -198,42 +200,50 @@ fun NavGraph(
             bottomBarState.value = true
         }
     }
-    Scaffold(
-        scaffoldState = scaffoldState,
-        drawerGesturesEnabled = true,
-        drawerContent = {
-            Drawer(
-                item = ScreenModel().screensNavigationDrawer,
-                navController = navController,
-                scope = scope,
-                scaffoldState = scaffoldState,
-            )
-        },
-        bottomBar = {
-            BottomNavBar(
-                navController = navController,
-                bottomBarState = bottomBarState,
-                onNavigationIconClick = {
-                    scope.launch {
-                        scaffoldState.drawerState.open()
-                    }
-                },
-            )
-        },
-    ) {
-        // Apply the padding globally to the whole BottomNavScreensController
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(0.dp, 0.dp, 0.dp, 36.dp),
+    CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
+        Scaffold(
+            scaffoldState = scaffoldState,
+            drawerGesturesEnabled = true,
+            drawerContent = {
+                CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
+                    Drawer(
+                        item = ScreenModel().screensNavigationDrawer,
+                        navController = navController,
+                        scope = scope,
+                        scaffoldState = scaffoldState,
+                    )
+                }
+            },
+            bottomBar = {
+                CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
+                    BottomNavBar(
+                        navController = navController,
+                        bottomBarState = bottomBarState,
+                        onNavigationIconClick = {
+                            scope.launch {
+                                scaffoldState.drawerState.open()
+                            }
+                        },
+                    )
+                }
+            },
         ) {
-            NavHost(
-                navController = navController,
-                startDestination = AUTH_GRAPH_ROUTE,
-                route = ROOT_GRAPH_ROUTE,
-            ) {
-                authNavGraph(navController = navController)
-                mainNavGraph(navController = navController)
+            CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        // Apply the padding globally to the whole BottomNavScreensController
+                        .padding(0.dp, 0.dp, 0.dp, 36.dp),
+                ) {
+                    NavHost(
+                        navController = navController,
+                        startDestination = AUTH_GRAPH_ROUTE,
+                        route = ROOT_GRAPH_ROUTE,
+                    ) {
+                        authNavGraph(navController = navController)
+                        mainNavGraph(navController = navController)
+                    }
+                }
             }
         }
     }

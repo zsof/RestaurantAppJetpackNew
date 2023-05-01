@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import java.util.prefs.Preferences
 
 @Composable
 fun Drawer(
@@ -28,11 +29,10 @@ fun Drawer(
     scaffoldState: ScaffoldState,
     scope: CoroutineScope,
 ) {
-    Column() {
+    Column(modifier = Modifier.padding(bottom = 44.dp).fillMaxHeight()) {
         Surface(
             modifier = Modifier
-                .fillMaxWidth(1f)
-                .padding(10.dp),
+                .fillMaxWidth(1f),
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -60,7 +60,20 @@ fun Drawer(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable(onClick = {
-                        navController.navigate(item.route)
+                        item.route.let {
+                            navController.navigate(it) {
+                                navController.graph.startDestinationRoute?.let { route ->
+                                    if (item.route == ScreenModel.NavigationScreen.Logout.route) {
+                                        Preferences.userRoot().put("bearer", "")
+                                        popUpTo(ScreenModel.NavigationScreen.Login.route)
+                                    } else {
+                                        popUpTo(route) {
+                                            saveState = true
+                                        }
+                                    }
+                                }
+                            }
+                        }
                         scope.launch {
                             scaffoldState.drawerState.close()
                         }

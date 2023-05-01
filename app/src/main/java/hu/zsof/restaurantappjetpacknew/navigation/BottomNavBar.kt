@@ -20,7 +20,6 @@ import hu.zsof.restaurantappjetpacknew.network.repository.LocalDataStateService
 import hu.zsof.restaurantappjetpacknew.ui.theme.PurpleGrey40
 import hu.zsof.restaurantappjetpacknew.util.Constants.ROLE_ADMIN
 import hu.zsof.restaurantappjetpacknew.util.Constants.ROLE_USER
-import java.util.prefs.Preferences
 
 @Composable
 fun BottomNavBar(
@@ -67,13 +66,8 @@ fun BottomNavBar(
                                 item.route.let {
                                     navController.navigate(it) {
                                         navController.graph.startDestinationRoute?.let { route ->
-                                            if (it == ScreenModel.NavigationScreen.Logout.route) {
-                                                Preferences.userRoot().put("bearer", "")
-                                                popUpTo(ScreenModel.NavigationScreen.Login.route)
-                                            } else {
-                                                popUpTo(route) {
-                                                    saveState = true
-                                                }
+                                            popUpTo(route) {
+                                                saveState = true
                                             }
                                         }
 
@@ -109,13 +103,8 @@ fun BottomNavBar(
                                 item.route.let {
                                     navController.navigate(it) {
                                         navController.graph.startDestinationRoute?.let { route ->
-                                            if (it == ScreenModel.NavigationScreen.Logout.route) {
-                                                Preferences.userRoot().put("bearer", "")
-                                                popUpTo(ScreenModel.NavigationScreen.Login.route)
-                                            } else {
-                                                popUpTo(route) {
-                                                    saveState = true
-                                                }
+                                            popUpTo(route) {
+                                                saveState = true
                                             }
                                         }
 
