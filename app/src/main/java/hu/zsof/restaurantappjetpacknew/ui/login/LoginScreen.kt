@@ -48,160 +48,161 @@ fun LoginScreen(
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
-    Box(
+    Surface(
         modifier = modifier
-            .fillMaxSize()
-            .padding(horizontal = 16.dp)
-            .background(MaterialTheme.colorScheme.background),
-        contentAlignment = Alignment.TopCenter,
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            Spacer(modifier = Modifier.height(20.dp))
-            Text(
-                text = stringResource(id = R.string.welcome_text),
-                style = MaterialTheme.typography.headlineMedium.copy(
-                    fontWeight = FontWeight.ExtraBold,
-                    fontStyle = FontStyle.Italic,
-                ),
-                modifier = Modifier
-                    .padding(top = 8.dp)
-                    .align(Alignment.CenterHorizontally),
+            .fillMaxSize(),
+        // contentAlignment = Alignment.TopCenter,
+        content =
+        {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Spacer(modifier = Modifier.height(20.dp))
+                Text(
+                    text = stringResource(id = R.string.welcome_text),
+                    style = MaterialTheme.typography.headlineMedium.copy(
+                        fontWeight = FontWeight.ExtraBold,
+                        fontStyle = FontStyle.Italic,
+                    ),
+                    modifier = Modifier
+                        .padding(top = 8.dp)
+                        .align(Alignment.CenterHorizontally),
 
-            )
-            Spacer(modifier = Modifier.height(20.dp))
-            NormalTextField(
-                value = viewModel.email.value,
-                label = stringResource(id = R.string.email_address),
-                onValueChange = { newValue ->
-                    viewModel.email.value = newValue
-                    viewModel.validateEmail()
-                },
-                isError = viewModel.isEmailError.value,
-                leadingIcon = {
-                    Icon(
-                        imageVector = Icons.Default.Email,
-                        contentDescription = null,
-                    )
-                },
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Email,
-                    imeAction = ImeAction.Next,
-                ),
-                trailingIcon = { },
-                onDone = { },
-                placeholder = stringResource(id = R.string.email_address),
-            )
-            Spacer(modifier = Modifier.height(10.dp))
-            PasswordTextField(
-                value = viewModel.password.value,
-                label = stringResource(id = R.string.password_text),
-                onValueChange = { newValue ->
-                    viewModel.password.value = newValue
-                    viewModel.validatePassword()
-                },
-                isError = viewModel.isPasswordError.value,
-                isVisible = viewModel.isPasswordVisible.value,
-                onVisibilityChanged = {
-                    viewModel.isPasswordVisible.value = !viewModel.isPasswordVisible.value
-                },
-                onDone = { },
-            )
-            Spacer(modifier = Modifier.height(10.dp))
-            LoginButton(
-                onClick = {
-                    scope.launch {
-                        val response = viewModel.login()
+                )
+                Spacer(modifier = Modifier.height(20.dp))
+                NormalTextField(
+                    value = viewModel.email.value,
+                    label = stringResource(id = R.string.email_address),
+                    onValueChange = { newValue ->
+                        viewModel.email.value = newValue
+                        viewModel.validateEmail()
+                    },
+                    isError = viewModel.isEmailError.value,
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Default.Email,
+                            contentDescription = null,
+                        )
+                    },
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Email,
+                        imeAction = ImeAction.Next,
+                    ),
+                    trailingIcon = { },
+                    onDone = { },
+                    placeholder = stringResource(id = R.string.email_address),
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+                PasswordTextField(
+                    value = viewModel.password.value,
+                    label = stringResource(id = R.string.password_text),
+                    onValueChange = { newValue ->
+                        viewModel.password.value = newValue
+                        viewModel.validatePassword()
+                    },
+                    isError = viewModel.isPasswordError.value,
+                    isVisible = viewModel.isPasswordVisible.value,
+                    onVisibilityChanged = {
+                        viewModel.isPasswordVisible.value = !viewModel.isPasswordVisible.value
+                    },
+                    onDone = { },
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+                LoginButton(
+                    onClick = {
+                        scope.launch {
+                            val response = viewModel.login()
 
-                        if (response.isSuccess) {
-                            showToast(
-                                context = context,
-                                message = (response.successMessage),
-                            )
-                            onLoginClick(viewModel.email.value)
-                            when (response.user.userType) {
-                                ROLE_ADMIN -> {
-                                    LocalDataStateService.userType.postValue(ROLE_ADMIN)
-                                }
-                                ROLE_USER -> {
-                                    LocalDataStateService.userType.postValue(ROLE_USER)
-                                }
-                                ROLE_OWNER -> {
-                                    LocalDataStateService.userType.postValue(ROLE_OWNER)
+                            if (response.isSuccess) {
+                                showToast(
+                                    context = context,
+                                    message = (response.successMessage),
+                                )
+                                onLoginClick(viewModel.email.value)
+                                when (response.user.userType) {
+                                    ROLE_ADMIN -> {
+                                        LocalDataStateService.userType.postValue(ROLE_ADMIN)
+                                    }
+                                    ROLE_USER -> {
+                                        LocalDataStateService.userType.postValue(ROLE_USER)
+                                    }
+                                    ROLE_OWNER -> {
+                                        LocalDataStateService.userType.postValue(ROLE_OWNER)
+                                    }
                                 }
                             }
                         }
-                    }
-                },
+                    },
 
-                text = stringResource(R.string.log_in),
-            )
+                    text = stringResource(R.string.log_in),
+                )
 
-            Spacer(modifier = Modifier.height(10.dp))
+                Spacer(modifier = Modifier.height(10.dp))
 
-            Box(modifier = Modifier.padding(vertical = 16.dp)) {
-                Spacer(
+                Box(modifier = Modifier.padding(vertical = 16.dp)) {
+                    Spacer(
+                        modifier = Modifier
+                            .align(Alignment.Center)
+                            .height(1.dp)
+                            .fillMaxWidth()
+                            .background(Color.LightGray),
+                    )
+                    Text(
+                        text = stringResource(id = R.string.or_use),
+                        color = Color.LightGray,
+                        modifier = Modifier
+                            .align(Alignment.Center)
+                            .padding(horizontal = 16.dp),
+                    )
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+
+                OutlinedButton(
+                    onClick = { },
                     modifier = Modifier
-                        .align(Alignment.Center)
-                        .height(1.dp)
                         .fillMaxWidth()
-                        .background(Color.LightGray),
-                )
-                Text(
-                    text = stringResource(id = R.string.or_use),
-                    color = Color.LightGray,
-                    modifier = Modifier
-                        .align(Alignment.Center)
+                        .height(50.dp)
                         .padding(horizontal = 16.dp),
-                )
-            }
-            Spacer(modifier = Modifier.height(8.dp))
+                    shape = RoundedCornerShape(
+                        topEnd = 20.dp,
+                        topStart = 20.dp,
+                        bottomStart = 20.dp,
+                        bottomEnd = 20.dp,
+                    ),
 
-            OutlinedButton(
-                onClick = { },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(50.dp),
-                shape = RoundedCornerShape(
-                    topEnd = 20.dp,
-                    topStart = 20.dp,
-                    bottomStart = 20.dp,
-                    bottomEnd = 20.dp,
-                ),
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.googleg_standard_color_18),
+                        contentDescription = null,
+                    )
+                    Text(
+                        text = stringResource(id = R.string.sign_in_with_google),
+                        style = MaterialTheme.typography.labelMedium.copy(fontSize = 14.sp),
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+                }
 
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.googleg_standard_color_18),
-                    contentDescription = null,
-                )
-                Text(
-                    text = stringResource(id = R.string.sign_in_with_google),
-                    style = MaterialTheme.typography.labelMedium.copy(fontSize = 14.sp),
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth(),
-                )
-            }
-
-            Row(
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally),
-            ) {
-                Text(
-                    text = stringResource(id = R.string.no_account),
+                Row(
                     modifier = Modifier
-                        .padding(vertical = 16.dp),
-                    fontSize = 16.sp,
-                )
-                Text(
-                    text = stringResource(id = R.string.register),
-                    fontSize = 16.sp,
-                    modifier = Modifier
-                        .padding(vertical = 16.dp, horizontal = 4.dp)
-                        .clickable(onClick = onRegisterClick, enabled = true),
-                    style = TextStyle(textDecoration = TextDecoration.Underline),
-                )
+                        .align(Alignment.CenterHorizontally),
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.no_account),
+                        modifier = Modifier
+                            .padding(vertical = 16.dp),
+                        fontSize = 16.sp,
+                    )
+                    Text(
+                        text = stringResource(id = R.string.register),
+                        fontSize = 16.sp,
+                        modifier = Modifier
+                            .padding(vertical = 16.dp, horizontal = 4.dp)
+                            .clickable(onClick = onRegisterClick, enabled = true),
+                        style = TextStyle(textDecoration = TextDecoration.Underline),
+                    )
+                }
             }
-        }
-    }
+        },
+    )
 }

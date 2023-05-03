@@ -57,201 +57,205 @@ fun RegisterScreen(
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
 
-    Box(
+    Surface(
         modifier = modifier
             .fillMaxSize()
-            .padding(horizontal = 16.dp)
-            .background(MaterialTheme.colorScheme.background)
             .verticalScroll(rememberScrollState()),
-        contentAlignment = Alignment.TopCenter,
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            Spacer(modifier = Modifier.height(20.dp))
-            Text(
-                text = stringResource(id = R.string.welcome_text),
-                style = MaterialTheme.typography.headlineMedium.copy(
-                    fontWeight = FontWeight.ExtraBold,
-                    fontStyle = FontStyle.Italic,
-                ),
-                modifier = Modifier
-                    .padding(top = 8.dp)
-                    .align(Alignment.CenterHorizontally),
+        content =
+        {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Spacer(modifier = Modifier.height(20.dp))
+                Text(
+                    text = stringResource(id = R.string.welcome_text),
+                    style = MaterialTheme.typography.headlineMedium.copy(
+                        fontWeight = FontWeight.ExtraBold,
+                        fontStyle = FontStyle.Italic,
+                    ),
+                    modifier = Modifier
+                        .padding(top = 8.dp)
+                        .align(Alignment.CenterHorizontally),
 
-            )
-            Spacer(modifier = Modifier.height(20.dp))
-            NormalTextField(
-                value = viewModel.email.value,
-                label = stringResource(id = R.string.email_address),
-                onValueChange = { newValue ->
-                    viewModel.email.value = newValue
-                    viewModel.validateEmail()
-                },
-                isError = viewModel.isEmailError.value,
-                leadingIcon = {
-                    Icon(
-                        imageVector = Icons.Default.Email,
-                        contentDescription = null,
-                    )
-                },
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Email,
-                    imeAction = ImeAction.Next,
-                ),
-                trailingIcon = { },
-                onDone = { },
-                placeholder = stringResource(id = R.string.email_address),
-            )
-            Spacer(modifier = Modifier.height(10.dp))
-            NormalTextField(
-                value = viewModel.userName.value,
-                label = stringResource(id = R.string.user_name),
-                onValueChange = { newValue ->
-                    viewModel.userName.value = newValue
-                    viewModel.validateUserName()
-                },
-                isError = viewModel.isUserNameError.value,
-                leadingIcon = {
-                    Icon(
-                        imageVector = Icons.Default.Person,
-                        contentDescription = null,
-                    )
-                },
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Text,
-                    imeAction = ImeAction.Next,
-                ),
-                trailingIcon = { },
-                onDone = { },
-                placeholder = stringResource(id = R.string.user_name),
-            )
-            Spacer(modifier = Modifier.height(10.dp))
-            NormalTextField(
-                value = viewModel.nickName.value,
-                label = stringResource(id = R.string.nickname),
-                onValueChange = { newValue ->
-                    viewModel.nickName.value = newValue
-                },
-                leadingIcon = {
-                    Icon(
-                        imageVector = Icons.Default.Person2,
-                        contentDescription = null,
-                    )
-                },
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Text,
-                    imeAction = ImeAction.Next,
-                ),
-                trailingIcon = { },
-                onDone = { },
-                placeholder = stringResource(id = R.string.nickname),
-            )
-            Spacer(modifier = Modifier.height(10.dp))
-            PasswordTextField(
-                value = viewModel.password.value,
-                label = stringResource(id = R.string.password_text),
-                onValueChange = { newValue ->
-                    viewModel.password.value = newValue
-                    viewModel.validatePassword()
-                },
-                isError = viewModel.isPasswordError.value,
-                isVisible = viewModel.isPasswordVisible.value,
-                onVisibilityChanged = {
-                    viewModel.isPasswordVisible.value = !viewModel.isPasswordVisible.value
-                },
-                onDone = { },
-            )
-            Spacer(modifier = Modifier.height(10.dp))
-            Row(horizontalArrangement = Arrangement.Start, modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                Checkbox(
-                    checked = viewModel.isOwner.value,
-                    onCheckedChange = { checkedNew ->
-                        viewModel.isOwner.value = checkedNew
+                )
+                Spacer(modifier = Modifier.height(20.dp))
+                NormalTextField(
+                    value = viewModel.email.value,
+                    label = stringResource(id = R.string.email_address),
+                    onValueChange = { newValue ->
+                        viewModel.email.value = newValue
+                        viewModel.validateEmail()
                     },
+                    isError = viewModel.isEmailError.value,
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Default.Email,
+                            contentDescription = null,
+                        )
+                    },
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Email,
+                        imeAction = ImeAction.Next,
+                    ),
+                    trailingIcon = { },
+                    onDone = { },
+                    placeholder = stringResource(id = R.string.email_address),
                 )
-                Text(
-                    modifier = Modifier.padding(start = 2.dp),
-                    text = stringResource(id = R.string.register_as_owner),
-                    style = TextStyle(fontSize = 14.sp),
+                Spacer(modifier = Modifier.height(10.dp))
+                NormalTextField(
+                    value = viewModel.userName.value,
+                    label = stringResource(id = R.string.user_name),
+                    onValueChange = { newValue ->
+                        viewModel.userName.value = newValue
+                        viewModel.validateUserName()
+                    },
+                    isError = viewModel.isUserNameError.value,
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Default.Person,
+                            contentDescription = null,
+                        )
+                    },
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Text,
+                        imeAction = ImeAction.Next,
+                    ),
+                    trailingIcon = { },
+                    onDone = { },
+                    placeholder = stringResource(id = R.string.user_name),
                 )
-            }
-            Spacer(modifier = Modifier.height(10.dp))
-            LoginButton(
-                onClick = {
-                    scope.launch {
-                        val response = viewModel.register()
-                        if (response.isSuccess) {
-                            showToast(context, response.successMessage)
-                        }
-                    }
-                },
-                text = stringResource(R.string.register),
-            )
-            Spacer(modifier = Modifier.height(10.dp))
-
-            Box(modifier = Modifier.padding(vertical = 16.dp)) {
-                Spacer(
-                    modifier = Modifier
-                        .align(Alignment.Center)
-                        .height(1.dp)
-                        .fillMaxWidth()
-                        .background(Color.LightGray),
+                Spacer(modifier = Modifier.height(10.dp))
+                NormalTextField(
+                    value = viewModel.nickName.value,
+                    label = stringResource(id = R.string.nickname),
+                    onValueChange = { newValue ->
+                        viewModel.nickName.value = newValue
+                    },
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Default.Person2,
+                            contentDescription = null,
+                        )
+                    },
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Text,
+                        imeAction = ImeAction.Next,
+                    ),
+                    trailingIcon = { },
+                    onDone = { },
+                    placeholder = stringResource(id = R.string.nickname),
                 )
-                Text(
-                    text = stringResource(id = R.string.or_use),
-                    color = Color.LightGray,
-                    modifier = Modifier
-                        .align(Alignment.Center)
-                        .padding(horizontal = 16.dp),
+                Spacer(modifier = Modifier.height(10.dp))
+                PasswordTextField(
+                    value = viewModel.password.value,
+                    label = stringResource(id = R.string.password_text),
+                    onValueChange = { newValue ->
+                        viewModel.password.value = newValue
+                        viewModel.validatePassword()
+                    },
+                    isError = viewModel.isPasswordError.value,
+                    isVisible = viewModel.isPasswordVisible.value,
+                    onVisibilityChanged = {
+                        viewModel.isPasswordVisible.value = !viewModel.isPasswordVisible.value
+                    },
+                    onDone = { },
                 )
-            }
-            Spacer(modifier = Modifier.height(8.dp))
-
-            OutlinedButton(
-                onClick = { },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(50.dp),
-                shape = RoundedCornerShape(
-                    topEnd = 20.dp,
-                    topStart = 20.dp,
-                    bottomStart = 20.dp,
-                    bottomEnd = 20.dp,
-                ),
-
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.Games,
-                    contentDescription = null,
-                )
-                Text(
-                    text = stringResource(id = R.string.sign_in_with_google),
-                    style = MaterialTheme.typography.labelMedium.copy(fontSize = 14.sp),
-                    textAlign = TextAlign.Center,
+                Spacer(modifier = Modifier.height(10.dp))
+                Row(
+                    horizontalArrangement = Arrangement.Start,
                     modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Checkbox(
+                        checked = viewModel.isOwner.value,
+                        onCheckedChange = { checkedNew ->
+                            viewModel.isOwner.value = checkedNew
+                        },
+                    )
+                    Text(
+                        modifier = Modifier.padding(start = 2.dp),
+                        text = stringResource(id = R.string.register_as_owner),
+                        style = TextStyle(fontSize = 14.sp),
+                    )
+                }
+                Spacer(modifier = Modifier.height(10.dp))
+                LoginButton(
+                    onClick = {
+                        scope.launch {
+                            val response = viewModel.register()
+                            if (response.isSuccess) {
+                                showToast(context, response.successMessage)
+                            }
+                        }
+                    },
+                    text = stringResource(R.string.register),
                 )
-            }
+                Spacer(modifier = Modifier.height(10.dp))
 
-            Row(
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally),
-            ) {
-                Text(
-                    text = stringResource(id = R.string.have_account),
+                Box(modifier = Modifier.padding(vertical = 16.dp)) {
+                    Spacer(
+                        modifier = Modifier
+                            .align(Alignment.Center)
+                            .height(1.dp)
+                            .fillMaxWidth()
+                            .background(Color.LightGray),
+                    )
+                    Text(
+                        text = stringResource(id = R.string.or_use),
+                        color = Color.LightGray,
+                        modifier = Modifier
+                            .align(Alignment.Center)
+                            .padding(horizontal = 16.dp),
+                    )
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+
+                OutlinedButton(
+                    onClick = { },
                     modifier = Modifier
-                        .padding(vertical = 16.dp),
-                    fontSize = 16.sp,
-                )
-                Text(
-                    text = stringResource(id = R.string.log_in),
-                    fontSize = 16.sp,
+                        .fillMaxWidth()
+                        .height(50.dp)
+                        .padding(horizontal = 16.dp),
+                    shape = RoundedCornerShape(
+                        topEnd = 20.dp,
+                        topStart = 20.dp,
+                        bottomStart = 20.dp,
+                        bottomEnd = 20.dp,
+                    ),
+
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.Games,
+                        contentDescription = null,
+                    )
+                    Text(
+                        text = stringResource(id = R.string.sign_in_with_google),
+                        style = MaterialTheme.typography.labelMedium.copy(fontSize = 14.sp),
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+                }
+
+                Row(
                     modifier = Modifier
-                        .padding(vertical = 16.dp, horizontal = 4.dp)
-                        .clickable(onClick = onLoginClick),
-                    style = TextStyle(textDecoration = TextDecoration.Underline),
-                )
+                        .align(Alignment.CenterHorizontally),
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.have_account),
+                        modifier = Modifier
+                            .padding(vertical = 16.dp),
+                        fontSize = 16.sp,
+                    )
+                    Text(
+                        text = stringResource(id = R.string.log_in),
+                        fontSize = 16.sp,
+                        modifier = Modifier
+                            .padding(vertical = 16.dp, horizontal = 4.dp)
+                            .clickable(onClick = onLoginClick),
+                        style = TextStyle(textDecoration = TextDecoration.Underline),
+                    )
+                }
             }
-        }
-    }
+        },
+    )
 }

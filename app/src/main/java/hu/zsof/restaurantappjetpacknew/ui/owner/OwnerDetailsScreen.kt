@@ -62,6 +62,7 @@ fun OwnerDetailsScreen(
     }
 
     Scaffold(
+        modifier = Modifier.padding(bottom = 36.dp),
         content = {
             Column(
                 modifier = Modifier

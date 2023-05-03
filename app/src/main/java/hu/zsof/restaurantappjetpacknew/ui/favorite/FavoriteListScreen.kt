@@ -39,6 +39,7 @@ fun FavoriteListScreen(
     }
 
     Scaffold(
+        modifier = Modifier.padding(bottom = 36.dp),
         content = { padding ->
             Column(
                 modifier = Modifier

@@ -68,7 +68,7 @@ fun HomeListScreen(
     val globalFilteredPlaces = LocalDataStateService.filteredPlaces.observeAsState()
 
     Scaffold(
-
+        modifier = Modifier.padding(bottom = 36.dp),
         floatingActionButton = {
             if (user?.userType == ROLE_OWNER) {
                 FloatingActionButton(

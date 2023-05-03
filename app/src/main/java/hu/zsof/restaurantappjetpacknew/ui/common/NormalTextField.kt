@@ -14,8 +14,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
@@ -54,10 +52,9 @@ fun NormalTextField(
             }
         },
         modifier = modifier
-            .fillMaxWidth().padding(vertical = 4.dp),
+            .fillMaxWidth().padding(vertical = 4.dp, horizontal = 16.dp),
         singleLine = true,
         isError = isError,
-        textStyle = TextStyle(color = Color.Black),
         placeholder = { Text(text = placeholder) },
         keyboardOptions = keyboardOptions,
         keyboardActions = KeyboardActions(

@@ -10,6 +10,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -22,14 +23,13 @@ import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.graphics.Color.Companion.Unspecified
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.unit.dp
-import hu.zsof.restaurantappjetpacknew.ui.theme.Pink40
 
 @Composable
 fun TextChip(
     isSelected: Boolean,
     text: String,
     onChecked: (Boolean) -> Unit = {},
-    selectedColor: Color = Pink40,
+    selectedColor: Color = MaterialTheme.colorScheme.primary,
 
 ) {
     val shape = RoundedCornerShape(12.dp)

@@ -100,6 +100,7 @@ fun ReviewDetailsScreen(
     }
 
     Scaffold(
+        modifier = Modifier.padding(bottom = 36.dp),
         floatingActionButton = {
             MultiFloatingButton(
                 multiFloatingState = multiFloatingState,

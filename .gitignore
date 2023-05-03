@@ -14,3 +14,4 @@
 .cxx
 local.properties
 /app/proguard-rules.pro
+/app/google-services.json

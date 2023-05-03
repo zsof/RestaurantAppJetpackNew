@@ -17,7 +17,6 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import hu.zsof.restaurantappjetpacknew.network.repository.LocalDataStateService
-import hu.zsof.restaurantappjetpacknew.ui.theme.PurpleGrey40
 import hu.zsof.restaurantappjetpacknew.util.Constants.ROLE_ADMIN
 import hu.zsof.restaurantappjetpacknew.util.Constants.ROLE_OWNER
 import hu.zsof.restaurantappjetpacknew.util.Constants.ROLE_USER
@@ -40,7 +39,7 @@ fun BottomNavBar(
         exit = slideOutVertically(targetOffsetY = { it }),
         content = {
             NavigationBar(
-                containerColor = PurpleGrey40,
+                // containerColor = PurpleGrey40,
             ) {
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                 if (userType == ROLE_ADMIN) {

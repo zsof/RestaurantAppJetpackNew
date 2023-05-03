@@ -7,7 +7,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material.icons.filled.Person2
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -34,55 +34,60 @@ fun ProfileScreen(
     LaunchedEffect(key1 = "Profile") {
         viewModel.getUserProfile()
     }
+    Scaffold(
+        content = {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize(),
+            ) {
+                Text(
+                    text = stringResource(id = R.string.profile_settings_text),
+                    style = TextStyle(fontWeight = FontWeight.Bold),
+                    fontSize = 20.sp,
+                    modifier = Modifier
+                        .padding(top = 8.dp)
+                        .align(Alignment.CenterHorizontally),
+                )
+                if (user != null) {
+                    viewModel.glutenFreeChecked.value = user.filterItems.glutenFree
+                    viewModel.lactoseFreeChecked.value = user.filterItems.lactoseFree
+                    viewModel.vegetarianChecked.value = user.filterItems.vegetarian
+                    viewModel.veganChecked.value = user.filterItems.vegan
+                    viewModel.fastFoodChecked.value = user.filterItems.fastFood
+                    viewModel.parkingChecked.value = user.filterItems.parkingAvailable
+                    viewModel.familyPlaceChecked.value = user.filterItems.familyPlace
+                    viewModel.dogFriendlyChecked.value = user.filterItems.dogFriendly
+                    viewModel.deliveryChecked.value = user.filterItems.delivery
+                    viewModel.creditCardChecked.value = user.filterItems.creditCard
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize(),
-    ) {
-        Text(
-            text = stringResource(id = R.string.profile_settings_text),
-            style = TextStyle(fontWeight = FontWeight.Bold),
-            fontSize = 20.sp,
-            modifier = Modifier
-                .padding(top = 8.dp)
-                .align(Alignment.CenterHorizontally),
-        )
-        if (user != null) {
-            viewModel.glutenFreeChecked.value = user.filterItems.glutenFree
-            viewModel.lactoseFreeChecked.value = user.filterItems.lactoseFree
-            viewModel.vegetarianChecked.value = user.filterItems.vegetarian
-            viewModel.veganChecked.value = user.filterItems.vegan
-            viewModel.fastFoodChecked.value = user.filterItems.fastFood
-            viewModel.parkingChecked.value = user.filterItems.parkingAvailable
-            viewModel.familyPlaceChecked.value = user.filterItems.familyPlace
-            viewModel.dogFriendlyChecked.value = user.filterItems.dogFriendly
-            viewModel.deliveryChecked.value = user.filterItems.delivery
-            viewModel.creditCardChecked.value = user.filterItems.creditCard
-
-            BaseProfile(user)
-            Column(modifier = Modifier.padding(bottom = 44.dp)) {
-                Column(Modifier.verticalScroll(rememberScrollState())) {
-                    ChipSettings(user, viewModel)
-                    Row(
-                        verticalAlignment = Alignment.Bottom,
-                        horizontalArrangement = Arrangement.Center,
-                        modifier = Modifier.fillMaxWidth().fillMaxHeight(),
-                    ) {
-                        Button(
-                            onClick = {
-                                viewModel.updateUserProfile()
-                            },
-                        ) {
-                            Text(
-                                text = stringResource(id = R.string.save_btn),
-                                style = TextStyle(fontSize = 16.sp),
-                            )
+                    BaseProfile(user)
+                    Column(modifier = Modifier.padding(bottom = 44.dp)) {
+                        Column(Modifier.verticalScroll(rememberScrollState())) {
+                            ChipSettings(user, viewModel)
+                            Row(
+                                verticalAlignment = Alignment.Bottom,
+                                horizontalArrangement = Arrangement.Center,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .fillMaxHeight(),
+                            ) {
+                                Button(
+                                    onClick = {
+                                        viewModel.updateUserProfile()
+                                    },
+                                ) {
+                                    Text(
+                                        text = stringResource(id = R.string.save_btn),
+                                        style = TextStyle(fontSize = 16.sp),
+                                    )
+                                }
+                            }
                         }
                     }
                 }
             }
-        }
-    }
+        },
+    )
 }
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -184,7 +189,7 @@ fun BaseProfile(user: User) {
         shape = RoundedCornerShape(8.dp),
     ) {
         Image(
-            imageVector = Icons.Outlined.Person,
+            imageVector = Icons.Filled.Person2,
             contentDescription = null,
             modifier = Modifier
                 .size(120.dp)
@@ -226,7 +231,7 @@ fun BaseProfile(user: User) {
                 text = "*******",
                 fontSize = 20.sp,
             )
-            androidx.compose.material.Icon(
+            Icon(
                 imageVector = Icons.Filled.Edit,
                 contentDescription = null,
             )

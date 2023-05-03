@@ -5,30 +5,31 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 
 private val DarkColorScheme = darkColorScheme(
-    primary = PrimaryDark,
-    onPrimary = OnPrimaryDark,
-    primaryContainer = PrimaryContainerDark,
-    onPrimaryContainer = OnPrimaryContainerDark,
-    secondary = SecondaryDark,
-    onSecondary = OnSecondaryDark,
-    secondaryContainer = SecondaryContainerDark,
-    onSecondaryContainer = OnSecondaryContainerDark,
-    tertiary = TertiaryDark,
-    onTertiary = OnTertiaryDark,
-    tertiaryContainer = TertiaryContainerDark,
-    onTertiaryContainer = OnTertiaryContainerDark,
-    error = ErrorDark,
+    primary = Color(0xff03a9f4), // gombok alapháttere
+    onPrimary = Color(0xFF001240),
+    primaryContainer = Color(0xff03a9f4),
+    onPrimaryContainer = Color(0xFFFFFFFF),
+    secondary = Color(0xFF001240), // ??
+    onSecondary = Color(0xFFFFFFFF), // ??
+    secondaryContainer = Color(0xff03a9f4), // bottonbaron az ikonok háttere, slideren a vonal, görgetős háttere
+    onSecondaryContainer = Color(0xFFFFFFFF), // bottonbaron az ikon körvonala
+    tertiary = Color(0xFFCA0C0C), // ??
+    onTertiary = Color(0xFFCA0C0C), // ??
+    tertiaryContainer = Color(0xFFCA0C0C), // ??
+    onTertiaryContainer = Color(0xFFCA0C0C), // ??
+    error = Color(0xFFCA0C0C),
     onError = OnErrorDark,
     errorContainer = ErrorContainerDark,
     onErrorContainer = OnErrorContainerDark,
-    background = BackgroundDark,
-    onBackground = OnBackgroundDark,
-    surface = SurfaceDark,
-    outline = OutlineDark,
-    surfaceVariant = SurfaceVariantDark,
-    onSurfaceVariant = OnSurfaceVariantDark,
+    background = Color(0xFF2D2D2E), // ez csak akkor ha Surface van
+    // onBackground = Color(0xFF000000),
+    surface = Color(0xFF2D2D2E), // Login háttere, dialog háttere
+    outline = Color(0xFFFFFFFF), // button, textfieldek körvonala
+    surfaceVariant = Color(0xFF000000), // card színe!!
+    onSurfaceVariant = Color(0xFFFFFFFF), // iconok színe, hint-ek színe, checkob színe
 )
 
 private val LightColorScheme = lightColorScheme(
@@ -38,7 +39,7 @@ private val LightColorScheme = lightColorScheme(
      secondary = SBrown,
      onSecondary = SLight,*/
 
-    primary = PrimaryLight,
+    primary = Color(0xD8B18989),
     onPrimary = OnPrimaryLight,
     primaryContainer = PrimaryContainerLight,
     onPrimaryContainer = OnPrimaryContainerLight,
@@ -54,12 +55,12 @@ private val LightColorScheme = lightColorScheme(
     onError = OnErrorLight,
     errorContainer = ErrorContainerLight,
     onErrorContainer = OnErrorContainerLight,
-    background = BackgroundLight,
-    onBackground = OnBackgroundLight,
-    surface = SurfaceLight,
+    background = Color(0xFFFFF8F7),
+    onBackground = Color(0xD8705D5D),
+    surface = BackgroundLight,
     outline = OutlineLight,
-    surfaceVariant = SurfaceVariantLight,
-    onSurfaceVariant = OnSurfaceVariantLight,
+    surfaceVariant = Color(0xFFF8F392),
+    onSurfaceVariant = Color(0xD8705D5D),
 )
 
 @Composable

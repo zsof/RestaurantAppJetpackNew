@@ -12,7 +12,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.LayoutDirection
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -266,9 +265,7 @@ fun NavGraph(
             CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
                 Box(
                     modifier = Modifier
-                        .fillMaxSize()
-                        // Apply the padding globally to the whole BottomNavScreensController
-                        .padding(0.dp, 0.dp, 0.dp, 36.dp),
+                        .fillMaxSize(),
                 ) {
                     NavHost(
                         navController = navController,
