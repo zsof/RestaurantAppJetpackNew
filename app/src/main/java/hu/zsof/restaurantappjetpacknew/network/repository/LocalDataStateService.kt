@@ -15,6 +15,8 @@ object LocalDataStateService {
     var filteredPlaces = MutableLiveData<List<Place>>()
     var searchedPlaces = MutableLiveData<List<Place>>()
 
+    var darkTheme = MutableLiveData<Boolean>()
+
     fun getLatLng(): LatLng {
         if (latLng == null) {
             throw Exception("Hiba történt, nincs ilyen koordináta")

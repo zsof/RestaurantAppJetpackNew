@@ -1,6 +1,5 @@
 package hu.zsof.restaurantappjetpacknew.ui.theme
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
@@ -26,7 +25,7 @@ private val DarkColorScheme = darkColorScheme(
     onErrorContainer = OnErrorContainerDark,
     background = Color(0xFF000000), // ez csak akkor ha Surface van
     // onBackground = Color(0xFF000000),
-    surface = Color(0xFF2D2D2E), // Login háttere, dialog háttere
+    surface = Color(0xFF001240), // Login háttere, dialog háttere
     outline = Color(0xFFFFFFFF), // button, textfieldek körvonala
     surfaceVariant = Color(0xFF2D2D2E), // card színe!!,  slideren a vonal, görgetős háttere
     onSurfaceVariant = Color(0xFFFFFFFF), // iconok színe, hint-ek színe, checkob színe
@@ -65,7 +64,7 @@ private val LightColorScheme = lightColorScheme(
 
 @Composable
 fun RestaurantAppJetpackNewTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
+    darkTheme: Boolean,
     content: @Composable () -> Unit,
 ) {
     val colors = if (darkTheme) {

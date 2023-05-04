@@ -1,5 +1,7 @@
 package hu.zsof.restaurantappjetpacknew.ui.profile
 
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -14,6 +16,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -24,6 +27,7 @@ import hu.zsof.restaurantappjetpacknew.R
 import hu.zsof.restaurantappjetpacknew.model.User
 import hu.zsof.restaurantappjetpacknew.network.repository.LocalDataStateService
 import hu.zsof.restaurantappjetpacknew.ui.common.TextChip
+import hu.zsof.restaurantappjetpacknew.util.Constants
 
 @ExperimentalMaterial3Api
 @Composable
@@ -64,6 +68,7 @@ fun ProfileScreen(
                     Column(modifier = Modifier.padding(bottom = 44.dp)) {
                         Column(Modifier.verticalScroll(rememberScrollState())) {
                             ChipSettings(user, viewModel)
+                            OtherSettings(viewModel = viewModel)
                             Row(
                                 verticalAlignment = Alignment.Bottom,
                                 horizontalArrangement = Arrangement.Center,
@@ -235,6 +240,61 @@ fun BaseProfile(user: User) {
                 imageVector = Icons.Filled.Edit,
                 contentDescription = null,
             )
+        }
+    }
+}
+
+@Composable
+fun OtherSettings(viewModel: ProfileViewModel) {
+    val context = LocalContext.current
+    val preferences: SharedPreferences =
+        context.getSharedPreferences(
+            Constants.Prefs.SHARED_PREFERENCES,
+            Context.MODE_PRIVATE,
+        )
+
+    viewModel.switchCheckedState.value = preferences.getBoolean(Constants.Prefs.DARK_MODE, false)
+
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+        shape = RoundedCornerShape(8.dp),
+    ) {
+        Row(
+            modifier = Modifier
+                .padding(vertical = 16.dp),
+        ) {
+            Text(
+                modifier = Modifier
+                    .padding(8.dp),
+                text = stringResource(id = R.string.dark_theme_text),
+                fontSize = 20.sp,
+            )
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(end = 8.dp),
+                contentAlignment = Alignment.TopEnd,
+            ) {
+                Switch(
+                    checked = viewModel.switchCheckedState.value,
+                    onCheckedChange = {
+                        viewModel.switchCheckedState.value = it
+
+                        if (it) {
+                            viewModel.switchCheckedState.value = true
+                            preferences.edit().putBoolean(Constants.Prefs.DARK_MODE, true).apply()
+                            LocalDataStateService.darkTheme.value = true
+                        } else {
+                            viewModel.switchCheckedState.value = false
+                            preferences.edit().putBoolean(Constants.Prefs.DARK_MODE, false).apply()
+                            LocalDataStateService.darkTheme.value = false
+                        }
+                    },
+                )
+            }
         }
     }
 }

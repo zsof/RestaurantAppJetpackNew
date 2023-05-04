@@ -29,6 +29,8 @@ class ProfileViewModel @Inject constructor(
     var deliveryChecked = mutableStateOf(false)
     var creditCardChecked = mutableStateOf(false)
 
+    var switchCheckedState = mutableStateOf(false)
+
     val userProfile = MutableLiveData<User>()
     fun getUserProfile() {
         viewModelScope.launch {
