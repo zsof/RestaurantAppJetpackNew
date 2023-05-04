@@ -1,5 +1,6 @@
 package hu.zsof.restaurantappjetpacknew.ui.homelist
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -17,6 +18,8 @@ class HomeViewModel @Inject constructor(
     private val userRepository: UserRepository,
 ) :
     ViewModel() {
+    var searchText = mutableStateOf("")
+    var active = mutableStateOf(false)
 
     var places = MutableLiveData<List<Place>>()
     fun showPlaces() {

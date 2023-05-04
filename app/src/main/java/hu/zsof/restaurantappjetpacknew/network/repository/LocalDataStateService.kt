@@ -13,6 +13,7 @@ object LocalDataStateService {
     var userType = MutableLiveData(ROLE_USER)
 
     var filteredPlaces = MutableLiveData<List<Place>>()
+    var searchedPlaces = MutableLiveData<List<Place>>()
 
     fun getLatLng(): LatLng {
         if (latLng == null) {

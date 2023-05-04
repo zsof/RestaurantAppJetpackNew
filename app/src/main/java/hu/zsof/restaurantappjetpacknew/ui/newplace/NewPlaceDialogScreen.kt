@@ -218,7 +218,8 @@ fun NewPlaceDialogScreen(viewModel: NewPlaceDialogViewModel = hiltViewModel()) {
                         ExposedDropdownMenuBox(
                             expanded = viewModel.expandedCategoryMenu.value,
                             onExpandedChange = {
-                                viewModel.expandedCategoryMenu.value = !viewModel.expandedCategoryMenu.value
+                                viewModel.expandedCategoryMenu.value =
+                                    !viewModel.expandedCategoryMenu.value
                             },
                             modifier = Modifier.padding(start = 16.dp, end = 8.dp),
                         ) {
@@ -284,6 +285,7 @@ fun NewPlaceDialogScreen(viewModel: NewPlaceDialogViewModel = hiltViewModel()) {
                             valueRange = 0f..10f,
                             steps = 1,
                             modifier = Modifier.padding(start = 32.dp),
+                            colors = SliderDefaults.colors(thumbColor = MaterialTheme.colorScheme.primaryContainer),
                         )
                     }
 

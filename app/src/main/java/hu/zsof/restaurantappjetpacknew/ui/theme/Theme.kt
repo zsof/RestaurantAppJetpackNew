@@ -14,7 +14,7 @@ private val DarkColorScheme = darkColorScheme(
     onPrimaryContainer = Color(0xFFFFFFFF),
     secondary = Color(0xFF001240), // ??
     onSecondary = Color(0xFFFFFFFF), // ??
-    secondaryContainer = Color(0xff03a9f4), // bottonbaron az ikonok háttere, slideren a vonal, görgetős háttere
+    secondaryContainer = Color(0xff03a9f4), // bottonbaron az ikonok háttere,
     onSecondaryContainer = Color(0xFFFFFFFF), // bottonbaron az ikon körvonala
     tertiary = Color(0xFFCA0C0C), // ??
     onTertiary = Color(0xFFCA0C0C), // ??
@@ -24,11 +24,11 @@ private val DarkColorScheme = darkColorScheme(
     onError = OnErrorDark,
     errorContainer = ErrorContainerDark,
     onErrorContainer = OnErrorContainerDark,
-    background = Color(0xFF2D2D2E), // ez csak akkor ha Surface van
+    background = Color(0xFF000000), // ez csak akkor ha Surface van
     // onBackground = Color(0xFF000000),
     surface = Color(0xFF2D2D2E), // Login háttere, dialog háttere
     outline = Color(0xFFFFFFFF), // button, textfieldek körvonala
-    surfaceVariant = Color(0xFF000000), // card színe!!
+    surfaceVariant = Color(0xFF2D2D2E), // card színe!!,  slideren a vonal, görgetős háttere
     onSurfaceVariant = Color(0xFFFFFFFF), // iconok színe, hint-ek színe, checkob színe
 )
 
@@ -39,13 +39,13 @@ private val LightColorScheme = lightColorScheme(
      secondary = SBrown,
      onSecondary = SLight,*/
 
-    primary = Color(0xD8B18989),
+    primary = Color(0xFFFFC107),
     onPrimary = OnPrimaryLight,
-    primaryContainer = PrimaryContainerLight,
+    primaryContainer = Color(0xFFFFC107),
     onPrimaryContainer = OnPrimaryContainerLight,
     secondary = SecondaryLight,
     onSecondary = OnSecondaryLight,
-    secondaryContainer = SecondaryContainerLight,
+    secondaryContainer = Color(0xFF1DFFFF),
     onSecondaryContainer = OnSecondaryContainerLight,
     tertiary = TertiaryLight,
     onTertiary = OnTertiaryLight,
@@ -55,12 +55,12 @@ private val LightColorScheme = lightColorScheme(
     onError = OnErrorLight,
     errorContainer = ErrorContainerLight,
     onErrorContainer = OnErrorContainerLight,
-    background = Color(0xFFFFF8F7),
+    background = Color(0xFFE7E6E6),
     onBackground = Color(0xD8705D5D),
     surface = BackgroundLight,
     outline = OutlineLight,
-    surfaceVariant = Color(0xFFF8F392),
-    onSurfaceVariant = Color(0xD8705D5D),
+    surfaceVariant = Color(0xFFFFFFFF),
+    onSurfaceVariant = Color(0xD8030303),
 )
 
 @Composable

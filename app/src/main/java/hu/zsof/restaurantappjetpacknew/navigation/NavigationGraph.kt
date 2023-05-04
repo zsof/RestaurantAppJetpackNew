@@ -85,7 +85,6 @@ fun NavGraphBuilder.mainNavGraph(
                     )
                 },
                 onFilterClick = { navController.navigate(ScreenModel.NavigationScreen.FilterPlace.route) },
-                navController = navController,
             )
         }
         composable(route = ScreenModel.NavigationScreen.NewPlace.route) {

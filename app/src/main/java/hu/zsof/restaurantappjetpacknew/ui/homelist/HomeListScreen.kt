@@ -1,8 +1,6 @@
 package hu.zsof.restaurantappjetpacknew.ui.homelist
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -26,12 +24,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import hu.zsof.restaurantappjetpacknew.R
 import hu.zsof.restaurantappjetpacknew.model.Place
 import hu.zsof.restaurantappjetpacknew.model.enums.Price
 import hu.zsof.restaurantappjetpacknew.network.repository.LocalDataStateService
+import hu.zsof.restaurantappjetpacknew.ui.common.SearchTextField
 import hu.zsof.restaurantappjetpacknew.util.Constants.ROLE_OWNER
 
 @OptIn(ExperimentalPermissionsApi::class)
@@ -42,7 +40,6 @@ fun HomeListScreen(
     onFabClick: () -> Unit,
     onClickPlaceItem: (Long) -> Unit,
     onFilterClick: () -> Unit,
-    navController: NavHostController,
 ) {
     // LaunchedEffect should be used when you want that some action must be taken
     // when your composable is first launched/relaunched (or when the key parameter has changed).
@@ -51,12 +48,20 @@ fun HomeListScreen(
     val places = viewModel.places.observeAsState(listOf())
     val user = viewModel.userData.observeAsState().value
 
+    // User által beállításokban beállított alapértelmezett szűrők
     var userFilteredPlaces = mutableListOf<Place>()
     if (user != null) {
         userFilteredPlaces = places.value.filter { place ->
             user.filterItems.convertToList().compare(place.filter.convertToList())
         }.toMutableList()
     }
+
+    // Keresésben az elemek
+    val searchItems = mutableListOf<Place>()
+    // Keresésben elemek, csak observable
+    val searchFilteredPlaces = LocalDataStateService.searchedPlaces.observeAsState()
+    // Globális szűrés, felülírja az alap beállított szűrést -> minden elemen keres
+    val globalFilteredPlaces = LocalDataStateService.filteredPlaces.observeAsState()
 
     // A homeScreen minden változáskor lefut, ezáltal a viewmodelles dolgok is, ha nem lennének launchedeffectben
     LaunchedEffect(key1 = "HomeList") {
@@ -65,10 +70,8 @@ fun HomeListScreen(
         viewModel.getUser()
     }
 
-    val globalFilteredPlaces = LocalDataStateService.filteredPlaces.observeAsState()
-
     Scaffold(
-        modifier = Modifier.padding(bottom = 36.dp),
+        modifier = Modifier.padding(bottom = 16.dp),
         floatingActionButton = {
             if (user?.userType == ROLE_OWNER) {
                 FloatingActionButton(
@@ -85,21 +88,53 @@ fun HomeListScreen(
                     .padding(0.dp, 0.dp, 0.dp, 38.dp)
                     .background(MaterialTheme.colorScheme.background),
             ) {
-                IconButton(
-                    onClick = onFilterClick,
-                    modifier = Modifier
-                        .align(Alignment.End)
-                        .padding(8.dp),
-                ) {
-                    Icon(
-                        imageVector = Icons.Filled.FilterAlt,
-                        contentDescription = null,
-                        modifier = Modifier.size(36.dp),
-                        tint = Color.DarkGray,
+                Row() {
+                    SearchTextField(
+                        onValueChange = {
+                            viewModel.searchText.value = it
+                            search(
+                                globalFilteredPlaces.value,
+                                userFilteredPlaces,
+                                viewModel,
+                                searchItems,
+                            )
+                        },
+                        modifier = Modifier
+                            .weight(4f)
+                            .padding(8.dp)
+                            .fillMaxWidth(),
+                        value = viewModel.searchText.value,
+                        label = stringResource(id = R.string.search),
+                        placeholder = stringResource(id = R.string.search),
                     )
+
+                    IconButton(
+                        onClick = onFilterClick,
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .weight(1f)
+                            .align(Alignment.CenterVertically),
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.FilterAlt,
+                            contentDescription = null,
+                            modifier = Modifier.size(36.dp),
+                            tint = MaterialTheme.colorScheme.primary,
+                        )
+                    }
                 }
 
-                if (!globalFilteredPlaces.value.isNullOrEmpty()) {
+                // Keresés a legerőseb, ha van ->  keresés globális szűrésben levő elemeken (ha létezik ilyen lista), vagy ha nem létezik, akkor user által mentett szűrésben levő elemeken
+                if (!searchFilteredPlaces.value.isNullOrEmpty()) {
+                    LazyColumn(
+                        contentPadding = PaddingValues(8.dp),
+                    ) {
+                        items(searchFilteredPlaces.value!!) {
+                            HomeListItem(place = it, onClickPlaceItem = onClickPlaceItem)
+                        }
+                    }
+                    // Ha van globális szűrés, erősebb mint a user mentett szűrői
+                } else if (!globalFilteredPlaces.value.isNullOrEmpty()) {
                     Text(
                         text = stringResource(id = R.string.clear_filters),
                         modifier = Modifier
@@ -166,10 +201,12 @@ private fun HomeListItem(
                     Image(
                         painter = painterResource(id = R.drawable.ic_launcher_round),
                         contentDescription = null,
+                        contentScale = ContentScale.Crop,
                         modifier = Modifier
                             .size(70.dp, 70.dp)
+                            .padding(8.dp)
+                            .border(2.dp, color = MaterialTheme.colorScheme.primary, CircleShape)
                             .clip(CircleShape),
-                        contentScale = ContentScale.Crop,
                     )
                 }
                 Column() {
@@ -255,5 +292,42 @@ private fun HomeListItem(
                 )
             }
         }
+    }
+}
+
+fun search(
+    globalFilteredPlaces: List<Place>?,
+    userFilteredPlaces: MutableList<Place>,
+    viewModel: HomeViewModel,
+    searchItems: MutableList<Place>,
+) {
+    if (viewModel.searchText.value.isNotEmpty()) {
+        LocalDataStateService.searchedPlaces.value = mutableListOf()
+        searchItems.clear()
+
+        if (!globalFilteredPlaces.isNullOrEmpty()) {
+            globalFilteredPlaces.forEach { place ->
+                if (place.name.contains(
+                        viewModel.searchText.value,
+                        ignoreCase = true,
+                    )
+                ) {
+                    searchItems.add(place)
+                }
+            }
+        } else {
+            userFilteredPlaces.forEach { place ->
+                if (place.name.contains(
+                        viewModel.searchText.value,
+                        ignoreCase = true,
+                    )
+                ) {
+                    searchItems.add(place)
+                }
+            }
+        }
+        LocalDataStateService.searchedPlaces.value = searchItems
+    } else {
+        LocalDataStateService.searchedPlaces.value = mutableListOf()
     }
 }
