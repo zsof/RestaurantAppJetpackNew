@@ -1,10 +1,11 @@
 package hu.zsof.restaurantappjetpacknew.ui.details
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.material.Tab
+import androidx.compose.material.TabRow
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,9 +24,7 @@ import kotlinx.coroutines.launch
 fun TabLayout(placeId: Long) {
     val pagerState = rememberPagerState(pageCount = 3, infiniteLoop = true)
 
-    Column(
-        modifier = Modifier.background(Color.White),
-    ) {
+    Column() {
         Tabs(pagerState = pagerState)
         TabsContent(pagerState = pagerState, placeId = placeId)
     }
@@ -43,12 +42,12 @@ fun Tabs(pagerState: PagerState) {
     val scope = rememberCoroutineScope()
     TabRow(
         selectedTabIndex = pagerState.currentPage,
-        contentColor = Color.White,
+        backgroundColor = MaterialTheme.colorScheme.secondary,
         indicator = { tabPositions ->
             TabRowDefaults.Indicator(
                 Modifier.pagerTabIndicatorOffset(pagerState, tabPositions),
                 height = 2.dp,
-                color = Color.White,
+                color = Color.Black,
             )
         },
     ) {
@@ -57,7 +56,7 @@ fun Tabs(pagerState: PagerState) {
                 text = {
                     Text(
                         list[index].first,
-                        color = if (pagerState.currentPage == index) Color.White else Color.LightGray,
+                        color = if (pagerState.currentPage == index) MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.surfaceVariant,
                     )
                 },
                 selected = pagerState.currentPage == index,
@@ -93,7 +92,7 @@ fun TabContentScreen(data: String) {
     ) {
         Text(
             text = data,
-            style = MaterialTheme.typography.h5,
+            style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center,
         )

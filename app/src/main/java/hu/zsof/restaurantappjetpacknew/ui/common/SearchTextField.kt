@@ -1,6 +1,7 @@
 package hu.zsof.restaurantappjetpacknew.ui.common
 
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
@@ -22,6 +23,7 @@ fun SearchTextField(
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     placeholder: String,
+    keyboardActions: KeyboardActions,
 ) {
     val shape =
         RoundedCornerShape(20.dp)
@@ -41,5 +43,6 @@ fun SearchTextField(
             keyboardType = KeyboardType.Text,
             imeAction = ImeAction.Search,
         ),
+        keyboardActions = keyboardActions,
     )
 }

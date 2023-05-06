@@ -2,17 +2,6 @@ package hu.zsof.restaurantappjetpacknew.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
-
-val PBrown = Color(0xFFD7CCC8)
-val PLight = Color(0xFFfffffb)
-val PDark = Color(0xFFa69b97)
-val SBrown = Color(0xFF865F51)
-val SLight = Color(0xffbe9c91)
-val SDark = Color(0xff5f4)
-
 // Light
 val PrimaryLight = Color(0xFF0061a4)
 val OnPrimaryLight = Color(0xFFFFFFFF)
@@ -38,12 +27,12 @@ val BackgroundLight = Color(0xFFfdfcff)
 val OnBackgroundLight = Color(0xFF1a1c1e)
 val SurfaceLight = Color(0xFFfdfcff)
 
-val OutlineLight = Color(0xFF73777f)
+val OutlineLight = Color(0xFF2A2A2B)
 val SurfaceVariantLight = Color(0xFFdfe2eb)
 val OnSurfaceVariantLight = Color(0xFF43474e)
 
 // Dark
-val PrimaryDark = Color(0xFF2c9fff)
+val primaryDark = Color(0xff03a9f4)
 val OnPrimaryDark = Color(0xFF003258)
 val PrimaryContainerDark = Color(0xFF00497d)
 val OnPrimaryContainerDark = Color(0xFFd1e4ff)

@@ -166,6 +166,6 @@ dependencies {
     implementation 'com.google.firebase:firebase-crashlytics-ktx'
     implementation 'com.google.firebase:firebase-analytics-ktx'
 
-    // Rating bar
-    implementation 'com.github.a914-gowtham:compose-ratingbar:1.2.5'
+    /*// Rating bar
+    implementation 'com.github.a914-gowtham:compose-ratingbar:1.2.5'*/
 }

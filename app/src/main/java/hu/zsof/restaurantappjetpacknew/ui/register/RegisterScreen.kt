@@ -73,6 +73,7 @@ fun RegisterScreen(
                         fontWeight = FontWeight.ExtraBold,
                         fontStyle = FontStyle.Italic,
                     ),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier
                         .padding(top = 8.dp)
                         .align(Alignment.CenterHorizontally),
@@ -176,6 +177,7 @@ fun RegisterScreen(
                         modifier = Modifier.padding(start = 2.dp),
                         text = stringResource(id = R.string.register_as_owner),
                         style = TextStyle(fontSize = 14.sp),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
                 Spacer(modifier = Modifier.height(10.dp))
@@ -202,7 +204,7 @@ fun RegisterScreen(
                     )
                     Text(
                         text = stringResource(id = R.string.or_use),
-                        color = Color.LightGray,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier
                             .align(Alignment.Center)
                             .padding(horizontal = 16.dp),
@@ -244,11 +246,13 @@ fun RegisterScreen(
                         text = stringResource(id = R.string.have_account),
                         modifier = Modifier
                             .padding(vertical = 16.dp),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         fontSize = 16.sp,
                     )
                     Text(
                         text = stringResource(id = R.string.log_in),
                         fontSize = 16.sp,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier
                             .padding(vertical = 16.dp, horizontal = 4.dp)
                             .clickable(onClick = onLoginClick),

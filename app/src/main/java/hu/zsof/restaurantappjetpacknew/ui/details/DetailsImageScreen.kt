@@ -63,17 +63,21 @@ fun DetailsImageScreen(
         }
     }
 
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Top,
-    ) {
-        Button(
-            onClick = { viewModel.photoDialogOpen.value = true },
-        ) {
-            Icon(imageVector = Icons.Filled.PhotoCamera, contentDescription = null)
-        }
-    }
+    Surface(
+        content = {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Top,
+            ) {
+                Button(
+                    onClick = { viewModel.photoDialogOpen.value = true },
+                ) {
+                    Icon(imageVector = Icons.Filled.PhotoCamera, contentDescription = null)
+                }
+            }
+        },
+    )
 }
 
 @OptIn(ExperimentalPermissionsApi::class)

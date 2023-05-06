@@ -211,7 +211,11 @@ fun NavGraph(
 ) {
     val scaffoldState = rememberScaffoldState(rememberDrawerState(DrawerValue.Closed))
     val scope = rememberCoroutineScope()
+
+    val closeDrawer: () -> Unit = { scope.launch { scaffoldState.drawerState.close() } }
     val bottomBarState = rememberSaveable { (mutableStateOf(true)) }
+    val drawerOpenState = rememberSaveable { (mutableStateOf(true)) }
+
     // Subscribe to navBackStackEntry, required to get current route
     val navBackStackEntry by navController.currentBackStackEntryAsState()
 
@@ -220,16 +224,20 @@ fun NavGraph(
         "login" -> {
             // Hide BottomBar
             bottomBarState.value = false
+            drawerOpenState.value = false
         }
         "register" -> {
             bottomBarState.value = false
+            drawerOpenState.value = false
         }
         "logout" -> {
             bottomBarState.value = false
+            drawerOpenState.value = false
         }
         else -> {
             // Show BottomBar
             bottomBarState.value = true
+            drawerOpenState.value = true
         }
     }
     CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
@@ -244,6 +252,7 @@ fun NavGraph(
                         navController = navController,
                         scope = scope,
                         scaffoldState = scaffoldState,
+                        navDrawerState = drawerOpenState,
                     )
                 }
             },

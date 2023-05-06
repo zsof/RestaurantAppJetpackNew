@@ -1,15 +1,14 @@
 package hu.zsof.restaurantappjetpacknew.ui.details
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.*
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -40,142 +39,158 @@ fun DetailsMainScreen(
         viewModel.getPlaceById(placeId)
     }
 
- /*   if (viewModel.ratingDialogOpen.value) {
-        RateDialog(viewModel = viewModel, onDismiss = { viewModel.ratingDialogOpen.value = false })
-    }
-*/
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState()),
-    ) {
-        if (place != null) {
-            AsyncImage(
-                model = place.image.imageUrl(),
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .wrapContentSize()
-                    .wrapContentHeight()
-                    .wrapContentWidth()
-                    .align(Alignment.CenterHorizontally),
-            )
-
-            Text(
-                text = place.name,
-                style = MaterialTheme.typography.h5,
-                fontWeight = FontWeight.Bold,
-                fontStyle = FontStyle.Italic,
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .padding(16.dp),
-            )
-
-            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-                Icon(
-                    imageVector = Icons.Filled.Star,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(34.dp)
-                        .padding(2.dp, 4.dp, 0.dp, 0.dp),
-                    tint = Color(0xFFFFC107),
-
-                )
-                Text(
-                    text = place.rate.toString(),
-                    style = TextStyle(
-                        fontStyle = FontStyle.Italic,
-                        fontWeight = FontWeight.Bold,
-                    ),
-                    modifier = Modifier
-                        .padding(8.dp, 8.dp, 8.dp, 8.dp)
-                        .clickable(onClick = {
-                            if (!viewModel.getAppPreference<Boolean>(Constants.Prefs.USER_RATED)) {
-                                viewModel.ratingDialogOpen.value = true
-                            }
-                        }),
-                    fontSize = 18.sp,
-                )
-            }
-
+    /*   if (viewModel.ratingDialogOpen.value) {
+           RateDialog(viewModel = viewModel, onDismiss = { viewModel.ratingDialogOpen.value = false })
+       }
+   */
+    Surface(
+        modifier = Modifier.fillMaxSize()
+            .background(color = MaterialTheme.colorScheme.onPrimary),
+        content = {
             Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState()),
             ) {
-                FlowRow(horizontalArrangement = Arrangement.Center) {
-                    place.filter.convertToMap().forEach {
-                        if (it.value) {
-                            TextChip(
-                                isSelected = true,
-                                text = it.key,
-                            )
+                if (place != null) {
+                    AsyncImage(
+                        model = place.image.imageUrl(),
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .wrapContentSize()
+                            .wrapContentHeight()
+                            .wrapContentWidth()
+                            .align(Alignment.CenterHorizontally),
+                    )
+
+                    Text(
+                        text = place.name,
+                        style = MaterialTheme.typography.headlineLarge,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        fontStyle = FontStyle.Italic,
+                        modifier = Modifier
+                            .align(Alignment.CenterHorizontally)
+                            .padding(16.dp),
+                    )
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center,
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.Star,
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(34.dp)
+                                .padding(2.dp, 4.dp, 0.dp, 0.dp),
+                            tint = Color(0xFFFFC107),
+
+                        )
+                        Text(
+                            text = place.rate.toString(),
+                            style = TextStyle(
+                                fontStyle = FontStyle.Italic,
+                                fontWeight = FontWeight.Bold,
+                            ),
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier
+                                .padding(8.dp, 8.dp, 8.dp, 8.dp)
+                                .clickable(onClick = {
+                                    if (!viewModel.getAppPreference<Boolean>(Constants.Prefs.USER_RATED)) {
+                                        viewModel.ratingDialogOpen.value = true
+                                    }
+                                }),
+                            fontSize = 18.sp,
+                        )
+                    }
+
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier.fillMaxWidth(),
+                    ) {
+                        FlowRow(horizontalArrangement = Arrangement.Center) {
+                            place.filter.convertToMap().forEach {
+                                if (it.value) {
+                                    TextChip(
+                                        isSelected = true,
+                                        text = it.key,
+                                    )
+                                }
+                            }
                         }
                     }
+
+                    Row(horizontalArrangement = Arrangement.Start) {
+                        Icon(
+                            imageVector = Icons.Outlined.Map,
+                            contentDescription = null,
+                            modifier = Modifier.padding(8.dp, 4.dp, 0.dp, 0.dp),
+                        )
+                        Text(
+                            modifier = Modifier
+                                .padding(8.dp, 0.dp),
+                            text = place.address,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            fontSize = 18.sp,
+                            maxLines = 3,
+                        )
+                    }
+
+                    Row(horizontalArrangement = Arrangement.Start) {
+                        Icon(
+                            imageVector = Icons.Outlined.Web,
+                            contentDescription = null,
+                            modifier = Modifier.padding(8.dp, 4.dp, 0.dp, 0.dp),
+                        )
+                        Text(
+                            modifier = Modifier
+                                .padding(8.dp, 0.dp),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            text = place.web ?: stringResource(R.string.not_provided_info),
+                            fontSize = 18.sp,
+                        )
+                    }
+                    Row() {
+                        Icon(
+                            imageVector = Icons.Outlined.Email,
+                            contentDescription = null,
+                            modifier = Modifier.padding(8.dp, 4.dp, 0.dp, 0.dp),
+                        )
+                        Text(
+                            modifier = Modifier
+                                .padding(8.dp, 0.dp),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            text = place.email ?: stringResource(R.string.not_provided_info),
+                            fontSize = 18.sp,
+                        )
+                    }
+                    Row() {
+                        Icon(
+                            imageVector = Icons.Outlined.Phone,
+                            contentDescription = null,
+                            modifier = Modifier.padding(8.dp, 4.dp, 0.dp, 0.dp),
+                        )
+                        Text(
+                            modifier = Modifier
+                                .padding(8.dp, 0.dp),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            text = place.phoneNumber ?: stringResource(R.string.not_provided_info),
+                            fontSize = 18.sp,
+                        )
+                    }
+                    Text(
+                        text = stringResource(id = R.string.opening_hours),
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(8.dp, 4.dp, 0.dp, 0.dp),
+                    )
                 }
             }
-
-            Row(horizontalArrangement = Arrangement.Start) {
-                Icon(
-                    imageVector = Icons.Outlined.Map,
-                    contentDescription = null,
-                    modifier = Modifier.padding(8.dp, 4.dp, 0.dp, 0.dp),
-                )
-                Text(
-                    modifier = Modifier
-                        .padding(8.dp, 0.dp),
-                    text = place.address,
-                    fontSize = 18.sp,
-                    maxLines = 3,
-                )
-            }
-
-            Row(horizontalArrangement = Arrangement.Start) {
-                Icon(
-                    imageVector = Icons.Outlined.Web,
-                    contentDescription = null,
-                    modifier = Modifier.padding(8.dp, 4.dp, 0.dp, 0.dp),
-                )
-                Text(
-                    modifier = Modifier
-                        .padding(8.dp, 0.dp),
-                    text = place.web ?: stringResource(R.string.not_provided_info),
-                    fontSize = 18.sp,
-                )
-            }
-            Row() {
-                Icon(
-                    imageVector = Icons.Outlined.Email,
-                    contentDescription = null,
-                    modifier = Modifier.padding(8.dp, 4.dp, 0.dp, 0.dp),
-                )
-                Text(
-                    modifier = Modifier
-                        .padding(8.dp, 0.dp),
-                    text = place.email ?: stringResource(R.string.not_provided_info),
-                    fontSize = 18.sp,
-                )
-            }
-            Row() {
-                Icon(
-                    imageVector = Icons.Outlined.Phone,
-                    contentDescription = null,
-                    modifier = Modifier.padding(8.dp, 4.dp, 0.dp, 0.dp),
-                )
-                Text(
-                    modifier = Modifier
-                        .padding(8.dp, 0.dp),
-                    text = place.phoneNumber ?: stringResource(R.string.not_provided_info),
-                    fontSize = 18.sp,
-                )
-            }
-            Text(
-                text = stringResource(id = R.string.opening_hours),
-                style = MaterialTheme.typography.h6,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(8.dp, 4.dp, 0.dp, 0.dp),
-            )
-        }
-    }
+        },
+    )
 }
 
 /*@Composable

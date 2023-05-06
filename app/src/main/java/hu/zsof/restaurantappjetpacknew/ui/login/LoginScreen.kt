@@ -64,6 +64,7 @@ fun LoginScreen(
                         fontWeight = FontWeight.ExtraBold,
                         fontStyle = FontStyle.Italic,
                     ),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier
                         .padding(top = 8.dp)
                         .align(Alignment.CenterHorizontally),
@@ -149,7 +150,7 @@ fun LoginScreen(
                     )
                     Text(
                         text = stringResource(id = R.string.or_use),
-                        color = Color.LightGray,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier
                             .align(Alignment.Center)
                             .padding(horizontal = 16.dp),
@@ -192,10 +193,13 @@ fun LoginScreen(
                         modifier = Modifier
                             .padding(vertical = 16.dp),
                         fontSize = 16.sp,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+
                     )
                     Text(
                         text = stringResource(id = R.string.register),
                         fontSize = 16.sp,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier
                             .padding(vertical = 16.dp, horizontal = 4.dp)
                             .clickable(onClick = onRegisterClick, enabled = true),

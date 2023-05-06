@@ -9,7 +9,6 @@ import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -67,7 +66,6 @@ fun BottomNavBar(
                                     label = {
                                         Text(
                                             text = stringResource(item.title),
-                                            // color = Color.Black,
                                             fontSize = 12.sp,
                                         )
                                     },
@@ -94,7 +92,7 @@ fun BottomNavBar(
                             userBottomNavItems.forEach { item ->
                                 val currentRoute =
                                     item.route == navBackStackEntry?.destination?.route
-                                NavigationBarItem(
+                                BottomNavigationItem(
                                     icon = {
                                         item.icon?.let {
                                             Icon(
@@ -106,7 +104,6 @@ fun BottomNavBar(
                                     label = {
                                         Text(
                                             text = stringResource(item.title),
-                                            // color = Color.Black,
                                             fontSize = 12.sp,
                                         )
                                     },
@@ -133,7 +130,7 @@ fun BottomNavBar(
                             ownerBottomNavItems.forEach { item ->
                                 val currentRoute =
                                     item.route == navBackStackEntry?.destination?.route
-                                NavigationBarItem(
+                                BottomNavigationItem(
                                     icon = {
                                         item.icon?.let {
                                             Icon(
@@ -145,7 +142,6 @@ fun BottomNavBar(
                                     label = {
                                         Text(
                                             text = stringResource(item.title),
-                                            // color = Color.Black,
                                             fontSize = 12.sp,
                                         )
                                     },
@@ -181,7 +177,6 @@ fun BottomNavBar(
                         label = {
                             Text(
                                 text = stringResource(navigationDrawer.title),
-                                // color = Color.Black,
                                 fontSize = 12.sp,
                             )
                         },
