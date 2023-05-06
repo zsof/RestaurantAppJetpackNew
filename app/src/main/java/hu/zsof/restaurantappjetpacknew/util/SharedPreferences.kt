@@ -60,6 +60,7 @@ class SharedPreferences @Inject constructor(@ApplicationContext context: Context
 
         private val booleanPreferences = arrayOf(
             Constants.Prefs.DARK_MODE,
+            Constants.Prefs.USER_RATED,
         )
     }
 }

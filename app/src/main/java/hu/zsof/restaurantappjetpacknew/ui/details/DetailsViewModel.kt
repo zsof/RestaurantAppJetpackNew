@@ -8,11 +8,15 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import hu.zsof.restaurantappjetpacknew.model.Place
 import hu.zsof.restaurantappjetpacknew.network.repository.PlaceRepository
+import hu.zsof.restaurantappjetpacknew.util.SharedPreferences
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class DetailsViewModel @Inject constructor(private val placeRepository: PlaceRepository) :
+class DetailsViewModel @Inject constructor(
+    private val placeRepository: PlaceRepository,
+    private val sharedPref: SharedPreferences,
+) :
     ViewModel() {
 
     var galleryPermissionOpen = mutableStateOf(false)
@@ -22,10 +26,21 @@ class DetailsViewModel @Inject constructor(private val placeRepository: PlaceRep
 
     val selectedImageUri = mutableStateOf<Uri?>(null)
 
+    val ratingDialogOpen = mutableStateOf(false)
+    var rating = mutableStateOf(0f)
+
     val placeById = MutableLiveData<Place>()
     fun getPlaceById(placeId: Long) {
         viewModelScope.launch {
             placeById.postValue(placeRepository.getPlaceById(placeId))
         }
+    }
+
+    fun <T> setAppPreference(key: String, value: T) {
+        sharedPref.setPreference(key, value)
+    }
+
+    fun <T> getAppPreference(key: String): T {
+        return sharedPref.getPreference(key)
     }
 }
