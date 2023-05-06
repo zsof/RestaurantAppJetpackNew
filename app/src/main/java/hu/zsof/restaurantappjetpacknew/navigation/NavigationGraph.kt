@@ -212,7 +212,6 @@ fun NavGraph(
     val scaffoldState = rememberScaffoldState(rememberDrawerState(DrawerValue.Closed))
     val scope = rememberCoroutineScope()
 
-    val closeDrawer: () -> Unit = { scope.launch { scaffoldState.drawerState.close() } }
     val bottomBarState = rememberSaveable { (mutableStateOf(true)) }
     val drawerOpenState = rememberSaveable { (mutableStateOf(true)) }
 
@@ -243,8 +242,7 @@ fun NavGraph(
     CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
         Scaffold(
             scaffoldState = scaffoldState,
-            drawerGesturesEnabled = true,
-            // drawerShape = customShape(LocalConfiguration.current.screenHeightDp.dp.toPx()),
+            drawerGesturesEnabled = drawerOpenState.value,
             drawerContent = {
                 CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
                     Drawer(
