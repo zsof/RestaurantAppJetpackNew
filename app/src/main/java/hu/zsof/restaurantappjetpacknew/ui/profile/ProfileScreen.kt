@@ -1,7 +1,5 @@
 package hu.zsof.restaurantappjetpacknew.ui.profile
 
-import android.content.Context
-import android.content.SharedPreferences
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -16,7 +14,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -246,14 +243,7 @@ fun BaseProfile(user: User) {
 
 @Composable
 fun OtherSettings(viewModel: ProfileViewModel) {
-    val context = LocalContext.current
-    val preferences: SharedPreferences =
-        context.getSharedPreferences(
-            Constants.Prefs.SHARED_PREFERENCES,
-            Context.MODE_PRIVATE,
-        )
-
-    viewModel.switchCheckedState.value = preferences.getBoolean(Constants.Prefs.DARK_MODE, false)
+    viewModel.switchCheckedState.value = viewModel.getAppPreference(Constants.Prefs.DARK_MODE)
 
     Card(
         modifier = Modifier
@@ -285,11 +275,11 @@ fun OtherSettings(viewModel: ProfileViewModel) {
 
                         if (it) {
                             viewModel.switchCheckedState.value = true
-                            preferences.edit().putBoolean(Constants.Prefs.DARK_MODE, true).apply()
+                            viewModel.setAppPreference(Constants.Prefs.DARK_MODE, true)
                             LocalDataStateService.darkTheme.value = true
                         } else {
                             viewModel.switchCheckedState.value = false
-                            preferences.edit().putBoolean(Constants.Prefs.DARK_MODE, false).apply()
+                            viewModel.setAppPreference(Constants.Prefs.DARK_MODE, false)
                             LocalDataStateService.darkTheme.value = false
                         }
                     },

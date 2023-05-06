@@ -9,12 +9,14 @@ import hu.zsof.restaurantappjetpacknew.model.CustomFilter
 import hu.zsof.restaurantappjetpacknew.model.User
 import hu.zsof.restaurantappjetpacknew.network.repository.UserRepository
 import hu.zsof.restaurantappjetpacknew.network.request.UserUpdateProfileRequest
+import hu.zsof.restaurantappjetpacknew.util.SharedPreferences
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
     private val userRepository: UserRepository,
+    private val sharedPref: SharedPreferences,
 ) :
     ViewModel() {
 
@@ -57,5 +59,13 @@ class ProfileViewModel @Inject constructor(
                 ),
             )
         }
+    }
+
+    fun <T> setAppPreference(key: String, value: T) {
+        sharedPref.setPreference(key, value)
+    }
+
+    fun <T> getAppPreference(key: String): T {
+        return sharedPref.getPreference(key)
     }
 }
