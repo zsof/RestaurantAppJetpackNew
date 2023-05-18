@@ -35,7 +35,7 @@ fun NormalTextField(
         RoundedCornerShape(20.dp)
 
     OutlinedTextField(
-        value = value.trim(),
+        value = value,
         onValueChange = onValueChange,
         label = { Text(text = label) },
         shape = shape,
