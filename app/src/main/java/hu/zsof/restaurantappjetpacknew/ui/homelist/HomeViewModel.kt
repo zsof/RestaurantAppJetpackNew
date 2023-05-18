@@ -19,7 +19,6 @@ class HomeViewModel @Inject constructor(
 ) :
     ViewModel() {
     var searchText = mutableStateOf("")
-    var active = mutableStateOf(false)
 
     var places = MutableLiveData<List<Place>>()
     fun showPlaces() {
