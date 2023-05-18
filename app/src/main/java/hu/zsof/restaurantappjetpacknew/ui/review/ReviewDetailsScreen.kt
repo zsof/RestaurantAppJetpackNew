@@ -26,6 +26,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
@@ -48,6 +49,7 @@ import hu.zsof.restaurantappjetpacknew.R
 import hu.zsof.restaurantappjetpacknew.model.enums.FabButton
 import hu.zsof.restaurantappjetpacknew.ui.common.NormalTextField
 import hu.zsof.restaurantappjetpacknew.ui.common.TextChip
+import hu.zsof.restaurantappjetpacknew.util.extension.imageUrl
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -121,14 +123,16 @@ fun ReviewDetailsScreen(
             ) {
                 if (placeInReview != null) {
                     AsyncImage(
-                        model = "https://media.geeksforgeeks.org/wp-content/uploads/20210101144014/gfglogo.png",
+                        model = placeInReview.image.imageUrl(),
                         contentDescription = null,
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
                             .wrapContentSize()
                             .wrapContentHeight()
                             .wrapContentWidth()
-                            .align(Alignment.CenterHorizontally),
+                            .align(Alignment.CenterHorizontally)
+                            .padding(16.dp)
+                            .clip(RoundedCornerShape(8.dp)),
                     )
 
                     Column(

@@ -2,6 +2,7 @@ package hu.zsof.restaurantappjetpacknew.ui.owner
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
@@ -18,6 +19,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
@@ -28,6 +30,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import hu.zsof.restaurantappjetpacknew.R
 import hu.zsof.restaurantappjetpacknew.ui.common.TextChip
+import hu.zsof.restaurantappjetpacknew.util.extension.imageUrl
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -71,14 +74,16 @@ fun OwnerDetailsScreen(
             ) {
                 if (placeInReview != null) {
                     AsyncImage(
-                        model = "https://media.geeksforgeeks.org/wp-content/uploads/20210101144014/gfglogo.png",
+                        model = placeInReview.image.imageUrl(),
                         contentDescription = null,
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
                             .wrapContentSize()
                             .wrapContentHeight()
                             .wrapContentWidth()
-                            .align(Alignment.CenterHorizontally),
+                            .align(Alignment.CenterHorizontally)
+                            .padding(16.dp)
+                            .clip(RoundedCornerShape(8.dp)),
                     )
 
                     Column(

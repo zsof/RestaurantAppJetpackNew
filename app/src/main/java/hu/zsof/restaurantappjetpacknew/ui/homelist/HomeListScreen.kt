@@ -1,6 +1,5 @@
 package hu.zsof.restaurantappjetpacknew.ui.homelist
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -23,7 +22,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
@@ -31,6 +29,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.AsyncImage
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import hu.zsof.restaurantappjetpacknew.R
 import hu.zsof.restaurantappjetpacknew.model.Place
@@ -38,6 +37,7 @@ import hu.zsof.restaurantappjetpacknew.model.enums.Price
 import hu.zsof.restaurantappjetpacknew.network.repository.LocalDataStateService
 import hu.zsof.restaurantappjetpacknew.ui.common.SearchTextField
 import hu.zsof.restaurantappjetpacknew.util.Constants.ROLE_OWNER
+import hu.zsof.restaurantappjetpacknew.util.extension.imageUrl
 
 @OptIn(ExperimentalPermissionsApi::class, ExperimentalComposeUiApi::class)
 @ExperimentalMaterial3Api
@@ -208,8 +208,8 @@ private fun HomeListItem(
         Column(modifier = Modifier.padding(8.dp)) {
             Row(modifier = Modifier.padding(0.dp, 8.dp, 8.dp, 8.dp)) {
                 Column(modifier = Modifier.padding(0.dp, 0.dp, 8.dp, 0.dp)) {
-                    Image(
-                        painter = painterResource(id = R.drawable.ic_launcher_round),
+                    AsyncImage(
+                        model = place.image.imageUrl(),
                         contentDescription = null,
                         contentScale = ContentScale.Crop,
                         modifier = Modifier

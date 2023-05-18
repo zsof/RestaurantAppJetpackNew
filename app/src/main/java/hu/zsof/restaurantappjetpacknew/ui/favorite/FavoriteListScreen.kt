@@ -1,11 +1,12 @@
 package hu.zsof.restaurantappjetpacknew.ui.favorite
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PushPin
@@ -15,17 +16,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import hu.zsof.restaurantappjetpacknew.R
+import coil.compose.AsyncImage
 import hu.zsof.restaurantappjetpacknew.model.Place
 import hu.zsof.restaurantappjetpacknew.model.enums.Price
+import hu.zsof.restaurantappjetpacknew.util.extension.imageUrl
 
 @ExperimentalMaterial3Api
 @Composable
@@ -78,11 +81,15 @@ private fun FavListItem(
         Column(modifier = Modifier.padding(8.dp)) {
             Row(modifier = Modifier.padding(0.dp, 8.dp, 8.dp, 8.dp)) {
                 Column(modifier = Modifier.padding(0.dp, 0.dp, 8.dp, 0.dp)) {
-                    Image(
-                        painter = painterResource(id = R.drawable.ic_launcher_round),
+                    AsyncImage(
+                        model = place.image.imageUrl(),
                         contentDescription = null,
+                        contentScale = ContentScale.Crop,
                         modifier = Modifier
-                            .size(70.dp, 70.dp),
+                            .size(70.dp, 70.dp)
+                            .padding(8.dp)
+                            .border(2.dp, color = MaterialTheme.colorScheme.primary, CircleShape)
+                            .clip(CircleShape),
                     )
                 }
                 Column() {
