@@ -2,13 +2,11 @@ package hu.zsof.restaurantappjetpacknew.ui.newplace
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.ContentResolver
 import android.location.Geocoder
 import android.net.Uri
-import android.os.Build
+import android.provider.MediaStore
 import android.provider.Settings.*
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.PickVisualMediaRequest
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -24,6 +22,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
@@ -50,7 +49,10 @@ import hu.zsof.restaurantappjetpacknew.model.enums.Type
 import hu.zsof.restaurantappjetpacknew.network.repository.LocalDataStateService
 import hu.zsof.restaurantappjetpacknew.ui.common.NormalTextField
 import hu.zsof.restaurantappjetpacknew.ui.common.TextFieldForDialog
-import java.io.File
+import hu.zsof.restaurantappjetpacknew.util.CameraPermission
+import hu.zsof.restaurantappjetpacknew.util.GalleryPermission
+import hu.zsof.restaurantappjetpacknew.util.extension.getAddress
+import java.io.*
 import java.util.*
 
 @SuppressLint("ResourceType")
@@ -74,13 +76,23 @@ fun NewPlaceDialogScreen(viewModel: NewPlaceDialogViewModel = hiltViewModel()) {
     val categoryOptions = stringArrayResource(id = R.array.new_category_items)
     var selectedOptionText by remember { mutableStateOf(categoryOptions[0]) }
 
-    // TODO error
-    val imageFilePath: String = if (viewModel.selectedImageUri.value != null) {
-        val path = viewModel.selectedImageUri.value.toString().split(':')[1]
-        File(path).path
-    } else {
-        ""
+    val projection = arrayOf(MediaStore.MediaColumns.DATA)
+    val contentResolver: ContentResolver = context.contentResolver
+    var imagePath = ""
+    viewModel.selectedImageUri.value?.let {
+        contentResolver.query(
+            it,
+            projection,
+            null,
+            null,
+            null,
+        )
     }
+        ?.use { metaCursor ->
+            if (metaCursor.moveToFirst()) {
+                imagePath = metaCursor.getString(0)
+            }
+        }
 
     Geocoder(context, Locale.getDefault()).getAddress(
         LocalDataStateService.getLatLng().latitude,
@@ -314,10 +326,14 @@ fun NewPlaceDialogScreen(viewModel: NewPlaceDialogViewModel = hiltViewModel()) {
                     AsyncImage(
                         model = viewModel.selectedImageUri.value,
                         contentDescription = null,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(8.dp, 12.dp),
                         contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .wrapContentSize()
+                            .wrapContentHeight()
+                            .wrapContentWidth()
+                            .align(CenterHorizontally)
+                            .padding(16.dp)
+                            .clip(RoundedCornerShape(8.dp)),
                     )
                     Text(
                         text = stringResource(id = R.string.filters),
@@ -353,7 +369,7 @@ fun NewPlaceDialogScreen(viewModel: NewPlaceDialogViewModel = hiltViewModel()) {
                                 viewModel.addNewPlace(
                                     typeValue = Type.getByName(selectedOptionText),
                                     priceValue = viewModel.priceValue,
-                                    image = imageFilePath,
+                                    image = imagePath,
                                 )
                                 viewModel.dialogOpen.value = false
                             }
@@ -501,124 +517,5 @@ fun ChoosePhotoDialog(
                 }
             }
         }
-    }
-}
-
-@OptIn(ExperimentalPermissionsApi::class)
-@Composable
-fun GalleryPermission(
-    permissionState: PermissionState,
-    selectedImageUri: MutableState<Uri?>,
-    viewModel: NewPlaceDialogViewModel,
-) {
-    val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.PickVisualMedia(),
-        onResult = { uri -> selectedImageUri.value = uri },
-    )
-
-    val context = LocalContext.current
-
-    if (viewModel.galleryPermissionOpen.value) {
-        PermissionRequired(
-            permissionState = permissionState,
-            permissionNotGrantedContent = {
-                // if there was already a Manifest.permission request, but the user rejected it
-                if (permissionState.permissionRequested) {
-                    AlertDialog(
-                        onDismissRequest = {},
-                        confirmButton = {
-                            Button(onClick = { permissionState.launchPermissionRequest() }) {
-                                Text("Request permission")
-                            }
-                        },
-                        text = { Text("Using the gallery is important for this feature to be available. Please grant the permission.") },
-                    )
-                }
-            },
-            // if the user has already denied permission twice
-            permissionNotAvailableContent = {
-                AlertDialog(
-                    onDismissRequest = {
-                        viewModel.galleryPermissionOpen.value = false
-                    },
-                    text = { Text("You could not use this function because the permission was denied. Please go to Settings and add permission to use the Gallery") },
-                    confirmButton = {
-                        // The Google Play store has a policy that limits usage of MANAGE_EXTERNAL_STORAGE
-                        /*  if (Build.VERSION.SDK_INT >= 30) {
-                              Button(onClick = {
-                                  val i = Intent(ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
-                                  context.startActivity(i)
-                              }) {
-                                  Text("Go to Settings")
-                              }
-                          }*/
-                    },
-                )
-            },
-        ) {
-            singlePhotoPickerLauncher.launch(
-                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly),
-            )
-        }
-    }
-}
-
-@OptIn(ExperimentalPermissionsApi::class)
-@Composable
-fun CameraPermission(
-    permissionState: PermissionState,
-    selectedImageUri: MutableState<Uri?>,
-    viewModel: NewPlaceDialogViewModel,
-) {
-    val context = LocalContext.current
-    if (viewModel.cameraPermissionOpen.value) {
-        PermissionRequired(
-            permissionState = permissionState,
-            permissionNotGrantedContent = {
-                // if there was already a Manifest.permission request, but the user rejected it
-                if (permissionState.permissionRequested) {
-                    AlertDialog(
-                        onDismissRequest = {
-                        },
-                        confirmButton = {
-                            Button(onClick = { permissionState.launchPermissionRequest() }) {
-                                Text("Request permission")
-                            }
-                        },
-                        text = { Text("Using the camera is important for this feature to be available. Please grant the permission.") },
-                    )
-                }
-            },
-            // if the user has already denied permission twice
-            permissionNotAvailableContent = {
-                AlertDialog(
-                    onDismissRequest = {
-                        viewModel.cameraPermissionOpen.value = false
-                    },
-                    text = { Text("You can't use this feature because the permission was denied. Please go to Settings and add permission to use the Camera") },
-                    confirmButton = {},
-                )
-            },
-        ) {
-        }
-    }
-}
-
-@Suppress("DEPRECATION")
-fun Geocoder.getAddress(
-    latitude: Double,
-    longitude: Double,
-    address: (android.location.Address?) -> Unit,
-) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        getFromLocation(latitude, longitude, 1) { address(it.firstOrNull()) }
-        return
-    }
-
-    try {
-        address(getFromLocation(latitude, longitude, 1)?.firstOrNull())
-    } catch (e: Exception) {
-        // will catch if there is an internet problem
-        address(null)
     }
 }

@@ -23,6 +23,7 @@ class ResourceRepository @Inject constructor(private val apiService: ApiService)
                     requestFile,
                 )
 
+            println("kép ${multipartFile.body}")
             apiService.addNewImage(
                 multipartFile,
                 type,
