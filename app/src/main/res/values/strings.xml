@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">RestaurantAppJetpackNew</string>
+    <string name="app_name">EasyEat</string>
 
     <string name="welcome_text">Üdvözlünk a RestaurApp-ban!</string>
     <string name="problem_hint">Mi a probléma a hellyel?</string>
