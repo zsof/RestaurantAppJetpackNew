@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">EasyEat</string>
+    <string name="app_name">Eats Easy</string>
 
-    <string name="welcome_text">Üdvözlünk a RestaurApp-ban!</string>
+    <string name="welcome_text">Üdv az Eats Easy App-ban!</string>
     <string name="problem_hint">Mi a probléma a hellyel?</string>
     <string name="problem_message">Probléma</string>
     <string name="email_address">Email cím</string>

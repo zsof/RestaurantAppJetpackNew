@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.content.ContentResolver
 import android.location.Geocoder
 import android.net.Uri
+import android.os.Build
 import android.provider.MediaStore
 import android.provider.Settings.*
 import androidx.compose.foundation.Image
@@ -51,7 +52,6 @@ import hu.zsof.restaurantappjetpacknew.ui.common.NormalTextField
 import hu.zsof.restaurantappjetpacknew.ui.common.TextFieldForDialog
 import hu.zsof.restaurantappjetpacknew.util.CameraPermission
 import hu.zsof.restaurantappjetpacknew.util.GalleryPermission
-import hu.zsof.restaurantappjetpacknew.util.extension.getAddress
 import java.io.*
 import java.util.*
 
@@ -517,5 +517,24 @@ fun ChoosePhotoDialog(
                 }
             }
         }
+    }
+}
+
+@Suppress("DEPRECATION")
+fun Geocoder.getAddress(
+    latitude: Double,
+    longitude: Double,
+    address: (android.location.Address?) -> Unit,
+) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        getFromLocation(latitude, longitude, 1) { address(it.firstOrNull()) }
+        return
+    }
+
+    try {
+        address(getFromLocation(latitude, longitude, 1)?.firstOrNull())
+    } catch (e: Exception) {
+        // will catch if there is an internet problem
+        address(null)
     }
 }

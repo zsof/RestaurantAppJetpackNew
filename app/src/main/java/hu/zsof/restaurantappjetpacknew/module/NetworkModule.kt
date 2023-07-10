@@ -3,7 +3,6 @@ package hu.zsof.restaurantappjetpacknew.module
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
-import android.widget.Toast
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -11,6 +10,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import hu.zsof.restaurantappjetpacknew.BuildConfig
 import hu.zsof.restaurantappjetpacknew.network.ApiService
+import hu.zsof.restaurantappjetpacknew.ui.common.showToast
 import hu.zsof.restaurantappjetpacknew.util.Constants
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
@@ -24,13 +24,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 class NetworkModule {
-
-    /* @Singleton
-     @Provides
-     fun provideStateService(): LocalDataStateService {
-         return LocalDataStateService
-     }*/
-
     @Singleton
     @Provides
     operator fun invoke(
@@ -94,7 +87,6 @@ class NetworkModule {
 
             if (!originalResponse.isSuccessful) {
                 // To get custom error messages from server
-
                 val errorBodyResponse = originalResponse.peekBody(2048).string()
                 if (errorBodyResponse.isNotEmpty()) {
                     val errorBody = JSONObject(errorBodyResponse)
@@ -115,11 +107,7 @@ class NetworkModule {
         private fun backgroundThreadToast(context: Context?, msg: String?) {
             if (context != null && msg != null) {
                 Handler(Looper.getMainLooper()).post {
-                    Toast.makeText(
-                        context,
-                        msg,
-                        Toast.LENGTH_SHORT,
-                    ).show()
+                    showToast(context, msg)
                 }
             }
         }

@@ -15,8 +15,8 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_easy_eat_launcher"
-        android:roundIcon="@mipmap/ic_easy_eat_launcher_round"
+        android:icon="@mipmap/ic_eats_easy_launcher"
+        android:roundIcon="@mipmap/ic_eats_easy_launcher_round"
         android:label="@string/app_name"
         android:supportsRtl="false"
         android:usesCleartextTraffic="true"
@@ -30,7 +30,6 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:theme="@style/Theme.RestaurantAppJetpackNew">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

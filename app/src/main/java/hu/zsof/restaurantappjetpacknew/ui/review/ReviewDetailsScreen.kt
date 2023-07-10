@@ -49,6 +49,7 @@ import hu.zsof.restaurantappjetpacknew.R
 import hu.zsof.restaurantappjetpacknew.model.enums.FabButton
 import hu.zsof.restaurantappjetpacknew.ui.common.NormalTextField
 import hu.zsof.restaurantappjetpacknew.ui.common.TextChip
+import hu.zsof.restaurantappjetpacknew.ui.common.showToast
 import hu.zsof.restaurantappjetpacknew.util.extension.imageUrl
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -291,11 +292,7 @@ fun MultiFloatingButton(
                             if (!acceptBtnIsClicked.value) {
                                 viewModel.acceptPlace(placeId)
                             } else {
-                                Toast.makeText(
-                                    context,
-                                    "This place has already accepted!",
-                                    Toast.LENGTH_SHORT,
-                                ).show()
+                                showToast(context, "This place has already accepted!")
                             }
                         }
                         FabButton.REPORT.name -> {
@@ -370,11 +367,7 @@ fun ProblemDialog(
 ) {
     val isPlaceReported = viewModel.isPlaceReported.observeAsState()
     if (isPlaceReported.value == true) {
-        Toast.makeText(
-            context,
-            "This place has reported successfully!",
-            Toast.LENGTH_SHORT,
-        ).show()
+        showToast(context, "This place has reported successfully!")
         viewModel.problemDialogOpen.value = false
     }
 
