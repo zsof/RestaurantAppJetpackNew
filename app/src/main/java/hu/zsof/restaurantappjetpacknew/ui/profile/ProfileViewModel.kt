@@ -1,5 +1,6 @@
 package hu.zsof.restaurantappjetpacknew.ui.profile
 
+import android.net.Uri
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -32,6 +33,11 @@ class ProfileViewModel @Inject constructor(
     var creditCardChecked = mutableStateOf(false)
 
     var switchCheckedState = mutableStateOf(false)
+
+    val photoDialogOpen = mutableStateOf(false)
+    var galleryPermissionOpen = mutableStateOf(false)
+    var cameraPermissionOpen = mutableStateOf(false)
+    val selectedImageUri = mutableStateOf<Uri?>(null)
 
     val userProfile = MutableLiveData<User>()
     fun getUserProfile() {

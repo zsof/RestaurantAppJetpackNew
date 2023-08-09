@@ -1,6 +1,7 @@
 package hu.zsof.restaurantappjetpacknew.ui.profile
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -23,6 +24,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import hu.zsof.restaurantappjetpacknew.R
 import hu.zsof.restaurantappjetpacknew.model.User
 import hu.zsof.restaurantappjetpacknew.network.repository.LocalDataStateService
+import hu.zsof.restaurantappjetpacknew.ui.common.PhotoChooserDialog
 import hu.zsof.restaurantappjetpacknew.ui.common.TextChip
 import hu.zsof.restaurantappjetpacknew.util.Constants
 
@@ -35,6 +37,20 @@ fun ProfileScreen(
     LaunchedEffect(key1 = "Profile") {
         viewModel.getUserProfile()
     }
+
+    if (viewModel.photoDialogOpen.value) {
+        PhotoChooserDialog(
+            showPhotoPickerDialog = viewModel.photoDialogOpen.value,
+            onDismiss = { viewModel.photoDialogOpen.value = false },
+            selectedImageUri = viewModel.selectedImageUri,
+            galleryOpenPermission = viewModel.galleryPermissionOpen,
+            cameraOpenPermission = viewModel.cameraPermissionOpen,
+        )
+        if (viewModel.selectedImageUri.value != null) {
+            viewModel.photoDialogOpen.value = false
+        }
+    }
+
     Scaffold(
         content = {
             Column(
@@ -61,7 +77,7 @@ fun ProfileScreen(
                     viewModel.deliveryChecked.value = user.filterItems.delivery
                     viewModel.creditCardChecked.value = user.filterItems.creditCard
 
-                    BaseProfile(user)
+                    BaseProfile(user, viewModel)
                     Column(modifier = Modifier.padding(bottom = 44.dp)) {
                         Column(Modifier.verticalScroll(rememberScrollState())) {
                             ChipSettings(user, viewModel)
@@ -182,18 +198,7 @@ fun ChipSettings(user: User, viewModel: ProfileViewModel) {
 }
 
 @Composable
-fun BaseProfile(user: User /*viewModel: ProfileViewModel*/) {
-    /*if (viewModel.photoDialogOpen.value) {
-        ChoosePhotoDialog(
-            showPhotoPickerDialog = viewModel.photoDialogOpen.value,
-            onDismiss = { viewModel.photoDialogOpen.value = false },
-            selectedImageUri = viewModel.selectedImageUri,
-            viewModel = viewModel,
-        )
-        if (viewModel.selectedImageUri.value != null) {
-            viewModel.photoDialogOpen.value = false
-        }
-    }*/
+fun BaseProfile(user: User, viewModel: ProfileViewModel) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -206,7 +211,8 @@ fun BaseProfile(user: User /*viewModel: ProfileViewModel*/) {
             contentDescription = null,
             modifier = Modifier
                 .size(120.dp)
-                .align(Alignment.CenterHorizontally),
+                .align(Alignment.CenterHorizontally)
+                .clickable { viewModel.photoDialogOpen.value = true },
 
         )
         Text(
