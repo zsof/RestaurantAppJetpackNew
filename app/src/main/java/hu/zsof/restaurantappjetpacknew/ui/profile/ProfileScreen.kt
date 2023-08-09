@@ -182,7 +182,18 @@ fun ChipSettings(user: User, viewModel: ProfileViewModel) {
 }
 
 @Composable
-fun BaseProfile(user: User) {
+fun BaseProfile(user: User /*viewModel: ProfileViewModel*/) {
+    /*if (viewModel.photoDialogOpen.value) {
+        ChoosePhotoDialog(
+            showPhotoPickerDialog = viewModel.photoDialogOpen.value,
+            onDismiss = { viewModel.photoDialogOpen.value = false },
+            selectedImageUri = viewModel.selectedImageUri,
+            viewModel = viewModel,
+        )
+        if (viewModel.selectedImageUri.value != null) {
+            viewModel.photoDialogOpen.value = false
+        }
+    }*/
     Card(
         modifier = Modifier
             .fillMaxWidth()

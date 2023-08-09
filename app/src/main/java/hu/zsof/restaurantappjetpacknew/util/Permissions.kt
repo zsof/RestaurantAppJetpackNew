@@ -13,14 +13,13 @@ import androidx.compose.ui.platform.LocalContext
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionRequired
 import com.google.accompanist.permissions.PermissionState
-import hu.zsof.restaurantappjetpacknew.ui.newplace.NewPlaceDialogViewModel
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun GalleryPermission(
     permissionState: PermissionState,
     selectedImageUri: MutableState<Uri?>,
-    viewModel: NewPlaceDialogViewModel,
+    galleryOpenPermission: MutableState<Boolean>,
 ) {
     val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
@@ -29,7 +28,7 @@ fun GalleryPermission(
         },
     )
 
-    if (viewModel.galleryPermissionOpen.value) {
+    if (galleryOpenPermission.value) {
         PermissionRequired(
             permissionState = permissionState,
             permissionNotGrantedContent = {
@@ -50,7 +49,7 @@ fun GalleryPermission(
             permissionNotAvailableContent = {
                 AlertDialog(
                     onDismissRequest = {
-                        viewModel.galleryPermissionOpen.value = false
+                        galleryOpenPermission.value = false
                     },
                     text = { Text("You could not use this function because the permission was denied. Please go to Settings and add permission to use the Gallery") },
                     confirmButton = {
@@ -79,10 +78,10 @@ fun GalleryPermission(
 fun CameraPermission(
     permissionState: PermissionState,
     selectedImageUri: MutableState<Uri?>,
-    viewModel: NewPlaceDialogViewModel,
+    cameraOpenPermission: MutableState<Boolean>,
 ) {
     val context = LocalContext.current
-    if (viewModel.cameraPermissionOpen.value) {
+    if (cameraOpenPermission.value) {
         PermissionRequired(
             permissionState = permissionState,
             permissionNotGrantedContent = {
@@ -104,7 +103,7 @@ fun CameraPermission(
             permissionNotAvailableContent = {
                 AlertDialog(
                     onDismissRequest = {
-                        viewModel.cameraPermissionOpen.value = false
+                        cameraOpenPermission.value = false
                     },
                     text = { Text("You can't use this feature because the permission was denied. Please go to Settings and add permission to use the Camera") },
                     confirmButton = {},

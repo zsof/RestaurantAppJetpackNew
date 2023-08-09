@@ -1,22 +1,17 @@
 package hu.zsof.restaurantappjetpacknew.ui.newplace
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.content.ContentResolver
 import android.location.Geocoder
-import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
 import android.provider.Settings.*
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.outlined.PhotoCamera
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -26,8 +21,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -49,9 +42,8 @@ import hu.zsof.restaurantappjetpacknew.model.enums.Price
 import hu.zsof.restaurantappjetpacknew.model.enums.Type
 import hu.zsof.restaurantappjetpacknew.network.repository.LocalDataStateService
 import hu.zsof.restaurantappjetpacknew.ui.common.NormalTextField
+import hu.zsof.restaurantappjetpacknew.ui.common.PhotoChooserDialog
 import hu.zsof.restaurantappjetpacknew.ui.common.TextFieldForDialog
-import hu.zsof.restaurantappjetpacknew.util.CameraPermission
-import hu.zsof.restaurantappjetpacknew.util.GalleryPermission
 import java.io.*
 import java.util.*
 
@@ -62,11 +54,12 @@ fun NewPlaceDialogScreen(viewModel: NewPlaceDialogViewModel = hiltViewModel()) {
     val context = LocalContext.current
 
     if (viewModel.photoDialogOpen.value) {
-        ChoosePhotoDialog(
+        PhotoChooserDialog(
             showPhotoPickerDialog = viewModel.photoDialogOpen.value,
             onDismiss = { viewModel.photoDialogOpen.value = false },
             selectedImageUri = viewModel.selectedImageUri,
-            viewModel = viewModel,
+            galleryOpenPermission = viewModel.galleryPermissionOpen,
+            cameraOpenPermission = viewModel.cameraPermissionOpen,
         )
         if (viewModel.selectedImageUri.value != null) {
             viewModel.photoDialogOpen.value = false
@@ -286,9 +279,11 @@ fun NewPlaceDialogScreen(viewModel: NewPlaceDialogViewModel = hiltViewModel()) {
                                     0f -> {
                                         Price.LOW
                                     }
+
                                     5.0f -> {
                                         Price.MIDDLE
                                     }
+
                                     else -> {
                                         Price.HIGH
                                     }
@@ -386,6 +381,7 @@ fun NewPlaceDialogScreen(viewModel: NewPlaceDialogViewModel = hiltViewModel()) {
     }
 }
 
+/*
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun ChoosePhotoDialog(
@@ -519,6 +515,7 @@ fun ChoosePhotoDialog(
         }
     }
 }
+*/
 
 @Suppress("DEPRECATION")
 fun Geocoder.getAddress(
