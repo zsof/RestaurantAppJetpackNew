@@ -3,15 +3,34 @@ package hu.zsof.restaurantappjetpacknew.ui.homelist
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
-import androidx.compose.material3.*
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.FilterAlt
+import androidx.compose.material.icons.filled.PushPin
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
@@ -35,6 +54,7 @@ import hu.zsof.restaurantappjetpacknew.R
 import hu.zsof.restaurantappjetpacknew.model.Place
 import hu.zsof.restaurantappjetpacknew.model.enums.Price
 import hu.zsof.restaurantappjetpacknew.network.repository.LocalDataStateService
+import hu.zsof.restaurantappjetpacknew.ui.common.PlaceListItem
 import hu.zsof.restaurantappjetpacknew.ui.common.SearchTextField
 import hu.zsof.restaurantappjetpacknew.util.Constants.ROLE_OWNER
 import hu.zsof.restaurantappjetpacknew.util.extension.imageUrl
@@ -140,7 +160,13 @@ fun HomeListScreen(
                         contentPadding = PaddingValues(8.dp),
                     ) {
                         items(searchFilteredPlaces.value!!) {
-                            HomeListItem(place = it, onClickPlaceItem = onClickPlaceItem)
+                            PlaceListItem(
+                                place = it,
+                                onClickPlaceItem = onClickPlaceItem,
+                                favIdList = viewModel.favPlaceIds.observeAsState().value,
+                                needFavButton = true,
+                                addOrRemoveFavIdList = { viewModel.addOrRemoveFavPlace(it.id) },
+                            )
                         }
                     }
                     // Ha van globális szűrés, erősebb mint a user mentett szűrői
@@ -271,9 +297,11 @@ private fun HomeListItem(
                                 Price.LOW -> {
                                     "$"
                                 }
+
                                 Price.MIDDLE -> {
                                     "$$"
                                 }
+
                                 else -> "$$$"
                             },
                             fontSize = 16.sp,

@@ -20,7 +20,7 @@ data class PlaceInReview(
     var longitude: Double? = 0.0,
     var usersNumber: Int = 0,
     var openDetails: OpenDetails = OpenDetails(),
-    var problem: String? = null,
     var creatorName: String = "",
     var creatorId: Long = 0,
+    var problem: String? = null,
 ) : Serializable
