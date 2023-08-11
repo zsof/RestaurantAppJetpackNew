@@ -1,45 +1,33 @@
-package hu.zsof.restaurantappjetpacknew.ui.register
+package hu.zsof.restaurantappjetpacknew.ui.auth.login
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import hu.zsof.restaurantappjetpacknew.network.repository.AuthRepository
 import hu.zsof.restaurantappjetpacknew.network.request.LoginDataRequest
-import hu.zsof.restaurantappjetpacknew.network.response.NetworkResponse
 import hu.zsof.restaurantappjetpacknew.util.Constants
-import hu.zsof.restaurantappjetpacknew.util.Constants.PASSWORD_PATTERN
+import kotlinx.coroutines.runBlocking
 import java.util.regex.Pattern
 import javax.inject.Inject
 
 @HiltViewModel
-class RegisterViewModel @Inject constructor(
+class LoginViewModel @Inject constructor(
     private val authRepository: AuthRepository,
-
 ) : ViewModel() {
 
-    var email = mutableStateOf("")
+    var email = mutableStateOf("test@test.hu")
     var isEmailError = mutableStateOf(false)
 
-    var userName = mutableStateOf("")
-    var isUserNameError = mutableStateOf(false)
-
-    var nickName = mutableStateOf("")
-
-    var password = mutableStateOf("")
+    var password = mutableStateOf("Alma1234")
     var isPasswordVisible = mutableStateOf(false)
     var isPasswordError = mutableStateOf(false)
 
-    var isOwner = mutableStateOf(false)
-    suspend fun register(): NetworkResponse {
-        return authRepository.registerUser(
+    suspend fun login() = runBlocking {
+        return@runBlocking authRepository.loginUser(
             LoginDataRequest(
                 email.value,
                 password.value,
-                userName.value,
-                nickName.value,
             ),
-            isAdmin = false,
-            isOwner = isOwner.value,
         )
     }
 
@@ -54,7 +42,7 @@ class RegisterViewModel @Inject constructor(
     }
 
     fun validatePassword() {
-        val pattern = Pattern.compile(PASSWORD_PATTERN)
+        val pattern = Pattern.compile(Constants.PASSWORD_PATTERN)
 
         if (pattern.matcher(password.value).matches()) {
             isPasswordError.value = password.value.isEmpty()
@@ -63,7 +51,11 @@ class RegisterViewModel @Inject constructor(
         }
     }
 
-    fun validateUserName() {
-        isUserNameError.value = userName.value.isEmpty()
-    }
+/* fun <T> setAppPreference(key: String, value: T) {
+     sharedPref.setPreference(key, value)
+ }
+
+ fun <T> getAppPreference(key: String): T {
+     return sharedPref.getPreference(key)
+ }*/
 }
