@@ -90,31 +90,30 @@ fun PlaceListItem(
                             fontSize = 20.sp,
                             maxLines = 3,
                         )
-                    }
+                        if (place is PlaceInReview && !place.problem.isNullOrEmpty()) {
+                            Spacer(modifier = Modifier.weight(1f))
 
-                    if (place is PlaceInReview && !place.problem.isNullOrEmpty()) {
-                        Spacer(modifier = Modifier.weight(1f))
-
-                        Icon(
-                            imageVector = Icons.Filled.ReportProblem,
-                            contentDescription = null,
-                        )
-                    }
-
-                    if (needFavButton) {
-                        Spacer(modifier = Modifier.weight(1f))
-                        IconButton(onClick = {
-                            // Ide nem kell launchedeffect, mert ez csak akkor fut le, ha gombnyomás történik, ez már nem a homescreen content-jében van, hanem a gombbéban
-                            if (favIdList?.contains(place.id) == true) {
-                                addOrRemoveFavIdList
-                            } else {
-                                addOrRemoveFavIdList
-                            }
-                        }) {
                             Icon(
-                                imageVector = favouriteIcon,
+                                imageVector = Icons.Filled.ReportProblem,
                                 contentDescription = null,
                             )
+                        }
+
+                        if (needFavButton) {
+                            Spacer(modifier = Modifier.weight(1f))
+                            IconButton(onClick = {
+                                // Ide nem kell launchedeffect, mert ez csak akkor fut le, ha gombnyomás történik, ez már nem a homescreen content-jében van, hanem a gombbéban
+                                if (favIdList?.contains(place.id) == true) {
+                                    addOrRemoveFavIdList?.invoke()
+                                } else {
+                                    addOrRemoveFavIdList?.invoke()
+                                }
+                            }) {
+                                Icon(
+                                    imageVector = favouriteIcon,
+                                    contentDescription = null,
+                                )
+                            }
                         }
                     }
 
