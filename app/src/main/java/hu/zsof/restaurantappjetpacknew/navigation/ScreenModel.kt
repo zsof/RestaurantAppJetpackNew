@@ -2,7 +2,13 @@ package hu.zsof.restaurantappjetpacknew.navigation
 
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.*
+import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.material.icons.outlined.ExitToApp
+import androidx.compose.material.icons.outlined.Favorite
+import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.Menu
+import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material.icons.outlined.Place
 import androidx.compose.ui.graphics.vector.ImageVector
 import hu.zsof.restaurantappjetpacknew.R
 
@@ -97,9 +103,14 @@ class ScreenModel {
         NavigationScreen.Register,
     )
 
-    val screensNavigationDrawer = listOf(
-        NavigationScreen.Logout,
+    val userScreensNavigationDrawer = listOf(
         NavigationScreen.Profile,
+        NavigationScreen.Logout,
+    )
+    val screensNavigationDrawer = listOf(
+        NavigationScreen.FavPlace,
+        NavigationScreen.Profile,
+        NavigationScreen.Logout,
     )
 
     val adminBottomNavItems = listOf(

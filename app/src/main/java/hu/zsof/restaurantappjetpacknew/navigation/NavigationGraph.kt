@@ -17,17 +17,17 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.*
 import androidx.navigation.navArgument
+import hu.zsof.restaurantappjetpacknew.ui.auth.login.LoginScreen
+import hu.zsof.restaurantappjetpacknew.ui.auth.register.RegisterScreen
 import hu.zsof.restaurantappjetpacknew.ui.details.TabLayout
 import hu.zsof.restaurantappjetpacknew.ui.favorite.FavoriteListScreen
 import hu.zsof.restaurantappjetpacknew.ui.filter.FilterPlaceDialogScreen
 import hu.zsof.restaurantappjetpacknew.ui.homelist.HomeListScreen
-import hu.zsof.restaurantappjetpacknew.ui.auth.login.LoginScreen
 import hu.zsof.restaurantappjetpacknew.ui.map.MapScreen
 import hu.zsof.restaurantappjetpacknew.ui.newplace.NewPlaceDialogScreen
 import hu.zsof.restaurantappjetpacknew.ui.owner.OwnerDetailsScreen
 import hu.zsof.restaurantappjetpacknew.ui.owner.OwnerPlaceListScreen
 import hu.zsof.restaurantappjetpacknew.ui.profile.ProfileScreen
-import hu.zsof.restaurantappjetpacknew.ui.auth.register.RegisterScreen
 import hu.zsof.restaurantappjetpacknew.ui.review.ReviewDetailsScreen
 import hu.zsof.restaurantappjetpacknew.ui.review.ReviewPlaceListScreen
 import hu.zsof.restaurantappjetpacknew.util.Constants.AUTH_GRAPH_ROUTE
@@ -246,7 +246,6 @@ fun NavGraph(
             drawerContent = {
                 CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
                     Drawer(
-                        item = ScreenModel().screensNavigationDrawer,
                         navController = navController,
                         scope = scope,
                         scaffoldState = scaffoldState,

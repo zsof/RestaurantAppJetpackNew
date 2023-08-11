@@ -88,6 +88,7 @@ fun BottomNavBar(
                                 )
                             }
                         }
+
                         ROLE_USER -> {
                             userBottomNavItems.forEach { item ->
                                 val currentRoute =
@@ -126,6 +127,7 @@ fun BottomNavBar(
                                 )
                             }
                         }
+
                         ROLE_OWNER -> {
                             ownerBottomNavItems.forEach { item ->
                                 val currentRoute =

@@ -5,13 +5,21 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.Icon
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.Text
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -22,13 +30,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import hu.zsof.restaurantappjetpacknew.R
+import hu.zsof.restaurantappjetpacknew.network.repository.LocalDataStateService
+import hu.zsof.restaurantappjetpacknew.util.Constants
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.util.prefs.Preferences
 
 @Composable
 fun Drawer(
-    item: List<ScreenModel.NavigationScreen>,
     navController: NavController,
     scaffoldState: ScaffoldState,
     scope: CoroutineScope,
@@ -38,6 +47,10 @@ fun Drawer(
     ),
     navDrawerState: MutableState<Boolean>,
 ) {
+    val userScreensNavigation = ScreenModel().userScreensNavigationDrawer
+    val screensNavigation = ScreenModel().screensNavigationDrawer
+    val userType = LocalDataStateService.userType.observeAsState().value
+
     AnimatedVisibility(
         visible = navDrawerState.value,
         enter = slideInVertically(initialOffsetY = { it }),
@@ -58,41 +71,22 @@ fun Drawer(
                         .padding(16.dp),
                 )
                 Spacer(modifier = Modifier.height(20.dp))
-                item.forEach() { item ->
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable(onClick = {
-                                item.route.let {
-                                    navController.navigate(it) {
-                                        navController.graph.startDestinationRoute?.let { route ->
-                                            if (item.route == ScreenModel.NavigationScreen.Logout.route) {
-                                                Preferences
-                                                    .userRoot()
-                                                    .put("bearer", "")
-                                                popUpTo(ScreenModel.NavigationScreen.Login.route)
-                                            } else {
-                                                popUpTo(route) {
-                                                    saveState = true
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                                scope.launch {
-                                    scaffoldState.drawerState.close()
-                                }
-                            })
-                            .height(42.dp)
-                            .padding(start = 10.dp),
-                    ) {
-                        item.icon?.let {
-                            Icon(imageVector = it, contentDescription = "")
-                        }
-                        Spacer(modifier = Modifier.width(10.dp))
-                        Text(
-                            text = stringResource(id = item.title),
-                            fontSize = 20.sp,
+                when (userType) {
+                    Constants.ROLE_USER -> {
+                        ScreenItems(
+                            role = userScreensNavigation,
+                            navController = navController,
+                            scaffoldState = scaffoldState,
+                            scope = scope,
+                        )
+                    }
+
+                    else -> {
+                        ScreenItems(
+                            role = screensNavigation,
+                            navController = navController,
+                            scaffoldState = scaffoldState,
+                            scope = scope,
                         )
                     }
                 }
@@ -101,6 +95,52 @@ fun Drawer(
     )
 }
 
+@Composable
+fun ScreenItems(
+    role: List<ScreenModel.NavigationScreen>,
+    navController: NavController,
+    scaffoldState: ScaffoldState,
+    scope: CoroutineScope,
+) {
+    role.forEach() { item ->
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable(onClick = {
+                    item.route.let {
+                        navController.navigate(it) {
+                            navController.graph.startDestinationRoute?.let { route ->
+                                if (item.route == ScreenModel.NavigationScreen.Logout.route) {
+                                    Preferences
+                                        .userRoot()
+                                        .put("bearer", "")
+                                    popUpTo(ScreenModel.NavigationScreen.Login.route)
+                                } else {
+                                    popUpTo(route) {
+                                        saveState = true
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    scope.launch {
+                        scaffoldState.drawerState.close()
+                    }
+                })
+                .height(42.dp)
+                .padding(start = 10.dp),
+        ) {
+            item.icon?.let {
+                Icon(imageVector = it, contentDescription = "")
+            }
+            Spacer(modifier = Modifier.width(10.dp))
+            Text(
+                text = stringResource(id = item.title),
+                fontSize = 20.sp,
+            )
+        }
+    }
+}
 /*fun customShape(height: Float) = object : Shape {
     override fun createOutline(
         size: Size,
