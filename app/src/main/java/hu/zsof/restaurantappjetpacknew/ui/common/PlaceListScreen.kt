@@ -14,6 +14,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.PushPin
+import androidx.compose.material.icons.filled.ReportProblem
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -33,14 +34,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import hu.zsof.restaurantappjetpacknew.model.Place
+import hu.zsof.restaurantappjetpacknew.model.BasePlace
+import hu.zsof.restaurantappjetpacknew.model.PlaceInReview
 import hu.zsof.restaurantappjetpacknew.model.enums.Price
 import hu.zsof.restaurantappjetpacknew.util.extension.imageUrl
 
 @ExperimentalMaterial3Api
 @Composable
 fun PlaceListItem(
-    place: Place,
+    place: BasePlace,
     onClickPlaceItem: (Long) -> Unit,
     favIdList: List<Long>? = emptyList(),
     needFavButton: Boolean = false,
@@ -90,14 +92,14 @@ fun PlaceListItem(
                         )
                     }
 
-                  /*  if (place is PlaceInReview && !place.problem.isNullOrEmpty()) {
+                    if (place is PlaceInReview && !place.problem.isNullOrEmpty()) {
                         Spacer(modifier = Modifier.weight(1f))
 
                         Icon(
                             imageVector = Icons.Filled.ReportProblem,
                             contentDescription = null,
                         )
-                    }*/
+                    }
 
                     if (needFavButton) {
                         Spacer(modifier = Modifier.weight(1f))
