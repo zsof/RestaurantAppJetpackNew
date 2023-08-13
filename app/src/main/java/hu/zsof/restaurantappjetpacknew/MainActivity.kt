@@ -1,5 +1,6 @@
 package hu.zsof.restaurantappjetpacknew
 
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -26,6 +27,11 @@ class MainActivity : ComponentActivity() {
                 NavGraph(navController = navController)
             }
         }
+
+        // TODO email verifikélés után nyíljon meg az app, esetleg írja ki h sikeres, jelentkezz be
+        val action: String? = intent?.action
+        val data: Uri? = intent?.data
+        println("action: $action  data: $data")
     }
 
     @Composable

@@ -64,6 +64,10 @@ class NewPlaceDialogViewModel @Inject constructor(
     var deliveryChecked = mutableStateOf(false)
     var creditCardChecked = mutableStateOf(false)
 
+    var openingHoursOpen = mutableStateOf(false)
+    var sameOpeningHoursEveryday = mutableStateOf(false)
+    var openSetTime = mutableStateOf(false)
+
     fun addNewPlace(
         typeValue: Type,
         priceValue: Price,

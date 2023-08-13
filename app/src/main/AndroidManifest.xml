@@ -16,16 +16,16 @@
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_eats_easy_launcher"
-        android:roundIcon="@mipmap/ic_eats_easy_launcher_round"
         android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_eats_easy_launcher_round"
         android:supportsRtl="false"
-        android:usesCleartextTraffic="true"
         android:theme="@style/Theme.RestaurantAppJetpackNew"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
 
-        <meta-data android:name="com.google.android.geo.API_KEY"
-            android:value="${MAPS_API_KEY}"
-            />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="${MAPS_API_KEY}" />
 
         <activity
             android:name=".MainActivity"
@@ -38,15 +38,31 @@
             </intent-filter>
         </activity>
 
-     <!--   <service android:name="com.google.android.gms.metadata.MODULE_DEPENDENCIES"
-            android:enabled="false"
-            android:exported="false"
-            tools:ignore="MissingClass">
-            <intent-filter>
-                <action android:name="com.google.android.gms.metadata.MODULE_DEPENDENCIES" />
-            </intent-filter>
-            <meta-data android:name="photopicker_activity:0:required" android:value="" />
-        </service>-->
+       <!-- <intent-filter
+       TODO email verifikálás után nyíljon meg az app
+            android:autoVerify="true"
+            android:label="@string/filter_view_http_gizmos">
+            <action android:name="android.intent.action.VIEW" />
+
+            <category android:name="android.intent.category.DEFAULT" />
+            <category android:name="android.intent.category.BROWSABLE" />
+
+            <data android:scheme="https" />
+            <data android:host="wwww.mail.google.com" />
+            <data android:pathPrefix="/mail" />
+            <data android:scheme="app" />
+            <data android:host="hu.zsof.restaurantappjetpacknew" />
+
+        </intent-filter>-->
+        <!--   <service android:name="com.google.android.gms.metadata.MODULE_DEPENDENCIES"
+               android:enabled="false"
+               android:exported="false"
+               tools:ignore="MissingClass">
+               <intent-filter>
+                   <action android:name="com.google.android.gms.metadata.MODULE_DEPENDENCIES" />
+               </intent-filter>
+               <meta-data android:name="photopicker_activity:0:required" android:value="" />
+           </service>-->
     </application>
 
 </manifest>
