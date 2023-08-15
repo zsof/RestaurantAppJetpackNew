@@ -66,8 +66,7 @@ class NewPlaceDialogViewModel @Inject constructor(
 
     var openingHoursOpen = mutableStateOf(false)
     var sameOpeningHoursEveryday = mutableStateOf(false)
-    var openSetTime = mutableStateOf(false)
-
+    var isOpenHourSet = mutableStateOf(true)
     fun addNewPlace(
         typeValue: Type,
         priceValue: Price,
@@ -116,4 +115,29 @@ class NewPlaceDialogViewModel @Inject constructor(
             e.printStackTrace()
         }
     }
+
+    var basicOpen = mutableStateOf("")
+    var basicClose = mutableStateOf("")
+    var mondayOpen = mutableStateOf("")
+    var mondayClose = mutableStateOf("")
+    var tuesdayOpen = mutableStateOf("")
+    var tuesdayClose = mutableStateOf("")
+    var wednesdayOpen = mutableStateOf("")
+    var wednesdayClose = mutableStateOf("")
+    var thursdayOpen = mutableStateOf("")
+    var thursdayClose = mutableStateOf("")
+    var fridayOpen = mutableStateOf("")
+    var fridayClose = mutableStateOf("")
+    var saturdayOpen = mutableStateOf("")
+    var saturdayClose = mutableStateOf("")
+    var sundayOpen = mutableStateOf("")
+    var sundayClose = mutableStateOf("")
+
+    var mondayCheckbox = mutableStateOf(false)
+    var tuesdayCheckbox = mutableStateOf(false)
+    var wednesdayCheckbox = mutableStateOf(false)
+    var thursdayCheckbox = mutableStateOf(false)
+    var fridayCheckbox = mutableStateOf(false)
+    var saturdayCheckbox = mutableStateOf(false)
+    var sundayCheckbox = mutableStateOf(false)
 }

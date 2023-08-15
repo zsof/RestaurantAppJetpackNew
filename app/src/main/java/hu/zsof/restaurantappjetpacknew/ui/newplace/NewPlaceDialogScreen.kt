@@ -346,6 +346,18 @@ fun NewPlaceDialogScreen(viewModel: NewPlaceDialogViewModel = hiltViewModel()) {
                         modifier = Modifier.padding(start = 10.dp),
                     )
                     Spacer(modifier = Modifier.height(10.dp))
+                  /*  val openingHoursArrowIcon = if (viewModel.openingHoursOpen.value) {
+                        Icons.Outlined.KeyboardArrowDown
+                    } else {
+                        Icons.Outlined.KeyboardArrowUp
+                    }*/
+                    Row {
+                        OpeningHours()
+                        /*Icon(
+                            imageVector = openingHoursArrowIcon,
+                            contentDescription = null,
+                        )*/
+                    }
 
                     Row() {
                         Spacer(Modifier.weight(1f))
