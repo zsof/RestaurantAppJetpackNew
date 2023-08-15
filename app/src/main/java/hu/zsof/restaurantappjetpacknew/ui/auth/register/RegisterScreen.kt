@@ -192,7 +192,7 @@ fun RegisterScreen(
                         },
                     )
                     Text(
-                        modifier = Modifier.padding(start = 2.dp),
+                        modifier = Modifier.padding(start = 8.dp),
                         text = stringResource(id = R.string.register_as_owner),
                         style = TextStyle(fontSize = 14.sp),
                         color = MaterialTheme.colorScheme.onSurfaceVariant,

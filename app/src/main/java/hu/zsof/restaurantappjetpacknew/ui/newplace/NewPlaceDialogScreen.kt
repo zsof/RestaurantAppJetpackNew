@@ -340,24 +340,10 @@ fun NewPlaceDialogScreen(viewModel: NewPlaceDialogViewModel = hiltViewModel()) {
                     PlaceFilter()
 
                     Spacer(modifier = Modifier.height(10.dp))
-                    Text(
-                        text = stringResource(id = R.string.opening_hours),
-                        style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold),
-                        modifier = Modifier.padding(start = 10.dp),
-                    )
+
+                    OpeningHours()
+
                     Spacer(modifier = Modifier.height(10.dp))
-                  /*  val openingHoursArrowIcon = if (viewModel.openingHoursOpen.value) {
-                        Icons.Outlined.KeyboardArrowDown
-                    } else {
-                        Icons.Outlined.KeyboardArrowUp
-                    }*/
-                    Row {
-                        OpeningHours()
-                        /*Icon(
-                            imageVector = openingHoursArrowIcon,
-                            contentDescription = null,
-                        )*/
-                    }
 
                     Row() {
                         Spacer(Modifier.weight(1f))
