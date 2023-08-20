@@ -24,7 +24,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             RestaurantAppJetpackNewTheme(darkTheme = isNightMode()) {
                 val navController = rememberNavController()
-                NavGraph(navController = navController)
+                NavGraph(navController = navController, viewModel = viewModel)
             }
         }
 

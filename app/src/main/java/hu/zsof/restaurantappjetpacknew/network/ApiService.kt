@@ -58,15 +58,19 @@ interface ApiService {
     @GET("places-review")
     suspend fun getAllPlaceFromInReview(): List<PlaceInReview>
 
+    // TODO visszatérési érték törlése, isModifiedPlace érték hozzáadás
     @POST("places-review/accept/{id}")
     suspend fun acceptPlaceFromInReview(@Path("id") placeId: Long): Place
 
+    // TODO visszatérési érték törlése, isModifiedPlace érték hozzáadás
     @POST("places-review/report/{id}")
     suspend fun reportProblemPlaceInReview(
         @Path("id") placeId: Long,
         @Body problemMessage: String,
     ): PlaceInReview
 
+    // TODO modifiedPlaces lista
+    // TODO update fv
     @DELETE("places-review/places/{id}")
     suspend fun deletePlaceFromInReview(@Path("id") placeId: Long)
 

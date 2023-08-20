@@ -12,11 +12,13 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.LayoutDirection
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.*
 import androidx.navigation.navArgument
+import hu.zsof.restaurantappjetpacknew.MainViewModel
 import hu.zsof.restaurantappjetpacknew.ui.auth.login.LoginScreen
 import hu.zsof.restaurantappjetpacknew.ui.auth.register.RegisterScreen
 import hu.zsof.restaurantappjetpacknew.ui.details.TabLayout
@@ -34,6 +36,7 @@ import hu.zsof.restaurantappjetpacknew.util.Constants.AUTH_GRAPH_ROUTE
 import hu.zsof.restaurantappjetpacknew.util.Constants.MAIN_GRAPH_ROUTE
 import hu.zsof.restaurantappjetpacknew.util.Constants.ROOT_GRAPH_ROUTE
 import kotlinx.coroutines.launch
+import java.util.prefs.Preferences
 
 @ExperimentalMaterial3Api
 fun NavGraphBuilder.authNavGraph(
@@ -207,7 +210,7 @@ fun NavGraphBuilder.mainNavGraph(
 @Composable
 fun NavGraph(
     navController: NavHostController,
-
+    viewModel: MainViewModel = hiltViewModel(),
 ) {
     val scaffoldState = rememberScaffoldState(rememberDrawerState(DrawerValue.Closed))
     val scope = rememberCoroutineScope()
@@ -218,6 +221,15 @@ fun NavGraph(
     // Subscribe to navBackStackEntry, required to get current route
     val navBackStackEntry by navController.currentBackStackEntryAsState()
 
+    val token = Preferences.userRoot().get("bearer", "")
+    if (token.isNullOrEmpty().not()) {
+        LaunchedEffect(key1 = "MainActivity") {
+            viewModel.authenticateLoggedUser(token)
+        }
+        // navigate to home
+    } else { // navigate to login
+    }
+
     // Control BottomBar
     when (navBackStackEntry?.destination?.route) {
         "login" -> {
@@ -225,20 +237,24 @@ fun NavGraph(
             bottomBarState.value = false
             drawerOpenState.value = false
         }
+
         "register" -> {
             bottomBarState.value = false
             drawerOpenState.value = false
         }
+
         "logout" -> {
             bottomBarState.value = false
             drawerOpenState.value = false
         }
+
         else -> {
             // Show BottomBar
             bottomBarState.value = true
             drawerOpenState.value = true
         }
     }
+
     CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
         Scaffold(
             scaffoldState = scaffoldState,

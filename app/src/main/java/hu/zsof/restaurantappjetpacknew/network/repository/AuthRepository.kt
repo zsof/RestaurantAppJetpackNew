@@ -29,4 +29,6 @@ class AuthRepository @Inject constructor(private val apiService: ApiService) {
             LoggedUserResponse(false, e.localizedMessage ?: "Network error")
         }
     }
+
+    // todo authenticate user
 }
