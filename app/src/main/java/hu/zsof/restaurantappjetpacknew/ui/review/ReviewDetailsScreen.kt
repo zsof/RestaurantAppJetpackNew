@@ -47,6 +47,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import hu.zsof.restaurantappjetpacknew.R
 import hu.zsof.restaurantappjetpacknew.model.enums.FabButton
+import hu.zsof.restaurantappjetpacknew.network.repository.LocalDataStateService
 import hu.zsof.restaurantappjetpacknew.ui.common.NormalTextField
 import hu.zsof.restaurantappjetpacknew.ui.common.TextChip
 import hu.zsof.restaurantappjetpacknew.ui.common.showToast
@@ -290,11 +291,16 @@ fun MultiFloatingButton(
                     when (fabItem.identifier) {
                         FabButton.ACCEPT.name -> {
                             if (!acceptBtnIsClicked.value) {
-                                viewModel.acceptPlace(placeId)
+                                if (LocalDataStateService.isModifiedPlace) {
+                                    viewModel.acceptPlace(placeId, true)
+                                } else {
+                                    viewModel.acceptPlace(placeId, false)
+                                }
                             } else {
                                 showToast(context, "This place has already accepted!")
                             }
                         }
+
                         FabButton.REPORT.name -> {
                             viewModel.problemDialogOpen.value = true
                         }
@@ -415,7 +421,11 @@ fun ProblemDialog(
                         }
                         Spacer(modifier = Modifier.weight(1f))
                         Button(onClick = {
-                            viewModel.reportProblem(placeId)
+                            if (LocalDataStateService.isModifiedPlace) {
+                                viewModel.reportProblem(placeId, true)
+                            } else {
+                                viewModel.reportProblem(placeId, false)
+                            }
                         }, modifier = Modifier.padding(16.dp, 0.dp)) {
                             Text(text = stringResource(R.string.send))
                         }

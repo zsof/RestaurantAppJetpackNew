@@ -16,6 +16,15 @@ class PlaceInReviewRepository @Inject constructor(private val apiService: ApiSer
         }
     }
 
+    suspend fun getAllModifiedPlace(): List<Place> {
+        return try {
+            apiService.getAllModifiedPlace()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            mutableListOf()
+        }
+    }
+
     suspend fun getPlaceByIdFromInReview(placeId: Long): PlaceInReview? {
         return try {
             apiService.getPlaceByIdFromInReview(placeId)
@@ -25,21 +34,23 @@ class PlaceInReviewRepository @Inject constructor(private val apiService: ApiSer
         }
     }
 
-    suspend fun acceptPlaceFromInReview(placeId: Long): Place? {
-        return try {
-            apiService.acceptPlaceFromInReview(placeId)
+    suspend fun acceptPlaceFromInReview(placeId: Long, isModifiedPlace: Boolean) {
+        try {
+            apiService.acceptPlaceFromInReview(placeId, isModifiedPlace)
         } catch (e: Exception) {
             e.printStackTrace()
-            null
         }
     }
 
-    suspend fun reportProblemPlaceInReview(placeId: Long, problemMessage: String): PlaceInReview? {
-        return try {
-            apiService.reportProblemPlaceInReview(placeId, problemMessage)
+    suspend fun reportProblemPlaceInReview(
+        placeId: Long,
+        problemMessage: String,
+        isModifiedPlace: Boolean,
+    ) {
+        try {
+            apiService.reportProblemPlaceInReview(placeId, problemMessage, isModifiedPlace)
         } catch (e: Exception) {
             e.printStackTrace()
-            null
         }
     }
 

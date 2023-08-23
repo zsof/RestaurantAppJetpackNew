@@ -8,6 +8,7 @@ import hu.zsof.restaurantappjetpacknew.util.Constants.ROLE_USER
 
 object LocalDataStateService {
 
+    var isModifiedPlace: Boolean = false
     var place: Place = Place()
     private var latLng: LatLng? = null
 

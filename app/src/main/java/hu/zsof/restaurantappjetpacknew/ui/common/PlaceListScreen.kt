@@ -37,6 +37,7 @@ import coil.compose.AsyncImage
 import hu.zsof.restaurantappjetpacknew.model.BasePlace
 import hu.zsof.restaurantappjetpacknew.model.PlaceInReview
 import hu.zsof.restaurantappjetpacknew.model.enums.Price
+import hu.zsof.restaurantappjetpacknew.network.repository.LocalDataStateService
 import hu.zsof.restaurantappjetpacknew.util.extension.imageUrl
 
 @ExperimentalMaterial3Api
@@ -47,11 +48,16 @@ fun PlaceListItem(
     favIdList: List<Long>? = emptyList(),
     needFavButton: Boolean = false,
     addOrRemoveFavIdList: (() -> Unit)? = null,
+    isModifiedPlace: Boolean = false,
 ) {
     val favouriteIcon = if (favIdList?.contains(place.id) == true) {
         Icons.Default.Favorite
     } else {
         Icons.Default.FavoriteBorder
+    }
+
+    if (isModifiedPlace) {
+        LocalDataStateService.isModifiedPlace = true
     }
 
     Card(

@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import hu.zsof.restaurantappjetpacknew.model.Place
 import hu.zsof.restaurantappjetpacknew.model.PlaceInReview
 import hu.zsof.restaurantappjetpacknew.network.repository.PlaceInReviewRepository
 import kotlinx.coroutines.launch
@@ -27,7 +28,16 @@ class ReviewPlaceViewModel @Inject constructor(
         }
     }
 
+    var modifiedPlaces = MutableLiveData<List<Place>>()
+
+    fun showModifiedPlaces() {
+        viewModelScope.launch {
+            modifiedPlaces.postValue(placeInReviewRepository.getAllModifiedPlace())
+        }
+    }
+
     val reviewPlaceById = MutableLiveData<PlaceInReview>()
+
     fun getReviewPlaceById(placeId: Long) {
         viewModelScope.launch {
             reviewPlaceById.postValue(placeInReviewRepository.getPlaceByIdFromInReview(placeId))
@@ -36,17 +46,21 @@ class ReviewPlaceViewModel @Inject constructor(
 
     val isPlaceAccepted = MutableLiveData(false)
 
-    fun acceptPlace(placeId: Long) {
+    fun acceptPlace(placeId: Long, isModifiedPlace: Boolean) {
         viewModelScope.launch {
-            placeInReviewRepository.acceptPlaceFromInReview(placeId)
+            placeInReviewRepository.acceptPlaceFromInReview(placeId, isModifiedPlace)
             isPlaceAccepted.value = true
         }
     }
 
     val isPlaceReported = MutableLiveData(false)
-    fun reportProblem(placeId: Long) {
+    fun reportProblem(placeId: Long, isModifiedPlace: Boolean) {
         viewModelScope.launch {
-            placeInReviewRepository.reportProblemPlaceInReview(placeId, problemMessage.value)
+            placeInReviewRepository.reportProblemPlaceInReview(
+                placeId,
+                problemMessage.value,
+                isModifiedPlace,
+            )
             isPlaceReported.value = true
         }
     }

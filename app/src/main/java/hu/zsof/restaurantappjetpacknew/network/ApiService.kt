@@ -58,18 +58,22 @@ interface ApiService {
     @GET("places-review")
     suspend fun getAllPlaceFromInReview(): List<PlaceInReview>
 
-    // TODO visszatérési érték törlése, isModifiedPlace érték hozzáadás
-    @POST("places-review/accept/{id}")
-    suspend fun acceptPlaceFromInReview(@Path("id") placeId: Long): Place
+    @GET("places-review/places/modified")
+    suspend fun getAllModifiedPlace(): List<Place>
 
-    // TODO visszatérési érték törlése, isModifiedPlace érték hozzáadás
+    @POST("places-review/accept/{id}")
+    suspend fun acceptPlaceFromInReview(
+        @Path("id") placeId: Long,
+        @Header("isModifiedPlace") isModifiedPlace: Boolean,
+    )
+
     @POST("places-review/report/{id}")
     suspend fun reportProblemPlaceInReview(
         @Path("id") placeId: Long,
         @Body problemMessage: String,
-    ): PlaceInReview
+        @Header("isModifiedPlace") isModifiedPlace: Boolean,
+    )
 
-    // TODO modifiedPlaces lista
     // TODO update fv
     @DELETE("places-review/places/{id}")
     suspend fun deletePlaceFromInReview(@Path("id") placeId: Long)
@@ -89,7 +93,11 @@ interface ApiService {
      * Auth
      */
     @POST("auth/register")
-    suspend fun registerUser(@Body loginDataRequest: LoginDataRequest, @Header("isAdmin") isAdmin: Boolean, @Header("isOwner") isOwner: Boolean): NetworkResponse
+    suspend fun registerUser(
+        @Body loginDataRequest: LoginDataRequest,
+        @Header("isAdmin") isAdmin: Boolean,
+        @Header("isOwner") isOwner: Boolean,
+    ): NetworkResponse
 
     @POST("auth/login")
     suspend fun loginUser(@Header("Authorization") encodedBasic: String): LoggedUserResponse
