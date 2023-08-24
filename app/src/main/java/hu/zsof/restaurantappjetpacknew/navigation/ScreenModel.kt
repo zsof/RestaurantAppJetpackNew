@@ -96,6 +96,15 @@ class ScreenModel {
                 const val placeId = "placeId"
             }
         }
+
+        object EditPlace :
+            NavigationScreen(route = "editPlace/{${Args.placeId}}") {
+            fun passPlaceId(placeId: Long) = "editPlace/$placeId"
+
+            object Args {
+                const val placeId = "placeId"
+            }
+        }
     }
 
     val authItems = listOf(

@@ -200,6 +200,13 @@ fun NavGraphBuilder.mainNavGraph(
             OwnerDetailsScreen(
                 placeId = navController.currentBackStackEntry?.arguments?.getLong(ScreenModel.NavigationScreen.OwnerDetails.Args.placeId)
                     ?: 0,
+                onEditPlaceClick = {
+                    navController.navigate(
+                        ScreenModel.NavigationScreen.EditPlace.passPlaceId(
+                            it,
+                        ),
+                    )
+                },
             )
         }
     }

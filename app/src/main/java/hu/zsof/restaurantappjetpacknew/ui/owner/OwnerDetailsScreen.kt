@@ -6,6 +6,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.ReportProblem
 import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material.icons.outlined.Map
@@ -15,8 +16,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -29,6 +28,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import hu.zsof.restaurantappjetpacknew.R
+import hu.zsof.restaurantappjetpacknew.network.repository.LocalDataStateService
 import hu.zsof.restaurantappjetpacknew.ui.common.TextChip
 import hu.zsof.restaurantappjetpacknew.util.extension.imageUrl
 
@@ -37,22 +37,18 @@ import hu.zsof.restaurantappjetpacknew.util.extension.imageUrl
 fun OwnerDetailsScreen(
     viewModel: OwnerPlaceViewModel = hiltViewModel(),
     placeId: Long,
-
+    onEditPlaceClick: (Long) -> Unit,
 ) {
     val placeInReview = viewModel.reviewPlaceById.observeAsState().value
     LaunchedEffect(key1 = "ReviewDetails") {
         viewModel.getReviewPlaceById(placeId)
     }
 
-    val showProblemDialog = remember {
-        mutableStateOf(false)
-    }
-
-    if (showProblemDialog.value) {
+    if (viewModel.showProblemDialog.value) {
         AlertDialog(
-            onDismissRequest = { showProblemDialog.value = false },
+            onDismissRequest = { viewModel.showProblemDialog.value = false },
             confirmButton = {
-                Button(onClick = { showProblemDialog.value = false }) {
+                Button(onClick = { viewModel.showProblemDialog.value = false }) {
                     Text(stringResource(R.string.ok_btn))
                 }
             },
@@ -102,13 +98,22 @@ fun OwnerDetailsScreen(
 
                             if (!placeInReview.problem.isNullOrEmpty()) {
                                 IconButton(onClick = {
-                                    showProblemDialog.value = true
+                                    viewModel.showProblemDialog.value = true
                                 }, modifier = Modifier.padding(top = 8.dp)) {
                                     Icon(
                                         imageVector = Icons.Filled.ReportProblem,
                                         contentDescription = null,
                                     )
                                 }
+                            }
+                            IconButton(onClick = {
+                                onEditPlaceClick(placeId)
+                                LocalDataStateService.placeInReview = placeInReview
+                            }, modifier = Modifier.padding(top = 8.dp)) {
+                                Icon(
+                                    imageVector = Icons.Filled.Edit,
+                                    contentDescription = null,
+                                )
                             }
                         }
                     }

@@ -21,4 +21,5 @@ open class BasePlace(
     open val openDetails: OpenDetails = OpenDetails(),
     open val creatorName: String = "",
     open val creatorId: Long = 0,
+    open val isModified: Boolean = false,
 )

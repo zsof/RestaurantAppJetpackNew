@@ -44,4 +44,13 @@ class PlaceOwnerRepository @Inject constructor(private val apiService: ApiServic
             mutableListOf()
         }
     }
+
+    suspend fun updatePlace(placeDataRequest: PlaceDataRequest): Place? {
+        return try {
+            apiService.updatePlace(placeDataRequest)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
 }

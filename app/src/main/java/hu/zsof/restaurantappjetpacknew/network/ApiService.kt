@@ -51,10 +51,12 @@ interface ApiService {
     @GET("places-owner/{id}")
     suspend fun getPlaceByIdFromInReview(@Path("id") placeId: Long): PlaceInReview
 
+    @POST("places-owner/update")
+    suspend fun updatePlace(@Body placeDataRequest: PlaceDataRequest): Place
+
     /**
      * Place in-review (role: admin)
      */
-
     @GET("places-review")
     suspend fun getAllPlaceFromInReview(): List<PlaceInReview>
 
@@ -74,7 +76,6 @@ interface ApiService {
         @Header("isModifiedPlace") isModifiedPlace: Boolean,
     )
 
-    // TODO update fv
     @DELETE("places-review/places/{id}")
     suspend fun deletePlaceFromInReview(@Path("id") placeId: Long)
 

@@ -1,5 +1,6 @@
 package hu.zsof.restaurantappjetpacknew.ui.owner
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -17,6 +18,9 @@ class OwnerPlaceViewModel @Inject constructor(
     private val placeInReviewRepository: PlaceInReviewRepository,
 ) :
     ViewModel() {
+
+    val showProblemDialog = mutableStateOf(false)
+    val editPlaceDialog = mutableStateOf(false)
 
     fun deletePlace(placeId: Long) {
         viewModelScope.launch {
