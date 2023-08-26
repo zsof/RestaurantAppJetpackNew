@@ -8,11 +8,16 @@ import hu.zsof.restaurantappjetpacknew.model.User
 import hu.zsof.restaurantappjetpacknew.network.repository.PlaceRepository
 import hu.zsof.restaurantappjetpacknew.network.repository.UserRepository
 import hu.zsof.restaurantappjetpacknew.network.response.PlaceMapResponse
+import hu.zsof.restaurantappjetpacknew.util.SharedPreferences
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MapViewModel @Inject constructor(private val placeRepository: PlaceRepository, private val userRepository: UserRepository) :
+class MapViewModel @Inject constructor(
+    private val placeRepository: PlaceRepository,
+    private val userRepository: UserRepository,
+    private val sharedPref: SharedPreferences,
+) :
     ViewModel() {
 
     var places = MutableLiveData<List<PlaceMapResponse>>()
@@ -30,5 +35,9 @@ class MapViewModel @Inject constructor(private val placeRepository: PlaceReposit
             favPlaceIds.postValue(user.favPlaceIds)
             userData.postValue(user)
         }
+    }
+
+    fun <T> getAppPreference(key: String): T {
+        return sharedPref.getPreference(key)
     }
 }

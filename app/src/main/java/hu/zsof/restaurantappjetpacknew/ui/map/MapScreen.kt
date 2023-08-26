@@ -16,6 +16,7 @@ import com.google.maps.android.compose.*
 import hu.zsof.restaurantappjetpacknew.model.convertToPlaceMapResponse
 import hu.zsof.restaurantappjetpacknew.network.repository.LocalDataStateService
 import hu.zsof.restaurantappjetpacknew.network.response.PlaceMapResponse
+import hu.zsof.restaurantappjetpacknew.util.Constants
 import hu.zsof.restaurantappjetpacknew.util.Constants.ROLE_OWNER
 
 @OptIn(ExperimentalPermissionsApi::class)
@@ -47,7 +48,7 @@ fun LocationPermissions(
     onLongClick: (latLng: LatLng) -> Unit,
     viewModel: MapViewModel = hiltViewModel(),
 ) {
-    val userType = LocalDataStateService.userType.observeAsState().value
+    val userType = viewModel.getAppPreference<String>(Constants.Prefs.USER_TYPE)
     PermissionsRequired(
         multiplePermissionsState = multiplePermissionState,
         permissionsNotGrantedContent = {

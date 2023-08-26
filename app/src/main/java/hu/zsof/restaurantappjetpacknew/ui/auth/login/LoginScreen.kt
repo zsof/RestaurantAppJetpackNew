@@ -47,9 +47,6 @@ import hu.zsof.restaurantappjetpacknew.ui.common.NormalTextField
 import hu.zsof.restaurantappjetpacknew.ui.common.PasswordTextField
 import hu.zsof.restaurantappjetpacknew.ui.common.showToast
 import hu.zsof.restaurantappjetpacknew.util.Constants
-import hu.zsof.restaurantappjetpacknew.util.Constants.ROLE_ADMIN
-import hu.zsof.restaurantappjetpacknew.util.Constants.ROLE_OWNER
-import hu.zsof.restaurantappjetpacknew.util.Constants.ROLE_USER
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -138,16 +135,16 @@ fun LoginScreen(
                                 )
                                 onLoginClick(viewModel.email.value)
                                 when (response.user.userType) {
-                                    ROLE_ADMIN -> {
-                                        LocalDataStateService.userType.postValue(ROLE_ADMIN)
+                                    Constants.ROLE_ADMIN -> {
+                                        viewModel.setAppPreference(Constants.Prefs.USER_TYPE, Constants.ROLE_ADMIN)
                                     }
 
-                                    ROLE_USER -> {
-                                        LocalDataStateService.userType.postValue(ROLE_USER)
+                                    Constants.ROLE_USER -> {
+                                        viewModel.setAppPreference(Constants.Prefs.USER_TYPE, Constants.ROLE_USER)
                                     }
 
-                                    ROLE_OWNER -> {
-                                        LocalDataStateService.userType.postValue(ROLE_OWNER)
+                                    Constants.ROLE_OWNER -> {
+                                        viewModel.setAppPreference(Constants.Prefs.USER_TYPE, Constants.ROLE_OWNER)
                                     }
                                 }
                                 viewModel.setAppPreference(Constants.Prefs.USER_LOGGED, true)

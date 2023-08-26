@@ -2,23 +2,42 @@ package hu.zsof.restaurantappjetpacknew.navigation
 
 import android.annotation.SuppressLint
 import android.content.Context
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.DrawerValue
 import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberDrawerState
 import androidx.compose.material.rememberScaffoldState
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.runtime.*
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.LayoutDirection
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.*
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.currentBackStackEntryAsState
 import hu.zsof.restaurantappjetpacknew.MainViewModel
+import hu.zsof.restaurantappjetpacknew.R
 import hu.zsof.restaurantappjetpacknew.network.repository.LocalDataStateService
 import hu.zsof.restaurantappjetpacknew.ui.common.showToast
 import hu.zsof.restaurantappjetpacknew.util.Constants
@@ -28,9 +47,10 @@ import hu.zsof.restaurantappjetpacknew.util.Constants.LOGIN_START
 import hu.zsof.restaurantappjetpacknew.util.Constants.ROOT_GRAPH_ROUTE
 import hu.zsof.restaurantappjetpacknew.util.internet.ConnectionState
 import hu.zsof.restaurantappjetpacknew.util.internet.connectivityState
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalCoroutinesApi::class)
 @SuppressLint(
     "UnusedMaterial3ScaffoldPaddingParameter",
     "UnusedMaterialScaffoldPaddingParameter",
@@ -59,6 +79,20 @@ fun NavGraph(
 
     CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
         Scaffold(
+            topBar = {
+                CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
+                    CenterAlignedTopAppBar(
+                        title = {
+                            Text(
+                                stringResource(id = R.string.app_name),
+                                fontSize = 20.sp,
+                                fontStyle = FontStyle.Italic,
+                            )
+                        },
+                        colors = TopAppBarDefaults.mediumTopAppBarColors(containerColor = MaterialTheme.colorScheme.primary),
+                    )
+                }
+            },
             scaffoldState = scaffoldState,
             drawerGesturesEnabled = drawerOpenState.value,
             drawerContent = {
@@ -84,6 +118,7 @@ fun NavGraph(
                                 scaffoldState.drawerState.open()
                             }
                         },
+                        viewModel = viewModel,
                     )
                 }
             },
@@ -91,7 +126,11 @@ fun NavGraph(
             CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
                 Box(
                     modifier = Modifier
-                        .fillMaxSize(),
+                        .fillMaxSize()
+                        .background(MaterialTheme.colorScheme.primary)
+                        .clip(
+                            RoundedCornerShape(32.dp, 32.dp, 0.dp, 0.dp),
+                        ),
                 ) {
                     NavHost(
                         navController = navController,
@@ -125,15 +164,15 @@ fun setStartDestination(
 
             when (response.user.userType) {
                 Constants.ROLE_ADMIN -> {
-                    LocalDataStateService.userType.postValue(Constants.ROLE_ADMIN)
+                    viewModel.setAppPreference(Constants.Prefs.USER_TYPE, Constants.ROLE_ADMIN)
                 }
 
                 Constants.ROLE_USER -> {
-                    LocalDataStateService.userType.postValue(Constants.ROLE_USER)
+                    viewModel.setAppPreference(Constants.Prefs.USER_TYPE, Constants.ROLE_USER)
                 }
 
                 Constants.ROLE_OWNER -> {
-                    LocalDataStateService.userType.postValue(Constants.ROLE_OWNER)
+                    viewModel.setAppPreference(Constants.Prefs.USER_TYPE, Constants.ROLE_OWNER)
                 }
             }
         } else if (viewModel.getAppPreference(Constants.Prefs.USER_LOGGED)) {

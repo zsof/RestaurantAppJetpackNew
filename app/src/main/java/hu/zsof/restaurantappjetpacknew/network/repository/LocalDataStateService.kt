@@ -6,7 +6,6 @@ import hu.zsof.restaurantappjetpacknew.model.Place
 import hu.zsof.restaurantappjetpacknew.model.PlaceInReview
 import hu.zsof.restaurantappjetpacknew.model.User
 import hu.zsof.restaurantappjetpacknew.util.Constants.LOGIN_START
-import hu.zsof.restaurantappjetpacknew.util.Constants.ROLE_USER
 
 object LocalDataStateService {
 
@@ -15,7 +14,6 @@ object LocalDataStateService {
     var placeInReview: PlaceInReview = PlaceInReview()
     private var latLng: LatLng? = null
 
-    var userType = MutableLiveData(ROLE_USER)
     var loggedUser: User? = null
     var startDestination = LOGIN_START
 

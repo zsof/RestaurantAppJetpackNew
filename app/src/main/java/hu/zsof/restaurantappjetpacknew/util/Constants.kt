@@ -30,6 +30,7 @@ object Constants {
         const val DARK_MODE = "dark_mode"
         const val USER_RATED = "user_rated"
         const val USER_LOGGED = "user_logged"
+        const val USER_TYPE = "user_type"
     }
 
     /**

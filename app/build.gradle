@@ -167,6 +167,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-crashlytics-ktx'
     implementation 'com.google.firebase:firebase-analytics-ktx'
 
+    implementation "com.google.accompanist:accompanist-systemuicontroller:0.27.0"
+
     /*// Rating bar
     implementation 'com.github.a914-gowtham:compose-ratingbar:1.2.5'*/
 }

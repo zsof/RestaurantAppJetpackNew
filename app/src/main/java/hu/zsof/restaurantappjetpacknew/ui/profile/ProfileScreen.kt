@@ -1,6 +1,5 @@
 package hu.zsof.restaurantappjetpacknew.ui.profile
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -55,7 +54,8 @@ fun ProfileScreen(
         content = {
             Column(
                 modifier = Modifier
-                    .fillMaxSize(),
+                    .fillMaxSize()
+                    .padding(bottom = 16.dp, top = 16.dp),
             ) {
                 Text(
                     text = stringResource(id = R.string.profile_settings_text),
@@ -206,14 +206,14 @@ fun BaseProfile(user: User, viewModel: ProfileViewModel) {
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
         shape = RoundedCornerShape(8.dp),
     ) {
-        Image(
+        Icon(
             imageVector = Icons.Filled.Person2,
             contentDescription = null,
             modifier = Modifier
                 .size(120.dp)
                 .align(Alignment.CenterHorizontally)
                 .clickable { viewModel.photoDialogOpen.value = true },
-
+            tint = MaterialTheme.colorScheme.onSurfaceVariant,
         )
         Text(
             modifier = Modifier

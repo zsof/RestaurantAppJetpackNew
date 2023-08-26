@@ -5,6 +5,7 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 private val DarkColorScheme = darkColorScheme(
     primary = Color(0xff03a9f4), // gombok alapháttere
@@ -33,18 +34,13 @@ private val DarkColorScheme = darkColorScheme(
 
 private val LightColorScheme = lightColorScheme(
 
-    /* primary = PBrown,
-     onPrimary = PLight,
-     secondary = SBrown,
-     onSecondary = SLight,*/
-
     primary = Color(0xFFFFC107),
     onPrimary = OnPrimaryLight,
     primaryContainer = Color(0xFFFFC107),
     onPrimaryContainer = OnPrimaryContainerLight,
     secondary = Color(0xFFFFC107),
     onSecondary = OnSecondaryLight,
-    secondaryContainer = Color(0xFF1DFFFF),
+    secondaryContainer = Color(0xFFFFFFFF),
     onSecondaryContainer = OnSecondaryContainerLight,
     tertiary = TertiaryLight,
     onTertiary = OnTertiaryLight,
@@ -59,7 +55,7 @@ private val LightColorScheme = lightColorScheme(
     surface = BackgroundLight,
     outline = OutlineLight,
     surfaceVariant = Color(0xFFFFFFFF),
-    onSurfaceVariant = Color(0xD8030303),
+    onSurfaceVariant = Color(0xFF000000),
 )
 
 @Composable
@@ -67,6 +63,8 @@ fun RestaurantAppJetpackNewTheme(
     darkTheme: Boolean,
     content: @Composable () -> Unit,
 ) {
+    val systemUiController = rememberSystemUiController()
+
     val colors = if (darkTheme) {
         DarkColorScheme
     } else {
@@ -77,5 +75,12 @@ fun RestaurantAppJetpackNewTheme(
         colorScheme = colors,
         typography = Typography,
         content = content,
+    )
+
+    systemUiController.setSystemBarsColor(
+        color = colors.primary,
+    )
+    systemUiController.setNavigationBarColor(
+        color = colors.secondaryContainer,
     )
 }

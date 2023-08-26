@@ -5,6 +5,8 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material3.Icon
@@ -13,14 +15,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import hu.zsof.restaurantappjetpacknew.network.repository.LocalDataStateService
+import hu.zsof.restaurantappjetpacknew.MainViewModel
+import hu.zsof.restaurantappjetpacknew.util.Constants
 import hu.zsof.restaurantappjetpacknew.util.Constants.ROLE_ADMIN
 import hu.zsof.restaurantappjetpacknew.util.Constants.ROLE_OWNER
 import hu.zsof.restaurantappjetpacknew.util.Constants.ROLE_USER
@@ -31,22 +35,26 @@ fun BottomNavBar(
     bottomBarState: MutableState<Boolean>,
     isItemEnable: MutableState<Boolean>,
     onNavigationIconClick: () -> Unit,
+    viewModel: MainViewModel,
 ) {
     val adminBottomNavItems = ScreenModel().adminBottomNavItems
     val userBottomNavItems = ScreenModel().userBottomNavItems
     val ownerBottomNavItems = ScreenModel().ownerBottomNavItems
     val navigationDrawer = ScreenModel.NavigationScreen.Extra
 
-    val userType = LocalDataStateService.userType.observeAsState().value
+    val userType = viewModel.getAppPreference<String>(Constants.Prefs.USER_TYPE)
     AnimatedVisibility(
         visible = bottomBarState.value,
         enter = slideInVertically(initialOffsetY = { it }),
         exit = slideOutVertically(targetOffsetY = { it }),
         content = {
-            Box(modifier = Modifier.fillMaxSize()) {
+            Box(modifier = Modifier.fillMaxSize().padding(top = 8.dp)) {
                 BottomNavigation(
-                    modifier = Modifier.align(alignment = Alignment.BottomCenter),
-                    backgroundColor = MaterialTheme.colorScheme.primaryContainer,
+                    modifier = Modifier.align(alignment = Alignment.BottomCenter)
+                        .clip(
+                            RoundedCornerShape(32.dp, 32.dp, 0.dp, 0.dp),
+                        ),
+                    backgroundColor = MaterialTheme.colorScheme.secondaryContainer,
                 ) {
                     val navBackStackEntry by navController.currentBackStackEntryAsState()
                     when (userType) {
@@ -170,25 +178,25 @@ fun BottomNavBar(
                             }
                         }
                     }
-                   /* BottomNavigationItem(
-                        icon = {
-                            navigationDrawer.icon?.let {
-                                Icon(
-                                    imageVector = it,
-                                    contentDescription = null,
-                                )
-                            }
-                        },
-                        label = {
-                            Text(
-                                text = stringResource(navigationDrawer.title),
-                                fontSize = 12.sp,
-                            )
-                        },
-                        selected = navigationDrawer.route == navBackStackEntry?.destination?.route,
-                        onClick = onNavigationIconClick,
-                        enabled = isItemEnable.value,
-                    )*/
+                    /* BottomNavigationItem(
+                         icon = {
+                             navigationDrawer.icon?.let {
+                                 Icon(
+                                     imageVector = it,
+                                     contentDescription = null,
+                                 )
+                             }
+                         },
+                         label = {
+                             Text(
+                                 text = stringResource(navigationDrawer.title),
+                                 fontSize = 12.sp,
+                             )
+                         },
+                         selected = navigationDrawer.route == navBackStackEntry?.destination?.route,
+                         onClick = onNavigationIconClick,
+                         enabled = isItemEnable.value,
+                     )*/
                 }
             }
         },
