@@ -59,7 +59,10 @@ class NetworkModule() {
         override fun intercept(chain: Interceptor.Chain): Response {
             // add bearer token to requests if user logged in already
             val sharedPreferences =
-                context.getSharedPreferences("AuthSharedPref", Context.MODE_PRIVATE)
+                context.getSharedPreferences(
+                    Constants.Prefs.AUTH_SHARED_PREFERENCES,
+                    Context.MODE_PRIVATE,
+                )
             val tokenForRequest = sharedPreferences.getString("bearer", "")
 
             val originalResponse: Response = if (tokenForRequest?.isNotBlank() == true) {

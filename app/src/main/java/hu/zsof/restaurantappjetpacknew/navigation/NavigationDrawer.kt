@@ -1,5 +1,6 @@
 package hu.zsof.restaurantappjetpacknew.navigation
 
+import android.content.Context
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
@@ -34,7 +35,6 @@ import hu.zsof.restaurantappjetpacknew.network.repository.LocalDataStateService
 import hu.zsof.restaurantappjetpacknew.util.Constants
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import java.util.prefs.Preferences
 
 @Composable
 fun Drawer(
@@ -46,6 +46,7 @@ fun Drawer(
         MaterialTheme.colorScheme.surface,
     ),
     navDrawerState: MutableState<Boolean>,
+    context: Context,
 ) {
     val userScreensNavigation = ScreenModel().userScreensNavigationDrawer
     val screensNavigation = ScreenModel().screensNavigationDrawer
@@ -78,6 +79,7 @@ fun Drawer(
                             navController = navController,
                             scaffoldState = scaffoldState,
                             scope = scope,
+                            context = context,
                         )
                     }
 
@@ -87,6 +89,7 @@ fun Drawer(
                             navController = navController,
                             scaffoldState = scaffoldState,
                             scope = scope,
+                            context = context,
                         )
                     }
                 }
@@ -101,6 +104,7 @@ fun ScreenItems(
     navController: NavController,
     scaffoldState: ScaffoldState,
     scope: CoroutineScope,
+    context: Context,
 ) {
     role.forEach() { item ->
         Row(
@@ -111,9 +115,11 @@ fun ScreenItems(
                         navController.navigate(it) {
                             navController.graph.startDestinationRoute?.let { route ->
                                 if (item.route == ScreenModel.NavigationScreen.Logout.route) {
-                                    Preferences
-                                        .userRoot()
-                                        .put("bearer", "")
+                                    val sharedPreferences = context.getSharedPreferences(
+                                        Constants.Prefs.AUTH_SHARED_PREFERENCES,
+                                        Context.MODE_PRIVATE,
+                                    )
+                                    sharedPreferences.edit().putString("bearer", "").apply()
                                     popUpTo(ScreenModel.NavigationScreen.Login.route)
                                 } else {
                                     popUpTo(route) {

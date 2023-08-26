@@ -25,6 +25,7 @@ object Constants {
      */
     object Prefs {
         const val SHARED_PREFERENCES = "restaurant_app_shared_prefs"
+        const val AUTH_SHARED_PREFERENCES = "auth_shared_pref"
         const val DARK_MODE = "dark_mode"
         const val USER_RATED = "user_rated"
     }

@@ -1,11 +1,10 @@
 package hu.zsof.restaurantappjetpacknew
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import hu.zsof.restaurantappjetpacknew.network.repository.AuthRepository
 import hu.zsof.restaurantappjetpacknew.util.SharedPreferences
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 @HiltViewModel
@@ -21,9 +20,7 @@ class MainViewModel @Inject constructor(
         return sharedPref.getPreference(key)
     }
 
-    fun authenticateLoggedUser() {
-        viewModelScope.launch {
-            authRepository.authUser()
-        }
+    fun authenticateLoggedUser() = runBlocking {
+        return@runBlocking authRepository.authUser()
     }
 }

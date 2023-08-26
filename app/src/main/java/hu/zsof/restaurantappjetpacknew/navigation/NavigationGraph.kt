@@ -19,6 +19,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.*
 import hu.zsof.restaurantappjetpacknew.MainViewModel
 import hu.zsof.restaurantappjetpacknew.network.repository.LocalDataStateService
+import hu.zsof.restaurantappjetpacknew.util.Constants
 import hu.zsof.restaurantappjetpacknew.util.Constants.AUTH_GRAPH_ROUTE
 import hu.zsof.restaurantappjetpacknew.util.Constants.MAIN_GRAPH_ROUTE
 import hu.zsof.restaurantappjetpacknew.util.Constants.ROOT_GRAPH_ROUTE
@@ -44,13 +45,14 @@ fun NavGraph(
     // Subscribe to navBackStackEntry, required to get current route
     val navBackStackEntry by navController.currentBackStackEntryAsState()
 
-    val sharedPreferences = context.getSharedPreferences("AuthSharedPref", Context.MODE_PRIVATE)
+    val sharedPreferences =
+        context.getSharedPreferences(Constants.Prefs.AUTH_SHARED_PREFERENCES, Context.MODE_PRIVATE)
     val token = sharedPreferences.getString("bearer", "")
     if (token.isNullOrEmpty().not()) {
-        LaunchedEffect(key1 = "MainActivity") {
-            viewModel.authenticateLoggedUser()
-        }
+        val response = viewModel.authenticateLoggedUser()
         LocalDataStateService.startDestination = MAIN_GRAPH_ROUTE
+        LocalDataStateService.isUserLogged = true
+        LocalDataStateService.loggedUser = response.user
     } else {
         LocalDataStateService.startDestination = AUTH_GRAPH_ROUTE
     }
@@ -91,6 +93,7 @@ fun NavGraph(
                         scope = scope,
                         scaffoldState = scaffoldState,
                         navDrawerState = drawerOpenState,
+                        context = context,
                     )
                 }
             },

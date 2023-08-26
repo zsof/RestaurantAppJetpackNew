@@ -140,13 +140,17 @@ fun LoginScreen(
                                     ROLE_ADMIN -> {
                                         LocalDataStateService.userType.postValue(ROLE_ADMIN)
                                     }
+
                                     ROLE_USER -> {
                                         LocalDataStateService.userType.postValue(ROLE_USER)
                                     }
+
                                     ROLE_OWNER -> {
                                         LocalDataStateService.userType.postValue(ROLE_OWNER)
                                     }
                                 }
+                                LocalDataStateService.isUserLogged = true
+                                LocalDataStateService.loggedUser = response.user
                             }
                         }
                         keyboardController?.hide()
