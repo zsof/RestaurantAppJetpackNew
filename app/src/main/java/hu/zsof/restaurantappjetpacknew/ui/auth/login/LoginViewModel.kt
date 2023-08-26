@@ -6,6 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import hu.zsof.restaurantappjetpacknew.network.repository.AuthRepository
 import hu.zsof.restaurantappjetpacknew.network.request.LoginDataRequest
 import hu.zsof.restaurantappjetpacknew.util.Constants
+import hu.zsof.restaurantappjetpacknew.util.SharedPreferences
 import kotlinx.coroutines.runBlocking
 import java.util.regex.Pattern
 import javax.inject.Inject
@@ -13,6 +14,7 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val authRepository: AuthRepository,
+    private val sharedPref: SharedPreferences,
 ) : ViewModel() {
 
     var email = mutableStateOf("test@test.hu")
@@ -51,11 +53,11 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-/* fun <T> setAppPreference(key: String, value: T) {
-     sharedPref.setPreference(key, value)
- }
+    fun <T> setAppPreference(key: String, value: T) {
+        sharedPref.setPreference(key, value)
+    }
 
- fun <T> getAppPreference(key: String): T {
-     return sharedPref.getPreference(key)
- }*/
+    fun <T> getAppPreference(key: String): T {
+        return sharedPref.getPreference(key)
+    }
 }

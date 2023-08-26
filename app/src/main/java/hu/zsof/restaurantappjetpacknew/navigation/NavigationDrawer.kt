@@ -30,6 +30,7 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import hu.zsof.restaurantappjetpacknew.MainViewModel
 import hu.zsof.restaurantappjetpacknew.R
 import hu.zsof.restaurantappjetpacknew.network.repository.LocalDataStateService
 import hu.zsof.restaurantappjetpacknew.util.Constants
@@ -47,6 +48,7 @@ fun Drawer(
     ),
     navDrawerState: MutableState<Boolean>,
     context: Context,
+    viewModel: MainViewModel,
 ) {
     val userScreensNavigation = ScreenModel().userScreensNavigationDrawer
     val screensNavigation = ScreenModel().screensNavigationDrawer
@@ -80,6 +82,7 @@ fun Drawer(
                             scaffoldState = scaffoldState,
                             scope = scope,
                             context = context,
+                            viewModel = viewModel,
                         )
                     }
 
@@ -90,6 +93,7 @@ fun Drawer(
                             scaffoldState = scaffoldState,
                             scope = scope,
                             context = context,
+                            viewModel = viewModel,
                         )
                     }
                 }
@@ -105,6 +109,7 @@ fun ScreenItems(
     scaffoldState: ScaffoldState,
     scope: CoroutineScope,
     context: Context,
+    viewModel: MainViewModel,
 ) {
     role.forEach() { item ->
         Row(
@@ -121,6 +126,8 @@ fun ScreenItems(
                                     )
                                     sharedPreferences.edit().putString("bearer", "").apply()
                                     popUpTo(ScreenModel.NavigationScreen.Login.route)
+                                    LocalDataStateService.loggedUser = null
+                                    viewModel.setAppPreference(Constants.Prefs.USER_LOGGED, false)
                                 } else {
                                     popUpTo(route) {
                                         saveState = true
@@ -147,18 +154,3 @@ fun ScreenItems(
         }
     }
 }
-/*fun customShape(height: Float) = object : Shape {
-    override fun createOutline(
-        size: Size,
-        layoutDirection: LayoutDirection,
-        density: Density,
-    ): Outline {
-        return Outline.Rectangle(Rect(1000f, 0f, 200f, height))
-    }
-}
-
-@Composable
-fun Dp.toPx(): Float {
-    val density = LocalDensity.current.density
-    return this.value * density
-}*/

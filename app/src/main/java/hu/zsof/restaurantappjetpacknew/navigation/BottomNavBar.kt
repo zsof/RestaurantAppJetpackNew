@@ -29,6 +29,7 @@ import hu.zsof.restaurantappjetpacknew.util.Constants.ROLE_USER
 fun BottomNavBar(
     navController: NavController,
     bottomBarState: MutableState<Boolean>,
+    isItemEnable: MutableState<Boolean>,
     onNavigationIconClick: () -> Unit,
 ) {
     val adminBottomNavItems = ScreenModel().adminBottomNavItems
@@ -45,7 +46,6 @@ fun BottomNavBar(
             Box(modifier = Modifier.fillMaxSize()) {
                 BottomNavigation(
                     modifier = Modifier.align(alignment = Alignment.BottomCenter),
-
                     backgroundColor = MaterialTheme.colorScheme.primaryContainer,
                 ) {
                     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -85,6 +85,7 @@ fun BottomNavBar(
                                         }
                                     },
                                     alwaysShowLabel = true,
+                                    enabled = isItemEnable.value,
                                 )
                             }
                         }
@@ -124,6 +125,7 @@ fun BottomNavBar(
                                         }
                                     },
                                     alwaysShowLabel = true,
+                                    enabled = isItemEnable.value,
                                 )
                             }
                         }
@@ -163,11 +165,12 @@ fun BottomNavBar(
                                         }
                                     },
                                     alwaysShowLabel = true,
+                                    enabled = isItemEnable.value,
                                 )
                             }
                         }
                     }
-                    BottomNavigationItem(
+                   /* BottomNavigationItem(
                         icon = {
                             navigationDrawer.icon?.let {
                                 Icon(
@@ -184,7 +187,8 @@ fun BottomNavBar(
                         },
                         selected = navigationDrawer.route == navBackStackEntry?.destination?.route,
                         onClick = onNavigationIconClick,
-                    )
+                        enabled = isItemEnable.value,
+                    )*/
                 }
             }
         },

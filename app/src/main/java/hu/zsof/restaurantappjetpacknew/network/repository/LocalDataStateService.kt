@@ -5,7 +5,7 @@ import com.google.android.gms.maps.model.LatLng
 import hu.zsof.restaurantappjetpacknew.model.Place
 import hu.zsof.restaurantappjetpacknew.model.PlaceInReview
 import hu.zsof.restaurantappjetpacknew.model.User
-import hu.zsof.restaurantappjetpacknew.util.Constants.AUTH_GRAPH_ROUTE
+import hu.zsof.restaurantappjetpacknew.util.Constants.LOGIN_START
 import hu.zsof.restaurantappjetpacknew.util.Constants.ROLE_USER
 
 object LocalDataStateService {
@@ -16,9 +16,8 @@ object LocalDataStateService {
     private var latLng: LatLng? = null
 
     var userType = MutableLiveData(ROLE_USER)
-    var isUserLogged = false
     var loggedUser: User? = null
-    var startDestination = AUTH_GRAPH_ROUTE
+    var startDestination = LOGIN_START
 
     var filteredPlaces = MutableLiveData<List<Place>>()
     var searchedPlaces = MutableLiveData<List<Place>>()

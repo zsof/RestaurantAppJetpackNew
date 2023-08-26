@@ -31,6 +31,7 @@ class SharedPreferences @Inject constructor(@ApplicationContext context: Context
                 key,
                 false,
             ) as T
+
             else -> defaultValue ?: sharedPreferences.getString(key, "") as T
         }
     }
@@ -61,6 +62,7 @@ class SharedPreferences @Inject constructor(@ApplicationContext context: Context
         private val booleanPreferences = arrayOf(
             Constants.Prefs.DARK_MODE,
             Constants.Prefs.USER_RATED,
+            Constants.Prefs.USER_LOGGED,
         )
     }
 }

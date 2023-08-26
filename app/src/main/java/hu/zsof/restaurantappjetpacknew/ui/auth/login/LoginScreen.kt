@@ -46,6 +46,7 @@ import hu.zsof.restaurantappjetpacknew.ui.common.LoginButton
 import hu.zsof.restaurantappjetpacknew.ui.common.NormalTextField
 import hu.zsof.restaurantappjetpacknew.ui.common.PasswordTextField
 import hu.zsof.restaurantappjetpacknew.ui.common.showToast
+import hu.zsof.restaurantappjetpacknew.util.Constants
 import hu.zsof.restaurantappjetpacknew.util.Constants.ROLE_ADMIN
 import hu.zsof.restaurantappjetpacknew.util.Constants.ROLE_OWNER
 import hu.zsof.restaurantappjetpacknew.util.Constants.ROLE_USER
@@ -149,7 +150,7 @@ fun LoginScreen(
                                         LocalDataStateService.userType.postValue(ROLE_OWNER)
                                     }
                                 }
-                                LocalDataStateService.isUserLogged = true
+                                viewModel.setAppPreference(Constants.Prefs.USER_LOGGED, true)
                                 LocalDataStateService.loggedUser = response.user
                             }
                         }

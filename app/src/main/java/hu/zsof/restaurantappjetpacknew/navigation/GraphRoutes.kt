@@ -28,12 +28,18 @@ fun NavGraphBuilder.authNavGraph(
     navController: NavHostController,
 ) {
     navigation(
-        startDestination = if (LocalDataStateService.startDestination == Constants.AUTH_GRAPH_ROUTE) {
-            ScreenModel.NavigationScreen.Login.route
-        } else {
-            ScreenModel.NavigationScreen.Home.route
+        startDestination = when (LocalDataStateService.startDestination) {
+            Constants.LOGIN_START -> {
+                ScreenModel.NavigationScreen.Login.route
+            }
+            Constants.HOME_START -> {
+                ScreenModel.NavigationScreen.Home.route
+            }
+            else -> {
+                ScreenModel.NavigationScreen.FavPlace.route
+            }
         },
-        route = Constants.AUTH_GRAPH_ROUTE,
+        route = Constants.LOGIN_START,
     ) {
         composable(
             route = ScreenModel.NavigationScreen.Login.route,

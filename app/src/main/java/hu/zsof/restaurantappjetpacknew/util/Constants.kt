@@ -26,16 +26,19 @@ object Constants {
     object Prefs {
         const val SHARED_PREFERENCES = "restaurant_app_shared_prefs"
         const val AUTH_SHARED_PREFERENCES = "auth_shared_pref"
+
         const val DARK_MODE = "dark_mode"
         const val USER_RATED = "user_rated"
+        const val USER_LOGGED = "user_logged"
     }
 
     /**
      * Navigation
      */
     const val ROOT_GRAPH_ROUTE = "root"
-    const val AUTH_GRAPH_ROUTE = "auth"
-    const val MAIN_GRAPH_ROUTE = "main"
+    const val LOGIN_START = "login_start"
+    const val HOME_START = "home_start"
+    const val FAV_START = "fav_start"
 
     /**
      * Nav controller

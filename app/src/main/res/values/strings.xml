@@ -14,7 +14,7 @@
     <string name="register">Regisztráció</string>
     <string name="home">Lista</string>
     <string name="map">Térkép</string>
-    <string name="favs">Favs</string>
+    <string name="favs">Kedvencek</string>
     <string name="profile">Profil</string>
     <string name="logout">Kilép</string>
     <string name="add_button">Add button</string>
