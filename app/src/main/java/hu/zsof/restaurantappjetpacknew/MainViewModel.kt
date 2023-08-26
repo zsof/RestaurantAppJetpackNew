@@ -21,9 +21,9 @@ class MainViewModel @Inject constructor(
         return sharedPref.getPreference(key)
     }
 
-    fun authenticateLoggedUser(token: String) {
+    fun authenticateLoggedUser() {
         viewModelScope.launch {
-            // authRepository.auth(token)
+            authRepository.authUser()
         }
     }
 }

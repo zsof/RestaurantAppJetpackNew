@@ -9,7 +9,11 @@ import javax.inject.Inject
 
 class AuthRepository @Inject constructor(private val apiService: ApiService) {
 
-    suspend fun registerUser(loginDataRequest: LoginDataRequest, isAdmin: Boolean, isOwner: Boolean): NetworkResponse {
+    suspend fun registerUser(
+        loginDataRequest: LoginDataRequest,
+        isAdmin: Boolean,
+        isOwner: Boolean,
+    ): NetworkResponse {
         return try {
             apiService.registerUser(loginDataRequest, isAdmin, isOwner)
         } catch (e: Exception) {
@@ -30,5 +34,11 @@ class AuthRepository @Inject constructor(private val apiService: ApiService) {
         }
     }
 
-    // todo authenticate user
+    suspend fun authUser(): LoggedUserResponse {
+        return try {
+            apiService.authUser()
+        } catch (e: Exception) {
+            LoggedUserResponse(false, e.localizedMessage ?: "Network error")
+        }
+    }
 }

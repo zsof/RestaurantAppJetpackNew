@@ -39,12 +39,10 @@ import com.google.accompanist.permissions.*
 import com.google.maps.android.compose.*
 import hu.zsof.restaurantappjetpacknew.R
 import hu.zsof.restaurantappjetpacknew.model.enums.Price
-import hu.zsof.restaurantappjetpacknew.model.enums.Type
 import hu.zsof.restaurantappjetpacknew.network.repository.LocalDataStateService
 import hu.zsof.restaurantappjetpacknew.ui.common.NormalTextField
 import hu.zsof.restaurantappjetpacknew.ui.common.PhotoChooserDialog
 import hu.zsof.restaurantappjetpacknew.ui.common.TextFieldForDialog
-import hu.zsof.restaurantappjetpacknew.ui.newplace.NewPlaceDialogViewModel
 import hu.zsof.restaurantappjetpacknew.ui.newplace.OpeningHours
 import hu.zsof.restaurantappjetpacknew.ui.newplace.PlaceFilter
 import java.io.*
@@ -53,7 +51,7 @@ import java.util.*
 @SuppressLint("ResourceType")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EditPlaceDialogScreen(viewModel: NewPlaceDialogViewModel = hiltViewModel(), placeId: Long) {
+fun EditPlaceDialogScreen(viewModel: OwnerPlaceViewModel = hiltViewModel(), placeId: Long) {
     val context = LocalContext.current
     val place = LocalDataStateService.placeInReview
 
@@ -177,7 +175,7 @@ fun EditPlaceDialogScreen(viewModel: NewPlaceDialogViewModel = hiltViewModel(), 
                     )
                     Spacer(modifier = Modifier.height(10.dp))
                     TextFieldForDialog(
-                        value = viewModel.websiteValue.value,
+                        value = place.web ?: "",
                         label = stringResource(id = R.string.website_text),
                         onValueChange = { newValue ->
                             viewModel.websiteValue.value = newValue
@@ -191,7 +189,7 @@ fun EditPlaceDialogScreen(viewModel: NewPlaceDialogViewModel = hiltViewModel(), 
                     )
                     Spacer(modifier = Modifier.height(10.dp))
                     TextFieldForDialog(
-                        value = viewModel.emailValue.value,
+                        value = place.email ?: "",
                         label = stringResource(id = R.string.email_address),
                         onValueChange = { newValue ->
                             viewModel.emailValue.value = newValue
@@ -205,7 +203,7 @@ fun EditPlaceDialogScreen(viewModel: NewPlaceDialogViewModel = hiltViewModel(), 
                     )
                     Spacer(modifier = Modifier.height(10.dp))
                     TextFieldForDialog(
-                        value = viewModel.phoneValue.value,
+                        value = place.phoneNumber ?: "",
                         label = stringResource(id = R.string.phone_number_text),
                         onValueChange = { newValue ->
                             viewModel.phoneValue.value = newValue
@@ -367,11 +365,11 @@ fun EditPlaceDialogScreen(viewModel: NewPlaceDialogViewModel = hiltViewModel(), 
                             } else if (viewModel.addressValue.isEmpty()) {
                                 viewModel.addressError.value = true
                             } else {
-                                viewModel.addNewPlace(
+                              /*  viewModel.addNewPlace(
                                     typeValue = Type.getByName(selectedOptionText),
                                     priceValue = viewModel.priceValue,
                                     image = imagePath,
-                                )
+                                )*/
                                 viewModel.dialogOpen.value = false
                             }
                         }) {

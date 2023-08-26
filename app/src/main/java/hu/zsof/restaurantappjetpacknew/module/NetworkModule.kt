@@ -23,7 +23,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class NetworkModule {
+class NetworkModule() {
     @Singleton
     @Provides
     operator fun invoke(
@@ -40,7 +40,7 @@ class NetworkModule {
             .connectTimeout(15, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
             .addInterceptor(interceptor)
-            .addInterceptor(AuthInterceptor())
+            .addInterceptor(AuthInterceptor(context))
             .addInterceptor(ErrorInterceptor(context))
             .build()
 
@@ -54,13 +54,15 @@ class NetworkModule {
         return retrofit.create(ApiService::class.java)
     }
 
-    class AuthInterceptor : Interceptor {
+    class AuthInterceptor(private val context: Context) : Interceptor {
 
         override fun intercept(chain: Interceptor.Chain): Response {
             // add bearer token to requests if user logged in already
-            val tokenForRequest = Preferences.userRoot().get("bearer", "")
+            val sharedPreferences =
+                context.getSharedPreferences("AuthSharedPref", Context.MODE_PRIVATE)
+            val tokenForRequest = sharedPreferences.getString("bearer", "")
 
-            val originalResponse: Response = if (tokenForRequest.isNotBlank()) {
+            val originalResponse: Response = if (tokenForRequest?.isNotBlank() == true) {
                 val request = chain.request()
                 val authenticatedRequest: Request = request.newBuilder()
                     .header("Authorization", tokenForRequest).build()
@@ -75,6 +77,7 @@ class NetworkModule {
             // get authorization token from backend when login from response
             val token = originalResponse.headers["Authorization"]
             if (token != null) {
+                sharedPreferences.edit().putString("bearer", token).apply()
                 Preferences.userRoot().put("bearer", token)
             }
             return originalResponse

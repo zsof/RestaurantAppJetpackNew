@@ -103,6 +103,9 @@ interface ApiService {
     @POST("auth/login")
     suspend fun loginUser(@Header("Authorization") encodedBasic: String): LoggedUserResponse
 
+    @GET("auth")
+    suspend fun authUser(): LoggedUserResponse
+
     /**
      * Admin
      */
