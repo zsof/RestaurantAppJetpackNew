@@ -104,6 +104,7 @@ fun NavGraph(
                         navDrawerState = drawerOpenState,
                         context = context,
                         viewModel = viewModel,
+                        isItemEnable = isItemEnable.value,
                     )
                 }
             },
@@ -111,8 +112,8 @@ fun NavGraph(
                 CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
                     BottomNavBar(
                         navController = navController,
-                        bottomBarState = bottomBarState,
-                        isItemEnable = isItemEnable,
+                        bottomBarState = bottomBarState.value,
+                        isItemEnable = isItemEnable.value,
                         onNavigationIconClick = {
                             scope.launch {
                                 scaffoldState.drawerState.open()
@@ -220,9 +221,7 @@ fun setBottomBar(
 
     if (isConnected.not()) {
         when (navBackStackEntry?.destination?.route) {
-            "fav" -> {
-                isItemEnable.value = true
-            }
+            "fav" -> isItemEnable.value = true
 
             else -> isItemEnable.value = false
         }

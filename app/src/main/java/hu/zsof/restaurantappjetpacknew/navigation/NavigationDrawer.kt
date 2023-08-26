@@ -48,6 +48,7 @@ fun Drawer(
     navDrawerState: MutableState<Boolean>,
     context: Context,
     viewModel: MainViewModel,
+    isItemEnable: Boolean,
 ) {
     val userScreensNavigation = ScreenModel().userScreensNavigationDrawer
     val screensNavigation = ScreenModel().screensNavigationDrawer
@@ -82,6 +83,7 @@ fun Drawer(
                             scope = scope,
                             context = context,
                             viewModel = viewModel,
+                            isItemEnable = isItemEnable,
                         )
                     }
 
@@ -93,6 +95,7 @@ fun Drawer(
                             scope = scope,
                             context = context,
                             viewModel = viewModel,
+                            isItemEnable = isItemEnable,
                         )
                     }
                 }
@@ -109,34 +112,53 @@ fun ScreenItems(
     scope: CoroutineScope,
     context: Context,
     viewModel: MainViewModel,
+    isItemEnable: Boolean,
 ) {
     role.forEach() { item ->
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable(onClick = {
-                    item.route.let {
-                        navController.navigate(it) {
-                            navController.graph.startDestinationRoute?.let { route ->
-                                if (item.route == ScreenModel.NavigationScreen.Logout.route) {
-                                    val sharedPreferences = context.getSharedPreferences(
-                                        Constants.Prefs.AUTH_SHARED_PREFERENCES,
-                                        Context.MODE_PRIVATE,
-                                    )
-                                    sharedPreferences.edit().putString("bearer", "").apply()
-                                    popUpTo(ScreenModel.NavigationScreen.Login.route)
-                                    LocalDataStateService.loggedUser = null
-                                    viewModel.setAppPreference(Constants.Prefs.USER_LOGGED, false)
-                                } else {
+                    if (item.route == ScreenModel.NavigationScreen.FavPlace.route) {
+                        item.route.let {
+                            navController.navigate(it) {
+                                navController.graph.startDestinationRoute?.let { route ->
                                     popUpTo(route) {
                                         saveState = true
                                     }
                                 }
                             }
                         }
-                    }
-                    scope.launch {
-                        scaffoldState.drawerState.close()
+                        scope.launch {
+                            scaffoldState.drawerState.close()
+                        }
+                    } else if (isItemEnable) {
+                        item.route.let {
+                            navController.navigate(it) {
+                                navController.graph.startDestinationRoute?.let { route ->
+                                    if (item.route == ScreenModel.NavigationScreen.Logout.route) {
+                                        val sharedPreferences = context.getSharedPreferences(
+                                            Constants.Prefs.AUTH_SHARED_PREFERENCES,
+                                            Context.MODE_PRIVATE,
+                                        )
+                                        sharedPreferences.edit().putString("bearer", "").apply()
+                                        popUpTo(ScreenModel.NavigationScreen.Login.route)
+                                        LocalDataStateService.loggedUser = null
+                                        viewModel.setAppPreference(
+                                            Constants.Prefs.USER_LOGGED,
+                                            false,
+                                        )
+                                    } else {
+                                        popUpTo(route) {
+                                            saveState = true
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        scope.launch {
+                            scaffoldState.drawerState.close()
+                        }
                     }
                 })
                 .height(42.dp)

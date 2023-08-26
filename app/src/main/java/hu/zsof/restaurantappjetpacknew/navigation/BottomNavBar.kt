@@ -13,7 +13,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,8 +31,8 @@ import hu.zsof.restaurantappjetpacknew.util.Constants.ROLE_USER
 @Composable
 fun BottomNavBar(
     navController: NavController,
-    bottomBarState: MutableState<Boolean>,
-    isItemEnable: MutableState<Boolean>,
+    bottomBarState: Boolean,
+    isItemEnable: Boolean,
     onNavigationIconClick: () -> Unit,
     viewModel: MainViewModel,
 ) {
@@ -44,7 +43,7 @@ fun BottomNavBar(
 
     val userType = viewModel.getAppPreference<String>(Constants.Prefs.USER_TYPE)
     AnimatedVisibility(
-        visible = bottomBarState.value,
+        visible = bottomBarState,
         enter = slideInVertically(initialOffsetY = { it }),
         exit = slideOutVertically(targetOffsetY = { it }),
         content = {
@@ -93,7 +92,7 @@ fun BottomNavBar(
                                         }
                                     },
                                     alwaysShowLabel = true,
-                                    enabled = isItemEnable.value,
+                                    enabled = isItemEnable,
                                 )
                             }
                         }
@@ -133,7 +132,7 @@ fun BottomNavBar(
                                         }
                                     },
                                     alwaysShowLabel = true,
-                                    enabled = isItemEnable.value,
+                                    enabled = isItemEnable,
                                 )
                             }
                         }
@@ -173,30 +172,30 @@ fun BottomNavBar(
                                         }
                                     },
                                     alwaysShowLabel = true,
-                                    enabled = isItemEnable.value,
+                                    enabled = isItemEnable,
                                 )
                             }
                         }
                     }
-                    /* BottomNavigationItem(
-                         icon = {
-                             navigationDrawer.icon?.let {
-                                 Icon(
-                                     imageVector = it,
-                                     contentDescription = null,
-                                 )
-                             }
-                         },
-                         label = {
-                             Text(
-                                 text = stringResource(navigationDrawer.title),
-                                 fontSize = 12.sp,
-                             )
-                         },
-                         selected = navigationDrawer.route == navBackStackEntry?.destination?.route,
-                         onClick = onNavigationIconClick,
-                         enabled = isItemEnable.value,
-                     )*/
+                    BottomNavigationItem(
+                        icon = {
+                            navigationDrawer.icon?.let {
+                                Icon(
+                                    imageVector = it,
+                                    contentDescription = null,
+                                )
+                            }
+                        },
+                        label = {
+                            Text(
+                                text = stringResource(navigationDrawer.title),
+                                fontSize = 12.sp,
+                            )
+                        },
+                        selected = navigationDrawer.route == navBackStackEntry?.destination?.route,
+                        onClick = onNavigationIconClick,
+                        enabled = true,
+                    )
                 }
             }
         },
