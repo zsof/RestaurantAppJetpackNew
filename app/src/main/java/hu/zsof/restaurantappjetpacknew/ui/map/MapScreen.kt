@@ -72,7 +72,7 @@ fun LocationPermissions(
         GoogleMap(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(bottom = 48.dp),
+                .padding(bottom = 36.dp),
             uiSettings = MapUiSettings(
                 zoomControlsEnabled = true,
                 compassEnabled = true,

@@ -42,20 +42,31 @@ fun BottomNavBar(
     val navigationDrawer = ScreenModel.NavigationScreen.Extra
 
     val userType = viewModel.getAppPreference<String>(Constants.Prefs.USER_TYPE)
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+
+    val shape =
+        if (navBackStackEntry?.destination?.route == ScreenModel.NavigationScreen.Map.route) {
+            RoundedCornerShape(0.dp)
+        } else {
+            RoundedCornerShape(32.dp, 32.dp, 0.dp, 0.dp)
+        }
+
     AnimatedVisibility(
         visible = bottomBarState,
         enter = slideInVertically(initialOffsetY = { it }),
         exit = slideOutVertically(targetOffsetY = { it }),
         content = {
-            Box(modifier = Modifier.fillMaxSize().padding(top = 8.dp)) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(top = 8.dp),
+            ) {
                 BottomNavigation(
-                    modifier = Modifier.align(alignment = Alignment.BottomCenter)
-                        .clip(
-                            RoundedCornerShape(32.dp, 32.dp, 0.dp, 0.dp),
-                        ),
+                    modifier = Modifier
+                        .align(alignment = Alignment.BottomCenter)
+                        .clip(shape),
                     backgroundColor = MaterialTheme.colorScheme.secondaryContainer,
                 ) {
-                    val navBackStackEntry by navController.currentBackStackEntryAsState()
                     when (userType) {
                         ROLE_ADMIN -> {
                             adminBottomNavItems.forEach { item ->
