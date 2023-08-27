@@ -55,7 +55,7 @@ fun ProfileScreen(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(top = 16.dp),
+                    .padding(bottom = 16.dp, top = 16.dp),
             ) {
                 Text(
                     text = stringResource(id = R.string.profile_settings_text),

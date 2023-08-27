@@ -139,12 +139,4 @@ class ScreenModel {
         NavigationScreen.Map,
         NavigationScreen.FavPlace,
     )
-
-    val allBottomNavItems = listOf(
-        NavigationScreen.Home,
-        NavigationScreen.Map,
-        NavigationScreen.FavPlace,
-        NavigationScreen.OwnerPlace,
-        NavigationScreen.ReviewPlace,
-    )
 }

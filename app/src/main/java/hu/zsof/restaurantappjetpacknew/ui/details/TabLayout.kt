@@ -29,7 +29,7 @@ fun TabLayout(placeId: Long, onEditPlaceClick: (Long) -> Unit) {
         TabsContent(
             pagerState = pagerState,
             placeId = placeId,
-            onEditPlaceClick = { onEditPlaceClick(placeId) },
+            onEditPlaceClick = onEditPlaceClick,
         )
     }
 }
@@ -78,11 +78,10 @@ fun Tabs(pagerState: PagerState) {
 @Composable
 fun TabsContent(pagerState: PagerState, placeId: Long, onEditPlaceClick: (Long) -> Unit) {
     HorizontalPager(state = pagerState) { page ->
-        println("horizontal $placeId")
         when (page) {
             0 -> DetailsMainScreen(
                 placeId = placeId,
-                onEditPlaceClick = { onEditPlaceClick(placeId) },
+                onEditPlaceClick = onEditPlaceClick,
             )
 
             1 -> DetailsImageScreen(placeId = placeId)

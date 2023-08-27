@@ -19,7 +19,9 @@ class ReviewPlaceViewModel @Inject constructor(
 
     var problemMessage = mutableStateOf("")
     var problemMessageError = mutableStateOf(false)
-    val problemDialogOpen = mutableStateOf(false)
+    val problemReportDialogOpen = mutableStateOf(false)
+    val showProblemDialog = mutableStateOf(false)
+    var multiFloatingState = mutableStateOf(MultiFloatingState.COLLAPSED)
 
     var placesInReview = MutableLiveData<List<PlaceInReview>>()
     fun showPlacesInReview() {
