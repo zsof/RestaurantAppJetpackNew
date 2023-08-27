@@ -24,6 +24,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -48,6 +49,7 @@ fun PlaceListItem(
     favIdList: List<Long>? = emptyList(),
     needFavButton: Boolean = false,
     addOrRemoveFavIdList: (() -> Unit)? = null,
+    isFavPlace: MutableState<Boolean>? = null,
     isModifiedPlace: Boolean = false,
 ) {
     val favouriteIcon = if (favIdList?.contains(place.id) == true) {
@@ -111,8 +113,10 @@ fun PlaceListItem(
                                 // Ide nem kell launchedeffect, mert ez csak akkor fut le, ha gombnyomás történik, ez már nem a homescreen content-jében van, hanem a gombbéban
                                 if (favIdList?.contains(place.id) == true) {
                                     addOrRemoveFavIdList?.invoke()
+                                    isFavPlace?.value = false
                                 } else {
                                     addOrRemoveFavIdList?.invoke()
+                                    isFavPlace?.value = true
                                 }
                             }) {
                                 Icon(

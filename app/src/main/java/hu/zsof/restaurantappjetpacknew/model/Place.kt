@@ -1,5 +1,7 @@
 package hu.zsof.restaurantappjetpacknew.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import hu.zsof.restaurantappjetpacknew.network.response.PlaceMapResponse
 
 /*data class Place(
@@ -22,7 +24,11 @@ import hu.zsof.restaurantappjetpacknew.network.response.PlaceMapResponse
     override var creatorId: Long = 0,
 ) : BasePlace()*/
 
-class Place : BasePlace()
+@Entity(tableName = "place")
+data class Place(
+    @PrimaryKey
+    override val id: Long,
+) : BasePlace()
 
 fun Place.convertToPlaceMapResponse(): PlaceMapResponse {
     return PlaceMapResponse(
