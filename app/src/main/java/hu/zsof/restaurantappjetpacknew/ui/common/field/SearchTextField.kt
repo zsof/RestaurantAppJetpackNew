@@ -1,4 +1,4 @@
-package hu.zsof.restaurantappjetpacknew.ui.common
+package hu.zsof.restaurantappjetpacknew.ui.common.field
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions

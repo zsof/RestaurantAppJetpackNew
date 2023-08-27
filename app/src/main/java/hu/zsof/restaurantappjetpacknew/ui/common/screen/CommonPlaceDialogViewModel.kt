@@ -1,4 +1,4 @@
-package hu.zsof.restaurantappjetpacknew.ui.common
+package hu.zsof.restaurantappjetpacknew.ui.common.screen
 
 import android.net.Uri
 import androidx.compose.runtime.mutableStateOf

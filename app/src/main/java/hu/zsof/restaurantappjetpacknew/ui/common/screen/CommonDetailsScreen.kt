@@ -1,4 +1,4 @@
-package hu.zsof.restaurantappjetpacknew.ui.common
+package hu.zsof.restaurantappjetpacknew.ui.common.screen
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -35,6 +35,7 @@ import hu.zsof.restaurantappjetpacknew.model.Place
 import hu.zsof.restaurantappjetpacknew.model.PlaceInReview
 import hu.zsof.restaurantappjetpacknew.model.enums.PlaceType
 import hu.zsof.restaurantappjetpacknew.network.repository.LocalDataStateService
+import hu.zsof.restaurantappjetpacknew.ui.common.button.TextChip
 import hu.zsof.restaurantappjetpacknew.ui.review.FabItem
 import hu.zsof.restaurantappjetpacknew.ui.review.MultiFloatingButton
 import hu.zsof.restaurantappjetpacknew.ui.review.MultiFloatingState

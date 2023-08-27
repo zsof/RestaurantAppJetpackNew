@@ -42,9 +42,9 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import hu.zsof.restaurantappjetpacknew.R
 import hu.zsof.restaurantappjetpacknew.network.repository.LocalDataStateService
-import hu.zsof.restaurantappjetpacknew.ui.common.LoginButton
-import hu.zsof.restaurantappjetpacknew.ui.common.NormalTextField
-import hu.zsof.restaurantappjetpacknew.ui.common.PasswordTextField
+import hu.zsof.restaurantappjetpacknew.ui.common.button.LoginButton
+import hu.zsof.restaurantappjetpacknew.ui.common.field.NormalTextField
+import hu.zsof.restaurantappjetpacknew.ui.common.field.PasswordTextField
 import hu.zsof.restaurantappjetpacknew.ui.common.showToast
 import hu.zsof.restaurantappjetpacknew.util.Constants
 import kotlinx.coroutines.launch

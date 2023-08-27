@@ -16,7 +16,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import hu.zsof.restaurantappjetpacknew.R
 import hu.zsof.restaurantappjetpacknew.model.enums.FabButton
 import hu.zsof.restaurantappjetpacknew.model.enums.PlaceType
-import hu.zsof.restaurantappjetpacknew.ui.common.CommonDetailsScreen
+import hu.zsof.restaurantappjetpacknew.ui.common.screen.CommonDetailsScreen
 
 @Composable
 fun ReviewDetailsScreen(

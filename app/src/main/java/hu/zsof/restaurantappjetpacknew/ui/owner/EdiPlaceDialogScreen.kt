@@ -40,9 +40,9 @@ import com.google.maps.android.compose.*
 import hu.zsof.restaurantappjetpacknew.R
 import hu.zsof.restaurantappjetpacknew.model.enums.Price
 import hu.zsof.restaurantappjetpacknew.network.repository.LocalDataStateService
-import hu.zsof.restaurantappjetpacknew.ui.common.NormalTextField
-import hu.zsof.restaurantappjetpacknew.ui.common.PhotoChooserDialog
-import hu.zsof.restaurantappjetpacknew.ui.common.TextFieldForDialog
+import hu.zsof.restaurantappjetpacknew.ui.common.field.NormalTextField
+import hu.zsof.restaurantappjetpacknew.ui.common.screen.PhotoChooserDialog
+import hu.zsof.restaurantappjetpacknew.ui.common.field.TextFieldForDialog
 import hu.zsof.restaurantappjetpacknew.ui.newplace.OpeningHours
 import hu.zsof.restaurantappjetpacknew.ui.newplace.PlaceFilter
 import java.io.*

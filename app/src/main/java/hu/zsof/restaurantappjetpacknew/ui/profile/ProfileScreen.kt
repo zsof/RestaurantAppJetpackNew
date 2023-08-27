@@ -23,8 +23,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import hu.zsof.restaurantappjetpacknew.R
 import hu.zsof.restaurantappjetpacknew.model.User
 import hu.zsof.restaurantappjetpacknew.network.repository.LocalDataStateService
-import hu.zsof.restaurantappjetpacknew.ui.common.PhotoChooserDialog
-import hu.zsof.restaurantappjetpacknew.ui.common.TextChip
+import hu.zsof.restaurantappjetpacknew.ui.common.screen.PhotoChooserDialog
+import hu.zsof.restaurantappjetpacknew.ui.common.button.TextChip
 import hu.zsof.restaurantappjetpacknew.util.Constants
 
 @ExperimentalMaterial3Api

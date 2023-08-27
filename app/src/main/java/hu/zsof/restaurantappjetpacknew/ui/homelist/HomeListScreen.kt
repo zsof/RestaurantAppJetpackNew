@@ -35,8 +35,8 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import hu.zsof.restaurantappjetpacknew.R
 import hu.zsof.restaurantappjetpacknew.model.Place
 import hu.zsof.restaurantappjetpacknew.network.repository.LocalDataStateService
-import hu.zsof.restaurantappjetpacknew.ui.common.PlaceListItem
-import hu.zsof.restaurantappjetpacknew.ui.common.SearchTextField
+import hu.zsof.restaurantappjetpacknew.ui.common.screen.PlaceListItem
+import hu.zsof.restaurantappjetpacknew.ui.common.field.SearchTextField
 import hu.zsof.restaurantappjetpacknew.util.Constants.ROLE_OWNER
 
 @OptIn(ExperimentalPermissionsApi::class, ExperimentalComposeUiApi::class)

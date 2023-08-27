@@ -19,7 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import hu.zsof.restaurantappjetpacknew.R
-import hu.zsof.restaurantappjetpacknew.ui.common.PlaceListItem
+import hu.zsof.restaurantappjetpacknew.ui.common.screen.PlaceListItem
 
 @ExperimentalMaterial3Api
 @Composable

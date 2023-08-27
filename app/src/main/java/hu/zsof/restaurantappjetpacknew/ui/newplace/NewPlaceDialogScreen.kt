@@ -12,7 +12,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.permissions.*
 import com.google.maps.android.compose.*
 import hu.zsof.restaurantappjetpacknew.network.repository.LocalDataStateService
-import hu.zsof.restaurantappjetpacknew.ui.common.CommonPlaceDialogScreen
+import hu.zsof.restaurantappjetpacknew.ui.common.screen.CommonPlaceDialogScreen
 import java.io.*
 import java.util.*
 

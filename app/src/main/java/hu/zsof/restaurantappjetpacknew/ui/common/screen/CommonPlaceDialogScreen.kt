@@ -1,4 +1,4 @@
-package hu.zsof.restaurantappjetpacknew.ui.common
+package hu.zsof.restaurantappjetpacknew.ui.common.screen
 
 import android.annotation.SuppressLint
 import android.content.ContentResolver
@@ -38,6 +38,8 @@ import com.google.maps.android.compose.*
 import hu.zsof.restaurantappjetpacknew.R
 import hu.zsof.restaurantappjetpacknew.model.enums.Price
 import hu.zsof.restaurantappjetpacknew.model.enums.Type
+import hu.zsof.restaurantappjetpacknew.ui.common.field.NormalTextField
+import hu.zsof.restaurantappjetpacknew.ui.common.field.TextFieldForDialog
 import hu.zsof.restaurantappjetpacknew.ui.newplace.OpeningHours
 import hu.zsof.restaurantappjetpacknew.ui.newplace.PlaceFilter
 import java.io.*

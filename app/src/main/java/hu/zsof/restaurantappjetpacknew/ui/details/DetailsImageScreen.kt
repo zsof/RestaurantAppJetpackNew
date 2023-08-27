@@ -14,7 +14,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import hu.zsof.restaurantappjetpacknew.ui.common.PhotoChooserDialog
+import hu.zsof.restaurantappjetpacknew.ui.common.screen.PhotoChooserDialog
 
 @Composable
 fun DetailsImageScreen(

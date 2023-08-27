@@ -1,4 +1,4 @@
-package hu.zsof.restaurantappjetpacknew.ui.common
+package hu.zsof.restaurantappjetpacknew.ui.common.button
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border

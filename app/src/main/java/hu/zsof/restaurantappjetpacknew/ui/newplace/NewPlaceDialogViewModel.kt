@@ -9,7 +9,7 @@ import hu.zsof.restaurantappjetpacknew.network.repository.LocalDataStateService
 import hu.zsof.restaurantappjetpacknew.network.repository.PlaceOwnerRepository
 import hu.zsof.restaurantappjetpacknew.network.repository.ResourceRepository
 import hu.zsof.restaurantappjetpacknew.network.request.PlaceDataRequest
-import hu.zsof.restaurantappjetpacknew.ui.common.CommonPlaceDialogViewModel
+import hu.zsof.restaurantappjetpacknew.ui.common.screen.CommonPlaceDialogViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
