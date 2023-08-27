@@ -16,7 +16,7 @@ import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import org.json.JSONObject
 import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
+import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 import java.util.prefs.Preferences
 import javax.inject.Singleton
@@ -47,7 +47,7 @@ class NetworkModule() {
         val retrofit =
             Retrofit.Builder()
                 .baseUrl(Constants.BASE_URL)
-                .addConverterFactory(MoshiConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
                 .client(okHttpClient)
                 .build()
 
