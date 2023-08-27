@@ -32,9 +32,11 @@ fun NavGraphBuilder.authNavGraph(
             Constants.LOGIN_START -> {
                 ScreenModel.NavigationScreen.Login.route
             }
+
             Constants.HOME_START -> {
                 ScreenModel.NavigationScreen.Home.route
             }
+
             else -> {
                 ScreenModel.NavigationScreen.FavPlace.route
             }
@@ -76,7 +78,9 @@ fun NavGraphBuilder.authNavGraph(
             )
         }
         composable(route = ScreenModel.NavigationScreen.NewPlace.route) {
-            NewPlaceDialogScreen()
+            NewPlaceDialogScreen(
+                onDialogClose = { navController.navigate(ScreenModel.NavigationScreen.Home.route) },
+            )
         }
         composable(route = ScreenModel.NavigationScreen.Map.route) {
             MapScreen(
@@ -137,6 +141,13 @@ fun NavGraphBuilder.authNavGraph(
             TabLayout(
                 placeId = navController.currentBackStackEntry?.arguments?.getLong(ScreenModel.NavigationScreen.Details.Args.placeId)
                     ?: 0,
+                onEditPlaceClick = {
+                    navController.navigate(
+                        ScreenModel.NavigationScreen.EditPlace.passPlaceId(
+                            it,
+                        ),
+                    )
+                },
             )
         }
         composable(
@@ -185,7 +196,7 @@ fun NavGraphBuilder.authNavGraph(
             OwnerDetailsScreen(
                 placeId = navController.currentBackStackEntry?.arguments?.getLong(ScreenModel.NavigationScreen.OwnerDetails.Args.placeId)
                     ?: 0,
-                onEditPlaceClick = {
+                onEditPlaceInReviewClick = {
                     navController.navigate(
                         ScreenModel.NavigationScreen.EditPlace.passPlaceId(
                             it,

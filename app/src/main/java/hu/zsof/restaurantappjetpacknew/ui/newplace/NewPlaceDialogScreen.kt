@@ -50,7 +50,10 @@ import java.util.*
 @SuppressLint("ResourceType")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NewPlaceDialogScreen(viewModel: NewPlaceDialogViewModel = hiltViewModel()) {
+fun NewPlaceDialogScreen(
+    viewModel: NewPlaceDialogViewModel = hiltViewModel(),
+    onDialogClose: () -> Unit,
+) {
     val context = LocalContext.current
 
     if (viewModel.photoDialogOpen.value) {
@@ -365,6 +368,7 @@ fun NewPlaceDialogScreen(viewModel: NewPlaceDialogViewModel = hiltViewModel()) {
                                     image = imagePath,
                                 )
                                 viewModel.dialogOpen.value = false
+                                onDialogClose()
                             }
                         }) {
                             Text(

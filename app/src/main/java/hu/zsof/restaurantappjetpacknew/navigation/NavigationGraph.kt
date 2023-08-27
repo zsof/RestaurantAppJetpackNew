@@ -17,8 +17,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -74,7 +76,7 @@ fun NavGraph(
     val connection by connectivityState()
     val isConnected = connection === ConnectionState.Available
 
-    setStartDestination(context = context, viewModel = viewModel, isConnected = isConnected)
+    SetStartDestination(context = context, viewModel = viewModel, isConnected = isConnected)
     setBottomBar(navBackStackEntry, bottomBarState, drawerOpenState, isItemEnable, isConnected)
 
     CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
@@ -146,7 +148,8 @@ fun NavGraph(
     }
 }
 
-fun setStartDestination(
+@Composable
+fun SetStartDestination(
     context: Context,
     viewModel: MainViewModel,
     isConnected: Boolean,
@@ -157,13 +160,17 @@ fun setStartDestination(
 
     if (token.isNullOrEmpty().not()) {
         if (isConnected) {
-            val response = viewModel.authenticateLoggedUser()
+            val userResponse = viewModel.user.observeAsState().value
 
-            LocalDataStateService.loggedUser = response.user
+            LaunchedEffect(key1 = "MainActivity") {
+                viewModel.authenticateLoggedUser()
+            }
+
+            LocalDataStateService.loggedUser = userResponse?.user
             LocalDataStateService.startDestination = HOME_START
             viewModel.setAppPreference(Constants.Prefs.USER_LOGGED, true)
 
-            when (response.user.userType) {
+            when (userResponse?.user?.userType) {
                 Constants.ROLE_ADMIN -> {
                     viewModel.setAppPreference(Constants.Prefs.USER_TYPE, Constants.ROLE_ADMIN)
                 }

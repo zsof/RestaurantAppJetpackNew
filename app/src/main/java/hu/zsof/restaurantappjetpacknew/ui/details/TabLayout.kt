@@ -21,12 +21,16 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun TabLayout(placeId: Long) {
+fun TabLayout(placeId: Long, onEditPlaceClick: (Long) -> Unit) {
     val pagerState = rememberPagerState(pageCount = 3, infiniteLoop = true)
 
     Column() {
         Tabs(pagerState = pagerState)
-        TabsContent(pagerState = pagerState, placeId = placeId)
+        TabsContent(
+            pagerState = pagerState,
+            placeId = placeId,
+            onEditPlaceClick = { onEditPlaceClick(placeId) },
+        )
     }
 }
 
@@ -72,11 +76,15 @@ fun Tabs(pagerState: PagerState) {
 
 @ExperimentalPagerApi
 @Composable
-fun TabsContent(pagerState: PagerState, placeId: Long) {
+fun TabsContent(pagerState: PagerState, placeId: Long, onEditPlaceClick: (Long) -> Unit) {
     HorizontalPager(state = pagerState) { page ->
         println("horizontal $placeId")
         when (page) {
-            0 -> DetailsMainScreen(placeId = placeId)
+            0 -> DetailsMainScreen(
+                placeId = placeId,
+                onEditPlaceClick = { onEditPlaceClick(placeId) },
+            )
+
             1 -> DetailsImageScreen(placeId = placeId)
             2 -> TabContentScreen(data = "Welcome to Comments Screen")
         }

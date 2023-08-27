@@ -37,7 +37,7 @@ import hu.zsof.restaurantappjetpacknew.util.extension.imageUrl
 fun OwnerDetailsScreen(
     viewModel: OwnerPlaceViewModel = hiltViewModel(),
     placeId: Long,
-    onEditPlaceClick: (Long) -> Unit,
+    onEditPlaceInReviewClick: (Long) -> Unit,
 ) {
     val placeInReview = viewModel.reviewPlaceById.observeAsState().value
     LaunchedEffect(key1 = "ReviewDetails") {
@@ -107,7 +107,7 @@ fun OwnerDetailsScreen(
                                 }
                             }
                             IconButton(onClick = {
-                                onEditPlaceClick(placeId)
+                                onEditPlaceInReviewClick(placeId)
                                 LocalDataStateService.placeInReview = placeInReview
                             }, modifier = Modifier.padding(top = 8.dp)) {
                                 Icon(

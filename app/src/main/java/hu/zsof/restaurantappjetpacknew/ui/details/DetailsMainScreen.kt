@@ -7,6 +7,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
@@ -26,6 +27,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import hu.zsof.restaurantappjetpacknew.R
+import hu.zsof.restaurantappjetpacknew.network.repository.LocalDataStateService
 import hu.zsof.restaurantappjetpacknew.ui.common.TextChip
 import hu.zsof.restaurantappjetpacknew.util.Constants
 import hu.zsof.restaurantappjetpacknew.util.extension.imageUrl
@@ -35,6 +37,7 @@ import hu.zsof.restaurantappjetpacknew.util.extension.imageUrl
 fun DetailsMainScreen(
     viewModel: DetailsViewModel = hiltViewModel(),
     placeId: Long,
+    onEditPlaceClick: (Long) -> Unit,
 ) {
     val place = viewModel.placeById.observeAsState().value
     LaunchedEffect(key1 = "Details") {
@@ -45,8 +48,12 @@ fun DetailsMainScreen(
            RateDialog(viewModel = viewModel, onDismiss = { viewModel.ratingDialogOpen.value = false })
        }
    */
+
+    viewModel.isPlaceByOwner.value = LocalDataStateService.loggedUser?.id == place?.creatorId
+
     Surface(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
             .background(color = MaterialTheme.colorScheme.onPrimary),
         content = {
             Column(
@@ -67,16 +74,33 @@ fun DetailsMainScreen(
                             .padding(16.dp)
                             .clip(RoundedCornerShape(8.dp)),
                     )
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier.fillMaxWidth(),
+                    ) {
+                        Row(horizontalArrangement = Arrangement.Center) {
+                            Text(
+                                text = place.name,
+                                style = MaterialTheme.typography.headlineLarge,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                fontStyle = FontStyle.Italic,
+                                modifier = Modifier
+                                    .padding(16.dp),
+                            )
 
-                    Text(
-                        text = place.name,
-                        style = MaterialTheme.typography.headlineLarge,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        fontStyle = FontStyle.Italic,
-                        modifier = Modifier
-                            .align(Alignment.CenterHorizontally)
-                            .padding(16.dp),
-                    )
+                            if (viewModel.isPlaceByOwner.value) {
+                                IconButton(onClick = {
+                                    onEditPlaceClick(placeId)
+                                    LocalDataStateService.place = place
+                                }, modifier = Modifier.padding(top = 8.dp)) {
+                                    Icon(
+                                        imageVector = Icons.Filled.Edit,
+                                        contentDescription = null,
+                                    )
+                                }
+                            }
+                        }
+                    }
 
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -180,7 +204,8 @@ fun DetailsMainScreen(
                             modifier = Modifier
                                 .padding(8.dp, 0.dp),
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            text = place.phoneNumber ?: stringResource(R.string.not_provided_info),
+                            text = place.phoneNumber
+                                ?: stringResource(R.string.not_provided_info),
                             fontSize = 18.sp,
                         )
                     }
