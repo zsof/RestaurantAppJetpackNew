@@ -66,14 +66,14 @@ interface ApiService {
     @POST("places-review/accept/{id}")
     suspend fun acceptPlaceFromInReview(
         @Path("id") placeId: Long,
-        @Header("isModifiedPlace") isModifiedPlace: Boolean,
+        @Query("isModifiedPlace") isModifiedPlace: Boolean,
     )
 
     @POST("places-review/report/{id}")
     suspend fun reportProblemPlaceInReview(
         @Path("id") placeId: Long,
         @Body problemMessage: String,
-        @Header("isModifiedPlace") isModifiedPlace: Boolean,
+        @Query("isModifiedPlace") isModifiedPlace: Boolean,
     )
 
     @DELETE("places-review/places/{id}")

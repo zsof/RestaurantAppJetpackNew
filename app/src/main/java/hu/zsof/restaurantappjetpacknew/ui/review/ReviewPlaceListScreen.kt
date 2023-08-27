@@ -50,7 +50,7 @@ fun ReviewPlaceListScreen(
                 LazyColumn(
                     contentPadding = PaddingValues(8.dp),
                 ) {
-                    items(newPlaces.value) {
+                    items(modifiedPlaces.value) {
                         PlaceListItem(place = it, onClickPlaceItem = onClickPlaceItem, isModifiedPlace = true)
                     }
                 }
@@ -63,7 +63,7 @@ fun ReviewPlaceListScreen(
                 LazyColumn(
                     contentPadding = PaddingValues(8.dp),
                 ) {
-                    items(modifiedPlaces.value) {
+                    items(newPlaces.value) {
                         PlaceListItem(place = it, onClickPlaceItem = onClickPlaceItem, isModifiedPlace = false)
                     }
                 }

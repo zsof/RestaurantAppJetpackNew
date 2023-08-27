@@ -1,10 +1,6 @@
 package hu.zsof.restaurantappjetpacknew.model
 
 import androidx.room.Entity
-import androidx.room.PrimaryKey
-import androidx.room.TypeConverters
-import hu.zsof.restaurantappjetpacknew.model.converter.FilterConverter
-import hu.zsof.restaurantappjetpacknew.model.converter.OpenDetailsConverter
 import hu.zsof.restaurantappjetpacknew.network.response.PlaceMapResponse
 
 /*data class Place(
@@ -28,14 +24,7 @@ import hu.zsof.restaurantappjetpacknew.network.response.PlaceMapResponse
 ) : BasePlace()*/
 
 @Entity(tableName = "place")
-data class Place(
-    @PrimaryKey
-    override val id: Long = 0,
-    @TypeConverters(FilterConverter::class)
-    override var filter: CustomFilter = CustomFilter(),
-    @TypeConverters(OpenDetailsConverter::class)
-    override var openDetails: OpenDetails = OpenDetails(),
-) : BasePlace()
+class Place() : BasePlace()
 
 fun Place.convertToPlaceMapResponse(): PlaceMapResponse {
     return PlaceMapResponse(

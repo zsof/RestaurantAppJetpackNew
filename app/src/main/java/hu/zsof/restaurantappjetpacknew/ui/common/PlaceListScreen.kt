@@ -58,9 +58,7 @@ fun PlaceListItem(
         Icons.Default.FavoriteBorder
     }
 
-    if (isModifiedPlace) {
-        LocalDataStateService.isModifiedPlace = true
-    }
+    LocalDataStateService.isModifiedPlace = isModifiedPlace
 
     Card(
         modifier = Modifier
