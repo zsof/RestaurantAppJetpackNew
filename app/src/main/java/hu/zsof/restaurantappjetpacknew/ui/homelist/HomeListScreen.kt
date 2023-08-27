@@ -145,7 +145,7 @@ fun HomeListScreen(
                                 onClickPlaceItem = onClickPlaceItem,
                                 favIdList = viewModel.favPlaceIds.observeAsState().value,
                                 needFavButton = true,
-                                addOrRemoveFavIdList = { viewModel.addOrRemoveFavPlace(it.id) },
+                                addOrRemoveFavIdList = { viewModel.addOrRemoveFavPlace(it) },
                                 isFavPlace = viewModel.isFavPlace,
                             )
                         }
@@ -170,7 +170,7 @@ fun HomeListScreen(
                                 onClickPlaceItem = onClickPlaceItem,
                                 favIdList = viewModel.favPlaceIds.observeAsState().value,
                                 needFavButton = true,
-                                addOrRemoveFavIdList = { viewModel.addOrRemoveFavPlace(filteredPlace.id) },
+                                addOrRemoveFavIdList = { viewModel.addOrRemoveFavPlace(filteredPlace) },
                                 isFavPlace = viewModel.isFavPlace,
                             )
                         }
@@ -187,7 +187,7 @@ fun HomeListScreen(
                                 needFavButton = true,
                                 addOrRemoveFavIdList = {
                                     viewModel.addOrRemoveFavPlace(
-                                        userFilteredPlaces.id,
+                                        userFilteredPlaces,
                                     )
                                 },
                                 isFavPlace = viewModel.isFavPlace,

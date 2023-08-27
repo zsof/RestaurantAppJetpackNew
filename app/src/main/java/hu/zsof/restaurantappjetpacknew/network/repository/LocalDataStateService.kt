@@ -12,6 +12,7 @@ object LocalDataStateService {
     var isModifiedPlace: Boolean = false
     var place: Place = Place()
     var placeInReview: PlaceInReview = PlaceInReview()
+
     private var latLng: LatLng? = null
 
     var loggedUser: User? = null

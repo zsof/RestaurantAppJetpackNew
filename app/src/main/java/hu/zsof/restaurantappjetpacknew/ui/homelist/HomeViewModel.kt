@@ -30,15 +30,15 @@ class HomeViewModel @Inject constructor(
 
     var favPlaceIds = MutableLiveData<List<Long>?>()
 
-    fun addOrRemoveFavPlace(placeId: Long) {
+    fun addOrRemoveFavPlace(place: Place) {
         viewModelScope.launch {
-            val user = userRepository.addOrRemoveFavPlace(placeId)
+            val user = userRepository.addOrRemoveFavPlace(place.id)
             favPlaceIds.postValue(user?.favPlaceIds)
 
             if (isFavPlace.value.not()) {
-                userRepository.insertFav(Place(placeId))
+                userRepository.insertFav(place)
             } else {
-                userRepository.deleteFav(Place(placeId))
+                userRepository.deleteFav(place)
             }
         }
     }

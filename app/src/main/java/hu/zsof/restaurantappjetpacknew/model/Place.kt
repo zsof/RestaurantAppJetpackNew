@@ -27,7 +27,7 @@ import hu.zsof.restaurantappjetpacknew.network.response.PlaceMapResponse
 @Entity(tableName = "place")
 data class Place(
     @PrimaryKey
-    override val id: Long,
+    override val id: Long = 0,
 ) : BasePlace()
 
 fun Place.convertToPlaceMapResponse(): PlaceMapResponse {
