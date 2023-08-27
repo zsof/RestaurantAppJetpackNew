@@ -38,10 +38,9 @@ import com.google.maps.android.compose.*
 import hu.zsof.restaurantappjetpacknew.R
 import hu.zsof.restaurantappjetpacknew.model.enums.Price
 import hu.zsof.restaurantappjetpacknew.model.enums.Type
+import hu.zsof.restaurantappjetpacknew.network.repository.LocalDataStateService
 import hu.zsof.restaurantappjetpacknew.ui.common.field.NormalTextField
 import hu.zsof.restaurantappjetpacknew.ui.common.field.TextFieldForDialog
-import hu.zsof.restaurantappjetpacknew.ui.newplace.OpeningHours
-import hu.zsof.restaurantappjetpacknew.ui.newplace.PlaceFilter
 import java.io.*
 import java.util.*
 
@@ -90,7 +89,11 @@ fun CommonPlaceDialogScreen(
 
     if (viewModel.dialogOpen.value) {
         Dialog(
-            onDismissRequest = { viewModel.dialogOpen.value = false },
+            onDismissRequest = {
+                viewModel.dialogOpen.value = false
+                LocalDataStateService.place = null
+                LocalDataStateService.placeInReview = null
+            },
             properties = DialogProperties(
                 dismissOnClickOutside = false,
                 dismissOnBackPress = true,
@@ -141,7 +144,7 @@ fun CommonPlaceDialogScreen(
                     )
                     Spacer(modifier = Modifier.height(10.dp))
                     NormalTextField(
-                        value = viewModel.addressValue,
+                        value = viewModel.addressValue.value,
                         label = stringResource(id = R.string.address_text),
                         onValueChange = {
                             /* newValue ->
@@ -339,7 +342,11 @@ fun CommonPlaceDialogScreen(
 
                     Row() {
                         Spacer(Modifier.weight(1f))
-                        TextButton(onClick = { viewModel.dialogOpen.value = false }) {
+                        TextButton(onClick = {
+                            viewModel.dialogOpen.value = false
+                            LocalDataStateService.place = null
+                            LocalDataStateService.placeInReview = null
+                        }) {
                             Text(
                                 text = stringResource(id = R.string.cancel_btn),
                                 style = TextStyle(fontSize = 16.sp),
@@ -348,7 +355,7 @@ fun CommonPlaceDialogScreen(
                         TextButton(onClick = {
                             if (viewModel.placeNameValue.value.isEmpty()) {
                                 viewModel.placeNameError.value = true
-                            } else if (viewModel.addressValue.isEmpty()) {
+                            } else if (viewModel.addressValue.value.isEmpty()) {
                                 viewModel.addressError.value = true
                             } else {
                                 viewModel.addNewPlace(
@@ -357,6 +364,9 @@ fun CommonPlaceDialogScreen(
                                     image = imagePath,
                                 )
                                 viewModel.dialogOpen.value = false
+
+                                LocalDataStateService.place = null
+                                LocalDataStateService.placeInReview = null
                                 onDialogClose()
                             }
                         }) {

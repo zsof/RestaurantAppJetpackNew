@@ -5,13 +5,15 @@ import com.google.android.gms.maps.model.LatLng
 import hu.zsof.restaurantappjetpacknew.model.Place
 import hu.zsof.restaurantappjetpacknew.model.PlaceInReview
 import hu.zsof.restaurantappjetpacknew.model.User
+import hu.zsof.restaurantappjetpacknew.model.enums.PlaceType
 import hu.zsof.restaurantappjetpacknew.util.Constants.LOGIN_START
 
 object LocalDataStateService {
 
     var isModifiedPlace: Boolean = false
-    var place: Place = Place()
-    var placeInReview: PlaceInReview = PlaceInReview()
+    var placeType = PlaceType.PLACE
+    var place: Place? = Place()
+    var placeInReview: PlaceInReview? = PlaceInReview()
 
     private var latLng: LatLng? = null
 

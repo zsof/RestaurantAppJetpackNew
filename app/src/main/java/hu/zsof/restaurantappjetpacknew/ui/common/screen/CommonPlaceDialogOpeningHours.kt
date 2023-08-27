@@ -1,4 +1,4 @@
-package hu.zsof.restaurantappjetpacknew.ui.newplace
+package hu.zsof.restaurantappjetpacknew.ui.common.screen
 
 import android.app.TimePickerDialog
 import android.icu.util.Calendar
@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import hu.zsof.restaurantappjetpacknew.R
+import hu.zsof.restaurantappjetpacknew.ui.newplace.NewPlaceDialogViewModel
 
 @Composable
 fun OpeningHours(viewModel: NewPlaceDialogViewModel = hiltViewModel()) {
@@ -97,8 +98,8 @@ fun OpeningHours(viewModel: NewPlaceDialogViewModel = hiltViewModel()) {
                 OpeningHoursItem(
                     openingDay = R.string.thursday,
                     openingCheckbox = viewModel.thursdayCheckbox,
-                    selectedOpenText = viewModel.wednesdayOpen,
-                    selectedCloseText = viewModel.wednesdayClose,
+                    selectedOpenText = viewModel.thursdayOpen,
+                    selectedCloseText = viewModel.thursdayClose,
                 )
                 OpeningHoursItem(
                     openingDay = R.string.friday,

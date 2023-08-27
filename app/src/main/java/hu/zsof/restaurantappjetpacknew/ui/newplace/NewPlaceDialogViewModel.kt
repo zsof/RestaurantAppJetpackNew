@@ -42,7 +42,7 @@ class NewPlaceDialogViewModel @Inject constructor(
                 val placeResponse = placeOwnerRepository.addNewPlace(
                     PlaceDataRequest(
                         placeNameValue.value,
-                        addressValue,
+                        addressValue.value,
                         websiteValue.value,
                         emailValue.value,
                         phoneValue.value,

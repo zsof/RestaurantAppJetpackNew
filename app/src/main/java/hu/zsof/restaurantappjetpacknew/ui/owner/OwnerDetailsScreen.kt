@@ -41,9 +41,9 @@ fun OwnerDetailsScreen(
 
     CommonDetailsScreen(
         placeId = placeId,
-        onEditPlaceInReviewClick = onEditPlaceInReviewClick,
+        onEditPlaceClick = onEditPlaceInReviewClick,
         place = placeInReview,
-        placeType = PlaceType.PLACE_BY_OWNER,
+        placeType = PlaceType.PLACE_BY_OWNER_IN_REVIEW,
         isPlaceByOwner = true,
         showProblemDialog = viewModel.showProblemDialog,
     )

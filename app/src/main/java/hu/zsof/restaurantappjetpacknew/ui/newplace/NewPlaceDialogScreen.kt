@@ -29,7 +29,7 @@ fun NewPlaceDialogScreen(
         LocalDataStateService.getLatLng().longitude,
     ) { address: android.location.Address? ->
         if (address != null) {
-            viewModel.addressValue = address.getAddressLine(0)
+            viewModel.addressValue.value = address.getAddressLine(0)
         }
     }
 

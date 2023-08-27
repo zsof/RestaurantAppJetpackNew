@@ -46,7 +46,7 @@ import hu.zsof.restaurantappjetpacknew.util.extension.imageUrl
 @Composable
 fun CommonDetailsScreen(
     placeId: Long,
-    onEditPlaceInReviewClick: ((Long) -> Unit)? = null,
+    onEditPlaceClick: ((Long) -> Unit)? = null,
     place: BasePlace?,
     showProblemDialog: MutableState<Boolean>? = null,
     placeType: PlaceType = PlaceType.PLACE,
@@ -138,14 +138,17 @@ fun CommonDetailsScreen(
                             }
                             if (isPlaceByOwner) {
                                 IconButton(onClick = {
-                                    if (onEditPlaceInReviewClick != null) {
-                                        onEditPlaceInReviewClick(placeId)
+                                    if (onEditPlaceClick != null) {
+                                        onEditPlaceClick(placeId)
                                     }
 
                                     if (placeType == PlaceType.PLACE) {
                                         LocalDataStateService.place = place as Place
-                                    } else if (placeType == PlaceType.PLACE_BY_OWNER) {
+                                        LocalDataStateService.placeType = PlaceType.PLACE
+                                    } else if (placeType == PlaceType.PLACE_BY_OWNER_IN_REVIEW) {
                                         LocalDataStateService.placeInReview = place as PlaceInReview
+                                        LocalDataStateService.placeType = PlaceType.PLACE_BY_OWNER_IN_REVIEW
+
                                     }
                                 }, modifier = Modifier.padding(top = 8.dp)) {
                                     Icon(
@@ -170,7 +173,7 @@ fun CommonDetailsScreen(
                                     .padding(2.dp, 4.dp, 0.dp, 0.dp),
                                 tint = Color(0xFFFFC107),
 
-                            )
+                                )
                             Text(
                                 text = place.rate.toString(),
                                 style = TextStyle(

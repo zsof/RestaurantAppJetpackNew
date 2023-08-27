@@ -1,5 +1,7 @@
 package hu.zsof.restaurantappjetpacknew.model
 
+import java.io.Serializable
+
 data class OpenDetails(
     var basicOpen: String = "",
     var basicClose: String = "",
@@ -25,4 +27,4 @@ data class OpenDetails(
     var friday: Boolean = false,
     var saturday: Boolean = false,
     var sunday: Boolean = false,
-)
+) : Serializable

@@ -1,4 +1,4 @@
-package hu.zsof.restaurantappjetpacknew.ui.newplace
+package hu.zsof.restaurantappjetpacknew.ui.common.screen
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import hu.zsof.restaurantappjetpacknew.R
+import hu.zsof.restaurantappjetpacknew.ui.newplace.NewPlaceDialogViewModel
 
 @ExperimentalMaterial3Api
 @Composable

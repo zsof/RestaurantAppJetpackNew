@@ -16,6 +16,7 @@ import hu.zsof.restaurantappjetpacknew.ui.filter.FilterPlaceDialogScreen
 import hu.zsof.restaurantappjetpacknew.ui.homelist.HomeListScreen
 import hu.zsof.restaurantappjetpacknew.ui.map.MapScreen
 import hu.zsof.restaurantappjetpacknew.ui.newplace.NewPlaceDialogScreen
+import hu.zsof.restaurantappjetpacknew.ui.owner.EditPlaceDialogScreen
 import hu.zsof.restaurantappjetpacknew.ui.owner.OwnerDetailsScreen
 import hu.zsof.restaurantappjetpacknew.ui.owner.OwnerPlaceListScreen
 import hu.zsof.restaurantappjetpacknew.ui.profile.ProfileScreen
@@ -54,7 +55,7 @@ fun NavGraphBuilder.authNavGraph(
                     navController.navigate(ScreenModel.NavigationScreen.Register.route)
                 },
 
-            )
+                )
         }
         composable(route = ScreenModel.NavigationScreen.Register.route) {
             RegisterScreen(
@@ -127,7 +128,6 @@ fun NavGraphBuilder.authNavGraph(
                 onRegisterClick = {
                     navController.navigate(ScreenModel.NavigationScreen.Register.route)
                 },
-
             )
         }
         composable(
@@ -205,5 +205,22 @@ fun NavGraphBuilder.authNavGraph(
                 },
             )
         }
+
+        composable(
+            route = ScreenModel.NavigationScreen.EditPlace.route,
+            arguments = listOf(
+                navArgument(ScreenModel.NavigationScreen.EditPlace.Args.placeId) {
+                    type = NavType.LongType
+                },
+            ),
+        ) {
+            EditPlaceDialogScreen(
+                onDialogClose = {
+                    //navController.navigateUp()
+                    navController.popBackStack()
+                },
+            )
+        }
+
     }
 }

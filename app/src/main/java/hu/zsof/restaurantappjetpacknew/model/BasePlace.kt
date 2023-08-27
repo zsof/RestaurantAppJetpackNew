@@ -1,12 +1,15 @@
 package hu.zsof.restaurantappjetpacknew.model
 
+import android.os.Parcelable
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
 import hu.zsof.restaurantappjetpacknew.model.converter.FilterConverter
 import hu.zsof.restaurantappjetpacknew.model.converter.OpenDetailsConverter
 import hu.zsof.restaurantappjetpacknew.model.enums.Price
 import hu.zsof.restaurantappjetpacknew.model.enums.Type
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 open class BasePlace(
     @PrimaryKey
     open var id: Long = 0,
@@ -29,4 +32,4 @@ open class BasePlace(
     open var creatorName: String = "",
     open var creatorId: Long = 0,
     open var isModified: Boolean = false,
-)
+): Parcelable

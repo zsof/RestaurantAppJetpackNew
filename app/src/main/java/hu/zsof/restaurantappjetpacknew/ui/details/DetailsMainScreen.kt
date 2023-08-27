@@ -29,7 +29,7 @@ fun DetailsMainScreen(
 
     CommonDetailsScreen(
         placeId = placeId,
-        onEditPlaceInReviewClick = onEditPlaceClick,
+        onEditPlaceClick = onEditPlaceClick,
         place = place,
         placeType = PlaceType.PLACE,
         isPlaceByOwner = viewModel.isPlaceByOwner.value,
