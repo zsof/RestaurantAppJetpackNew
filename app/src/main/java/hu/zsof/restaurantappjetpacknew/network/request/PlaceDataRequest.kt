@@ -6,6 +6,7 @@ import hu.zsof.restaurantappjetpacknew.model.enums.Price
 import hu.zsof.restaurantappjetpacknew.model.enums.Type
 
 data class PlaceDataRequest(
+    val id: Long = -1,
     val name: String = "",
     val address: String = "",
     val web: String = "",

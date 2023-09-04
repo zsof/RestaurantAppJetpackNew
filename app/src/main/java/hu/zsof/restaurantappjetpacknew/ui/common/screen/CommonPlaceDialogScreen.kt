@@ -358,7 +358,7 @@ fun CommonPlaceDialogScreen(
                             } else if (viewModel.addressValue.value.isEmpty()) {
                                 viewModel.addressError.value = true
                             } else {
-                                viewModel.addNewPlace(
+                                viewModel.addOrEditPlace(
                                     typeValue = Type.getByName(selectedOptionText),
                                     priceValue = viewModel.priceValue,
                                     image = imagePath,

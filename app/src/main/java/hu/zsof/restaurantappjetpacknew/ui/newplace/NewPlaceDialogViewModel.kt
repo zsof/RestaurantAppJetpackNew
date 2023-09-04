@@ -29,23 +29,21 @@ class NewPlaceDialogViewModel @Inject constructor(
         LatLng(0.0, 0.0)
     }
 
-    override fun addNewPlace(
+    override fun addOrEditPlace(
         typeValue: Type,
         priceValue: Price,
         image: String,
     ) {
         try {
             // viewmodel scope megszűnik, amint bezáródik a dialog, ezért kell coroutinescope
-            // todo valami szebb megoldás
-
             CoroutineScope(Job() + Dispatchers.IO).launch {
                 val placeResponse = placeOwnerRepository.addNewPlace(
                     PlaceDataRequest(
-                        placeNameValue.value,
-                        addressValue.value,
-                        websiteValue.value,
-                        emailValue.value,
-                        phoneValue.value,
+                        name = placeNameValue.value,
+                        address = addressValue.value,
+                        web = websiteValue.value,
+                        email = emailValue.value,
+                        phoneNumber = phoneValue.value,
                         type = typeValue,
                         price = priceValue,
                         filter = CustomFilter(

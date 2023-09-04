@@ -96,6 +96,7 @@ fun PlaceListItem(
                             fontSize = 20.sp,
                             maxLines = 3,
                         )
+
                         if (place is PlaceInReview && !place.problem.isNullOrEmpty()) {
                             Spacer(modifier = Modifier.weight(1f))
 
@@ -123,6 +124,15 @@ fun PlaceListItem(
                                 )
                             }
                         }
+
+                        if (place.isModified) {
+                            Icon(
+                                imageVector = Icons.Filled.ReportProblem,
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .padding(start=8.dp, top = 12.dp),
+                            )
+                        }
                     }
 
                     Row() {
@@ -134,7 +144,7 @@ fun PlaceListItem(
                                 .padding(2.dp, 4.dp, 0.dp, 0.dp),
                             tint = Color(0xFFFFC107),
 
-                        )
+                            )
                         Text(
                             text = place.rate.toString(),
                             style = TextStyle(

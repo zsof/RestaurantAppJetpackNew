@@ -18,9 +18,9 @@ fun EditPlaceDialogScreen(
     viewModel: OwnerPlaceViewModel = hiltViewModel(),
     onDialogClose: () -> Unit,
 ) {
+    //todo filtereket ki kéne szervezni és külön vm, mert így nem menti el update-kor
+    //todo kellene a nyitvatartás is
 
-    // TODO place.xx beadni alapvalue-nak
-    // TODO elkülöníteni h place vagy placeinreview
     CommonPlaceDialogScreen(
         viewModel = viewModel,
         onDialogClose = onDialogClose,

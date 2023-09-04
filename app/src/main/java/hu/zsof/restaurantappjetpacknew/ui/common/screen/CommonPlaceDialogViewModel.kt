@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 open class CommonPlaceDialogViewModel @Inject constructor() : ViewModel() {
-    open fun addNewPlace(
+    open fun addOrEditPlace(
         typeValue: Type,
         priceValue: Price,
         image: String,
