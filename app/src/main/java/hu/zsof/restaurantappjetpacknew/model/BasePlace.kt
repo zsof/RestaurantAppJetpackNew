@@ -32,4 +32,5 @@ open class BasePlace(
     open var creatorName: String = "",
     open var creatorId: Long = 0,
     open var isModified: Boolean = false,
+    open var problem: String? = null,
 ): Parcelable

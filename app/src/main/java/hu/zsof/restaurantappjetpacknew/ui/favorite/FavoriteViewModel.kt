@@ -1,5 +1,6 @@
 package hu.zsof.restaurantappjetpacknew.ui.favorite
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -15,10 +16,15 @@ class FavoriteViewModel @Inject constructor(
 ) :
     ViewModel() {
 
+    val isNetworkConnected = mutableStateOf(false)
+
     var favPlaces = MutableLiveData<List<Place>>()
     fun showFavPlaces() {
         viewModelScope.launch {
-            favPlaces.postValue(userRepository.getFavPlacesByUser())
+            if (isNetworkConnected.value)
+                favPlaces.postValue(userRepository.getFavPlacesByUser())
+            else
+                favPlaces.postValue(userRepository.getAllFav())
         }
     }
 }

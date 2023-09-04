@@ -17,7 +17,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -78,6 +80,9 @@ fun BottomNavBar(
                                             Icon(
                                                 imageVector = it,
                                                 contentDescription = null,
+                                                tint = if (currentRoute) Color.Black else Color.Black.copy(
+                                                    0.4f
+                                                )
                                             )
                                         }
                                     },
@@ -85,9 +90,14 @@ fun BottomNavBar(
                                         Text(
                                             text = stringResource(item.title),
                                             fontSize = 12.sp,
+                                            color = if (currentRoute) Color.Black else Color.Black.copy(
+                                                0.4f
+                                            ),
+                                            fontWeight = if (currentRoute) FontWeight.Bold else FontWeight.Normal
                                         )
                                     },
                                     selected = currentRoute,
+                                    selectedContentColor = MaterialTheme.colorScheme.primary,
                                     onClick = {
                                         item.route.let {
                                             navController.navigate(it) {
@@ -118,6 +128,9 @@ fun BottomNavBar(
                                             Icon(
                                                 imageVector = it,
                                                 contentDescription = null,
+                                                tint = if (currentRoute) Color.Black else Color.Black.copy(
+                                                    0.4f
+                                                )
                                             )
                                         }
                                     },
@@ -125,9 +138,14 @@ fun BottomNavBar(
                                         Text(
                                             text = stringResource(item.title),
                                             fontSize = 12.sp,
+                                            color = if (currentRoute) Color.Black else Color.Black.copy(
+                                                0.4f
+                                            ),
+                                            fontWeight = if (currentRoute) FontWeight.Bold else FontWeight.Normal
                                         )
                                     },
                                     selected = currentRoute,
+                                    selectedContentColor = MaterialTheme.colorScheme.primary,
                                     onClick = {
                                         item.route.let {
                                             navController.navigate(it) {
@@ -158,6 +176,9 @@ fun BottomNavBar(
                                             Icon(
                                                 imageVector = it,
                                                 contentDescription = null,
+                                                tint = if (currentRoute) Color.Black else Color.Black.copy(
+                                                    0.4f
+                                                )
                                             )
                                         }
                                     },
@@ -165,9 +186,14 @@ fun BottomNavBar(
                                         Text(
                                             text = stringResource(item.title),
                                             fontSize = 12.sp,
+                                            color = if (currentRoute) Color.Black else Color.Black.copy(
+                                                0.4f
+                                            ),
+                                            fontWeight = if (currentRoute) FontWeight.Bold else FontWeight.Normal
                                         )
                                     },
                                     selected = currentRoute,
+                                    selectedContentColor = MaterialTheme.colorScheme.primary,
                                     onClick = {
                                         item.route.let {
                                             navController.navigate(it) {
@@ -188,12 +214,17 @@ fun BottomNavBar(
                             }
                         }
                     }
+                    val navigationDrawerSelected =
+                        navigationDrawer.route == navBackStackEntry?.destination?.route
                     BottomNavigationItem(
                         icon = {
                             navigationDrawer.icon?.let {
                                 Icon(
                                     imageVector = it,
                                     contentDescription = null,
+                                    tint = if (navigationDrawerSelected) Color.Black else Color.Black.copy(
+                                        0.4f
+                                    )
                                 )
                             }
                         },
@@ -201,9 +232,14 @@ fun BottomNavBar(
                             Text(
                                 text = stringResource(navigationDrawer.title),
                                 fontSize = 12.sp,
+                                color = if (navigationDrawerSelected) Color.Black else Color.Black.copy(
+                                    0.4f
+                                ),
+                                fontWeight = if (navigationDrawerSelected) FontWeight.Bold else FontWeight.Normal
                             )
                         },
-                        selected = navigationDrawer.route == navBackStackEntry?.destination?.route,
+                        selected = navigationDrawerSelected,
+                        selectedContentColor = MaterialTheme.colorScheme.primary,
                         onClick = onNavigationIconClick,
                         enabled = true,
                     )

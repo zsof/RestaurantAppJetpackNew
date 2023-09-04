@@ -20,6 +20,8 @@ fun EditPlaceDialogScreen(
 ) {
     //todo filtereket ki kéne szervezni és külön vm, mert így nem menti el update-kor
     //todo kellene a nyitvatartás is
+    //todo price, és étterem típust még nem tölti ki az előző alapján
+    //todo esetleg mentéskor egy toast h tuti jó a cím? mert később nem módosíthatod
 
     CommonPlaceDialogScreen(
         viewModel = viewModel,

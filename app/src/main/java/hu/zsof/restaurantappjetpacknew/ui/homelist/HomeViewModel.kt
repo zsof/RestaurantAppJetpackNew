@@ -35,7 +35,7 @@ class HomeViewModel @Inject constructor(
             val user = userRepository.addOrRemoveFavPlace(place.id)
             favPlaceIds.postValue(user?.favPlaceIds)
 
-            if (isFavPlace.value.not()) {
+            if (isFavPlace.value) {
                 userRepository.insertFav(place)
             } else {
                 userRepository.deleteFav(place)

@@ -87,7 +87,9 @@
     <string name="closed">Zárva</string>
     <string name="not_set">Nincs megadva</string>
     <string name="review">Ellenőrzés</string>
+    <string name="review_title">Ellenőrzésre váró Helyek</string>
     <string name="own_places">Saját</string>
+    <string name="own_places_title">Saját Helyek</string>
     <string name="not_provided_info">Not provided</string>
     <string name="take_photo">Take a Photo</string>
     <string name="choose_gallery">Choose from Gallery</string>

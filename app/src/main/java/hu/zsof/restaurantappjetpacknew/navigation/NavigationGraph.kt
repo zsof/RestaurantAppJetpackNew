@@ -87,7 +87,7 @@ fun NavGraph(
                         title = {
                             Text(
                                 stringResource(id = R.string.app_name),
-                                fontSize = 20.sp,
+                                fontSize = 28.sp,
                                 fontStyle = FontStyle.Italic,
                             )
                         },

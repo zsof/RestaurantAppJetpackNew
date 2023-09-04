@@ -5,8 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import hu.zsof.restaurantappjetpacknew.model.BasePlace
 import hu.zsof.restaurantappjetpacknew.model.Place
 import hu.zsof.restaurantappjetpacknew.model.PlaceInReview
+import hu.zsof.restaurantappjetpacknew.network.repository.LocalDataStateService
 import hu.zsof.restaurantappjetpacknew.network.repository.PlaceInReviewRepository
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -17,6 +19,7 @@ class ReviewPlaceViewModel @Inject constructor(
 ) :
     ViewModel() {
 
+    //TODO módosított helyre kattintva a place in review.ban keres, félig megoldva, má id átadva nav graph-ban!!
     var problemMessage = mutableStateOf("")
     var problemMessageError = mutableStateOf(false)
     val problemReportDialogOpen = mutableStateOf(false)
@@ -38,11 +41,16 @@ class ReviewPlaceViewModel @Inject constructor(
         }
     }
 
-    val reviewPlaceById = MutableLiveData<PlaceInReview>()
+    val reviewPlaceById = MutableLiveData<BasePlace>()
 
     fun getReviewPlaceById(placeId: Long) {
         viewModelScope.launch {
-            reviewPlaceById.postValue(placeInReviewRepository.getPlaceByIdFromInReview(placeId))
+            if (LocalDataStateService.isModifiedPlace) {
+                reviewPlaceById.postValue(
+                    placeInReviewRepository.getAllModifiedPlace().find { it.id == placeId })
+            } else {
+                reviewPlaceById.postValue(placeInReviewRepository.getPlaceByIdFromInReview(placeId))
+            }
         }
     }
 

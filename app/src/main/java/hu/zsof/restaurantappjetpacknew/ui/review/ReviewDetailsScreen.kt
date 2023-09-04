@@ -22,7 +22,6 @@ import hu.zsof.restaurantappjetpacknew.ui.common.screen.CommonDetailsScreen
 fun ReviewDetailsScreen(
     viewModel: ReviewPlaceViewModel = hiltViewModel(),
     placeId: Long,
-
 ) {
     val placeInReview = viewModel.reviewPlaceById.observeAsState().value
     LaunchedEffect(key1 = "ReviewDetails") {
