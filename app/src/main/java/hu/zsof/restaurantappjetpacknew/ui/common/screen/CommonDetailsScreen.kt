@@ -129,7 +129,7 @@ fun CommonDetailsScreen(
                             if (place is PlaceInReview && !place.problem.isNullOrEmpty()) {
                                 IconButton(onClick = {
                                     showProblemDialog?.value = true
-                                }, modifier = Modifier.padding(top = 8.dp)) {
+                                }, modifier = Modifier.padding(top = 16.dp)) {
                                     Icon(
                                         imageVector = Icons.Filled.ReportProblem,
                                         contentDescription = null,
@@ -150,7 +150,7 @@ fun CommonDetailsScreen(
                                         LocalDataStateService.placeType = PlaceType.PLACE_BY_OWNER_IN_REVIEW
 
                                     }
-                                }, modifier = Modifier.padding(top = 8.dp)) {
+                                }, modifier = Modifier.padding(top = 16.dp)) {
                                     Icon(
                                         imageVector = Icons.Filled.Edit,
                                         contentDescription = null,
