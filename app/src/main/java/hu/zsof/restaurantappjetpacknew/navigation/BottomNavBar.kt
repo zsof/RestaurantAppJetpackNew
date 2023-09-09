@@ -103,7 +103,7 @@ fun BottomNavBar(
                                             navController.navigate(it) {
                                                 navController.graph.startDestinationRoute?.let { route ->
                                                     popUpTo(route) {
-                                                        saveState = true
+                                                        saveState = false
                                                     }
                                                 }
 
@@ -151,7 +151,7 @@ fun BottomNavBar(
                                             navController.navigate(it) {
                                                 navController.graph.startDestinationRoute?.let { route ->
                                                     popUpTo(route) {
-                                                        saveState = true
+                                                        saveState = false
                                                     }
                                                 }
 
@@ -199,7 +199,7 @@ fun BottomNavBar(
                                             navController.navigate(it) {
                                                 navController.graph.startDestinationRoute?.let { route ->
                                                     popUpTo(route) {
-                                                        saveState = true
+                                                        saveState = false
                                                     }
                                                 }
 
