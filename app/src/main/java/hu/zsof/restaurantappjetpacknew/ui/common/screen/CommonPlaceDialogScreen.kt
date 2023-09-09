@@ -102,6 +102,9 @@ fun CommonPlaceDialogScreen(
             ),
         ) {
             BackHandler {
+                LocalDataStateService.place = null
+                LocalDataStateService.placeInReview = null
+
                 onDialogClose()
             }
             Surface(
