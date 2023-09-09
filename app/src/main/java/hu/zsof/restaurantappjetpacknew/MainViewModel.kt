@@ -1,11 +1,10 @@
 package hu.zsof.restaurantappjetpacknew
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import hu.zsof.restaurantappjetpacknew.network.repository.AuthRepository
-import hu.zsof.restaurantappjetpacknew.network.response.LoggedUserResponse
+import hu.zsof.restaurantappjetpacknew.network.repository.LocalDataStateService
 import hu.zsof.restaurantappjetpacknew.util.SharedPreferences
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -23,11 +22,12 @@ class MainViewModel @Inject constructor(
         return sharedPref.getPreference(key)
     }
 
-    val user = MutableLiveData<LoggedUserResponse>()
+    val user = LocalDataStateService.loggedUser
 
     fun authenticateLoggedUser() {
         viewModelScope.launch {
-            user.postValue(authRepository.authUser())
+            val loggedUser = authRepository.authUser()
+            LocalDataStateService.loggedUser.postValue(loggedUser.user)
         }
     }
 }

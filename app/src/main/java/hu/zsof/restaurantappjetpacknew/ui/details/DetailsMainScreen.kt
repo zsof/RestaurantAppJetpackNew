@@ -25,7 +25,7 @@ fun DetailsMainScreen(
        }
    */
 
-    viewModel.isPlaceByOwner.value = LocalDataStateService.loggedUser?.id == place?.creatorId
+    viewModel.isPlaceByOwner.value = LocalDataStateService.loggedUser.value?.id == place?.creatorId
 
     CommonDetailsScreen(
         placeId = placeId,

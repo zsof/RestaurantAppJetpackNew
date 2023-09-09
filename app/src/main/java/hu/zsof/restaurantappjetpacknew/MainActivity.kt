@@ -21,6 +21,9 @@ class MainActivity : ComponentActivity() {
     val viewModel: MainViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        viewModel.authenticateLoggedUser()
+
         setContent {
             RestaurantAppJetpackNewTheme(darkTheme = isNightMode()) {
                 val navController = rememberNavController()

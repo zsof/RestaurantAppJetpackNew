@@ -148,7 +148,7 @@ fun LoginScreen(
                                     }
                                 }
                                 viewModel.setAppPreference(Constants.Prefs.USER_LOGGED, true)
-                                LocalDataStateService.loggedUser = response.user
+                                LocalDataStateService.loggedUser.value = response.user
                             }
                         }
                         keyboardController?.hide()

@@ -6,7 +6,7 @@ object Constants {
     //const val BASE_URL = "http://wildfire.ddns.net:8092"
 
     // local
-     const val BASE_URL = "http://100.81.207.103:8092"
+    const val BASE_URL = "http://100.81.207.103:8092"
 
     // azure
    // const val BASE_URL = "http://restaurant.ceeeaufagderbhhg.germanywestcentral.azurecontainer.io:8080"

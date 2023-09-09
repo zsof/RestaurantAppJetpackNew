@@ -18,7 +18,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Person2
 import androidx.compose.material.icons.outlined.Games
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -142,27 +141,6 @@ fun RegisterScreen(
                     trailingIcon = { },
                     onDone = { },
                     placeholder = stringResource(id = R.string.user_name),
-                )
-                Spacer(modifier = Modifier.height(10.dp))
-                NormalTextField(
-                    value = viewModel.nickName.value,
-                    label = stringResource(id = R.string.nickname),
-                    onValueChange = { newValue ->
-                        viewModel.nickName.value = newValue
-                    },
-                    leadingIcon = {
-                        Icon(
-                            imageVector = Icons.Default.Person2,
-                            contentDescription = null,
-                        )
-                    },
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Text,
-                        imeAction = ImeAction.Next,
-                    ),
-                    trailingIcon = { },
-                    onDone = { },
-                    placeholder = stringResource(id = R.string.nickname),
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 PasswordTextField(

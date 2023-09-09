@@ -17,7 +17,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -162,15 +161,10 @@ fun SetStartDestination(
         if (isConnected) {
             val userResponse = viewModel.user.observeAsState().value
 
-            LaunchedEffect(key1 = "MainActivity") {
-                viewModel.authenticateLoggedUser()
-            }
-
-            LocalDataStateService.loggedUser = userResponse?.user
             LocalDataStateService.startDestination = HOME_START
             viewModel.setAppPreference(Constants.Prefs.USER_LOGGED, true)
 
-            when (userResponse?.user?.userType) {
+            when (userResponse?.userType) {
                 Constants.ROLE_ADMIN -> {
                     viewModel.setAppPreference(Constants.Prefs.USER_TYPE, Constants.ROLE_ADMIN)
                 }

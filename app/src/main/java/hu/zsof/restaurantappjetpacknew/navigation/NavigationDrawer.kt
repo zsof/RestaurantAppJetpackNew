@@ -143,7 +143,7 @@ fun ScreenItems(
                                         )
                                         sharedPreferences.edit().putString("bearer", "").apply()
                                         popUpTo(ScreenModel.NavigationScreen.Login.route)
-                                        LocalDataStateService.loggedUser = null
+                                        LocalDataStateService.loggedUser.value = null
                                         viewModel.setAppPreference(
                                             Constants.Prefs.USER_LOGGED,
                                             false,

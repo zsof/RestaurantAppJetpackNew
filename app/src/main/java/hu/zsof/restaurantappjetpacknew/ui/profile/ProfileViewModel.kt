@@ -2,12 +2,11 @@ package hu.zsof.restaurantappjetpacknew.ui.profile
 
 import android.net.Uri
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import hu.zsof.restaurantappjetpacknew.model.CustomFilter
-import hu.zsof.restaurantappjetpacknew.model.User
+import hu.zsof.restaurantappjetpacknew.network.repository.LocalDataStateService
 import hu.zsof.restaurantappjetpacknew.network.repository.UserRepository
 import hu.zsof.restaurantappjetpacknew.network.request.UserUpdateProfileRequest
 import hu.zsof.restaurantappjetpacknew.util.SharedPreferences
@@ -20,6 +19,7 @@ class ProfileViewModel @Inject constructor(
     private val sharedPref: SharedPreferences,
 ) :
     ViewModel() {
+    var userProfile = LocalDataStateService.loggedUser
 
     var glutenFreeChecked = mutableStateOf(false)
     var lactoseFreeChecked = mutableStateOf(false)
@@ -39,15 +39,21 @@ class ProfileViewModel @Inject constructor(
     var cameraPermissionOpen = mutableStateOf(false)
     val selectedImageUri = mutableStateOf<Uri?>(null)
 
-    val userProfile = MutableLiveData<User>()
+    val changeNameDialogOpen = mutableStateOf(false)
+
+    val userName = mutableStateOf(userProfile.value?.name)
+
     fun getUserProfile() {
         viewModelScope.launch {
-            userProfile.postValue(userRepository.getUserProfile())
+            val user = userRepository.getUserProfile()
+            userProfile.postValue(user)
+            userName.value = user.name
         }
     }
 
     fun updateUserProfile() {
         viewModelScope.launch {
+            // todo update userporfile o localdata
             userRepository.updateUserProfile(
                 UserUpdateProfileRequest(
                     filters = CustomFilter(
@@ -64,6 +70,16 @@ class ProfileViewModel @Inject constructor(
                     ),
                 ),
             )
+        }
+    }
+
+    fun updateUserProfileName() {
+        viewModelScope.launch {
+            LocalDataStateService.loggedUser.postValue(userRepository.updateUserProfile(
+                UserUpdateProfileRequest(
+                    name = userName.value
+                ),
+            ))
         }
     }
 

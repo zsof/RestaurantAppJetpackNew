@@ -17,7 +17,7 @@ object LocalDataStateService {
 
     private var latLng: LatLng? = null
 
-    var loggedUser: User? = null
+    val loggedUser = MutableLiveData<User?>(null)
     var startDestination = LOGIN_START
 
     var filteredPlaces = MutableLiveData<List<Place>>()

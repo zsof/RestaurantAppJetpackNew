@@ -17,14 +17,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import hu.zsof.restaurantappjetpacknew.R
 import hu.zsof.restaurantappjetpacknew.model.User
 import hu.zsof.restaurantappjetpacknew.network.repository.LocalDataStateService
-import hu.zsof.restaurantappjetpacknew.ui.common.screen.PhotoChooserDialog
 import hu.zsof.restaurantappjetpacknew.ui.common.button.TextChip
+import hu.zsof.restaurantappjetpacknew.ui.common.screen.CommonEditTextDialog
+import hu.zsof.restaurantappjetpacknew.ui.common.screen.PhotoChooserDialog
 import hu.zsof.restaurantappjetpacknew.util.Constants
 
 @ExperimentalMaterial3Api
@@ -48,6 +50,19 @@ fun ProfileScreen(
         if (viewModel.selectedImageUri.value != null) {
             viewModel.photoDialogOpen.value = false
         }
+    }
+
+    if (viewModel.changeNameDialogOpen.value) {
+        CommonEditTextDialog(
+            changingValue = viewModel.userName,
+            changingTitle = "Név",
+            keyboardType = KeyboardType.Text,
+            onDismiss = { viewModel.changeNameDialogOpen.value = false },
+            onDismissSave = {
+                viewModel.updateUserProfileName()
+                viewModel.changeNameDialogOpen.value = false
+            }
+        )
     }
 
     Scaffold(
@@ -215,14 +230,30 @@ fun BaseProfile(user: User, viewModel: ProfileViewModel) {
                 .clickable { viewModel.photoDialogOpen.value = true },
             tint = MaterialTheme.colorScheme.onSurfaceVariant,
         )
-        Text(
+
+        Row(
             modifier = Modifier
-                .padding(start = 8.dp, top = 8.dp, end = 8.dp)
+                .padding(vertical = 16.dp)
                 .align(Alignment.CenterHorizontally),
-            text = user.name,
-            style = TextStyle(fontWeight = FontWeight.Bold),
-            fontSize = 20.sp,
-        )
+        ) {
+            Text(
+                modifier = Modifier
+                    .padding(start = 8.dp, top = 8.dp, end = 8.dp),
+                text = viewModel.userName.value.toString(),
+                style = TextStyle(fontWeight = FontWeight.Bold),
+                fontSize = 20.sp,
+            )
+            IconButton(
+                onClick = {
+                    viewModel.changeNameDialogOpen.value = true
+                }
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Edit,
+                    contentDescription = null,
+                )
+            }
+        }
 
         Row(
             modifier = Modifier
@@ -233,11 +264,6 @@ fun BaseProfile(user: User, viewModel: ProfileViewModel) {
                     .padding(start = 8.dp, end = 8.dp),
                 text = user.email,
                 fontSize = 20.sp,
-            )
-            Spacer(modifier = Modifier.width(16.dp))
-            Icon(
-                imageVector = Icons.Filled.Edit,
-                contentDescription = null,
             )
         }
         Row(
