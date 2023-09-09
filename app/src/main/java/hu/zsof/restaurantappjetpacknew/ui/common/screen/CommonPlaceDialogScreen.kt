@@ -332,7 +332,7 @@ fun CommonPlaceDialogScreen(
                     )
                     Spacer(modifier = Modifier.height(10.dp))
 
-                    PlaceFilter()
+                    CommonPlaceFilter()
 
                     Spacer(modifier = Modifier.height(10.dp))
 

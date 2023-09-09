@@ -20,7 +20,7 @@ import hu.zsof.restaurantappjetpacknew.ui.newplace.NewPlaceDialogViewModel
 
 @ExperimentalMaterial3Api
 @Composable
-fun PlaceFilter(
+fun CommonPlaceFilter(
     viewModel: NewPlaceDialogViewModel = hiltViewModel(),
 ) {
     Row() {
