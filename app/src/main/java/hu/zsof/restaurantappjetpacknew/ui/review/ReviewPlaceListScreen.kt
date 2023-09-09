@@ -64,6 +64,7 @@ fun ReviewPlaceListScreen(
                 )
                 LazyColumn(
                     contentPadding = PaddingValues(8.dp),
+                    modifier = Modifier.weight(1f, fill = false)
                 ) {
                     items(modifiedPlaces.value) {
                         PlaceListItem(
@@ -81,6 +82,7 @@ fun ReviewPlaceListScreen(
                 )
                 LazyColumn(
                     contentPadding = PaddingValues(8.dp),
+                    modifier = Modifier.weight(1f, fill = false)
                 ) {
                     items(newPlaces.value) {
                         PlaceListItem(
@@ -91,6 +93,6 @@ fun ReviewPlaceListScreen(
                     }
                 }
             }
-        },
+        }
     )
 }

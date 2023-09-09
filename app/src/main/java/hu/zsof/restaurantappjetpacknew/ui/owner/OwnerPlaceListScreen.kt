@@ -46,7 +46,7 @@ fun OwnerPlaceListScreen(
                     .padding(0.dp, 0.dp, 0.dp, 38.dp)
                     .background(MaterialTheme.colorScheme.background)
                     .fillMaxWidth(),
-                ) {
+            ) {
                 Text(
                     text = stringResource(id = R.string.own_places_title),
                     style = MaterialTheme.typography.headlineSmall.copy(
@@ -58,6 +58,20 @@ fun OwnerPlaceListScreen(
                         .align(Alignment.CenterHorizontally),
                 )
                 Text(
+                    text = stringResource(id = R.string.accepted_places),
+                    color = Color.Gray,
+                    modifier = Modifier
+                        .padding(16.dp, 8.dp, 0.dp, 0.dp),
+                )
+                LazyColumn(
+                    contentPadding = PaddingValues(8.dp),
+                    modifier = Modifier.weight(1f, fill = false)
+                ) {
+                    items(places.value) {
+                        PlaceListItem(place = it, onClickPlaceItem = onClickPlaceItem)
+                    }
+                }
+                Text(
                     text = stringResource(id = R.string.wait_for_accept),
                     color = Color.Gray,
                     modifier = Modifier
@@ -65,6 +79,7 @@ fun OwnerPlaceListScreen(
                 )
                 LazyColumn(
                     contentPadding = PaddingValues(8.dp),
+                    modifier = Modifier.weight(1f, fill = false)
                 ) {
                     items(placesInReview.value) {
                         PlaceListItem(
@@ -73,20 +88,7 @@ fun OwnerPlaceListScreen(
                         )
                     }
                 }
-                Text(
-                    text = stringResource(id = R.string.accepted_places),
-                    color = Color.Gray,
-                    modifier = Modifier
-                        .padding(16.dp, 8.dp, 0.dp, 0.dp),
-                )
-                LazyColumn(
-                    contentPadding = PaddingValues(8.dp),
-                ) {
-                    items(places.value) {
-                        PlaceListItem(place = it, onClickPlaceItem = onClickPlaceItem)
-                    }
-                }
             }
-        },
+        }
     )
 }
