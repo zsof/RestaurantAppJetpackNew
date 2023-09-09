@@ -34,7 +34,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import hu.zsof.restaurantappjetpacknew.R
 import hu.zsof.restaurantappjetpacknew.model.Place
-import hu.zsof.restaurantappjetpacknew.network.repository.LocalDataStateService
+import hu.zsof.restaurantappjetpacknew.module.AppState
 import hu.zsof.restaurantappjetpacknew.ui.common.screen.PlaceListItem
 import hu.zsof.restaurantappjetpacknew.ui.common.field.SearchTextField
 import hu.zsof.restaurantappjetpacknew.util.Constants.ROLE_OWNER
@@ -66,9 +66,9 @@ fun HomeListScreen(
     // Keresésben az elemek
     val searchItems = mutableListOf<Place>()
     // Keresésben elemek, csak observable
-    val searchFilteredPlaces = LocalDataStateService.searchedPlaces.observeAsState()
+    val searchFilteredPlaces = AppState.searchedPlaces.observeAsState()
     // Globális szűrés, felülírja az alap beállított szűrést -> minden elemen keres
-    val globalFilteredPlaces = LocalDataStateService.filteredPlaces.observeAsState()
+    val globalFilteredPlaces = AppState.filteredPlaces.observeAsState()
 
     // A homeScreen minden változáskor lefut, ezáltal a viewmodelles dolgok is, ha nem lennének launchedeffectben
     LaunchedEffect(key1 = "HomeList") {
@@ -158,7 +158,7 @@ fun HomeListScreen(
                             .align(Alignment.End)
                             .padding(8.dp)
                             .clickable(onClick = {
-                                LocalDataStateService.filteredPlaces.value = mutableListOf()
+                                AppState.filteredPlaces.value = mutableListOf()
                             }),
                     )
                     LazyColumn(
@@ -207,7 +207,7 @@ fun search(
     searchItems: MutableList<Place>,
 ) {
     if (viewModel.searchText.value.isNotEmpty()) {
-        LocalDataStateService.searchedPlaces.value = mutableListOf()
+        AppState.searchedPlaces.value = mutableListOf()
         searchItems.clear()
 
         if (!globalFilteredPlaces.isNullOrEmpty()) {
@@ -231,8 +231,8 @@ fun search(
                 }
             }
         }
-        LocalDataStateService.searchedPlaces.value = searchItems
+        AppState.searchedPlaces.value = searchItems
     } else {
-        LocalDataStateService.searchedPlaces.value = mutableListOf()
+        AppState.searchedPlaces.value = mutableListOf()
     }
 }

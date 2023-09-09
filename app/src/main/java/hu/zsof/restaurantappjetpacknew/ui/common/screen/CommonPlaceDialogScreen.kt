@@ -39,7 +39,7 @@ import com.google.maps.android.compose.*
 import hu.zsof.restaurantappjetpacknew.R
 import hu.zsof.restaurantappjetpacknew.model.enums.Price
 import hu.zsof.restaurantappjetpacknew.model.enums.Type
-import hu.zsof.restaurantappjetpacknew.network.repository.LocalDataStateService
+import hu.zsof.restaurantappjetpacknew.module.AppState
 import hu.zsof.restaurantappjetpacknew.ui.common.field.NormalTextField
 import hu.zsof.restaurantappjetpacknew.ui.common.field.TextFieldForDialog
 import java.io.*
@@ -92,8 +92,8 @@ fun CommonPlaceDialogScreen(
         Dialog(
             onDismissRequest = {
                 viewModel.dialogOpen.value = false
-                LocalDataStateService.place = null
-                LocalDataStateService.placeInReview = null
+                AppState.place = null
+                AppState.placeInReview = null
             },
             properties = DialogProperties(
                 dismissOnClickOutside = false,
@@ -102,8 +102,8 @@ fun CommonPlaceDialogScreen(
             ),
         ) {
             BackHandler {
-                LocalDataStateService.place = null
-                LocalDataStateService.placeInReview = null
+                AppState.place = null
+                AppState.placeInReview = null
 
                 onDialogClose()
             }
@@ -358,8 +358,8 @@ fun CommonPlaceDialogScreen(
                         TextButton(onClick = {
                             viewModel.dialogOpen.value = false
 
-                            LocalDataStateService.place = null
-                            LocalDataStateService.placeInReview = null
+                            AppState.place = null
+                            AppState.placeInReview = null
 
                             onDialogClose()
                         }) {
@@ -381,8 +381,8 @@ fun CommonPlaceDialogScreen(
                                 )
                                 viewModel.dialogOpen.value = false
 
-                                LocalDataStateService.place = null
-                                LocalDataStateService.placeInReview = null
+                                AppState.place = null
+                                AppState.placeInReview = null
                                 onDialogClose()
                             }
                         }) {

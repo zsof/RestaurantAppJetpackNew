@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import hu.zsof.restaurantappjetpacknew.network.repository.AuthRepository
-import hu.zsof.restaurantappjetpacknew.network.repository.LocalDataStateService
+import hu.zsof.restaurantappjetpacknew.module.AppState
 import hu.zsof.restaurantappjetpacknew.util.SharedPreferences
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -22,12 +22,12 @@ class MainViewModel @Inject constructor(
         return sharedPref.getPreference(key)
     }
 
-    val user = LocalDataStateService.loggedUser
+    val user = AppState.loggedUser
 
     fun authenticateLoggedUser() {
         viewModelScope.launch {
             val loggedUser = authRepository.authUser()
-            LocalDataStateService.loggedUser.postValue(loggedUser.user)
+            AppState.loggedUser.postValue(loggedUser.user)
         }
     }
 }

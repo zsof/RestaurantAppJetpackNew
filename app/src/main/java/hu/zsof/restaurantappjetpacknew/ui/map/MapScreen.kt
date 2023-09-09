@@ -14,7 +14,7 @@ import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
 import hu.zsof.restaurantappjetpacknew.model.convertToPlaceMapResponse
-import hu.zsof.restaurantappjetpacknew.network.repository.LocalDataStateService
+import hu.zsof.restaurantappjetpacknew.module.AppState
 import hu.zsof.restaurantappjetpacknew.network.response.PlaceMapResponse
 import hu.zsof.restaurantappjetpacknew.util.Constants
 import hu.zsof.restaurantappjetpacknew.util.Constants.ROLE_OWNER
@@ -85,7 +85,7 @@ fun LocationPermissions(
             ),
             onMapLongClick = {
                 if (userType == ROLE_OWNER) {
-                    LocalDataStateService.setLatLng(it)
+                    AppState.setLatLng(it)
                     onLongClick(it)
                 }
             },
@@ -115,7 +115,7 @@ fun PlaceMarkers(viewModel: MapViewModel) {
     }
 
     // Szűrőben beállított ideiglenes filterek
-    val globalFilteredPlaces = LocalDataStateService.filteredPlaces.observeAsState(listOf())
+    val globalFilteredPlaces = AppState.filteredPlaces.observeAsState(listOf())
 
     val mapPlacesToShow = if (!globalFilteredPlaces.value.isNullOrEmpty()) {
         globalFilteredPlaces.value.convertToPlaceMapResponse()

@@ -7,7 +7,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
-import hu.zsof.restaurantappjetpacknew.network.repository.LocalDataStateService
+import hu.zsof.restaurantappjetpacknew.module.AppState
 import hu.zsof.restaurantappjetpacknew.ui.auth.login.LoginScreen
 import hu.zsof.restaurantappjetpacknew.ui.auth.register.RegisterScreen
 import hu.zsof.restaurantappjetpacknew.ui.details.TabLayout
@@ -29,7 +29,7 @@ fun NavGraphBuilder.authNavGraph(
     navController: NavHostController,
 ) {
     navigation(
-        startDestination = when (LocalDataStateService.startDestination) {
+        startDestination = when (AppState.startDestination) {
             Constants.LOGIN_START -> {
                 ScreenModel.NavigationScreen.Login.route
             }
@@ -98,7 +98,7 @@ fun NavGraphBuilder.authNavGraph(
         composable(route = ScreenModel.NavigationScreen.ReviewPlace.route) {
             ReviewPlaceListScreen(
                 onClickPlaceItem = {
-                    if (LocalDataStateService.isModifiedPlace) {
+                    if (AppState.isModifiedPlace) {
                         navController.navigate(
                             ScreenModel.NavigationScreen.ReviewDetails.passPlaceId(
                                 it,

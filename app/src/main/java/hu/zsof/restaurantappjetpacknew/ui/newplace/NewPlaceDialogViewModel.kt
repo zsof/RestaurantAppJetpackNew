@@ -5,7 +5,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import hu.zsof.restaurantappjetpacknew.model.CustomFilter
 import hu.zsof.restaurantappjetpacknew.model.enums.Price
 import hu.zsof.restaurantappjetpacknew.model.enums.Type
-import hu.zsof.restaurantappjetpacknew.network.repository.LocalDataStateService
+import hu.zsof.restaurantappjetpacknew.module.AppState
 import hu.zsof.restaurantappjetpacknew.network.repository.PlaceOwnerRepository
 import hu.zsof.restaurantappjetpacknew.network.repository.ResourceRepository
 import hu.zsof.restaurantappjetpacknew.network.request.PlaceDataRequest
@@ -23,7 +23,7 @@ class NewPlaceDialogViewModel @Inject constructor(
 ) : CommonPlaceDialogViewModel() {
 
     private val latLang: LatLng = try {
-        LocalDataStateService.getLatLng()
+        AppState.getLatLng()
     } catch (e: Exception) {
         e.printStackTrace()
         LatLng(0.0, 0.0)

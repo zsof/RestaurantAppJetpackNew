@@ -44,7 +44,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import hu.zsof.restaurantappjetpacknew.R
 import hu.zsof.restaurantappjetpacknew.model.enums.FabButton
-import hu.zsof.restaurantappjetpacknew.network.repository.LocalDataStateService
+import hu.zsof.restaurantappjetpacknew.module.AppState
 import hu.zsof.restaurantappjetpacknew.ui.common.field.NormalTextField
 import hu.zsof.restaurantappjetpacknew.ui.common.showToast
 
@@ -92,7 +92,7 @@ fun MultiFloatingButton(
                     when (fabItem.identifier) {
                         FabButton.ACCEPT.name -> {
                             if (!acceptBtnIsClicked.value) {
-                                if (LocalDataStateService.isModifiedPlace) {
+                                if (AppState.isModifiedPlace) {
                                     viewModel.acceptPlace(placeId, true)
                                 } else {
                                     viewModel.acceptPlace(placeId, false)
@@ -222,7 +222,7 @@ fun ProblemDialog(
                         }
                         Spacer(modifier = Modifier.weight(1f))
                         Button(onClick = {
-                            if (LocalDataStateService.isModifiedPlace) {
+                            if (AppState.isModifiedPlace) {
                                 viewModel.reportProblem(placeId, true)
                             } else {
                                 viewModel.reportProblem(placeId, false)

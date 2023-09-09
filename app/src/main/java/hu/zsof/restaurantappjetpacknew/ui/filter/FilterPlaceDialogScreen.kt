@@ -27,7 +27,7 @@ import hu.zsof.restaurantappjetpacknew.R
 import hu.zsof.restaurantappjetpacknew.model.enums.Price
 import hu.zsof.restaurantappjetpacknew.model.enums.Type
 import hu.zsof.restaurantappjetpacknew.navigation.ScreenModel
-import hu.zsof.restaurantappjetpacknew.network.repository.LocalDataStateService
+import hu.zsof.restaurantappjetpacknew.module.AppState
 import java.util.*
 
 @SuppressLint("ResourceType")
@@ -182,7 +182,7 @@ fun FilterPlaceDialogScreen(
                                 val filterResult = viewModel.filterPlaces(
                                     typeValue = Type.getByName(selectedOptionText),
                                 )
-                                LocalDataStateService.filteredPlaces.value = filterResult
+                                AppState.filteredPlaces.value = filterResult
                                 navController.navigate(ScreenModel.NavigationScreen.Home.route)
                                 viewModel.dialogOpen.value = false
                             },

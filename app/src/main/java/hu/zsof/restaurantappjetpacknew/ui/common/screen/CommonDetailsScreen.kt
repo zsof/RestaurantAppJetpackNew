@@ -34,7 +34,7 @@ import hu.zsof.restaurantappjetpacknew.model.BasePlace
 import hu.zsof.restaurantappjetpacknew.model.Place
 import hu.zsof.restaurantappjetpacknew.model.PlaceInReview
 import hu.zsof.restaurantappjetpacknew.model.enums.PlaceType
-import hu.zsof.restaurantappjetpacknew.network.repository.LocalDataStateService
+import hu.zsof.restaurantappjetpacknew.module.AppState
 import hu.zsof.restaurantappjetpacknew.ui.common.button.TextChip
 import hu.zsof.restaurantappjetpacknew.ui.review.FabItem
 import hu.zsof.restaurantappjetpacknew.ui.review.MultiFloatingButton
@@ -143,11 +143,11 @@ fun CommonDetailsScreen(
                                     }
 
                                     if (placeType == PlaceType.PLACE) {
-                                        LocalDataStateService.place = place as Place
-                                        LocalDataStateService.placeType = PlaceType.PLACE
+                                        AppState.place = place as Place
+                                        AppState.placeType = PlaceType.PLACE
                                     } else if (placeType == PlaceType.PLACE_BY_OWNER_IN_REVIEW) {
-                                        LocalDataStateService.placeInReview = place as PlaceInReview
-                                        LocalDataStateService.placeType = PlaceType.PLACE_BY_OWNER_IN_REVIEW
+                                        AppState.placeInReview = place as PlaceInReview
+                                        AppState.placeType = PlaceType.PLACE_BY_OWNER_IN_REVIEW
 
                                     }
                                 }, modifier = Modifier.padding(top = 16.dp)) {

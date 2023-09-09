@@ -41,7 +41,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import hu.zsof.restaurantappjetpacknew.R
-import hu.zsof.restaurantappjetpacknew.network.repository.LocalDataStateService
+import hu.zsof.restaurantappjetpacknew.module.AppState
 import hu.zsof.restaurantappjetpacknew.ui.common.button.LoginButton
 import hu.zsof.restaurantappjetpacknew.ui.common.field.NormalTextField
 import hu.zsof.restaurantappjetpacknew.ui.common.field.PasswordTextField
@@ -148,7 +148,7 @@ fun LoginScreen(
                                     }
                                 }
                                 viewModel.setAppPreference(Constants.Prefs.USER_LOGGED, true)
-                                LocalDataStateService.loggedUser.value = response.user
+                                AppState.loggedUser.value = response.user
                             }
                         }
                         keyboardController?.hide()

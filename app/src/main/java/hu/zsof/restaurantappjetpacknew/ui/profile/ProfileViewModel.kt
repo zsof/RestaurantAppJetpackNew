@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import hu.zsof.restaurantappjetpacknew.model.CustomFilter
-import hu.zsof.restaurantappjetpacknew.network.repository.LocalDataStateService
+import hu.zsof.restaurantappjetpacknew.module.AppState
 import hu.zsof.restaurantappjetpacknew.network.repository.UserRepository
 import hu.zsof.restaurantappjetpacknew.network.request.UserUpdateProfileRequest
 import hu.zsof.restaurantappjetpacknew.util.SharedPreferences
@@ -19,7 +19,7 @@ class ProfileViewModel @Inject constructor(
     private val sharedPref: SharedPreferences,
 ) :
     ViewModel() {
-    var userProfile = LocalDataStateService.loggedUser
+    var userProfile = AppState.loggedUser
 
     var glutenFreeChecked = mutableStateOf(false)
     var lactoseFreeChecked = mutableStateOf(false)
@@ -75,7 +75,7 @@ class ProfileViewModel @Inject constructor(
 
     fun updateUserProfileName() {
         viewModelScope.launch {
-            LocalDataStateService.loggedUser.postValue(userRepository.updateUserProfile(
+            AppState.loggedUser.postValue(userRepository.updateUserProfile(
                 UserUpdateProfileRequest(
                     name = userName.value
                 ),

@@ -38,7 +38,7 @@ import coil.compose.AsyncImage
 import hu.zsof.restaurantappjetpacknew.model.BasePlace
 import hu.zsof.restaurantappjetpacknew.model.PlaceInReview
 import hu.zsof.restaurantappjetpacknew.model.enums.Price
-import hu.zsof.restaurantappjetpacknew.network.repository.LocalDataStateService
+import hu.zsof.restaurantappjetpacknew.module.AppState
 import hu.zsof.restaurantappjetpacknew.util.extension.imageUrl
 
 @ExperimentalMaterial3Api
@@ -58,7 +58,7 @@ fun PlaceListItem(
         Icons.Default.FavoriteBorder
     }
 
-    LocalDataStateService.isModifiedPlace = isModifiedPlace
+    AppState.isModifiedPlace = isModifiedPlace
 
     Card(
         modifier = Modifier

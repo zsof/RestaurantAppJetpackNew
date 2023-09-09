@@ -5,7 +5,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.hilt.navigation.compose.hiltViewModel
 import hu.zsof.restaurantappjetpacknew.model.enums.PlaceType
-import hu.zsof.restaurantappjetpacknew.network.repository.LocalDataStateService
+import hu.zsof.restaurantappjetpacknew.module.AppState
 import hu.zsof.restaurantappjetpacknew.ui.common.screen.CommonDetailsScreen
 import hu.zsof.restaurantappjetpacknew.util.Constants
 
@@ -25,7 +25,7 @@ fun DetailsMainScreen(
        }
    */
 
-    viewModel.isPlaceByOwner.value = LocalDataStateService.loggedUser.value?.id == place?.creatorId
+    viewModel.isPlaceByOwner.value = AppState.loggedUser.value?.id == place?.creatorId
 
     CommonDetailsScreen(
         placeId = placeId,

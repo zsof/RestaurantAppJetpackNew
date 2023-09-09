@@ -11,7 +11,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.permissions.*
 import com.google.maps.android.compose.*
-import hu.zsof.restaurantappjetpacknew.network.repository.LocalDataStateService
+import hu.zsof.restaurantappjetpacknew.module.AppState
 import hu.zsof.restaurantappjetpacknew.ui.common.screen.CommonPlaceDialogScreen
 import java.io.*
 import java.util.*
@@ -25,8 +25,8 @@ fun NewPlaceDialogScreen(
     val context = LocalContext.current
 
     Geocoder(context, Locale.getDefault()).getAddress(
-        LocalDataStateService.getLatLng().latitude,
-        LocalDataStateService.getLatLng().longitude,
+        AppState.getLatLng().latitude,
+        AppState.getLatLng().longitude,
     ) { address: android.location.Address? ->
         if (address != null) {
             viewModel.addressValue.value = address.getAddressLine(0)

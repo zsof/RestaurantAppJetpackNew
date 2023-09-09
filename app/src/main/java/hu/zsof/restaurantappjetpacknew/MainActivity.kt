@@ -11,7 +11,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import hu.zsof.restaurantappjetpacknew.navigation.NavGraph
-import hu.zsof.restaurantappjetpacknew.network.repository.LocalDataStateService
+import hu.zsof.restaurantappjetpacknew.module.AppState
 import hu.zsof.restaurantappjetpacknew.ui.theme.RestaurantAppJetpackNewTheme
 import hu.zsof.restaurantappjetpacknew.util.Constants
 
@@ -39,7 +39,7 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     private fun isNightMode(): Boolean {
-        val darkTheme = LocalDataStateService.darkTheme.observeAsState()
+        val darkTheme = AppState.darkTheme.observeAsState()
 
         // Changes the theme when user click
         if (darkTheme.value != null) {

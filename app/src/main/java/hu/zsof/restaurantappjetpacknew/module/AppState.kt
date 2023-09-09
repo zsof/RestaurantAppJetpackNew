@@ -1,4 +1,4 @@
-package hu.zsof.restaurantappjetpacknew.network.repository
+package hu.zsof.restaurantappjetpacknew.module
 
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.maps.model.LatLng
@@ -8,7 +8,7 @@ import hu.zsof.restaurantappjetpacknew.model.User
 import hu.zsof.restaurantappjetpacknew.model.enums.PlaceType
 import hu.zsof.restaurantappjetpacknew.util.Constants.LOGIN_START
 
-object LocalDataStateService {
+object AppState {
 
     var isModifiedPlace: Boolean = false
     var placeType = PlaceType.PLACE
@@ -25,6 +25,8 @@ object LocalDataStateService {
 
     var darkTheme = MutableLiveData<Boolean>()
 
+    // todo mutable statek ne legyen var -ok
+    // todo state dolgai legyen mind mutablestate /mutableLiveData hiszen ezek az állapot leírói
     fun getLatLng(): LatLng {
         if (latLng == null) {
             throw Exception("Hiba történt, nincs ilyen koordináta")
@@ -34,6 +36,6 @@ object LocalDataStateService {
     }
 
     fun setLatLng(latLng: LatLng) {
-        LocalDataStateService.latLng = latLng
+        AppState.latLng = latLng
     }
 }

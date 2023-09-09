@@ -39,7 +39,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import hu.zsof.restaurantappjetpacknew.MainViewModel
 import hu.zsof.restaurantappjetpacknew.R
-import hu.zsof.restaurantappjetpacknew.network.repository.LocalDataStateService
+import hu.zsof.restaurantappjetpacknew.module.AppState
 import hu.zsof.restaurantappjetpacknew.ui.common.showToast
 import hu.zsof.restaurantappjetpacknew.util.Constants
 import hu.zsof.restaurantappjetpacknew.util.Constants.FAV_START
@@ -161,7 +161,7 @@ fun SetStartDestination(
         if (isConnected) {
             val userResponse = viewModel.user.observeAsState().value
 
-            LocalDataStateService.startDestination = HOME_START
+            AppState.startDestination = HOME_START
             viewModel.setAppPreference(Constants.Prefs.USER_LOGGED, true)
 
             when (userResponse?.userType) {
@@ -178,13 +178,13 @@ fun SetStartDestination(
                 }
             }
         } else if (viewModel.getAppPreference(Constants.Prefs.USER_LOGGED)) {
-            LocalDataStateService.startDestination = FAV_START
+            AppState.startDestination = FAV_START
         } else {
-            LocalDataStateService.startDestination = LOGIN_START
+            AppState.startDestination = LOGIN_START
             showToast(context, "Az internet nem elérhető!")
         }
     } else {
-        LocalDataStateService.startDestination = LOGIN_START
+        AppState.startDestination = LOGIN_START
     }
 }
 

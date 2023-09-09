@@ -31,7 +31,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import hu.zsof.restaurantappjetpacknew.MainViewModel
 import hu.zsof.restaurantappjetpacknew.R
-import hu.zsof.restaurantappjetpacknew.network.repository.LocalDataStateService
+import hu.zsof.restaurantappjetpacknew.module.AppState
 import hu.zsof.restaurantappjetpacknew.util.Constants
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -143,7 +143,7 @@ fun ScreenItems(
                                         )
                                         sharedPreferences.edit().putString("bearer", "").apply()
                                         popUpTo(ScreenModel.NavigationScreen.Login.route)
-                                        LocalDataStateService.loggedUser.value = null
+                                        AppState.loggedUser.value = null
                                         viewModel.setAppPreference(
                                             Constants.Prefs.USER_LOGGED,
                                             false,

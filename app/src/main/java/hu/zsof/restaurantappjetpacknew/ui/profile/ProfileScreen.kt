@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import hu.zsof.restaurantappjetpacknew.R
 import hu.zsof.restaurantappjetpacknew.model.User
-import hu.zsof.restaurantappjetpacknew.network.repository.LocalDataStateService
+import hu.zsof.restaurantappjetpacknew.module.AppState
 import hu.zsof.restaurantappjetpacknew.ui.common.button.TextChip
 import hu.zsof.restaurantappjetpacknew.ui.common.screen.CommonEditTextDialog
 import hu.zsof.restaurantappjetpacknew.ui.common.screen.PhotoChooserDialog
@@ -205,7 +205,7 @@ fun ChipSettings(user: User, viewModel: ProfileViewModel) {
                 text = stringResource(id = R.string.credit_card),
                 onChecked = {
                     viewModel.creditCardChecked.value = it
-                    LocalDataStateService.filteredPlaces
+                    AppState.filteredPlaces
                 },
             )
         }
@@ -319,11 +319,11 @@ fun OtherSettings(viewModel: ProfileViewModel) {
                         if (it) {
                             viewModel.switchCheckedState.value = true
                             viewModel.setAppPreference(Constants.Prefs.DARK_MODE, true)
-                            LocalDataStateService.darkTheme.value = true
+                            AppState.darkTheme.value = true
                         } else {
                             viewModel.switchCheckedState.value = false
                             viewModel.setAppPreference(Constants.Prefs.DARK_MODE, false)
-                            LocalDataStateService.darkTheme.value = false
+                            AppState.darkTheme.value = false
                         }
                     },
                 )
