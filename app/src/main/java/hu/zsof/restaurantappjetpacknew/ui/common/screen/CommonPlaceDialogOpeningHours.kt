@@ -2,7 +2,6 @@ package hu.zsof.restaurantappjetpacknew.ui.common.screen
 
 import android.app.TimePickerDialog
 import android.icu.util.Calendar
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,7 +13,6 @@ import androidx.compose.material.icons.outlined.KeyboardArrowDown
 import androidx.compose.material.icons.outlined.KeyboardArrowUp
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -41,7 +39,7 @@ fun OpeningHours(viewModel: NewPlaceDialogViewModel = hiltViewModel()) {
     }
     Column(modifier = Modifier.padding(start = 10.dp)) {
         Row(
-            modifier = Modifier.background(MaterialTheme.colorScheme.surfaceVariant).clickable {
+            modifier = Modifier.clickable {
                 viewModel.openingHoursOpen.value = !viewModel.openingHoursOpen.value
             },
         ) {
