@@ -68,7 +68,7 @@ class OwnerPlaceViewModel @Inject constructor(
             CoroutineScope(Job() + Dispatchers.IO).launch {
                 val placeResponse = placeOwnerRepository.updatePlace(
                     PlaceDataRequest(
-                        id = place?.id ?: -1,
+                        id = place.value?.id ?: -1,
                         name = placeNameValue.value,
                         address = addressValue.value,
                         web = websiteValue.value,

@@ -141,7 +141,7 @@ fun CommonDetailsScreen(
                                     if (onEditPlaceClick != null) {
                                         onEditPlaceClick(placeId)
                                     }
-                                    AppState.place = place
+                                    AppState.place.value = place
 
                                 }, modifier = Modifier.padding(top = 16.dp)) {
                                     Icon(

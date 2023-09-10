@@ -30,7 +30,8 @@ import hu.zsof.restaurantappjetpacknew.ui.common.screen.PlaceListItem
 fun ReviewPlaceListScreen(
     viewModel: ReviewPlaceViewModel = hiltViewModel(),
     onClickPlaceItem: (Long) -> Unit,
-) {
+    onClickPlaceInReviewItem: (Long) -> Unit,
+    ) {
     val newPlaces = viewModel.placesInReview.observeAsState(listOf())
     val modifiedPlaces = viewModel.modifiedPlaces.observeAsState(listOf())
     LaunchedEffect(key1 = 1) {
@@ -87,7 +88,7 @@ fun ReviewPlaceListScreen(
                     items(newPlaces.value) {
                         PlaceListItem(
                             place = it,
-                            onClickPlaceItem = onClickPlaceItem,
+                            onClickPlaceItem = onClickPlaceInReviewItem,
                             isModifiedPlace = false
                         )
                     }
