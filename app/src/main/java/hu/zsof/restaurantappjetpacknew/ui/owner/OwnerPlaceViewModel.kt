@@ -29,10 +29,19 @@ class OwnerPlaceViewModel @Inject constructor(
     CommonPlaceDialogViewModel() {
 
     val showProblemDialog = mutableStateOf(false)
+    val isPlaceByOwner = mutableStateOf(false)
+    val isPlaceInReviewByOwner = mutableStateOf(false)
+
 
     fun deletePlace(placeId: Long) {
         viewModelScope.launch {
             placeOwnerRepository.deletePlace(placeId)
+        }
+    }
+
+    fun deletePlaceInReview(placeId: Long) {
+        viewModelScope.launch {
+            placeInReviewRepository.deletePlaceFromInReview(placeId)
         }
     }
 

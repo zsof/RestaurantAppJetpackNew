@@ -29,7 +29,7 @@ class DetailsViewModel @Inject constructor(
     val ratingDialogOpen = mutableStateOf(false)
     var rating = mutableStateOf(0f)
 
-    var isPlaceByOwner = mutableStateOf(false)
+    val isPlaceByOwner = mutableStateOf(false)
 
     val placeById = MutableLiveData<Place>()
     fun getPlaceById(placeId: Long) {

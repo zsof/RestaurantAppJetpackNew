@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.PushPin
@@ -51,6 +52,8 @@ fun PlaceListItem(
     addOrRemoveFavIdList: (() -> Unit)? = null,
     isFavPlace: MutableState<Boolean>? = null,
     isModifiedPlace: Boolean = false,
+    isPlaceByOwner: Boolean = false,
+    deletePlace: ((Long) -> Unit)? = null
 ) {
     val favouriteIcon = if (favIdList?.contains(place.id) == true) {
         Icons.Default.Favorite
@@ -131,8 +134,24 @@ fun PlaceListItem(
                                 imageVector = Icons.Filled.ReportProblem,
                                 contentDescription = null,
                                 modifier = Modifier
-                                    .padding(start=8.dp, top = 12.dp),
+                                    .padding(start = 8.dp, top = 12.dp),
                             )
+                        }
+
+                        if (isPlaceByOwner) {
+                            Spacer(modifier = Modifier.weight(1f))
+                            IconButton(onClick = {
+                                if (deletePlace != null)
+                                    deletePlace(place.id)
+                            }) {
+                                Icon(
+                                    imageVector = Icons.Filled.Delete,
+                                    tint = Color.Red,
+                                    contentDescription = null,
+                                    modifier = Modifier
+                                        .padding(start = 8.dp),
+                                )
+                            }
                         }
                     }
 

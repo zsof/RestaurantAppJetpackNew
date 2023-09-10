@@ -42,6 +42,9 @@ interface ApiService {
     @DELETE("places-owner/places/{id}")
     suspend fun deletePlace(@Path("id") placeId: Long)
 
+    @DELETE("places-owner/place-review/{id}")
+    suspend fun deletePlaceFromInReview(@Path("id") placeId: Long)
+
     @GET("places-owner/places")
     suspend fun getAllPlaceByOwner(): List<Place>
 
@@ -75,9 +78,6 @@ interface ApiService {
         @Body problemMessage: String,
         @Query("isModifiedPlace") isModifiedPlace: Boolean,
     )
-
-    @DELETE("places-review/places/{id}")
-    suspend fun deletePlaceFromInReview(@Path("id") placeId: Long)
 
     /**
      * Image

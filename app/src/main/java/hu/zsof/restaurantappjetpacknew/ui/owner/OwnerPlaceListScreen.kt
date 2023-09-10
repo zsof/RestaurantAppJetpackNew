@@ -23,6 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import hu.zsof.restaurantappjetpacknew.R
+import hu.zsof.restaurantappjetpacknew.module.AppState
 import hu.zsof.restaurantappjetpacknew.ui.common.screen.PlaceListItem
 
 @ExperimentalMaterial3Api
@@ -67,8 +68,16 @@ fun OwnerPlaceListScreen(
                     contentPadding = PaddingValues(8.dp),
                     modifier = Modifier.weight(1f, fill = false)
                 ) {
-                    items(places.value) {
-                        PlaceListItem(place = it, onClickPlaceItem = onClickPlaceItem)
+                    items(places.value) { place ->
+                        viewModel.isPlaceByOwner.value =
+                            AppState.loggedUser.value?.id == place.creatorId
+
+                        PlaceListItem(
+                            place = place,
+                            onClickPlaceItem = onClickPlaceItem,
+                            isPlaceByOwner = viewModel.isPlaceByOwner.value,
+                            deletePlace = { viewModel.deletePlace(it) }
+                        )
                     }
                 }
                 Text(
@@ -81,10 +90,15 @@ fun OwnerPlaceListScreen(
                     contentPadding = PaddingValues(8.dp),
                     modifier = Modifier.weight(1f, fill = false)
                 ) {
-                    items(placesInReview.value) {
+                    items(placesInReview.value) { placeInReview ->
+                        viewModel.isPlaceInReviewByOwner.value =
+                            AppState.loggedUser.value?.id == placeInReview.creatorId
+
                         PlaceListItem(
-                            place = it,
+                            place = placeInReview,
                             onClickPlaceItem = onClickPlaceInReviewItem,
+                            isPlaceByOwner = viewModel.isPlaceInReviewByOwner.value,
+                            deletePlace = { viewModel.deletePlaceInReview(it) }
                         )
                     }
                 }
