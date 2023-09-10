@@ -136,20 +136,13 @@ fun CommonDetailsScreen(
                                     )
                                 }
                             }
-                            if (isPlaceByOwner) {
+                            if (isPlaceByOwner && place is Place) {
                                 IconButton(onClick = {
                                     if (onEditPlaceClick != null) {
                                         onEditPlaceClick(placeId)
                                     }
+                                    AppState.place = place
 
-                                    if (placeType == PlaceType.PLACE) {
-                                        AppState.place = place as Place
-                                        AppState.placeType = PlaceType.PLACE
-                                    } else if (placeType == PlaceType.PLACE_BY_OWNER_IN_REVIEW) {
-                                        AppState.placeInReview = place as PlaceInReview
-                                        AppState.placeType = PlaceType.PLACE_BY_OWNER_IN_REVIEW
-
-                                    }
                                 }, modifier = Modifier.padding(top = 16.dp)) {
                                     Icon(
                                         imageVector = Icons.Filled.Edit,

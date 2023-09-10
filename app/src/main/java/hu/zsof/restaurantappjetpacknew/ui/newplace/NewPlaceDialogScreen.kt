@@ -29,9 +29,11 @@ fun NewPlaceDialogScreen(
         AppState.getLatLng().longitude,
     ) { address: android.location.Address? ->
         if (address != null) {
-            viewModel.addressValue.value = address.getAddressLine(0)
+            // viewModel.addressValue.value = address.getAddressLine(0)
         }
     }
+    viewModel.addressValue.value = "Budapest, Hollán Ernő u. 3, 1136"
+
 
     CommonPlaceDialogScreen(
         viewModel = viewModel,

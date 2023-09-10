@@ -4,7 +4,6 @@ import android.net.Uri
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import hu.zsof.restaurantappjetpacknew.model.enums.PlaceType
 import hu.zsof.restaurantappjetpacknew.model.enums.Price
 import hu.zsof.restaurantappjetpacknew.model.enums.Type
 import hu.zsof.restaurantappjetpacknew.module.AppState
@@ -18,11 +17,7 @@ open class CommonPlaceDialogViewModel @Inject constructor() : ViewModel() {
         image: String,
     ) = Unit
 
-    val place = when (AppState.placeType) {
-        PlaceType.PLACE -> AppState.place
-        PlaceType.PLACE_BY_OWNER_IN_REVIEW -> AppState.placeInReview
-        else -> null
-    }
+    val place = AppState.place
 
     var dialogOpen = mutableStateOf(true)
     var expandedCategoryMenu = mutableStateOf(false)

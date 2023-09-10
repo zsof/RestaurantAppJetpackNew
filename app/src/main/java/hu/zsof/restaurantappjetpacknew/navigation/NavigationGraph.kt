@@ -184,6 +184,11 @@ fun SetStartDestination(
             showToast(context, "Az internet nem elérhető!")
         }
     } else {
+        AppState.loggedUser.value = null
+        viewModel.setAppPreference(
+            Constants.Prefs.USER_LOGGED,
+            false,
+        )
         AppState.startDestination.value = LOGIN_START
     }
 }
