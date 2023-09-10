@@ -93,7 +93,6 @@ fun CommonPlaceDialogScreen(
             onDismissRequest = {
                 viewModel.dialogOpen.value = false
                 AppState.place = null
-                AppState.placeInReview = null
             },
             properties = DialogProperties(
                 dismissOnClickOutside = false,
@@ -103,7 +102,6 @@ fun CommonPlaceDialogScreen(
         ) {
             BackHandler {
                 AppState.place = null
-                AppState.placeInReview = null
 
                 onDialogClose()
             }
@@ -359,7 +357,6 @@ fun CommonPlaceDialogScreen(
                             viewModel.dialogOpen.value = false
 
                             AppState.place = null
-                            AppState.placeInReview = null
 
                             onDialogClose()
                         }) {
@@ -382,7 +379,6 @@ fun CommonPlaceDialogScreen(
                                 viewModel.dialogOpen.value = false
 
                                 AppState.place = null
-                                AppState.placeInReview = null
                                 onDialogClose()
                             }
                         }) {
