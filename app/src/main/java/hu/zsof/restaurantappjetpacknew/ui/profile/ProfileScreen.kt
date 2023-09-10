@@ -92,29 +92,11 @@ fun ProfileScreen(
                     viewModel.deliveryChecked.value = user.filterItems.delivery
                     viewModel.creditCardChecked.value = user.filterItems.creditCard
 
-                    BaseProfile(user, viewModel)
                     Column(modifier = Modifier.padding(bottom = 44.dp)) {
                         Column(Modifier.verticalScroll(rememberScrollState())) {
+                            BaseProfile(user, viewModel)
                             ChipSettings(user, viewModel)
                             OtherSettings(viewModel = viewModel)
-                            Row(
-                                verticalAlignment = Alignment.Bottom,
-                                horizontalArrangement = Arrangement.Center,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .fillMaxHeight(),
-                            ) {
-                                Button(
-                                    onClick = {
-                                        viewModel.updateUserProfile()
-                                    },
-                                ) {
-                                    Text(
-                                        text = stringResource(id = R.string.save_btn),
-                                        style = TextStyle(fontSize = 16.sp),
-                                    )
-                                }
-                            }
                         }
                     }
                 }
@@ -209,6 +191,24 @@ fun ChipSettings(user: User, viewModel: ProfileViewModel) {
                 },
             )
         }
+        Row(
+            verticalAlignment = Alignment.Bottom,
+            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(),
+        ) {
+            Button(
+                onClick = {
+                    viewModel.updateUserProfile()
+                },
+            ) {
+                Text(
+                    text = stringResource(id = R.string.save_btn),
+                    style = TextStyle(fontSize = 16.sp),
+                )
+            }
+        }
     }
 }
 
@@ -275,10 +275,6 @@ fun BaseProfile(user: User, viewModel: ProfileViewModel) {
                     .padding(start = 8.dp, end = 8.dp),
                 text = "*******",
                 fontSize = 20.sp,
-            )
-            Icon(
-                imageVector = Icons.Filled.Edit,
-                contentDescription = null,
             )
         }
     }

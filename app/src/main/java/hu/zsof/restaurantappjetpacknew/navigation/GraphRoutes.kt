@@ -80,7 +80,7 @@ fun NavGraphBuilder.authNavGraph(
         }
         composable(route = ScreenModel.NavigationScreen.NewPlace.route) {
             NewPlaceDialogScreen(
-                onDialogClose = { navController.navigate(ScreenModel.NavigationScreen.Home.route) },
+                onDialogClose = { navController.popBackStack() },
             )
         }
         composable(route = ScreenModel.NavigationScreen.Map.route) {
@@ -224,7 +224,6 @@ fun NavGraphBuilder.authNavGraph(
         ) {
             EditPlaceDialogScreen(
                 onDialogClose = {
-                    //navController.navigateUp()
                     navController.popBackStack()
                 },
             )
