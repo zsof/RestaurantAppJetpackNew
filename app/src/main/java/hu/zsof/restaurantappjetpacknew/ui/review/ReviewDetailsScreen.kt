@@ -23,7 +23,7 @@ fun ReviewDetailsScreen(
     viewModel: ReviewPlaceViewModel = hiltViewModel(),
     placeId: Long,
 ) {
-    val placeInReview = viewModel.reviewPlaceById.observeAsState().value
+    val placeInReviewOrModifiedPlace = viewModel.reviewPlaceById.observeAsState().value
     LaunchedEffect(key1 = "ReviewDetails") {
         viewModel.getReviewPlaceById(placeId)
     }
@@ -57,7 +57,7 @@ fun ReviewDetailsScreen(
             },
             // TODO valamiért a "" is visszajön backendtpl "szöveg"  <-- így, ezt meg kellene szüntetni
             text = {
-                placeInReview?.problem?.substringAfter('"')
+                placeInReviewOrModifiedPlace?.problem?.substringAfter('"')
                     ?.let { Text(text = it.substringBeforeLast('"')) }
             },
         )
@@ -65,7 +65,7 @@ fun ReviewDetailsScreen(
 
     CommonDetailsScreen(
         placeId = placeId,
-        place = placeInReview,
+        place = placeInReviewOrModifiedPlace,
         placeType = PlaceType.PLACE_IN_REVIEW,
         isPlaceByOwner = false,
         showProblemDialog = viewModel.showProblemDialog,

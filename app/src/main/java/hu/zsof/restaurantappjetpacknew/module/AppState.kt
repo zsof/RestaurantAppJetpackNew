@@ -8,8 +8,8 @@ import hu.zsof.restaurantappjetpacknew.util.Constants.LOGIN_START
 
 object AppState {
 
-    var isModifiedPlace: Boolean = false
-    var place = MutableLiveData<Place?>(null)
+    val isModifiedPlace = MutableLiveData(false)
+    val place = MutableLiveData<Place?>(null)
 
     private var latLng: LatLng? = null
 

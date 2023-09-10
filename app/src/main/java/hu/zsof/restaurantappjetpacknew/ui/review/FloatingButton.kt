@@ -92,7 +92,7 @@ fun MultiFloatingButton(
                     when (fabItem.identifier) {
                         FabButton.ACCEPT.name -> {
                             if (!acceptBtnIsClicked.value) {
-                                if (AppState.isModifiedPlace) {
+                                if (AppState.isModifiedPlace.value == true) {
                                     viewModel.acceptPlace(placeId, true)
                                 } else {
                                     viewModel.acceptPlace(placeId, false)
@@ -222,7 +222,7 @@ fun ProblemDialog(
                         }
                         Spacer(modifier = Modifier.weight(1f))
                         Button(onClick = {
-                            if (AppState.isModifiedPlace) {
+                            if (AppState.isModifiedPlace.value == true) {
                                 viewModel.reportProblem(placeId, true)
                             } else {
                                 viewModel.reportProblem(placeId, false)

@@ -98,25 +98,10 @@ fun NavGraphBuilder.authNavGraph(
         composable(route = ScreenModel.NavigationScreen.ReviewPlace.route) {
             ReviewPlaceListScreen(
                 onClickPlaceItem = {
-                    /*    if (AppState.isModifiedPlace) {*/
                     navController.navigate(
                         ScreenModel.NavigationScreen.ReviewDetails.passPlaceId(
                             it,
                         )
-                    )
-                    /*} else {
-                        navController.navigate(
-                            ScreenModel.NavigationScreen.ReviewDetails.passReviewPlaceId(
-                                it,
-                            ),
-                        )
-                    }*/
-                },
-                onClickPlaceInReviewItem = {
-                    navController.navigate(
-                        ScreenModel.NavigationScreen.ReviewDetails.passReviewPlaceId(
-                            it,
-                        ),
                     )
                 }
             )

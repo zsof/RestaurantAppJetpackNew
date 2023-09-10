@@ -58,7 +58,8 @@ fun PlaceListItem(
         Icons.Default.FavoriteBorder
     }
 
-    AppState.isModifiedPlace = isModifiedPlace
+    //To save for backend in review acceptPlace
+    AppState.isModifiedPlace.value = isModifiedPlace
 
     Card(
         modifier = Modifier

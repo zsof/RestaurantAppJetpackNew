@@ -8,7 +8,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import hu.zsof.restaurantappjetpacknew.model.BasePlace
 import hu.zsof.restaurantappjetpacknew.model.Place
 import hu.zsof.restaurantappjetpacknew.model.PlaceInReview
-import hu.zsof.restaurantappjetpacknew.module.AppState
 import hu.zsof.restaurantappjetpacknew.network.repository.PlaceInReviewRepository
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -45,7 +44,8 @@ class ReviewPlaceViewModel @Inject constructor(
 
     fun getReviewPlaceById(placeId: Long) {
         viewModelScope.launch {
-            if (AppState.isModifiedPlace) {
+            val isPlaceModified = placeInReviewRepository.getAllModifiedPlace().any { it.id == placeId }
+            if (isPlaceModified) {
                 reviewPlaceById.postValue(
                     placeInReviewRepository.getAllModifiedPlace().find { it.id == placeId })
             } else {
