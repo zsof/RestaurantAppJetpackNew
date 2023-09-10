@@ -29,7 +29,7 @@ fun NavGraphBuilder.authNavGraph(
     navController: NavHostController,
 ) {
     navigation(
-        startDestination = when (AppState.startDestination) {
+        startDestination = when (AppState.startDestination.value) {
             Constants.LOGIN_START -> {
                 ScreenModel.NavigationScreen.Login.route
             }

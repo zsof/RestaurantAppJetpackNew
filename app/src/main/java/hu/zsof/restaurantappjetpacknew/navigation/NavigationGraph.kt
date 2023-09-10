@@ -161,7 +161,7 @@ fun SetStartDestination(
         if (isConnected) {
             val userResponse = viewModel.user.observeAsState().value
 
-            AppState.startDestination = HOME_START
+            AppState.startDestination.value = HOME_START
             viewModel.setAppPreference(Constants.Prefs.USER_LOGGED, true)
 
             when (userResponse?.userType) {
@@ -178,13 +178,13 @@ fun SetStartDestination(
                 }
             }
         } else if (viewModel.getAppPreference(Constants.Prefs.USER_LOGGED)) {
-            AppState.startDestination = FAV_START
+            AppState.startDestination.value = FAV_START
         } else {
-            AppState.startDestination = LOGIN_START
+            AppState.startDestination.value = LOGIN_START
             showToast(context, "Az internet nem elérhető!")
         }
     } else {
-        AppState.startDestination = LOGIN_START
+        AppState.startDestination.value = LOGIN_START
     }
 }
 

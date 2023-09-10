@@ -18,12 +18,12 @@ object AppState {
     private var latLng: LatLng? = null
 
     val loggedUser = MutableLiveData<User?>(null)
-    var startDestination = LOGIN_START
+    val startDestination = MutableLiveData(LOGIN_START)
 
     var filteredPlaces = MutableLiveData<List<Place>>()
     var searchedPlaces = MutableLiveData<List<Place>>()
 
-    var darkTheme = MutableLiveData<Boolean>()
+    val darkTheme = MutableLiveData<Boolean>()
 
     // todo mutable statek ne legyen var -ok
     // todo state dolgai legyen mind mutablestate /mutableLiveData hiszen ezek az állapot leírói
