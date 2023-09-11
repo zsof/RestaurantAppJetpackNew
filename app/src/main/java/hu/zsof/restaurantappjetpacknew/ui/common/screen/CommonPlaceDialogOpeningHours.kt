@@ -137,6 +137,11 @@ fun OpeningHoursItem(
     val hour = calendar[Calendar.HOUR_OF_DAY]
     val minute = calendar[Calendar.MINUTE]
 
+    if (openingCheckbox.value.not()) {
+        selectedOpenText.value = stringResource(id = R.string.closed)
+        selectedCloseText.value = stringResource(id = R.string.closed)
+    }
+
     val timepicker = TimePickerDialog(
         context,
         { _, selectedHour: Int, selectedMinute: Int ->
@@ -150,6 +155,8 @@ fun OpeningHoursItem(
         minute,
         false,
     )
+
+
     Row(verticalAlignment = Alignment.Top, modifier = Modifier.padding(start = 10.dp)) {
         if (openingDay == 0) {
             Column {
@@ -192,10 +199,13 @@ fun OpeningHoursItem(
                 modifier = Modifier
                     .align(Alignment.End)
                     .padding(top = 16.dp, bottom = 2.dp, end = 8.dp)
-                    .clickable(onClick = {
-                        viewModel.isOpenHourSet.value = true
-                        timepicker.show()
-                    }),
+                    .clickable(
+                        enabled = openingCheckbox.value,
+                        onClick = {
+                            viewModel.isOpenHourSet.value = true
+                            timepicker.show()
+
+                        }),
             )
             if (openingDay == 0) {
                 Spacer(modifier = Modifier.height(12.dp))
@@ -206,10 +216,12 @@ fun OpeningHoursItem(
                 modifier = Modifier
                     .align(Alignment.End)
                     .padding(top = 2.dp, end = 8.dp)
-                    .clickable(onClick = {
-                        viewModel.isOpenHourSet.value = false
-                        timepicker.show()
-                    }),
+                    .clickable(
+                        enabled = openingCheckbox.value,
+                        onClick = {
+                            viewModel.isOpenHourSet.value = false
+                            timepicker.show()
+                        }),
             )
         }
     }

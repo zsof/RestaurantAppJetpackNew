@@ -73,12 +73,12 @@ open class CommonPlaceDialogViewModel @Inject constructor() : ViewModel() {
     var sundayOpen = mutableStateOf(place.value?.openDetails?.sundayOpen ?: "")
     var sundayClose = mutableStateOf(place.value?.openDetails?.sundayClose ?: "")
 
-    var mondayCheckbox = mutableStateOf(place.value?.openDetails?.monday ?: false)
-    var tuesdayCheckbox = mutableStateOf(place.value?.openDetails?.tuesday ?: false)
-    var wednesdayCheckbox = mutableStateOf(place.value?.openDetails?.wednesday ?: false)
-    var thursdayCheckbox = mutableStateOf(place.value?.openDetails?.thursday ?: false)
-    var fridayCheckbox = mutableStateOf(place.value?.openDetails?.friday ?: false)
-    var saturdayCheckbox = mutableStateOf(place.value?.openDetails?.saturday ?: false)
-    var sundayCheckbox = mutableStateOf(place.value?.openDetails?.sunday ?: false)
+    var mondayCheckbox = mutableStateOf(place.value?.openDetails?.monday ?: true)
+    var tuesdayCheckbox = mutableStateOf(place.value?.openDetails?.tuesday ?: true)
+    var wednesdayCheckbox = mutableStateOf(place.value?.openDetails?.wednesday ?: true)
+    var thursdayCheckbox = mutableStateOf(place.value?.openDetails?.thursday ?: true)
+    var fridayCheckbox = mutableStateOf(place.value?.openDetails?.friday ?: true)
+    var saturdayCheckbox = mutableStateOf(place.value?.openDetails?.saturday ?: true)
+    var sundayCheckbox = mutableStateOf(place.value?.openDetails?.sunday ?: true)
 
 }
