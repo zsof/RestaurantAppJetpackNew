@@ -10,6 +10,8 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.ReportProblem
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.Email
+import androidx.compose.material.icons.outlined.KeyboardArrowDown
+import androidx.compose.material.icons.outlined.KeyboardArrowUp
 import androidx.compose.material.icons.outlined.Map
 import androidx.compose.material.icons.outlined.Phone
 import androidx.compose.material.icons.outlined.Web
@@ -56,7 +58,14 @@ fun CommonDetailsScreen(
     multiFloatingState: MutableState<MultiFloatingState>? = null,
     fabItems: List<FabItem> = emptyList(),
     viewModel: ReviewPlaceViewModel = hiltViewModel(),
+    openingHoursOpen: MutableState<Boolean>
 ) {
+    val openingHoursArrowIcon = if (openingHoursOpen.value) {
+        Icons.Outlined.KeyboardArrowUp
+    } else {
+        Icons.Outlined.KeyboardArrowDown
+    }
+
     if (showProblemDialog != null) {
         if (showProblemDialog.value) {
             AlertDialog(
@@ -97,7 +106,7 @@ fun CommonDetailsScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState())
-                    .padding(bottom= 24.dp),
+                    .padding(bottom = 32.dp),
             ) {
                 if (place != null) {
                     AsyncImage(
@@ -259,13 +268,26 @@ fun CommonDetailsScreen(
                             fontSize = 18.sp,
                         )
                     }
-                    Text(
-                        text = stringResource(id = R.string.opening_hours),
-                        style = MaterialTheme.typography.titleLarge,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(8.dp, 4.dp, 0.dp, 0.dp),
-                    )
-                    OpeningHoursDetails(place = place)
+                    Row(
+                        modifier = Modifier
+                            .clickable {
+                                openingHoursOpen.value = !openingHoursOpen.value
+                            }
+                            .padding(8.dp,  8.dp, 8.dp, 0.dp),
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.opening_hours),
+                            style = MaterialTheme.typography.titleLarge,
+                            fontWeight = FontWeight.Bold,
+                        )
+                        Spacer(modifier = Modifier.weight(1f))
+                        Icon(
+                            imageVector = openingHoursArrowIcon,
+                            contentDescription = null,
+                            modifier = Modifier.size(32.dp)
+                        )
+                    }
+                    OpeningHoursDetails(place = place, openingHoursOpen = openingHoursOpen.value)
                 }
             }
         },

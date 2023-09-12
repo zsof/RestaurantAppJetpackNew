@@ -35,6 +35,7 @@ fun DetailsMainScreen(
         isPlaceByOwner = viewModel.isPlaceByOwner.value,
         isUserRated = viewModel.getAppPreference(Constants.Prefs.USER_RATED),
         ratingDialogOpen = viewModel.ratingDialogOpen,
+        openingHoursOpen = viewModel.openingHoursOpenDetails
     )
 }
 

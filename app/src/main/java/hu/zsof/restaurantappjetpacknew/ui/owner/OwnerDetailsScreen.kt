@@ -25,5 +25,6 @@ fun OwnerDetailsScreen(
         placeType = PlaceType.PLACE_BY_OWNER_IN_REVIEW,
         isPlaceByOwner = true,
         showProblemDialog = viewModel.showProblemDialog,
+        openingHoursOpen = viewModel.openingHoursOpenDetails
     )
 }

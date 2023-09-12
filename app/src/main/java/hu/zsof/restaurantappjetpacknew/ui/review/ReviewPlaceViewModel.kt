@@ -19,11 +19,13 @@ class ReviewPlaceViewModel @Inject constructor(
     ViewModel() {
 
     //TODO módosított helyre kattintva a place in review.ban keres, félig megoldva, má id átadva nav graph-ban!!
-    var problemMessage = mutableStateOf("")
-    var problemMessageError = mutableStateOf(false)
+    val problemMessage = mutableStateOf("")
+    val problemMessageError = mutableStateOf(false)
     val problemReportDialogOpen = mutableStateOf(false)
     val showProblemDialog = mutableStateOf(false)
-    var multiFloatingState = mutableStateOf(MultiFloatingState.COLLAPSED)
+    val multiFloatingState = mutableStateOf(MultiFloatingState.COLLAPSED)
+    val openingHoursOpenDetails = mutableStateOf(false)
+
 
     var placesInReview = MutableLiveData<List<PlaceInReview>>()
     fun showPlacesInReview() {

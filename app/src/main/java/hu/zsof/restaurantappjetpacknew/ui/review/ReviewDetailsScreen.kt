@@ -71,5 +71,6 @@ fun ReviewDetailsScreen(
         showProblemDialog = viewModel.showProblemDialog,
         multiFloatingState = viewModel.multiFloatingState,
         fabItems = items,
+        openingHoursOpen = viewModel.openingHoursOpenDetails
     )
 }

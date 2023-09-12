@@ -37,6 +37,7 @@ fun OpeningHours(viewModel: NewPlaceDialogViewModel = hiltViewModel()) {
     } else {
         Icons.Outlined.KeyboardArrowDown
     }
+
     Column(modifier = Modifier.padding(start = 10.dp)) {
         Row(
             modifier = Modifier.clickable {

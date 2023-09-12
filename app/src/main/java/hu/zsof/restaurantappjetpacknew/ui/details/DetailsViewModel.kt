@@ -19,15 +19,17 @@ class DetailsViewModel @Inject constructor(
 ) :
     ViewModel() {
 
-    var galleryPermissionOpen = mutableStateOf(false)
+    val galleryPermissionOpen = mutableStateOf(false)
 
-    var cameraPermissionOpen = mutableStateOf(false)
+    val cameraPermissionOpen = mutableStateOf(false)
     val photoDialogOpen = mutableStateOf(false)
+
+    val openingHoursOpenDetails = mutableStateOf(false)
 
     val selectedImageUri = mutableStateOf<Uri?>(null)
 
     val ratingDialogOpen = mutableStateOf(false)
-    var rating = mutableStateOf(0f)
+    val rating = mutableStateOf(0f)
 
     val isPlaceByOwner = mutableStateOf(false)
 

@@ -32,6 +32,7 @@ class OwnerPlaceViewModel @Inject constructor(
     val isPlaceByOwner = mutableStateOf(false)
     val isPlaceInReviewByOwner = mutableStateOf(false)
 
+    val openingHoursOpenDetails = mutableStateOf(false)
 
     fun deletePlace(placeId: Long) {
         viewModelScope.launch {
