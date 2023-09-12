@@ -3,6 +3,7 @@ package hu.zsof.restaurantappjetpacknew.ui.newplace
 import com.google.android.gms.maps.model.LatLng
 import dagger.hilt.android.lifecycle.HiltViewModel
 import hu.zsof.restaurantappjetpacknew.model.CustomFilter
+import hu.zsof.restaurantappjetpacknew.model.OpenDetails
 import hu.zsof.restaurantappjetpacknew.model.enums.Price
 import hu.zsof.restaurantappjetpacknew.model.enums.Type
 import hu.zsof.restaurantappjetpacknew.module.AppState
@@ -60,6 +61,31 @@ class NewPlaceDialogViewModel @Inject constructor(
                         ),
                         latitude = latLang.latitude,
                         longitude = latLang.longitude,
+                        openDetails = OpenDetails(
+                            basicOpen = basicOpen.value,
+                            basicClose = basicClose.value,
+                            mondayOpen = mondayOpen.value,
+                            mondayClose = mondayClose.value,
+                            tuesdayOpen = tuesdayOpen.value,
+                            tuesdayClose = tuesdayClose.value,
+                            wednesdayOpen = wednesdayOpen.value,
+                            wednesdayClose = wednesdayClose.value,
+                            thursdayOpen = thursdayOpen.value,
+                            thursdayClose = thursdayClose.value,
+                            fridayOpen = fridayOpen.value,
+                            fridayClose = fridayClose.value,
+                            saturdayOpen = saturdayOpen.value,
+                            saturdayClose = saturdayClose.value,
+                            sundayOpen = sundayOpen.value,
+                            sundayClose = sundayClose.value,
+                            monday = mondayCheckbox.value,
+                            tuesday = tuesdayCheckbox.value,
+                            wednesday = wednesdayCheckbox.value,
+                            thursday = thursdayCheckbox.value,
+                            friday = fridayCheckbox.value,
+                            saturday = saturdayCheckbox.value,
+                            sunday = sundayCheckbox.value,
+                        ),
                     ),
                 )
 

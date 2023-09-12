@@ -96,7 +96,8 @@ fun CommonDetailsScreen(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .verticalScroll(rememberScrollState()),
+                    .verticalScroll(rememberScrollState())
+                    .padding(bottom= 24.dp),
             ) {
                 if (place != null) {
                     AsyncImage(
@@ -264,6 +265,7 @@ fun CommonDetailsScreen(
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.padding(8.dp, 4.dp, 0.dp, 0.dp),
                     )
+                    OpeningHoursDetails(place = place)
                 }
             }
         },
