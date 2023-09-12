@@ -19,6 +19,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -164,6 +165,13 @@ fun CommonDetailsScreen(
                         }
                     }
 
+                    TextChip(
+                        isSelected = true,
+                        text = place.type.name,
+                        modifier = Modifier.align(CenterHorizontally),
+                        shouldShowIcon = false
+                    )
+
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.Center,
@@ -219,7 +227,7 @@ fun CommonDetailsScreen(
                         Icon(
                             imageVector = Icons.Outlined.PushPin,
                             contentDescription = null,
-                            modifier = Modifier.padding(8.dp, 4.dp, 0.dp, 4.dp),
+                            modifier = Modifier.padding(8.dp, 4.dp, 0.dp, 8.dp),
                         )
                         Text(
                             modifier = Modifier
@@ -233,7 +241,7 @@ fun CommonDetailsScreen(
                         Icon(
                             imageVector = Icons.Outlined.Attachment,
                             contentDescription = null,
-                            modifier = Modifier.padding(8.dp, 4.dp, 0.dp, 4.dp),
+                            modifier = Modifier.padding(8.dp, 4.dp, 0.dp, 8.dp),
                         )
                         Text(
                             modifier = Modifier
@@ -246,7 +254,7 @@ fun CommonDetailsScreen(
                         Icon(
                             imageVector = Icons.Outlined.Email,
                             contentDescription = null,
-                            modifier = Modifier.padding(8.dp, 4.dp, 0.dp, 4.dp),
+                            modifier = Modifier.padding(8.dp, 4.dp, 0.dp, 8.dp),
                         )
                         Text(
                             modifier = Modifier
@@ -260,7 +268,7 @@ fun CommonDetailsScreen(
                         Icon(
                             imageVector = Icons.Outlined.Phone,
                             contentDescription = null,
-                            modifier = Modifier.padding(8.dp, 4.dp, 0.dp, 4.dp),
+                            modifier = Modifier.padding(8.dp, 4.dp, 0.dp, 8.dp),
                         )
                         Text(
                             modifier = Modifier

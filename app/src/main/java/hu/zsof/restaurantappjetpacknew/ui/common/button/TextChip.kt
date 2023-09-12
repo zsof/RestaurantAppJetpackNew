@@ -24,17 +24,18 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun TextChip(
+    modifier: Modifier = Modifier,
     isSelected: Boolean,
     text: String,
     onChecked: (Boolean) -> Unit = {},
     selectedColor: Color = MaterialTheme.colorScheme.primary,
-
+    shouldShowIcon: Boolean = true
 ) {
     val shape = RoundedCornerShape(12.dp)
     Row(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
+        modifier = modifier
             .padding(
                 vertical = 6.dp,
                 horizontal = 4.dp,
@@ -54,7 +55,7 @@ fun TextChip(
             }
             .padding(4.dp),
     ) {
-        if (isSelected) {
+        if (isSelected && shouldShowIcon) {
             Icon(
                 imageVector = Icons.Filled.Done,
                 tint = DarkGray,
