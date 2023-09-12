@@ -138,7 +138,7 @@ fun OpeningHoursItem(
     val hour = calendar[Calendar.HOUR_OF_DAY]
     val minute = calendar[Calendar.MINUTE]
 
-    if (openingCheckbox.value.not()) {
+    if (openingCheckbox.value.not() && openingDay != 0) {
         selectedOpenText.value = stringResource(id = R.string.closed)
         selectedCloseText.value = stringResource(id = R.string.closed)
     }
@@ -201,7 +201,7 @@ fun OpeningHoursItem(
                     .align(Alignment.End)
                     .padding(top = 16.dp, bottom = 2.dp, end = 8.dp)
                     .clickable(
-                        enabled = openingCheckbox.value,
+                        enabled = openingCheckbox.value || openingDay == 0,
                         onClick = {
                             viewModel.isOpenHourSet.value = true
                             timepicker.show()
@@ -218,7 +218,7 @@ fun OpeningHoursItem(
                     .align(Alignment.End)
                     .padding(top = 2.dp, end = 8.dp)
                     .clickable(
-                        enabled = openingCheckbox.value,
+                        enabled = openingCheckbox.value || openingDay == 0,
                         onClick = {
                             viewModel.isOpenHourSet.value = false
                             timepicker.show()
