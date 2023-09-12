@@ -68,6 +68,7 @@ fun NavGraph(
     val bottomBarState = rememberSaveable { (mutableStateOf(true)) }
     val drawerOpenState = rememberSaveable { (mutableStateOf(true)) }
     val isItemEnable = rememberSaveable { mutableStateOf(true) }
+    val isDrawableEnable = rememberSaveable { mutableStateOf(true) }
 
     // Subscribe to navBackStackEntry, required to get current route
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -76,7 +77,14 @@ fun NavGraph(
     val isConnected = connection === ConnectionState.Available
 
     SetStartDestination(context = context, viewModel = viewModel, isConnected = isConnected)
-    setBottomBar(navBackStackEntry, bottomBarState, drawerOpenState, isItemEnable, isConnected)
+    setBottomBar(
+        navBackStackEntry = navBackStackEntry,
+        bottomBarState = bottomBarState,
+        drawerOpenState = drawerOpenState,
+        isItemEnable = isItemEnable,
+        isConnected = isConnected,
+        isDrawableEnable = isDrawableEnable
+    )
 
     CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
         Scaffold(
@@ -121,6 +129,7 @@ fun NavGraph(
                             }
                         },
                         viewModel = viewModel,
+                        isDrawableEnable = isDrawableEnable.value
                     )
                 }
             },
@@ -198,6 +207,7 @@ fun setBottomBar(
     bottomBarState: MutableState<Boolean>,
     drawerOpenState: MutableState<Boolean>,
     isItemEnable: MutableState<Boolean>,
+    isDrawableEnable: MutableState<Boolean>,
     isConnected: Boolean,
 ) {
     // Control BottomBar
@@ -218,10 +228,16 @@ fun setBottomBar(
             drawerOpenState.value = false
         }
 
+        "map" -> {
+            drawerOpenState.value = false
+            isDrawableEnable.value = false
+        }
+
         else -> {
             // Show BottomBar
             bottomBarState.value = true
             drawerOpenState.value = true
+            isDrawableEnable.value = true
         }
     }
 

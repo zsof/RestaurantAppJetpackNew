@@ -35,6 +35,7 @@ fun BottomNavBar(
     navController: NavController,
     bottomBarState: Boolean,
     isItemEnable: Boolean,
+    isDrawableEnable: Boolean,
     onNavigationIconClick: () -> Unit,
     viewModel: MainViewModel,
 ) {
@@ -241,7 +242,7 @@ fun BottomNavBar(
                         selected = navigationDrawerSelected,
                         selectedContentColor = MaterialTheme.colorScheme.primary,
                         onClick = onNavigationIconClick,
-                        enabled = true,
+                        enabled = isDrawableEnable,
                     )
                 }
             }
