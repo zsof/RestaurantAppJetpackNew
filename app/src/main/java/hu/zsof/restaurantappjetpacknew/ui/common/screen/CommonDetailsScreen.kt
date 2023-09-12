@@ -8,7 +8,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.ReportProblem
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.Attachment
 import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material.icons.outlined.KeyboardArrowDown
@@ -22,10 +21,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -171,39 +168,6 @@ fun CommonDetailsScreen(
                         modifier = Modifier.align(CenterHorizontally),
                         shouldShowIcon = false
                     )
-
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.Center,
-                    ) {
-                        Icon(
-                            imageVector = Icons.Filled.Star,
-                            contentDescription = null,
-                            modifier = Modifier
-                                .size(34.dp)
-                                .padding(2.dp, 4.dp, 0.dp, 0.dp),
-                            tint = Color(0xFFFFC107),
-
-                            )
-                        Text(
-                            text = place.rate.toString(),
-                            style = TextStyle(
-                                fontStyle = FontStyle.Italic,
-                                fontWeight = FontWeight.Bold,
-                            ),
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier
-                                .padding(8.dp, 8.dp, 8.dp, 8.dp)
-                                .clickable(onClick = {
-                                    if (isUserRated.not()) {
-                                        ratingDialogOpen?.value = true
-                                    }
-                                }),
-                            fontSize = 18.sp,
-                        )
-                    }
-
 
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,

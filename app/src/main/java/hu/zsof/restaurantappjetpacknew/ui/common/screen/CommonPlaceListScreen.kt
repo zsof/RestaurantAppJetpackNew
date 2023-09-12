@@ -16,7 +16,6 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.PushPin
 import androidx.compose.material.icons.filled.ReportProblem
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -156,28 +155,9 @@ fun PlaceListItem(
                     }
 
                     Row() {
-                        Icon(
-                            imageVector = Icons.Filled.Star,
-                            contentDescription = null,
-                            modifier = Modifier
-                                .size(34.dp)
-                                .padding(2.dp, 4.dp, 0.dp, 0.dp),
-                            tint = Color(0xFFFFC107),
-
-                            )
-                        Text(
-                            text = place.rate.toString(),
-                            style = TextStyle(
-                                fontStyle = FontStyle.Italic,
-                                fontWeight = FontWeight.Bold,
-                            ),
-                            modifier = Modifier
-                                .padding(8.dp, 8.dp, 8.dp, 8.dp),
-                            fontSize = 16.sp,
-                        )
                         Text(
                             modifier = Modifier
-                                .padding(16.dp, 8.dp, 0.dp, 0.dp),
+                                .padding(8.dp, 0.dp, 0.dp, 0.dp),
                             text = when (place.price) {
                                 Price.LOW -> {
                                     "$"
