@@ -9,12 +9,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.ReportProblem
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.outlined.Attachment
 import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material.icons.outlined.KeyboardArrowDown
 import androidx.compose.material.icons.outlined.KeyboardArrowUp
-import androidx.compose.material.icons.outlined.Map
 import androidx.compose.material.icons.outlined.Phone
-import androidx.compose.material.icons.outlined.Web
+import androidx.compose.material.icons.outlined.PushPin
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -109,19 +109,20 @@ fun CommonDetailsScreen(
                     .padding(bottom = 32.dp),
             ) {
                 if (place != null) {
-                    AsyncImage(
-                        model = place.image.imageUrl(),
-                        contentDescription = null,
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .wrapContentSize()
-                            .wrapContentHeight()
-                            .wrapContentWidth()
-                            .align(Alignment.CenterHorizontally)
-                            .padding(16.dp)
-                            .clip(RoundedCornerShape(8.dp)),
-                    )
-
+                    if (place.image.imageUrl().isNullOrEmpty().not()) {
+                        AsyncImage(
+                            model = place.image.imageUrl(),
+                            contentDescription = null,
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier
+                                .wrapContentSize()
+                                .wrapContentHeight()
+                                .wrapContentWidth()
+                                .align(Alignment.CenterHorizontally)
+                                .padding(16.dp)
+                                .clip(RoundedCornerShape(8.dp)),
+                        )
+                    }
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         modifier = Modifier.fillMaxWidth(),
@@ -133,7 +134,7 @@ fun CommonDetailsScreen(
                                 fontWeight = FontWeight.Bold,
                                 fontStyle = FontStyle.Italic,
                                 modifier = Modifier
-                                    .padding(16.dp),
+                                    .padding(16.dp, 16.dp, 16.dp, 8.dp),
                             )
 
                             if (place is PlaceInReview && !place.problem.isNullOrEmpty()) {
@@ -163,43 +164,44 @@ fun CommonDetailsScreen(
                         }
                     }
 
-                    if (place is Place) {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.Center,
-                        ) {
-                            Icon(
-                                imageVector = Icons.Filled.Star,
-                                contentDescription = null,
-                                modifier = Modifier
-                                    .size(34.dp)
-                                    .padding(2.dp, 4.dp, 0.dp, 0.dp),
-                                tint = Color(0xFFFFC107),
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center,
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.Star,
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(34.dp)
+                                .padding(2.dp, 4.dp, 0.dp, 0.dp),
+                            tint = Color(0xFFFFC107),
 
-                                )
-                            Text(
-                                text = place.rate.toString(),
-                                style = TextStyle(
-                                    fontStyle = FontStyle.Italic,
-                                    fontWeight = FontWeight.Bold,
-                                ),
-                                fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                modifier = Modifier
-                                    .padding(8.dp, 8.dp, 8.dp, 8.dp)
-                                    .clickable(onClick = {
-                                        if (isUserRated.not()) {
-                                            ratingDialogOpen?.value = true
-                                        }
-                                    }),
-                                fontSize = 18.sp,
                             )
-                        }
+                        Text(
+                            text = place.rate.toString(),
+                            style = TextStyle(
+                                fontStyle = FontStyle.Italic,
+                                fontWeight = FontWeight.Bold,
+                            ),
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier
+                                .padding(8.dp, 8.dp, 8.dp, 8.dp)
+                                .clickable(onClick = {
+                                    if (isUserRated.not()) {
+                                        ratingDialogOpen?.value = true
+                                    }
+                                }),
+                            fontSize = 18.sp,
+                        )
                     }
+
 
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 8.dp),
                     ) {
                         FlowRow(horizontalArrangement = Arrangement.Center) {
                             place.filter.convertToMap().forEach {
@@ -215,9 +217,9 @@ fun CommonDetailsScreen(
 
                     Row(horizontalArrangement = Arrangement.Start) {
                         Icon(
-                            imageVector = Icons.Outlined.Map,
+                            imageVector = Icons.Outlined.PushPin,
                             contentDescription = null,
-                            modifier = Modifier.padding(8.dp, 4.dp, 0.dp, 0.dp),
+                            modifier = Modifier.padding(8.dp, 4.dp, 0.dp, 4.dp),
                         )
                         Text(
                             modifier = Modifier
@@ -229,9 +231,9 @@ fun CommonDetailsScreen(
                     }
                     Row(horizontalArrangement = Arrangement.Start) {
                         Icon(
-                            imageVector = Icons.Outlined.Web,
+                            imageVector = Icons.Outlined.Attachment,
                             contentDescription = null,
-                            modifier = Modifier.padding(8.dp, 4.dp, 0.dp, 0.dp),
+                            modifier = Modifier.padding(8.dp, 4.dp, 0.dp, 4.dp),
                         )
                         Text(
                             modifier = Modifier
@@ -244,7 +246,7 @@ fun CommonDetailsScreen(
                         Icon(
                             imageVector = Icons.Outlined.Email,
                             contentDescription = null,
-                            modifier = Modifier.padding(8.dp, 4.dp, 0.dp, 0.dp),
+                            modifier = Modifier.padding(8.dp, 4.dp, 0.dp, 4.dp),
                         )
                         Text(
                             modifier = Modifier
@@ -258,7 +260,7 @@ fun CommonDetailsScreen(
                         Icon(
                             imageVector = Icons.Outlined.Phone,
                             contentDescription = null,
-                            modifier = Modifier.padding(8.dp, 4.dp, 0.dp, 0.dp),
+                            modifier = Modifier.padding(8.dp, 4.dp, 0.dp, 4.dp),
                         )
                         Text(
                             modifier = Modifier
@@ -273,7 +275,7 @@ fun CommonDetailsScreen(
                             .clickable {
                                 openingHoursOpen.value = !openingHoursOpen.value
                             }
-                            .padding(8.dp,  8.dp, 8.dp, 0.dp),
+                            .padding(8.dp, 8.dp, 8.dp, 0.dp),
                     ) {
                         Text(
                             text = stringResource(id = R.string.opening_hours),
