@@ -9,7 +9,7 @@ object Constants {
     // const val BASE_URL = "http://100.81.207.103:8092"
 
     //remote
-    const val BASE_URL = "https://dolphin-casual-deer.ngrok-free.app/restaurant"
+    const val BASE_URL = "https://dolphin-casual-deer.ngrok-free.app/restaurant/"
 
     // azure
     // const val BASE_URL = "http://restaurant.ceeeaufagderbhhg.germanywestcentral.azurecontainer.io:8080"

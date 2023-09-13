@@ -241,11 +241,13 @@ fun setBottomBar(
         }
     }
 
-    if (isConnected.not()) {
+
+    //ha más wifin vagyok, nem wildfire-n, akkor azt hiszi nincs internet todo
+   /* if (isConnected.not()) {
         when (navBackStackEntry?.destination?.route) {
             "fav" -> isItemEnable.value = true
 
             else -> isItemEnable.value = false
         }
-    }
+    }*/
 }

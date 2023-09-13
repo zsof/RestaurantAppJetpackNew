@@ -69,50 +69,50 @@ fun OpeningHours(viewModel: NewPlaceDialogViewModel = hiltViewModel()) {
                 )
             }
             if (viewModel.sameOpeningHoursEveryday.value) {
-                OpeningHoursItem(
+                OpeningHoursItemLogic(
                     basicOpen = R.string.basic_open_hour,
                     basicClose = R.string.basic_close_hour,
                     selectedOpenText = viewModel.basicOpen,
                     selectedCloseText = viewModel.basicClose,
                 )
             } else {
-                OpeningHoursItem(
+                OpeningHoursItemLogic(
                     openingDay = R.string.monday,
                     openingCheckbox = viewModel.mondayCheckbox,
                     selectedOpenText = viewModel.mondayOpen,
                     selectedCloseText = viewModel.mondayClose,
                 )
-                OpeningHoursItem(
+                OpeningHoursItemLogic(
                     openingDay = R.string.tuesday,
                     openingCheckbox = viewModel.tuesdayCheckbox,
                     selectedOpenText = viewModel.tuesdayOpen,
                     selectedCloseText = viewModel.tuesdayClose,
                 )
-                OpeningHoursItem(
+                OpeningHoursItemLogic(
                     openingDay = R.string.wednesday,
                     openingCheckbox = viewModel.wednesdayCheckbox,
                     selectedOpenText = viewModel.wednesdayOpen,
                     selectedCloseText = viewModel.wednesdayClose,
                 )
-                OpeningHoursItem(
+                OpeningHoursItemLogic(
                     openingDay = R.string.thursday,
                     openingCheckbox = viewModel.thursdayCheckbox,
                     selectedOpenText = viewModel.thursdayOpen,
                     selectedCloseText = viewModel.thursdayClose,
                 )
-                OpeningHoursItem(
+                OpeningHoursItemLogic(
                     openingDay = R.string.friday,
                     openingCheckbox = viewModel.fridayCheckbox,
                     selectedOpenText = viewModel.fridayOpen,
                     selectedCloseText = viewModel.fridayClose,
                 )
-                OpeningHoursItem(
+                OpeningHoursItemLogic(
                     openingDay = R.string.saturday,
                     openingCheckbox = viewModel.saturdayCheckbox,
                     selectedOpenText = viewModel.saturdayOpen,
                     selectedCloseText = viewModel.saturdayClose,
                 )
-                OpeningHoursItem(
+                OpeningHoursItemLogic(
                     openingDay = R.string.sunday,
                     openingCheckbox = viewModel.sundayCheckbox,
                     selectedOpenText = viewModel.sundayOpen,
@@ -124,7 +124,7 @@ fun OpeningHours(viewModel: NewPlaceDialogViewModel = hiltViewModel()) {
 }
 
 @Composable
-fun OpeningHoursItem(
+fun OpeningHoursItemLogic(
     viewModel: NewPlaceDialogViewModel = hiltViewModel(),
     openingDay: Int = 0,
     basicOpen: Int = 0,
@@ -147,17 +147,77 @@ fun OpeningHoursItem(
         context,
         { _, selectedHour: Int, selectedMinute: Int ->
             if (viewModel.isOpenHourSet.value) {
-                selectedOpenText.value = "$selectedHour:$selectedMinute"
+                selectedOpenText.value = setTime(selectedHour, selectedMinute)
             } else {
-                selectedCloseText.value = "$selectedHour:$selectedMinute"
+                selectedCloseText.value = setTime(selectedHour, selectedMinute)
             }
         },
         hour,
         minute,
-        false,
+        true,
     )
+    val openTimeText = selectedOpenText.value.ifEmpty {
+        stringResource(id = R.string.set_time)
+    }
+    val closeTimeText = selectedCloseText.value.ifEmpty {
+        stringResource(id = R.string.set_time)
+    }
 
+    if (openingDay == 0 && viewModel.sameOpeningHoursEveryday.value) {
+        viewModel.mondayOpen.value = openTimeText
+        viewModel.tuesdayOpen.value = openTimeText
+        viewModel.wednesdayOpen.value = openTimeText
+        viewModel.thursdayOpen.value = openTimeText
+        viewModel.fridayOpen.value = openTimeText
+        viewModel.saturdayOpen.value = openTimeText
+        viewModel.sundayOpen.value = openTimeText
 
+        viewModel.mondayClose.value = closeTimeText
+        viewModel.tuesdayClose.value = closeTimeText
+        viewModel.wednesdayClose.value = closeTimeText
+        viewModel.thursdayClose.value = closeTimeText
+        viewModel.fridayClose.value = closeTimeText
+        viewModel.saturdayClose.value = closeTimeText
+        viewModel.sundayClose.value = closeTimeText
+    }
+
+    OpeningHoursItem(
+        viewModel = viewModel,
+        openingDay = openingDay,
+        basicOpen = basicOpen,
+        basicClose = basicClose,
+        openingCheckbox = openingCheckbox,
+        openTimeText = openTimeText,
+        closeTimeText = closeTimeText,
+        timepicker = timepicker
+    )
+}
+
+fun setTime(selectedHour: Int, selectedMinute: Int) = when {
+    selectedHour < 10 -> {
+        if (selectedMinute < 10) {
+            "0$selectedHour:0$selectedMinute"
+        } else "0$selectedHour:$selectedMinute"
+    }
+
+    else -> {
+        if (selectedMinute < 10) {
+            "$selectedHour:0$selectedMinute"
+        } else "$selectedHour:$selectedMinute"
+    }
+}
+
+@Composable
+fun OpeningHoursItem(
+    viewModel: NewPlaceDialogViewModel = hiltViewModel(),
+    openingDay: Int = 0,
+    basicOpen: Int = 0,
+    basicClose: Int = 0,
+    openingCheckbox: MutableState<Boolean> = mutableStateOf(false),
+    openTimeText: String,
+    closeTimeText: String,
+    timepicker: TimePickerDialog
+) {
     Row(verticalAlignment = Alignment.Top, modifier = Modifier.padding(start = 10.dp)) {
         if (openingDay == 0) {
             Column {
@@ -188,12 +248,6 @@ fun OpeningHoursItem(
 
         Spacer(modifier = Modifier.weight(1f))
         Column() {
-            val openTimeText = selectedOpenText.value.ifEmpty {
-                stringResource(id = R.string.set_time)
-            }
-            val closeTimeText = selectedCloseText.value.ifEmpty {
-                stringResource(id = R.string.set_time)
-            }
             Text(
                 text = openTimeText,
                 fontSize = 14.sp,
