@@ -1,35 +1,37 @@
-package hu.zsof.restaurantappjetpacknew.ui.details
+package hu.zsof.restaurantappjetpacknew.ui.owner
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Tab
 import androidx.compose.material.TabRow
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.*
 import com.google.accompanist.pager.*
+import hu.zsof.restaurantappjetpacknew.model.enums.PlaceType
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun TabLayout(placeId: Long, onEditPlaceClick: (Long) -> Unit) {
-    val pagerState = rememberPagerState(pageCount = 3, infiniteLoop = true)
+fun TabLayoutOwnerList(
+    onClickPlaceItem: (Long) -> Unit,
+    onClickPlaceInReviewItem: (Long) -> Unit
+) {
+    val pagerState = rememberPagerState(pageCount = 2, infiniteLoop = true)
 
     Column() {
         Tabs(pagerState = pagerState)
         TabsContent(
             pagerState = pagerState,
-            placeId = placeId,
-            onEditPlaceClick = onEditPlaceClick,
+            onClickPlaceItem = onClickPlaceItem,
+            onClickPlaceInReviewItem = onClickPlaceInReviewItem
         )
     }
 }
@@ -38,9 +40,8 @@ fun TabLayout(placeId: Long, onEditPlaceClick: (Long) -> Unit) {
 @Composable
 fun Tabs(pagerState: PagerState) {
     val list = listOf(
-        "Details" to Icons.Default.Details,
-        "Images" to Icons.Default.Image,
-        "Comments" to Icons.Default.Comment,
+        "Elfogadott" to Icons.Default.Details,
+        "Elfogadásra vár" to Icons.Default.Image,
     )
 
     val scope = rememberCoroutineScope()
@@ -74,34 +75,28 @@ fun Tabs(pagerState: PagerState) {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @ExperimentalPagerApi
 @Composable
-fun TabsContent(pagerState: PagerState, placeId: Long, onEditPlaceClick: (Long) -> Unit) {
+fun TabsContent(
+    pagerState: PagerState,
+    onClickPlaceItem: (Long) -> Unit,
+    onClickPlaceInReviewItem: (Long) -> Unit
+) {
     HorizontalPager(state = pagerState) { page ->
         when (page) {
-            0 -> DetailsMainScreen(
-                placeId = placeId,
-                onEditPlaceClick = onEditPlaceClick,
+            0 -> OwnerPlaceListScreen(
+                onClickPlaceItem = onClickPlaceItem,
+                onClickPlaceInReviewItem = onClickPlaceInReviewItem,
+                placeType = PlaceType.PLACE
             )
 
-            1 -> DetailsImageScreen(placeId = placeId)
-            2 -> TabContentScreen(data = "Welcome to Comments Screen")
-        }
-    }
-}
+            1 ->  OwnerPlaceListScreen(
+                onClickPlaceItem = onClickPlaceItem,
+                onClickPlaceInReviewItem = onClickPlaceInReviewItem,
+                placeType = PlaceType.PLACE_IN_REVIEW
+            )
 
-@Composable
-fun TabContentScreen(data: String) {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-    ) {
-        Text(
-            text = data,
-            style = MaterialTheme.typography.headlineMedium,
-            fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center,
-        )
+        }
     }
 }

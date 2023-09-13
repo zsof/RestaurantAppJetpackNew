@@ -10,19 +10,13 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import hu.zsof.restaurantappjetpacknew.R
+import hu.zsof.restaurantappjetpacknew.model.enums.PlaceType
 import hu.zsof.restaurantappjetpacknew.module.AppState
 import hu.zsof.restaurantappjetpacknew.ui.common.screen.PlaceListItem
 
@@ -32,6 +26,7 @@ fun OwnerPlaceListScreen(
     viewModel: OwnerPlaceViewModel = hiltViewModel(),
     onClickPlaceItem: (Long) -> Unit,
     onClickPlaceInReviewItem: (Long) -> Unit,
+    placeType: PlaceType
 ) {
     val places = viewModel.ownerPlaces.observeAsState(listOf())
     val placesInReview = viewModel.ownerPlacesInReview.observeAsState(listOf())
@@ -48,58 +43,37 @@ fun OwnerPlaceListScreen(
                     .background(MaterialTheme.colorScheme.background)
                     .fillMaxWidth(),
             ) {
-                Text(
-                    text = stringResource(id = R.string.own_places_title),
-                    style = MaterialTheme.typography.headlineSmall.copy(
-                        fontStyle = FontStyle.Italic,
-                        fontWeight = FontWeight.Bold,
-                    ),
-                    modifier = Modifier
-                        .padding(8.dp)
-                        .align(Alignment.CenterHorizontally),
-                )
-                Text(
-                    text = stringResource(id = R.string.accepted_places),
-                    color = Color.Gray,
-                    modifier = Modifier
-                        .padding(16.dp, 8.dp, 0.dp, 0.dp),
-                )
-                LazyColumn(
-                    contentPadding = PaddingValues(8.dp),
-                    modifier = Modifier.weight(1f, fill = false)
-                ) {
-                    items(places.value) { place ->
-                        viewModel.isPlaceByOwner.value =
-                            AppState.loggedUser.value?.id == place.creatorId
+                if (placeType == PlaceType.PLACE) {
+                    LazyColumn(
+                        contentPadding = PaddingValues(8.dp),
+                    ) {
+                        items(places.value) { place ->
+                            viewModel.isPlaceByOwner.value =
+                                AppState.loggedUser.value?.id == place.creatorId
 
-                        PlaceListItem(
-                            place = place,
-                            onClickPlaceItem = onClickPlaceItem,
-                            isPlaceByOwner = viewModel.isPlaceByOwner.value,
-                            deletePlace = { viewModel.deletePlace(it) }
-                        )
+                            PlaceListItem(
+                                place = place,
+                                onClickPlaceItem = onClickPlaceItem,
+                                isPlaceByOwner = viewModel.isPlaceByOwner.value,
+                                deletePlace = { viewModel.deletePlace(it) }
+                            )
+                        }
                     }
-                }
-                Text(
-                    text = stringResource(id = R.string.wait_for_accept),
-                    color = Color.Gray,
-                    modifier = Modifier
-                        .padding(16.dp, 8.dp, 0.dp, 0.dp),
-                )
-                LazyColumn(
-                    contentPadding = PaddingValues(8.dp),
-                    modifier = Modifier.weight(1f, fill = false)
-                ) {
-                    items(placesInReview.value) { placeInReview ->
-                        viewModel.isPlaceInReviewByOwner.value =
-                            AppState.loggedUser.value?.id == placeInReview.creatorId
+                } else if (placeType == PlaceType.PLACE_IN_REVIEW) {
+                    LazyColumn(
+                        contentPadding = PaddingValues(8.dp),
+                    ) {
+                        items(placesInReview.value) { placeInReview ->
+                            viewModel.isPlaceInReviewByOwner.value =
+                                AppState.loggedUser.value?.id == placeInReview.creatorId
 
-                        PlaceListItem(
-                            place = placeInReview,
-                            onClickPlaceItem = onClickPlaceInReviewItem,
-                            isPlaceByOwner = viewModel.isPlaceInReviewByOwner.value,
-                            deletePlace = { viewModel.deletePlaceInReview(it) }
-                        )
+                            PlaceListItem(
+                                place = placeInReview,
+                                onClickPlaceItem = onClickPlaceInReviewItem,
+                                isPlaceByOwner = viewModel.isPlaceInReviewByOwner.value,
+                                deletePlace = { viewModel.deletePlaceInReview(it) }
+                            )
+                        }
                     }
                 }
             }

@@ -22,7 +22,7 @@ fun OwnerDetailsScreen(
         placeId = placeId,
         onEditPlaceClick = onEditPlaceInReviewClick,
         place = placeInReview,
-        placeType = PlaceType.PLACE_BY_OWNER_IN_REVIEW,
+        placeType = PlaceType.MODIFIED_PLACE,
         isPlaceByOwner = true,
         showProblemDialog = viewModel.showProblemDialog,
         openingHoursOpen = viewModel.openingHoursOpenDetails

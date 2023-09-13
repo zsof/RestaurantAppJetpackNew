@@ -10,7 +10,7 @@ import androidx.navigation.navArgument
 import hu.zsof.restaurantappjetpacknew.module.AppState
 import hu.zsof.restaurantappjetpacknew.ui.auth.login.LoginScreen
 import hu.zsof.restaurantappjetpacknew.ui.auth.register.RegisterScreen
-import hu.zsof.restaurantappjetpacknew.ui.details.TabLayout
+import hu.zsof.restaurantappjetpacknew.ui.details.TabLayoutDetails
 import hu.zsof.restaurantappjetpacknew.ui.favorite.FavoriteListScreen
 import hu.zsof.restaurantappjetpacknew.ui.filter.FilterPlaceDialogScreen
 import hu.zsof.restaurantappjetpacknew.ui.homelist.HomeListScreen
@@ -18,7 +18,7 @@ import hu.zsof.restaurantappjetpacknew.ui.map.MapScreen
 import hu.zsof.restaurantappjetpacknew.ui.newplace.NewPlaceDialogScreen
 import hu.zsof.restaurantappjetpacknew.ui.owner.EditPlaceDialogScreen
 import hu.zsof.restaurantappjetpacknew.ui.owner.OwnerDetailsScreen
-import hu.zsof.restaurantappjetpacknew.ui.owner.OwnerPlaceListScreen
+import hu.zsof.restaurantappjetpacknew.ui.owner.TabLayoutOwnerList
 import hu.zsof.restaurantappjetpacknew.ui.profile.ProfileScreen
 import hu.zsof.restaurantappjetpacknew.ui.review.ReviewDetailsScreen
 import hu.zsof.restaurantappjetpacknew.ui.review.ReviewPlaceListScreen
@@ -138,7 +138,7 @@ fun NavGraphBuilder.authNavGraph(
                 },
             ),
         ) {
-            TabLayout(
+            TabLayoutDetails(
                 placeId = navController.currentBackStackEntry?.arguments?.getLong(ScreenModel.NavigationScreen.Details.Args.placeId)
                     ?: 0,
                 onEditPlaceClick = {
@@ -168,7 +168,7 @@ fun NavGraphBuilder.authNavGraph(
         }
 
         composable(route = ScreenModel.NavigationScreen.OwnerPlace.route) {
-            OwnerPlaceListScreen(
+            TabLayoutOwnerList(
                 onClickPlaceItem = {
                     navController.navigate(
                         ScreenModel.NavigationScreen.Details.passPlaceId(
@@ -184,6 +184,22 @@ fun NavGraphBuilder.authNavGraph(
                     )
                 },
             )
+            /*OwnerPlaceListScreen(
+                onClickPlaceItem = {
+                    navController.navigate(
+                        ScreenModel.NavigationScreen.Details.passPlaceId(
+                            it,
+                        ),
+                    )
+                },
+                onClickPlaceInReviewItem = {
+                    navController.navigate(
+                        ScreenModel.NavigationScreen.OwnerDetails.passPlaceId(
+                            it,
+                        ),
+                    )
+                },
+            )*/
         }
         composable(
             route = ScreenModel.NavigationScreen.OwnerDetails.route,
