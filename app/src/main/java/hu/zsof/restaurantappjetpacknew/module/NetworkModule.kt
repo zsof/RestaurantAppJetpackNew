@@ -57,6 +57,12 @@ class NetworkModule() {
     class AuthInterceptor(private val context: Context) : Interceptor {
 
         override fun intercept(chain: Interceptor.Chain): Response {
+
+            // add ngRok skip header
+            var request = chain.request()
+            request = request.newBuilder()
+                .header("ngrok-skip-browser-warning", "yes").build()
+
             // add bearer token to requests if user logged in already
             val sharedPreferences =
                 context.getSharedPreferences(
@@ -66,7 +72,6 @@ class NetworkModule() {
             val tokenForRequest = sharedPreferences.getString("bearer", "")
 
             val originalResponse: Response = if (tokenForRequest?.isNotBlank() == true) {
-                val request = chain.request()
                 val authenticatedRequest: Request = request.newBuilder()
                     .header("Authorization", tokenForRequest).build()
 
@@ -74,7 +79,7 @@ class NetworkModule() {
                 chain.proceed(authenticatedRequest)
             } else {
                 // send to backend without token
-                chain.proceed(chain.request())
+                chain.proceed(request)
             }
 
             // get authorization token from backend when login from response
