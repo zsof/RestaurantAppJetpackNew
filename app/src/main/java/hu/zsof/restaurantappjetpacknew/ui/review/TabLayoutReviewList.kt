@@ -1,0 +1,96 @@
+package hu.zsof.restaurantappjetpacknew.ui.review
+
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.Tab
+import androidx.compose.material.TabRow
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.TabRowDefaults
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.*
+import com.google.accompanist.pager.*
+import hu.zsof.restaurantappjetpacknew.model.enums.PlaceType
+import kotlinx.coroutines.launch
+
+@OptIn(ExperimentalPagerApi::class)
+@Composable
+fun TabLayoutReviewList(
+    onClickPlaceItem: (Long) -> Unit,
+) {
+    val pagerState = rememberPagerState(pageCount = 2, infiniteLoop = true)
+
+    Column() {
+        Tabs(pagerState = pagerState)
+        TabsContent(
+            pagerState = pagerState,
+            onClickPlaceItem = onClickPlaceItem,
+        )
+    }
+}
+
+@ExperimentalPagerApi
+@Composable
+fun Tabs(pagerState: PagerState) {
+    val list = listOf(
+        "Új" to Icons.Default.Details,
+        "Módosított Helyek" to Icons.Default.Image,
+    )
+
+    val scope = rememberCoroutineScope()
+    TabRow(
+        selectedTabIndex = pagerState.currentPage,
+        backgroundColor = MaterialTheme.colorScheme.secondary,
+        indicator = { tabPositions ->
+            TabRowDefaults.Indicator(
+                Modifier.pagerTabIndicatorOffset(pagerState, tabPositions),
+                height = 2.dp,
+                color = Color.Black,
+            )
+        },
+    ) {
+        list.forEachIndexed { index, _ ->
+            Tab(
+                text = {
+                    Text(
+                        list[index].first,
+                        color = if (pagerState.currentPage == index) MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.surfaceVariant,
+                    )
+                },
+                selected = pagerState.currentPage == index,
+                onClick = {
+                    scope.launch {
+                        pagerState.animateScrollToPage(index)
+                    }
+                },
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@ExperimentalPagerApi
+@Composable
+fun TabsContent(
+    pagerState: PagerState,
+    onClickPlaceItem: (Long) -> Unit,
+) {
+    HorizontalPager(state = pagerState) { page ->
+        when (page) {
+            0 -> ReviewPlaceListScreen(
+                onClickPlaceItem = onClickPlaceItem,
+                placeType = PlaceType.PLACE_IN_REVIEW
+            )
+
+            1 -> ReviewPlaceListScreen(
+                onClickPlaceItem = onClickPlaceItem,
+                placeType = PlaceType.MODIFIED_PLACE
+            )
+        }
+    }
+}

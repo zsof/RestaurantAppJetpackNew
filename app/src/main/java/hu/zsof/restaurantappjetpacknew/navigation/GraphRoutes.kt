@@ -21,7 +21,7 @@ import hu.zsof.restaurantappjetpacknew.ui.owner.OwnerDetailsScreen
 import hu.zsof.restaurantappjetpacknew.ui.owner.TabLayoutOwnerList
 import hu.zsof.restaurantappjetpacknew.ui.profile.ProfileScreen
 import hu.zsof.restaurantappjetpacknew.ui.review.ReviewDetailsScreen
-import hu.zsof.restaurantappjetpacknew.ui.review.ReviewPlaceListScreen
+import hu.zsof.restaurantappjetpacknew.ui.review.TabLayoutReviewList
 import hu.zsof.restaurantappjetpacknew.util.Constants
 
 @ExperimentalMaterial3Api
@@ -96,14 +96,14 @@ fun NavGraphBuilder.authNavGraph(
         }
 
         composable(route = ScreenModel.NavigationScreen.ReviewPlace.route) {
-            ReviewPlaceListScreen(
+            TabLayoutReviewList(
                 onClickPlaceItem = {
                     navController.navigate(
-                        ScreenModel.NavigationScreen.ReviewDetails.passPlaceId(
+                        ScreenModel.NavigationScreen.Details.passPlaceId(
                             it,
-                        )
+                        ),
                     )
-                }
+                },
             )
         }
 
@@ -184,22 +184,6 @@ fun NavGraphBuilder.authNavGraph(
                     )
                 },
             )
-            /*OwnerPlaceListScreen(
-                onClickPlaceItem = {
-                    navController.navigate(
-                        ScreenModel.NavigationScreen.Details.passPlaceId(
-                            it,
-                        ),
-                    )
-                },
-                onClickPlaceInReviewItem = {
-                    navController.navigate(
-                        ScreenModel.NavigationScreen.OwnerDetails.passPlaceId(
-                            it,
-                        ),
-                    )
-                },
-            )*/
         }
         composable(
             route = ScreenModel.NavigationScreen.OwnerDetails.route,
