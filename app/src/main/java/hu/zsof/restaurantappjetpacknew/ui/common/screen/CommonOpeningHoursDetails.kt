@@ -34,7 +34,11 @@ fun OpeningHoursDetails(
                     Text(
                         modifier = Modifier
                             .padding(8.dp, 0.dp),
-                        text = place.openDetails.mondayOpen,
+                        text = place.openDetails.mondayOpen.ifEmpty {
+                            stringResource(
+                                id = R.string.not_provided_info
+                            )
+                        },
                         fontSize = 16.sp,
                         maxLines = 3,
                     )
@@ -42,7 +46,11 @@ fun OpeningHoursDetails(
                 Text(
                     modifier = Modifier
                         .padding(8.dp, 0.dp),
-                    text = place.openDetails.mondayClose,
+                    text = place.openDetails.mondayClose.ifEmpty {
+                        stringResource(
+                            id = R.string.not_provided_info
+                        )
+                    },
                     fontSize = 16.sp,
                     maxLines = 3,
                 )
@@ -62,7 +70,11 @@ fun OpeningHoursDetails(
                     Text(
                         modifier = Modifier
                             .padding(8.dp, 0.dp),
-                        text = place.openDetails.tuesdayOpen,
+                        text = place.openDetails.tuesdayOpen.ifEmpty {
+                            stringResource(
+                                id = R.string.not_provided_info
+                            )
+                        },
                         fontSize = 16.sp,
                         maxLines = 3,
                     )
@@ -70,7 +82,11 @@ fun OpeningHoursDetails(
                 Text(
                     modifier = Modifier
                         .padding(8.dp, 0.dp),
-                    text = place.openDetails.tuesdayClose,
+                    text = place.openDetails.tuesdayClose.ifEmpty {
+                        stringResource(
+                            id = R.string.not_provided_info
+                        )
+                    },
                     fontSize = 16.sp,
                     maxLines = 3,
                 )
@@ -90,7 +106,11 @@ fun OpeningHoursDetails(
                     Text(
                         modifier = Modifier
                             .padding(8.dp, 0.dp),
-                        text = place.openDetails.wednesdayOpen,
+                        text = place.openDetails.wednesdayOpen.ifEmpty {
+                            stringResource(
+                                id = R.string.not_provided_info
+                            )
+                        },
                         fontSize = 16.sp,
                         maxLines = 3,
                     )
@@ -98,7 +118,11 @@ fun OpeningHoursDetails(
                 Text(
                     modifier = Modifier
                         .padding(8.dp, 0.dp),
-                    text = place.openDetails.wednesdayClose,
+                    text = place.openDetails.wednesdayClose.ifEmpty {
+                        stringResource(
+                            id = R.string.not_provided_info
+                        )
+                    },
                     fontSize = 16.sp,
                     maxLines = 3,
                 )
@@ -118,7 +142,11 @@ fun OpeningHoursDetails(
                     Text(
                         modifier = Modifier
                             .padding(8.dp, 0.dp),
-                        text = place.openDetails.thursdayOpen,
+                        text = place.openDetails.thursdayOpen.ifEmpty {
+                            stringResource(
+                                id = R.string.not_provided_info
+                            )
+                        },
                         fontSize = 16.sp,
                         maxLines = 3,
                     )
@@ -126,7 +154,11 @@ fun OpeningHoursDetails(
                 Text(
                     modifier = Modifier
                         .padding(8.dp, 0.dp),
-                    text = place.openDetails.thursdayClose,
+                    text = place.openDetails.thursdayClose.ifEmpty {
+                        stringResource(
+                            id = R.string.not_provided_info
+                        )
+                    },
                     fontSize = 16.sp,
                     maxLines = 3,
                 )
@@ -146,7 +178,11 @@ fun OpeningHoursDetails(
                     Text(
                         modifier = Modifier
                             .padding(8.dp, 0.dp),
-                        text = place.openDetails.fridayOpen,
+                        text = place.openDetails.fridayOpen.ifEmpty {
+                            stringResource(
+                                id = R.string.not_provided_info
+                            )
+                        },
                         fontSize = 16.sp,
                         maxLines = 3,
                     )
@@ -154,7 +190,11 @@ fun OpeningHoursDetails(
                 Text(
                     modifier = Modifier
                         .padding(8.dp, 0.dp),
-                    text = place.openDetails.fridayClose,
+                    text = place.openDetails.fridayClose.ifEmpty {
+                        stringResource(
+                            id = R.string.not_provided_info
+                        )
+                    },
                     fontSize = 16.sp,
                     maxLines = 3,
                 )
@@ -174,7 +214,11 @@ fun OpeningHoursDetails(
                     Text(
                         modifier = Modifier
                             .padding(8.dp, 0.dp),
-                        text = place.openDetails.saturdayOpen,
+                        text = place.openDetails.saturdayOpen.ifEmpty {
+                            stringResource(
+                                id = R.string.not_provided_info
+                            )
+                        },
                         fontSize = 16.sp,
                         maxLines = 3,
                     )
@@ -182,7 +226,11 @@ fun OpeningHoursDetails(
                 Text(
                     modifier = Modifier
                         .padding(8.dp, 0.dp),
-                    text = place.openDetails.saturdayClose,
+                    text = place.openDetails.saturdayClose.ifEmpty {
+                        stringResource(
+                            id = R.string.not_provided_info
+                        )
+                    },
                     fontSize = 16.sp,
                     maxLines = 3,
                 )
@@ -202,7 +250,11 @@ fun OpeningHoursDetails(
                     Text(
                         modifier = Modifier
                             .padding(8.dp, 0.dp),
-                        text = place.openDetails.sundayOpen,
+                        text = place.openDetails.sundayOpen.ifEmpty {
+                            stringResource(
+                                id = R.string.not_provided_info
+                            )
+                        },
                         fontSize = 16.sp,
                         maxLines = 3,
                     )
@@ -210,7 +262,11 @@ fun OpeningHoursDetails(
                 Text(
                     modifier = Modifier
                         .padding(8.dp, 0.dp),
-                    text = place.openDetails.sundayClose,
+                    text = place.openDetails.sundayClose.ifEmpty {
+                        stringResource(
+                            id = R.string.not_provided_info
+                        )
+                    },
                     fontSize = 16.sp,
                     maxLines = 3,
                 )
