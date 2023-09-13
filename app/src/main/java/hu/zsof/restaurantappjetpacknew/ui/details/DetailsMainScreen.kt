@@ -7,7 +7,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import hu.zsof.restaurantappjetpacknew.model.enums.PlaceType
 import hu.zsof.restaurantappjetpacknew.module.AppState
 import hu.zsof.restaurantappjetpacknew.ui.common.screen.CommonDetailsScreen
-import hu.zsof.restaurantappjetpacknew.util.Constants
 
 @Composable
 fun DetailsMainScreen(
@@ -33,8 +32,6 @@ fun DetailsMainScreen(
         place = place,
         placeType = PlaceType.PLACE,
         isPlaceByOwner = viewModel.isPlaceByOwner.value,
-        isUserRated = viewModel.getAppPreference(Constants.Prefs.USER_RATED),
-        ratingDialogOpen = viewModel.ratingDialogOpen,
         openingHoursOpen = viewModel.openingHoursOpenDetails
     )
 }

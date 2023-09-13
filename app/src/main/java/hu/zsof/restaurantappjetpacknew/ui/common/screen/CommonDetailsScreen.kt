@@ -17,7 +17,6 @@ import androidx.compose.material.icons.outlined.PushPin
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -34,6 +33,7 @@ import hu.zsof.restaurantappjetpacknew.model.BasePlace
 import hu.zsof.restaurantappjetpacknew.model.Place
 import hu.zsof.restaurantappjetpacknew.model.PlaceInReview
 import hu.zsof.restaurantappjetpacknew.model.enums.PlaceType
+import hu.zsof.restaurantappjetpacknew.model.enums.Type
 import hu.zsof.restaurantappjetpacknew.module.AppState
 import hu.zsof.restaurantappjetpacknew.ui.common.button.TextChip
 import hu.zsof.restaurantappjetpacknew.ui.review.FabItem
@@ -51,8 +51,6 @@ fun CommonDetailsScreen(
     showProblemDialog: MutableState<Boolean>? = null,
     placeType: PlaceType = PlaceType.PLACE,
     isPlaceByOwner: Boolean,
-    isUserRated: Boolean = false,
-    ratingDialogOpen: MutableState<Boolean>? = null,
     multiFloatingState: MutableState<MultiFloatingState>? = null,
     fabItems: List<FabItem> = emptyList(),
     viewModel: ReviewPlaceViewModel = hiltViewModel(),
@@ -107,7 +105,7 @@ fun CommonDetailsScreen(
                     .padding(bottom = 32.dp),
             ) {
                 if (place != null) {
-                    if (place.image.imageUrl().isNullOrEmpty().not()) {
+                    if (place.image.imageUrl().isEmpty().not()) {
                         AsyncImage(
                             model = place.image.imageUrl(),
                             contentDescription = null,
@@ -116,13 +114,13 @@ fun CommonDetailsScreen(
                                 .wrapContentSize()
                                 .wrapContentHeight()
                                 .wrapContentWidth()
-                                .align(Alignment.CenterHorizontally)
+                                .align(CenterHorizontally)
                                 .padding(16.dp)
                                 .clip(RoundedCornerShape(8.dp)),
                         )
                     }
                     Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
+                        horizontalAlignment = CenterHorizontally,
                         modifier = Modifier.fillMaxWidth(),
                     ) {
                         Row(horizontalArrangement = Arrangement.Center) {
@@ -164,13 +162,13 @@ fun CommonDetailsScreen(
 
                     TextChip(
                         isSelected = true,
-                        text = place.type.name,
+                        text = Type.getByType(place.type),
                         modifier = Modifier.align(CenterHorizontally),
                         shouldShowIcon = false
                     )
 
                     Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
+                        horizontalAlignment = CenterHorizontally,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(bottom = 8.dp),
