@@ -1,7 +1,7 @@
 package hu.zsof.restaurantappjetpacknew.model.enums
 
 enum class Type(val nameValue: String) {
-    RESTAURANT("Étterem"), CAFE("Kávézó"), PATISSERIE("Cukrászda"), BAKERY("Pékség"), BAR("Bár"), FAST_FOOD("Gyors étterem"), EMPTY("");
+    RESTAURANT("Étterem"), CAFE("Kávézó"), PATISSERIE("Cukrászda"), BAKERY("Pékség"), BAR("Bár"), FAST_FOOD("Gyors étterem");
 
     companion object {
 

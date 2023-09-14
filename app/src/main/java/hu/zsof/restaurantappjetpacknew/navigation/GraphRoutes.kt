@@ -99,7 +99,7 @@ fun NavGraphBuilder.authNavGraph(
             TabLayoutReviewList(
                 onClickPlaceItem = {
                     navController.navigate(
-                        ScreenModel.NavigationScreen.Details.passPlaceId(
+                        ScreenModel.NavigationScreen.ReviewDetails.passPlaceId(
                             it,
                         ),
                     )
