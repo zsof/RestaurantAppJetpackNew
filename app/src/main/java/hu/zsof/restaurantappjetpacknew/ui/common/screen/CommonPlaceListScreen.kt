@@ -38,7 +38,6 @@ import coil.compose.AsyncImage
 import hu.zsof.restaurantappjetpacknew.model.BasePlace
 import hu.zsof.restaurantappjetpacknew.model.PlaceInReview
 import hu.zsof.restaurantappjetpacknew.model.enums.Price
-import hu.zsof.restaurantappjetpacknew.module.AppState
 import hu.zsof.restaurantappjetpacknew.util.extension.imageUrl
 
 @ExperimentalMaterial3Api
@@ -50,7 +49,6 @@ fun PlaceListItem(
     needFavButton: Boolean = false,
     addOrRemoveFavIdList: (() -> Unit)? = null,
     isFavPlace: MutableState<Boolean>? = null,
-    isModifiedPlace: Boolean = false,
     isPlaceByOwner: Boolean = false,
     deletePlace: ((Long) -> Unit)? = null
 ) {
@@ -59,9 +57,6 @@ fun PlaceListItem(
     } else {
         Icons.Default.FavoriteBorder
     }
-
-    //To save for backend in review acceptPlace
-    AppState.isModifiedPlace.value = isModifiedPlace
 
     Card(
         modifier = Modifier

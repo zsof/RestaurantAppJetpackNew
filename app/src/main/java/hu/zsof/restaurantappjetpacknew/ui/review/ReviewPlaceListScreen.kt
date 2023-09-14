@@ -50,7 +50,6 @@ fun ReviewPlaceListScreen(
                             PlaceListItem(
                                 place = it,
                                 onClickPlaceItem = onClickPlaceItem,
-                                isModifiedPlace = true
                             )
                         }
                     }
@@ -62,7 +61,6 @@ fun ReviewPlaceListScreen(
                             PlaceListItem(
                                 place = it,
                                 onClickPlaceItem = onClickPlaceItem,
-                                isModifiedPlace = false
                             )
                         }
                     }
