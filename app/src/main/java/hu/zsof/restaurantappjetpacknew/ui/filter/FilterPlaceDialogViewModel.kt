@@ -15,22 +15,23 @@ import javax.inject.Inject
 class FilterPlaceDialogViewModel @Inject constructor(private val placeRepository: PlaceRepository) :
     ViewModel() {
 
-    var dialogOpen = mutableStateOf(true)
-    var expandedCategoryMenu = mutableStateOf(false)
+    val dialogOpen = mutableStateOf(true)
+    val expandedCategoryMenu = mutableStateOf(false)
 
-    var sliderValue = mutableStateOf(0f)
+    val sliderValue = mutableStateOf(0f)
     var priceValue = Price.LOW
+    val priceSelectedToFilter = mutableStateOf(false)
 
-    var glutenFreeChecked = mutableStateOf(false)
-    var lactoseFreeChecked = mutableStateOf(false)
-    var vegetarianChecked = mutableStateOf(false)
-    var veganChecked = mutableStateOf(false)
-    var fastFoodChecked = mutableStateOf(false)
-    var parkingChecked = mutableStateOf(false)
-    var familyPlaceChecked = mutableStateOf(false)
-    var dogFriendlyChecked = mutableStateOf(false)
-    var deliveryChecked = mutableStateOf(false)
-    var creditCardChecked = mutableStateOf(false)
+    val glutenFreeChecked = mutableStateOf(false)
+    val lactoseFreeChecked = mutableStateOf(false)
+    val vegetarianChecked = mutableStateOf(false)
+    val veganChecked = mutableStateOf(false)
+    val fastFoodChecked = mutableStateOf(false)
+    val parkingChecked = mutableStateOf(false)
+    val familyPlaceChecked = mutableStateOf(false)
+    val dogFriendlyChecked = mutableStateOf(false)
+    val deliveryChecked = mutableStateOf(false)
+    val creditCardChecked = mutableStateOf(false)
 
     fun filterPlaces(typeValue: Type?) = runBlocking {
         placeRepository.filterPlaces(
@@ -48,6 +49,9 @@ class FilterPlaceDialogViewModel @Inject constructor(private val placeRepository
                     creditCard = creditCardChecked.value,
                 ),
                 type = typeValue,
+                price = if (priceSelectedToFilter.value) {
+                    priceValue
+                } else null
             ),
         )
     }

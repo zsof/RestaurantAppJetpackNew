@@ -26,8 +26,8 @@ import com.google.maps.android.compose.*
 import hu.zsof.restaurantappjetpacknew.R
 import hu.zsof.restaurantappjetpacknew.model.enums.Price
 import hu.zsof.restaurantappjetpacknew.model.enums.Type
-import hu.zsof.restaurantappjetpacknew.navigation.ScreenModel
 import hu.zsof.restaurantappjetpacknew.module.AppState
+import hu.zsof.restaurantappjetpacknew.navigation.ScreenModel
 import java.util.*
 
 @SuppressLint("ResourceType")
@@ -122,37 +122,49 @@ fun FilterPlaceDialogScreen(
                     }
                     Spacer(modifier = Modifier.height(10.dp))
 
-                    Row() {
+                    Row {
                         Text(
                             text = stringResource(id = R.string.price_text),
                             style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold),
                             modifier = Modifier.padding(top = 12.dp, end = 16.dp, start = 10.dp),
                         )
-                        Spacer(Modifier.weight(1f))
 
-                        Slider(
-                            value = viewModel.sliderValue.value,
-                            onValueChange = { sliderValueNew ->
-                                viewModel.sliderValue.value = sliderValueNew
-                            },
-                            onValueChangeFinished = {
-                                // this is called when the user completed selecting the value
-                                viewModel.priceValue = when (viewModel.sliderValue.value) {
-                                    0f -> {
-                                        Price.LOW
-                                    }
-                                    5.0f -> {
-                                        Price.MIDDLE
-                                    }
-                                    else -> {
-                                        Price.HIGH
-                                    }
-                                }
-                            },
-                            valueRange = 0f..10f,
-                            steps = 1,
-                            modifier = Modifier.padding(start = 32.dp),
+                        Checkbox(
+                            checked = viewModel.priceSelectedToFilter.value,
+                            onCheckedChange = { priceNewValue ->
+                                viewModel.priceSelectedToFilter.value = priceNewValue
+                            }
                         )
+
+                        if (viewModel.priceSelectedToFilter.value) {
+                            Row {
+                                Slider(
+                                    value = viewModel.sliderValue.value,
+                                    onValueChange = { sliderValueNew ->
+                                        viewModel.sliderValue.value = sliderValueNew
+                                    },
+                                    onValueChangeFinished = {
+                                        // this is called when the user completed selecting the value
+                                        viewModel.priceValue = when (viewModel.sliderValue.value) {
+                                            0f -> {
+                                                Price.LOW
+                                            }
+
+                                            5.0f -> {
+                                                Price.MIDDLE
+                                            }
+
+                                            else -> {
+                                                Price.HIGH
+                                            }
+                                        }
+                                    },
+                                    valueRange = 0f..10f,
+                                    steps = 1,
+                                    modifier = Modifier.padding(start = 32.dp),
+                                )
+                            }
+                        }
                     }
 
                     Spacer(modifier = Modifier.height(10.dp))

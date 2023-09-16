@@ -104,6 +104,7 @@
 
     <string-array name="filter_category_items">
         <item></item>
+        <item>Nincs kiválasztva</item>
         <item>Étterem</item>
         <item>Kávézó</item>
         <item>Pékség</item>
