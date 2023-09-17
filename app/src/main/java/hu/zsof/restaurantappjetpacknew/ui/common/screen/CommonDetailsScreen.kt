@@ -178,7 +178,7 @@ fun CommonDetailsScreen(
                                 if (it.value) {
                                     TextChip(
                                         isSelected = true,
-                                        text = stringResource(id = it.key),
+                                        text = stringResource(id = it.key) ,
                                     )
                                 }
                             }
