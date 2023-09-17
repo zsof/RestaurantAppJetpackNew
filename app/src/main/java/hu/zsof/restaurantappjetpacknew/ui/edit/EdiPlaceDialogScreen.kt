@@ -18,11 +18,11 @@ fun EditPlaceDialogScreen(
     viewModel: EditPlaceViewModel = hiltViewModel(),
     onDialogClose: () -> Unit,
 ) {
-    //todo filtereket ki kéne szervezni és külön vm, mert így nem menti el update-kor
     //todo esetleg mentéskor egy toast h tuti jó a cím? mert később nem módosíthatod
 
     CommonPlaceDialogScreen(
         viewModel = viewModel,
         onDialogClose = onDialogClose,
+        isNewPlace = false
     )
 }

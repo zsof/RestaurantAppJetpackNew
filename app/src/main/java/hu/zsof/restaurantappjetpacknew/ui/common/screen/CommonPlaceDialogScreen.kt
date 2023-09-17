@@ -51,6 +51,7 @@ import java.util.*
 fun CommonPlaceDialogScreen(
     viewModel: CommonPlaceDialogViewModel = hiltViewModel(),
     onDialogClose: () -> Unit,
+    isNewPlace: Boolean
 ) {
     val context = LocalContext.current
 
@@ -92,7 +93,7 @@ fun CommonPlaceDialogScreen(
         Dialog(
             onDismissRequest = {
                 viewModel.dialogOpen.value = false
-                // AppState.place.value = null
+                AppState.place.value = null
             },
             properties = DialogProperties(
                 dismissOnClickOutside = false,
@@ -120,7 +121,11 @@ fun CommonPlaceDialogScreen(
                             .weight(1f, fill = false),
                     ) {
                         Text(
-                            text = stringResource(id = R.string.add_new_place_title),
+                            text = if (isNewPlace)
+                                stringResource(id = R.string.add_new_place_title)
+                            else stringResource(
+                                id = R.string.edit_place_title
+                            ),
                             style = MaterialTheme.typography.headlineSmall.copy(
                                 fontStyle = FontStyle.Italic,
                                 fontWeight = FontWeight.Bold,

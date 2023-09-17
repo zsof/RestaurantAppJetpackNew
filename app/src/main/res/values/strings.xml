@@ -39,6 +39,7 @@
     <string name="delivery">Kiszállítás</string>
     <string name="credit_card">Kártyás fizetés</string>
     <string name="add_new_place_title">Új helyszín információi</string>
+    <string name="edit_place_title">Helyszín szerkesztése</string>
     <string name="save_btn">Mentés</string>
     <string name="cancel_btn">Mégse</string>
     <string name="require_error">Kötelező</string>

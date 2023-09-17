@@ -19,8 +19,7 @@ import javax.inject.Inject
 class EditPlaceViewModel @Inject constructor(
     private val placeOwnerRepository: PlaceOwnerRepository,
     private val resourceRepository: ResourceRepository,
-) :
-    CommonPlaceDialogViewModel() {
+) : CommonPlaceDialogViewModel() {
     override fun addOrEditPlace(
         typeValue: Type,
         priceValue: Price,

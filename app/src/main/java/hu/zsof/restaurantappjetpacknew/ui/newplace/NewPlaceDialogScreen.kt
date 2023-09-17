@@ -38,6 +38,7 @@ fun NewPlaceDialogScreen(
     CommonPlaceDialogScreen(
         viewModel = viewModel,
         onDialogClose = onDialogClose,
+        isNewPlace = true
     )
 }
 

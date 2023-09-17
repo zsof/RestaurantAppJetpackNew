@@ -22,7 +22,7 @@ open class CommonPlaceDialogViewModel @Inject constructor(
 
     val dialogOpen = mutableStateOf(true)
     val expandedCategoryMenu = mutableStateOf(false)
-    val selectedOptionIndex = when(place.value?.type) {
+    val selectedOptionIndex = when (place.value?.type) {
         Type.RESTAURANT -> mutableStateOf(0)
         Type.CAFE -> mutableStateOf(1)
         Type.PATISSERIE -> mutableStateOf(2)

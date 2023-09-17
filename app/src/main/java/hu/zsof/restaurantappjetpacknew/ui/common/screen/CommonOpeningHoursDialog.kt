@@ -28,10 +28,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import hu.zsof.restaurantappjetpacknew.R
-import hu.zsof.restaurantappjetpacknew.ui.newplace.NewPlaceDialogViewModel
 
 @Composable
-fun OpeningHours(viewModel: NewPlaceDialogViewModel = hiltViewModel()) {
+fun OpeningHours(viewModel: CommonPlaceDialogViewModel = hiltViewModel()) {
     val openingHoursArrowIcon = if (viewModel.openingHoursOpen.value) {
         Icons.Outlined.KeyboardArrowUp
     } else {
@@ -74,6 +73,7 @@ fun OpeningHours(viewModel: NewPlaceDialogViewModel = hiltViewModel()) {
                     basicClose = R.string.basic_close_hour,
                     selectedOpenText = viewModel.basicOpen,
                     selectedCloseText = viewModel.basicClose,
+                    viewModel = viewModel
                 )
             } else {
                 OpeningHoursItemLogic(
@@ -81,42 +81,49 @@ fun OpeningHours(viewModel: NewPlaceDialogViewModel = hiltViewModel()) {
                     openingCheckbox = viewModel.mondayCheckbox,
                     selectedOpenText = viewModel.mondayOpen,
                     selectedCloseText = viewModel.mondayClose,
+                    viewModel = viewModel
                 )
                 OpeningHoursItemLogic(
                     openingDay = R.string.tuesday,
                     openingCheckbox = viewModel.tuesdayCheckbox,
                     selectedOpenText = viewModel.tuesdayOpen,
                     selectedCloseText = viewModel.tuesdayClose,
+                    viewModel = viewModel
                 )
                 OpeningHoursItemLogic(
                     openingDay = R.string.wednesday,
                     openingCheckbox = viewModel.wednesdayCheckbox,
                     selectedOpenText = viewModel.wednesdayOpen,
                     selectedCloseText = viewModel.wednesdayClose,
+                    viewModel = viewModel
                 )
                 OpeningHoursItemLogic(
                     openingDay = R.string.thursday,
                     openingCheckbox = viewModel.thursdayCheckbox,
                     selectedOpenText = viewModel.thursdayOpen,
                     selectedCloseText = viewModel.thursdayClose,
+                    viewModel = viewModel
                 )
                 OpeningHoursItemLogic(
                     openingDay = R.string.friday,
                     openingCheckbox = viewModel.fridayCheckbox,
                     selectedOpenText = viewModel.fridayOpen,
                     selectedCloseText = viewModel.fridayClose,
+                    viewModel = viewModel
                 )
                 OpeningHoursItemLogic(
                     openingDay = R.string.saturday,
                     openingCheckbox = viewModel.saturdayCheckbox,
                     selectedOpenText = viewModel.saturdayOpen,
                     selectedCloseText = viewModel.saturdayClose,
+                    viewModel = viewModel
                 )
                 OpeningHoursItemLogic(
                     openingDay = R.string.sunday,
                     openingCheckbox = viewModel.sundayCheckbox,
                     selectedOpenText = viewModel.sundayOpen,
                     selectedCloseText = viewModel.sundayClose,
+                    viewModel = viewModel
                 )
             }
         }
@@ -125,7 +132,7 @@ fun OpeningHours(viewModel: NewPlaceDialogViewModel = hiltViewModel()) {
 
 @Composable
 fun OpeningHoursItemLogic(
-    viewModel: NewPlaceDialogViewModel = hiltViewModel(),
+    viewModel: CommonPlaceDialogViewModel,
     openingDay: Int = 0,
     basicOpen: Int = 0,
     basicClose: Int = 0,
@@ -209,7 +216,7 @@ fun setTime(selectedHour: Int, selectedMinute: Int) = when {
 
 @Composable
 fun OpeningHoursItem(
-    viewModel: NewPlaceDialogViewModel = hiltViewModel(),
+    viewModel: CommonPlaceDialogViewModel,
     openingDay: Int = 0,
     basicOpen: Int = 0,
     basicClose: Int = 0,
