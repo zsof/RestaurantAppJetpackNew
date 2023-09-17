@@ -22,6 +22,8 @@ class FilterPlaceDialogViewModel @Inject constructor(private val placeRepository
     var priceValue = Price.LOW
     val priceSelectedToFilter = mutableStateOf(false)
 
+    val typeSelectedToFilter = mutableStateOf(false)
+
     val glutenFreeChecked = mutableStateOf(false)
     val lactoseFreeChecked = mutableStateOf(false)
     val vegetarianChecked = mutableStateOf(false)
@@ -48,10 +50,8 @@ class FilterPlaceDialogViewModel @Inject constructor(private val placeRepository
                     delivery = deliveryChecked.value,
                     creditCard = creditCardChecked.value,
                 ),
-                type = typeValue,
-                price = if (priceSelectedToFilter.value) {
-                    priceValue
-                } else null
+                type = if (typeSelectedToFilter.value) typeValue else null,
+                price = if (priceSelectedToFilter.value) priceValue else null
             ),
         )
     }

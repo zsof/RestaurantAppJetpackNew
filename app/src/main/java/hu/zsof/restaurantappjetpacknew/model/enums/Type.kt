@@ -6,9 +6,7 @@ enum class Type(val nameValue: String) {
     PATISSERIE("Cukrászda"),
     BAKERY("Pékség"),
     BAR("Bár"),
-    FAST_FOOD("Gyors étterem"),
-    EMPTY("Nincs kiválasztva");
-
+    FAST_FOOD("Gyors étterem");
     companion object {
 
         fun getByName(selectedCategory: String): Type {

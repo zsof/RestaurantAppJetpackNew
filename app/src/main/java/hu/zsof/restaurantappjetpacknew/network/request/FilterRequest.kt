@@ -7,5 +7,5 @@ import hu.zsof.restaurantappjetpacknew.model.enums.Type
 data class FilterRequest(
     var filter: CustomFilter = CustomFilter(),
     var type: Type? = null,
-     val price: Price? = Price.LOW
+     val price: Price? = null
 )

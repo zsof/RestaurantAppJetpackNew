@@ -67,7 +67,7 @@ fun CommonPlaceDialogScreen(
         }
     }
 
-    val categoryOptions = stringArrayResource(id = R.array.new_category_items)
+    val categoryOptions = stringArrayResource(id = R.array.filter_category_items)
     var selectedOptionText by remember { mutableStateOf(categoryOptions[0]) }
 
     val projection = arrayOf(MediaStore.MediaColumns.DATA)

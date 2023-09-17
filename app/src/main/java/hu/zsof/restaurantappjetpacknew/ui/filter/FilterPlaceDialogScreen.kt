@@ -80,46 +80,54 @@ fun FilterPlaceDialogScreen(
                             modifier = Modifier.padding(top = 16.dp, end = 16.dp, start = 8.dp),
                             style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold),
                         )
-                        Spacer(Modifier.weight(1f))
+                        Checkbox(
+                            checked = viewModel.typeSelectedToFilter.value,
+                            onCheckedChange = { priceNewValue ->
+                                viewModel.typeSelectedToFilter.value = priceNewValue
+                            }
+                        )
 
-                        ExposedDropdownMenuBox(
-                            expanded = viewModel.expandedCategoryMenu.value,
-                            onExpandedChange = {
-                                viewModel.expandedCategoryMenu.value =
-                                    !viewModel.expandedCategoryMenu.value
-                            },
-                            modifier = Modifier.padding(start = 16.dp, end = 8.dp),
-                        ) {
-                            TextField(
-                                readOnly = true,
-                                value = selectedOptionText,
-                                modifier = Modifier.menuAnchor(),
-                                onValueChange = { },
-                                trailingIcon = {
-                                    ExposedDropdownMenuDefaults.TrailingIcon(
-                                        expanded = viewModel.expandedCategoryMenu.value,
-                                    )
-                                },
-                                colors = ExposedDropdownMenuDefaults.textFieldColors(),
-                            )
-                            ExposedDropdownMenu(
+                        if (viewModel.typeSelectedToFilter.value) {
+                            ExposedDropdownMenuBox(
                                 expanded = viewModel.expandedCategoryMenu.value,
-                                onDismissRequest = {
-                                    viewModel.expandedCategoryMenu.value = false
+                                onExpandedChange = {
+                                    viewModel.expandedCategoryMenu.value =
+                                        !viewModel.expandedCategoryMenu.value
                                 },
+                                modifier = Modifier.padding(start = 16.dp, end = 8.dp),
                             ) {
-                                categoryOptions.forEach { selectionOption ->
-                                    DropdownMenuItem(
-                                        text = { Text(text = selectionOption) },
-                                        onClick = {
-                                            selectedOptionText = selectionOption
-                                            viewModel.expandedCategoryMenu.value = false
-                                        },
-                                    )
+                                TextField(
+                                    readOnly = true,
+                                    value = selectedOptionText,
+                                    modifier = Modifier.menuAnchor(),
+                                    onValueChange = { },
+                                    trailingIcon = {
+                                        ExposedDropdownMenuDefaults.TrailingIcon(
+                                            expanded = viewModel.expandedCategoryMenu.value,
+                                        )
+                                    },
+                                    colors = ExposedDropdownMenuDefaults.textFieldColors(),
+                                )
+                                ExposedDropdownMenu(
+                                    expanded = viewModel.expandedCategoryMenu.value,
+                                    onDismissRequest = {
+                                        viewModel.expandedCategoryMenu.value = false
+                                    },
+                                ) {
+                                    categoryOptions.forEach { selectionOption ->
+                                        DropdownMenuItem(
+                                            text = { Text(text = selectionOption) },
+                                            onClick = {
+                                                selectedOptionText = selectionOption
+                                                viewModel.expandedCategoryMenu.value = false
+                                            },
+                                        )
+                                    }
                                 }
                             }
                         }
                     }
+
                     Spacer(modifier = Modifier.height(10.dp))
 
                     Row {
@@ -137,33 +145,32 @@ fun FilterPlaceDialogScreen(
                         )
 
                         if (viewModel.priceSelectedToFilter.value) {
-                            Row {
-                                Slider(
-                                    value = viewModel.sliderValue.value,
-                                    onValueChange = { sliderValueNew ->
-                                        viewModel.sliderValue.value = sliderValueNew
-                                    },
-                                    onValueChangeFinished = {
-                                        // this is called when the user completed selecting the value
-                                        viewModel.priceValue = when (viewModel.sliderValue.value) {
-                                            0f -> {
-                                                Price.LOW
-                                            }
-
-                                            5.0f -> {
-                                                Price.MIDDLE
-                                            }
-
-                                            else -> {
-                                                Price.HIGH
-                                            }
+                            Slider(
+                                value = viewModel.sliderValue.value,
+                                onValueChange = { sliderValueNew ->
+                                    viewModel.sliderValue.value = sliderValueNew
+                                },
+                                onValueChangeFinished = {
+                                    // this is called when the user completed selecting the value
+                                    viewModel.priceValue = when (viewModel.sliderValue.value) {
+                                        0f -> {
+                                            Price.LOW
                                         }
-                                    },
-                                    valueRange = 0f..10f,
-                                    steps = 1,
-                                    modifier = Modifier.padding(start = 32.dp),
-                                )
-                            }
+
+                                        5.0f -> {
+                                            Price.MIDDLE
+                                        }
+
+                                        else -> {
+                                            Price.HIGH
+                                        }
+                                    }
+                                },
+                                valueRange = 0f..10f,
+                                steps = 1,
+                                modifier = Modifier.padding(start = 32.dp),
+                            )
+
                         }
                     }
 

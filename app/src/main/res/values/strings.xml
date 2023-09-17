@@ -104,16 +104,6 @@
 
     <string-array name="filter_category_items">
         <item></item>
-        <item>Nincs kiválasztva</item>
-        <item>Étterem</item>
-        <item>Kávézó</item>
-        <item>Pékség</item>
-        <item>Cukrászda</item>
-        <item>Bár</item>
-        <item>Gyors étterem</item>
-    </string-array>
-
-    <string-array name="new_category_items">
         <item>Étterem</item>
         <item>Kávézó</item>
         <item>Pékség</item>
