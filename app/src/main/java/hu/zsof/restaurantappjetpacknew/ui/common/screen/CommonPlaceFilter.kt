@@ -16,12 +16,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import hu.zsof.restaurantappjetpacknew.R
-import hu.zsof.restaurantappjetpacknew.ui.newplace.NewPlaceDialogViewModel
 
 @ExperimentalMaterial3Api
 @Composable
 fun CommonPlaceFilter(
-    viewModel: NewPlaceDialogViewModel = hiltViewModel(),
+    viewModel: CommonPlaceDialogViewModel = hiltViewModel(),
 ) {
     Row() {
         Column(horizontalAlignment = Alignment.Start) {

@@ -343,11 +343,11 @@ fun CommonPlaceDialogScreen(
                         )
                         Spacer(modifier = Modifier.height(10.dp))
 
-                        CommonPlaceFilter()
+                        CommonPlaceFilter(viewModel = viewModel)
 
                         Spacer(modifier = Modifier.height(10.dp))
 
-                        OpeningHours()
+                        OpeningHours(viewModel = viewModel)
 
                         Spacer(modifier = Modifier.height(10.dp))
                     }
