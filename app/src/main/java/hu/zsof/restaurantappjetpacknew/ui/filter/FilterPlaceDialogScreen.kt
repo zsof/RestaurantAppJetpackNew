@@ -2,6 +2,7 @@ package hu.zsof.restaurantappjetpacknew.ui.filter
 
 import android.annotation.SuppressLint
 import android.provider.Settings.*
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -36,6 +37,7 @@ import java.util.*
 fun FilterPlaceDialogScreen(
     viewModel: FilterPlaceDialogViewModel = hiltViewModel(),
     navController: NavHostController,
+    onDialogClose: () -> Unit,
 ) {
     val categoryOptions = stringArrayResource(id = R.array.filter_category_items)
     var selectedOptionText by remember { mutableStateOf(categoryOptions[0]) }
@@ -49,6 +51,9 @@ fun FilterPlaceDialogScreen(
                 usePlatformDefaultWidth = false,
             ),
         ) {
+            BackHandler {
+                onDialogClose()
+            }
             Surface(
                 modifier = Modifier
                     .padding(top = 32.dp, bottom = 32.dp, start = 8.dp, end = 8.dp)

@@ -92,6 +92,7 @@ fun NavGraphBuilder.authNavGraph(
         composable(route = ScreenModel.NavigationScreen.FilterPlace.route) {
             FilterPlaceDialogScreen(
                 navController = navController,
+                onDialogClose = { navController.popBackStack() },
             )
         }
 

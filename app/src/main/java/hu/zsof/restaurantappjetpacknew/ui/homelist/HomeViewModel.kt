@@ -18,17 +18,18 @@ class HomeViewModel @Inject constructor(
     private val userRepository: UserRepository,
 ) :
     ViewModel() {
-    var searchText = mutableStateOf("")
-    var isFavPlace = mutableStateOf(false)
+    val searchText = mutableStateOf("")
+    val isFavPlace = mutableStateOf(false)
+    val isSearchListNotMatchWithPlaces = mutableStateOf(false)
 
-    var places = MutableLiveData<List<Place>>()
+    val places = MutableLiveData<List<Place>>()
     fun showPlaces() {
         viewModelScope.launch {
             places.postValue(placeRepository.getAllPlace())
         }
     }
 
-    var favPlaceIds = MutableLiveData<List<Long>?>()
+    val favPlaceIds = MutableLiveData<List<Long>?>()
 
     fun addOrRemoveFavPlace(place: Place) {
         viewModelScope.launch {
@@ -43,7 +44,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    var userData = MutableLiveData<User>()
+    val userData = MutableLiveData<User>()
     fun getUser() {
         viewModelScope.launch {
             val user = userRepository.getUserProfile()

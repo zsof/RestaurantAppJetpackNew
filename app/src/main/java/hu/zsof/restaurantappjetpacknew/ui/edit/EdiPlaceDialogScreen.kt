@@ -19,7 +19,6 @@ fun EditPlaceDialogScreen(
     onDialogClose: () -> Unit,
 ) {
     //todo filtereket ki kéne szervezni és külön vm, mert így nem menti el update-kor
-    //todo price, és étterem típust még nem tölti ki az előző alapján
     //todo esetleg mentéskor egy toast h tuti jó a cím? mert később nem módosíthatod
 
     CommonPlaceDialogScreen(

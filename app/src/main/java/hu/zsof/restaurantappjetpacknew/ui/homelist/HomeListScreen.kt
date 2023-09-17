@@ -35,8 +35,9 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import hu.zsof.restaurantappjetpacknew.R
 import hu.zsof.restaurantappjetpacknew.model.Place
 import hu.zsof.restaurantappjetpacknew.module.AppState
-import hu.zsof.restaurantappjetpacknew.ui.common.screen.PlaceListItem
 import hu.zsof.restaurantappjetpacknew.ui.common.field.SearchTextField
+import hu.zsof.restaurantappjetpacknew.ui.common.screen.PlaceListItem
+import hu.zsof.restaurantappjetpacknew.ui.common.search
 import hu.zsof.restaurantappjetpacknew.util.Constants.ROLE_OWNER
 
 @OptIn(ExperimentalPermissionsApi::class, ExperimentalComposeUiApi::class)
@@ -135,7 +136,7 @@ fun HomeListScreen(
                 }
 
                 // Keresés a legerőseb, ha van ->  keresés globális szűrésben levő elemeken (ha létezik ilyen lista), vagy ha nem létezik, akkor user által mentett szűrésben levő elemeken
-                if (!searchFilteredPlaces.value.isNullOrEmpty()) {
+                if (!searchFilteredPlaces.value.isNullOrEmpty() || viewModel.isSearchListNotMatchWithPlaces.value) {
                     LazyColumn(
                         contentPadding = PaddingValues(8.dp),
                     ) {
@@ -198,41 +199,4 @@ fun HomeListScreen(
             }
         },
     )
-}
-
-fun search(
-    globalFilteredPlaces: List<Place>?,
-    userFilteredPlaces: MutableList<Place>,
-    viewModel: HomeViewModel,
-    searchItems: MutableList<Place>,
-) {
-    if (viewModel.searchText.value.isNotEmpty()) {
-        AppState.searchedPlaces.value = mutableListOf()
-        searchItems.clear()
-
-        if (!globalFilteredPlaces.isNullOrEmpty()) {
-            globalFilteredPlaces.forEach { place ->
-                if (place.name.contains(
-                        viewModel.searchText.value,
-                        ignoreCase = true,
-                    )
-                ) {
-                    searchItems.add(place)
-                }
-            }
-        } else {
-            userFilteredPlaces.forEach { place ->
-                if (place.name.contains(
-                        viewModel.searchText.value,
-                        ignoreCase = true,
-                    )
-                ) {
-                    searchItems.add(place)
-                }
-            }
-        }
-        AppState.searchedPlaces.value = searchItems
-    } else {
-        AppState.searchedPlaces.value = mutableListOf()
-    }
 }
