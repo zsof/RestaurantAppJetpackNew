@@ -1,5 +1,6 @@
 package hu.zsof.restaurantappjetpacknew.model
 
+import hu.zsof.restaurantappjetpacknew.R
 import java.io.Serializable
 
 data class CustomFilter(
@@ -17,16 +18,16 @@ data class CustomFilter(
 ) : Serializable {
     fun convertToMap(): MutableMap<String, Boolean> {
         val map: MutableMap<String, Boolean> = mutableMapOf()
-        map["glutenFree"] = glutenFree
-        map["lactoseFree"] = lactoseFree
-        map["vegetarian"] = vegetarian
-        map["vegan"] = vegan
-        map["fastFood"] = fastFood
-        map["parkingAvailable"] = parkingAvailable
-        map["dogFriendly"] = dogFriendly
-        map["familyPlace"] = familyPlace
-        map["delivery"] = delivery
-        map["creditCard"] = creditCard
+        map[R.string.gluten_free.toString()] = glutenFree
+        map[R.string.lactose_free.toString()] = lactoseFree
+        map[R.string.vegetarian.toString()] = vegetarian
+        map[R.string.vegan.toString()] = vegan
+        map[R.string.fast_food.toString()] = fastFood
+        map[R.string.parking_available.toString()] = parkingAvailable
+        map[R.string.dog_fancier.toString()] = dogFriendly
+        map[R.string.family_place.toString()] = familyPlace
+        map[R.string.delivery.toString()] = delivery
+        map[R.string.credit_card.toString()] = creditCard
         return map
     }
 
