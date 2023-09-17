@@ -48,7 +48,7 @@ import java.util.*
 @SuppressLint("ResourceType")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CommonPlaceDialogScreen(
+fun     CommonPlaceDialogScreen(
     viewModel: CommonPlaceDialogViewModel = hiltViewModel(),
     onDialogClose: () -> Unit,
 ) {
@@ -281,7 +281,7 @@ fun CommonPlaceDialogScreen(
                                 },
                                 onValueChangeFinished = {
                                     // this is called when the user completed selecting the value
-                                    viewModel.priceValue = when (viewModel.sliderValue.value) {
+                                    viewModel.priceValue.value = when (viewModel.sliderValue.value) {
                                         0f -> {
                                             Price.LOW
                                         }
@@ -373,7 +373,7 @@ fun CommonPlaceDialogScreen(
                             } else {
                                 viewModel.addOrEditPlace(
                                     typeValue = Type.getByName(selectedOptionText),
-                                    priceValue = viewModel.priceValue,
+                                    priceValue = viewModel.priceValue.value,
                                     image = imagePath,
                                 )
                                 viewModel.dialogOpen.value = false

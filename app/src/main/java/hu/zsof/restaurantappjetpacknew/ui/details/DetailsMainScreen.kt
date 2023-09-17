@@ -19,11 +19,6 @@ fun DetailsMainScreen(
         viewModel.getPlaceById(placeId)
     }
 
-    /*   if (viewModel.ratingDialogOpen.value) {
-           RateDialog(viewModel = viewModel, onDismiss = { viewModel.ratingDialogOpen.value = false })
-       }
-   */
-
     viewModel.isPlaceByOwner.value = AppState.loggedUser.value?.id == place?.creatorId
 
     CommonDetailsScreen(
@@ -35,27 +30,3 @@ fun DetailsMainScreen(
         openingHoursOpen = viewModel.openingHoursOpenDetails
     )
 }
-
-/*@Composable
-fun RateDialog(viewModel: DetailsViewModel, onDismiss: () -> Unit) {
-    if (viewModel.ratingDialogOpen.value) {
-        Dialog(
-            onDismissRequest = onDismiss,
-            properties = DialogProperties(
-                dismissOnClickOutside = true,
-                dismissOnBackPress = true,
-                usePlatformDefaultWidth = false,
-            ),
-        ) {
-            Surface(
-                modifier = Modifier
-                    .padding(32.dp)
-                    .wrapContentHeight(),
-                shape = RoundedCornerShape(8.dp),
-            ) {
-                Column {
-                }
-            }
-        }
-    }
-}*/

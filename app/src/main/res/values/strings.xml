@@ -103,7 +103,6 @@
     <string name="new_places_for_review">Új helyek:</string>
 
     <string-array name="filter_category_items">
-        <item></item>
         <item>Étterem</item>
         <item>Kávézó</item>
         <item>Pékség</item>

@@ -145,10 +145,10 @@ fun CommonDetailsScreen(
                             }
                             if (isPlaceByOwner && place is Place) {
                                 IconButton(onClick = {
+                                    AppState.place.value = place
                                     if (onEditPlaceClick != null) {
                                         onEditPlaceClick(placeId)
                                     }
-                                    AppState.place.value = place
 
                                 }, modifier = Modifier.padding(top = 16.dp)) {
                                     Icon(

@@ -16,7 +16,7 @@ import hu.zsof.restaurantappjetpacknew.ui.filter.FilterPlaceDialogScreen
 import hu.zsof.restaurantappjetpacknew.ui.homelist.HomeListScreen
 import hu.zsof.restaurantappjetpacknew.ui.map.MapScreen
 import hu.zsof.restaurantappjetpacknew.ui.newplace.NewPlaceDialogScreen
-import hu.zsof.restaurantappjetpacknew.ui.owner.EditPlaceDialogScreen
+import hu.zsof.restaurantappjetpacknew.ui.edit.EditPlaceDialogScreen
 import hu.zsof.restaurantappjetpacknew.ui.owner.OwnerDetailsScreen
 import hu.zsof.restaurantappjetpacknew.ui.owner.TabLayoutOwnerList
 import hu.zsof.restaurantappjetpacknew.ui.profile.ProfileScreen
