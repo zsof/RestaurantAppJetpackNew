@@ -68,7 +68,7 @@ fun CommonPlaceDialogScreen(
     }
 
     val categoryOptions = stringArrayResource(id = R.array.filter_category_items)
-    var selectedOptionText by remember { mutableStateOf(categoryOptions[0]) }
+    var selectedOptionText by remember { mutableStateOf(categoryOptions[viewModel.selectedOptionIndex.value]) }
 
     val projection = arrayOf(MediaStore.MediaColumns.DATA)
     val contentResolver: ContentResolver = context.contentResolver
@@ -92,7 +92,7 @@ fun CommonPlaceDialogScreen(
         Dialog(
             onDismissRequest = {
                 viewModel.dialogOpen.value = false
-               // AppState.place.value = null
+                // AppState.place.value = null
             },
             properties = DialogProperties(
                 dismissOnClickOutside = false,
