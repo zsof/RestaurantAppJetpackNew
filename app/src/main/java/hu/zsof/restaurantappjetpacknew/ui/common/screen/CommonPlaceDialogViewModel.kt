@@ -10,7 +10,8 @@ import hu.zsof.restaurantappjetpacknew.module.AppState
 import javax.inject.Inject
 
 @HiltViewModel
-open class CommonPlaceDialogViewModel @Inject constructor() : ViewModel() {
+open class CommonPlaceDialogViewModel @Inject constructor(
+) : ViewModel() {
     open fun addOrEditPlace(
         typeValue: Type,
         priceValue: Price,
@@ -36,6 +37,10 @@ open class CommonPlaceDialogViewModel @Inject constructor() : ViewModel() {
     }
 
     val priceValue = mutableStateOf(place.value?.price ?: Price.LOW)
+
+    val placeId = mutableStateOf(place.value?.id ?: -1)
+    val latitudeValue = mutableStateOf(place.value?.latitude ?: 0.0)
+    val longitudeValue = mutableStateOf(place.value?.longitude ?: 0.0)
 
     val placeNameValue = mutableStateOf(place.value?.name ?: "")
     val placeNameError = mutableStateOf(false)

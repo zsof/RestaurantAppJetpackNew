@@ -5,7 +5,6 @@ import hu.zsof.restaurantappjetpacknew.model.CustomFilter
 import hu.zsof.restaurantappjetpacknew.model.OpenDetails
 import hu.zsof.restaurantappjetpacknew.model.enums.Price
 import hu.zsof.restaurantappjetpacknew.model.enums.Type
-import hu.zsof.restaurantappjetpacknew.network.repository.PlaceInReviewRepository
 import hu.zsof.restaurantappjetpacknew.network.repository.PlaceOwnerRepository
 import hu.zsof.restaurantappjetpacknew.network.repository.ResourceRepository
 import hu.zsof.restaurantappjetpacknew.network.request.PlaceDataRequest
@@ -19,16 +18,9 @@ import javax.inject.Inject
 @HiltViewModel
 class EditPlaceViewModel @Inject constructor(
     private val placeOwnerRepository: PlaceOwnerRepository,
-    private val placeInReviewRepository: PlaceInReviewRepository,
     private val resourceRepository: ResourceRepository,
 ) :
     CommonPlaceDialogViewModel() {
-
-   /* val showProblemDialog = mutableStateOf(false)
-    val isPlaceByOwner = mutableStateOf(false)
-    val isPlaceInReviewByOwner = mutableStateOf(false)
-
-    val openingHoursOpenDetails = mutableStateOf(false)*/
     override fun addOrEditPlace(
         typeValue: Type,
         priceValue: Price,
@@ -38,8 +30,9 @@ class EditPlaceViewModel @Inject constructor(
             CoroutineScope(Job() + Dispatchers.IO).launch {
                 val placeResponse = placeOwnerRepository.updatePlace(
                     PlaceDataRequest(
-                        id = place.value?.id ?: -1,
+                        id = placeId.value,
                         name = placeNameValue.value,
+                        address = addressValue.value,
                         web = websiteValue.value,
                         email = emailValue.value,
                         phoneNumber = phoneValue.value,
@@ -57,6 +50,8 @@ class EditPlaceViewModel @Inject constructor(
                             delivery = deliveryChecked.value,
                             creditCard = creditCardChecked.value,
                         ),
+                        latitude = latitudeValue.value,
+                        longitude = longitudeValue.value,
                         openDetails = OpenDetails(
                             basicOpen = basicOpen.value,
                             basicClose = basicClose.value,

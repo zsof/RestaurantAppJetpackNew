@@ -11,12 +11,12 @@ import hu.zsof.restaurantappjetpacknew.module.AppState
 import hu.zsof.restaurantappjetpacknew.ui.auth.login.LoginScreen
 import hu.zsof.restaurantappjetpacknew.ui.auth.register.RegisterScreen
 import hu.zsof.restaurantappjetpacknew.ui.details.TabLayoutDetails
+import hu.zsof.restaurantappjetpacknew.ui.edit.EditPlaceDialogScreen
 import hu.zsof.restaurantappjetpacknew.ui.favorite.FavoriteListScreen
 import hu.zsof.restaurantappjetpacknew.ui.filter.FilterPlaceDialogScreen
 import hu.zsof.restaurantappjetpacknew.ui.homelist.HomeListScreen
 import hu.zsof.restaurantappjetpacknew.ui.map.MapScreen
 import hu.zsof.restaurantappjetpacknew.ui.newplace.NewPlaceDialogScreen
-import hu.zsof.restaurantappjetpacknew.ui.edit.EditPlaceDialogScreen
 import hu.zsof.restaurantappjetpacknew.ui.owner.OwnerDetailsScreen
 import hu.zsof.restaurantappjetpacknew.ui.owner.TabLayoutOwnerList
 import hu.zsof.restaurantappjetpacknew.ui.profile.ProfileScreen
@@ -195,14 +195,7 @@ fun NavGraphBuilder.authNavGraph(
         ) {
             OwnerDetailsScreen(
                 placeId = navController.currentBackStackEntry?.arguments?.getLong(ScreenModel.NavigationScreen.OwnerDetails.Args.placeId)
-                    ?: 0,
-                onEditPlaceInReviewClick = {
-                    navController.navigate(
-                        ScreenModel.NavigationScreen.EditPlace.passPlaceId(
-                            it,
-                        ),
-                    )
-                },
+                    ?: 0
             )
         }
 

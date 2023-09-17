@@ -145,7 +145,7 @@ fun CommonDetailsScreen(
                             }
                             if (isPlaceByOwner && place is Place) {
                                 IconButton(onClick = {
-                                    AppState.place.value = place
+                                    AppState.place.postValue(place)
                                     if (onEditPlaceClick != null) {
                                         onEditPlaceClick(placeId)
                                     }

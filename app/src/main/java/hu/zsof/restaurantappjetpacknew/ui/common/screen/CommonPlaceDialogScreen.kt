@@ -48,7 +48,7 @@ import java.util.*
 @SuppressLint("ResourceType")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun     CommonPlaceDialogScreen(
+fun CommonPlaceDialogScreen(
     viewModel: CommonPlaceDialogViewModel = hiltViewModel(),
     onDialogClose: () -> Unit,
 ) {
@@ -92,7 +92,7 @@ fun     CommonPlaceDialogScreen(
         Dialog(
             onDismissRequest = {
                 viewModel.dialogOpen.value = false
-                AppState.place.value = null
+               // AppState.place.value = null
             },
             properties = DialogProperties(
                 dismissOnClickOutside = false,
@@ -102,7 +102,6 @@ fun     CommonPlaceDialogScreen(
         ) {
             BackHandler {
                 AppState.place.value = null
-
                 onDialogClose()
             }
             Surface(
@@ -281,19 +280,20 @@ fun     CommonPlaceDialogScreen(
                                 },
                                 onValueChangeFinished = {
                                     // this is called when the user completed selecting the value
-                                    viewModel.priceValue.value = when (viewModel.sliderValue.value) {
-                                        0f -> {
-                                            Price.LOW
-                                        }
+                                    viewModel.priceValue.value =
+                                        when (viewModel.sliderValue.value) {
+                                            0f -> {
+                                                Price.LOW
+                                            }
 
-                                        5.0f -> {
-                                            Price.MIDDLE
-                                        }
+                                            5.0f -> {
+                                                Price.MIDDLE
+                                            }
 
-                                        else -> {
-                                            Price.HIGH
+                                            else -> {
+                                                Price.HIGH
+                                            }
                                         }
-                                    }
                                 },
                                 valueRange = 0f..10f,
                                 steps = 1,
@@ -355,9 +355,7 @@ fun     CommonPlaceDialogScreen(
                         Spacer(Modifier.weight(1f))
                         TextButton(onClick = {
                             viewModel.dialogOpen.value = false
-
                             AppState.place.value = null
-
                             onDialogClose()
                         }) {
                             Text(

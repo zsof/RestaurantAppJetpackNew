@@ -7,11 +7,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import hu.zsof.restaurantappjetpacknew.model.enums.PlaceType
 import hu.zsof.restaurantappjetpacknew.ui.common.screen.CommonDetailsScreen
 
+//Owner's place's details in place in review
 @Composable
 fun OwnerDetailsScreen(
     viewModel: OwnerPlaceViewModel = hiltViewModel(),
     placeId: Long,
-    onEditPlaceInReviewClick: (Long) -> Unit,
 ) {
     val placeInReview = viewModel.reviewPlaceById.observeAsState().value
     LaunchedEffect(key1 = "ReviewDetails") {
@@ -20,7 +20,6 @@ fun OwnerDetailsScreen(
 
     CommonDetailsScreen(
         placeId = placeId,
-        onEditPlaceClick = onEditPlaceInReviewClick,
         place = placeInReview,
         placeType = PlaceType.MODIFIED_PLACE,
         isPlaceByOwner = true,
