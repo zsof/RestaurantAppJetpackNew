@@ -2,6 +2,7 @@ package hu.zsof.restaurantappjetpacknew.ui.common.screen
 
 import android.annotation.SuppressLint
 import android.content.ContentResolver
+import android.os.Environment
 import android.provider.MediaStore
 import android.provider.Settings.*
 import androidx.activity.compose.BackHandler
@@ -42,8 +43,39 @@ import hu.zsof.restaurantappjetpacknew.model.enums.Type
 import hu.zsof.restaurantappjetpacknew.module.AppState
 import hu.zsof.restaurantappjetpacknew.ui.common.field.NormalTextField
 import hu.zsof.restaurantappjetpacknew.ui.common.field.TextFieldForDialog
+import okio.use
 import java.io.*
 import java.util.*
+
+
+/*@Composable
+private fun returnCursorData(uri: Uri?): String? {
+    val context = LocalContext.current
+
+    if (DocumentsContract.isDocumentUri(context, uri)) {
+        val wholeID = DocumentsContract.getDocumentId(uri)
+        val splits = wholeID.split(":".toRegex()).toTypedArray()
+        if (splits.size == 2) {
+            val id = splits[1]
+            val column = arrayOf(MediaStore.Images.Media.DATA)
+            val sel = MediaStore.Images.Media._ID + "=?"
+
+            val cursor: Cursor? = context.contentResolver.query(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                column, sel, arrayOf(id), null
+            )
+
+            val columnIndex: Int? = cursor?.getColumnIndex(column[0])
+            if (cursor?.moveToFirst() == true) {
+                return columnIndex?.let { cursor.getString(it) }
+            }
+            cursor?.close()
+        }
+    } else {
+        return uri?.path
+    }
+    return null
+}*/
 
 @SuppressLint("ResourceType")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -71,23 +103,38 @@ fun CommonPlaceDialogScreen(
     val categoryOptions = stringArrayResource(id = R.array.filter_category_items)
     var selectedOptionText by remember { mutableStateOf(categoryOptions[viewModel.selectedOptionIndex.value]) }
 
-    val projection = arrayOf(MediaStore.MediaColumns.DATA)
+    val projection = arrayOf(MediaStore.Images.ImageColumns.DATA)
     val contentResolver: ContentResolver = context.contentResolver
     var imagePath = ""
-    viewModel.selectedImageUri.value?.let {
+    val contentUri = MediaStore.Files.getContentUri("external")
+
+    val selection = MediaStore.MediaColumns.RELATIVE_PATH + "=?"
+
+    val selectionArgs = arrayOf(Environment.DIRECTORY_DOCUMENTS)
+
+    var imageFile: File = File("")
+
+    viewModel.selectedImageUri.value?.let { uri ->
+        println("SELECTED URL: $uri : ${uri.path} ")
         contentResolver.query(
-            it,
+            uri,
             projection,
             null,
             null,
             null,
-        )
-    }
-        ?.use { metaCursor ->
-            if (metaCursor.moveToFirst()) {
-                imagePath = metaCursor.getString(0)
+        )?.use { cursor ->
+            /*  cursor.moveToFirst()
+            val cursorData =
+                cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA))
+            println("CURSOS data $cursorData")
+            if (cursorData == null) {
+               imageFile = returnCursorData(uri)?.let { File(it) }!!
+            } else {
+                 imageFile = File(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)))
             }
+        }*/
         }
+    }
 
     if (viewModel.dialogOpen.value) {
         Dialog(
@@ -374,10 +421,11 @@ fun CommonPlaceDialogScreen(
                             } else if (viewModel.addressValue.value.isEmpty()) {
                                 viewModel.addressError.value = true
                             } else {
+
                                 viewModel.addOrEditPlace(
                                     typeValue = Type.getByName(selectedOptionText),
                                     priceValue = viewModel.priceValue.value,
-                                    image = imagePath,
+                                    image = imageFile, //image = imagePath
                                 )
                                 viewModel.dialogOpen.value = false
 

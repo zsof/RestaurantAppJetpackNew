@@ -1,8 +1,10 @@
 package hu.zsof.restaurantappjetpacknew.network
 
+import hu.zsof.restaurantappjetpacknew.model.Comment
 import hu.zsof.restaurantappjetpacknew.model.Place
 import hu.zsof.restaurantappjetpacknew.model.PlaceInReview
 import hu.zsof.restaurantappjetpacknew.model.User
+import hu.zsof.restaurantappjetpacknew.network.request.CommentDataRequest
 import hu.zsof.restaurantappjetpacknew.network.request.FilterRequest
 import hu.zsof.restaurantappjetpacknew.network.request.LoginDataRequest
 import hu.zsof.restaurantappjetpacknew.network.request.PlaceDataRequest
@@ -29,6 +31,20 @@ interface ApiService {
 
     @POST("places/filter")
     suspend fun filterPlaces(@Body filter: FilterRequest): List<Place>
+
+    /**
+     * Comments (role: user, owner, admin)
+     */
+    @GET("places/comment/{placeId}")
+    suspend fun getCommentsByPlaceId(): List<Comment>
+
+    @POST("places/comment")
+    suspend fun addNewComment(
+        @Body commentDataRequest: CommentDataRequest,
+    ): Comment
+
+    @DELETE("places/comment/{id}")
+    suspend fun deleteComment(@Path("id") commentId: Long)
 
     /**
      * Place by Owner (role: owner, admin)

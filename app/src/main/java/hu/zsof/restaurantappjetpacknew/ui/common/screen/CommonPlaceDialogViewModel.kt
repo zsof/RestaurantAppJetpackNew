@@ -7,6 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import hu.zsof.restaurantappjetpacknew.model.enums.Price
 import hu.zsof.restaurantappjetpacknew.model.enums.Type
 import hu.zsof.restaurantappjetpacknew.module.AppState
+import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
@@ -15,7 +16,7 @@ open class CommonPlaceDialogViewModel @Inject constructor(
     open fun addOrEditPlace(
         typeValue: Type,
         priceValue: Price,
-        image: String,
+        image: File,
     ) = Unit
 
     val place = AppState.place
