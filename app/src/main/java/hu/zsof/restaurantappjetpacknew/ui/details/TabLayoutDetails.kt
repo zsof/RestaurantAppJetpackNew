@@ -10,11 +10,8 @@ import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.*
 import com.google.accompanist.pager.*
 import kotlinx.coroutines.launch
@@ -22,7 +19,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun TabLayoutDetails(placeId: Long, onEditPlaceClick: (Long) -> Unit) {
-    val pagerState = rememberPagerState(pageCount = 3, infiniteLoop = true)
+    val pagerState = rememberPagerState(pageCount = 2, infiniteLoop = true)
 
     Column() {
         Tabs(pagerState = pagerState)
@@ -40,7 +37,6 @@ fun Tabs(pagerState: PagerState) {
     val list = listOf(
         "Részletek" to Icons.Default.Details,
         "Képek" to Icons.Default.Image,
-        "Kommentek" to Icons.Default.Comment,
     )
 
     val scope = rememberCoroutineScope()
@@ -85,24 +81,7 @@ fun TabsContent(pagerState: PagerState, placeId: Long, onEditPlaceClick: (Long) 
                 onEditPlaceClick = onEditPlaceClick,
             )
 
-            1 -> DetailsImageScreen(placeId = placeId)
-            2 -> TabContentScreen(data = "Welcome to Comments Screen")
+            1 -> DetailsCommentScreen(placeId = placeId)
         }
-    }
-}
-
-@Composable
-fun TabContentScreen(data: String) {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-    ) {
-        Text(
-            text = data,
-            style = MaterialTheme.typography.headlineMedium,
-            fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center,
-        )
     }
 }
