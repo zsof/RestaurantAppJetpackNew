@@ -11,6 +11,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -23,7 +24,12 @@ fun SearchTextField(
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     placeholder: String,
+    leadingIcon: ImageVector? = Icons.Default.Search,
     keyboardActions: KeyboardActions,
+    keyboardOptions: KeyboardOptions = KeyboardOptions(
+        keyboardType = KeyboardType.Text,
+        imeAction = ImeAction.Search,
+    )
 ) {
     val shape =
         RoundedCornerShape(20.dp)
@@ -34,15 +40,14 @@ fun SearchTextField(
         label = { Text(text = label) },
         shape = shape,
         leadingIcon = {
-            Icon(imageVector = Icons.Default.Search, contentDescription = null)
+            if (leadingIcon != null) {
+                Icon(imageVector = leadingIcon, contentDescription = null)
+            }
         },
         modifier = modifier,
         singleLine = true,
         placeholder = { Text(text = placeholder) },
-        keyboardOptions = KeyboardOptions(
-            keyboardType = KeyboardType.Text,
-            imeAction = ImeAction.Search,
-        ),
+        keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,
     )
 }

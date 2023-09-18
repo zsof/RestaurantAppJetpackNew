@@ -36,7 +36,7 @@ fun TabLayoutDetails(placeId: Long, onEditPlaceClick: (Long) -> Unit) {
 fun Tabs(pagerState: PagerState) {
     val list = listOf(
         "Részletek" to Icons.Default.Details,
-        "Képek" to Icons.Default.Image,
+        "Kommentek" to Icons.Default.Image,
     )
 
     val scope = rememberCoroutineScope()
