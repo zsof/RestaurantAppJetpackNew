@@ -36,7 +36,7 @@ interface ApiService {
      * Comments (role: user, owner, admin)
      */
     @GET("places/comment/{placeId}")
-    suspend fun getCommentsByPlaceId(): List<Comment>
+    suspend fun getCommentsByPlaceId(@Path("placeId") placeId: Long): List<Comment>
 
     @POST("places/comment")
     suspend fun addNewComment(
