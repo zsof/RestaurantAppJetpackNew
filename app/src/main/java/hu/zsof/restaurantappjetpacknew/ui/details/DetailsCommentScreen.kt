@@ -5,10 +5,10 @@ import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -40,12 +40,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import hu.zsof.restaurantappjetpacknew.R
+import hu.zsof.restaurantappjetpacknew.module.AppState
 import hu.zsof.restaurantappjetpacknew.ui.common.field.SearchTextField
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(
     ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class,
-    ExperimentalLayoutApi::class
 )
 @Composable
 fun DetailsCommentScreen(
@@ -63,10 +63,9 @@ fun DetailsCommentScreen(
         content = {
             Column(
                 modifier = Modifier
-                    .padding(bottom = 56.dp),
-                horizontalAlignment = Alignment.Start,
+                    .padding(bottom = 56.dp)
+                    .fillMaxSize(),
             ) {
-
                 Row {
                     SearchTextField(
                         value = viewModel.newComment.value,
@@ -123,28 +122,33 @@ fun DetailsCommentScreen(
 
 @Composable
 fun ChatBoxItem(message: String, creatorName: String) {
-    Box(
-        modifier = Modifier
-            .clip(
-                RoundedCornerShape(
-                    topStart = 48f,
-                    topEnd = 48f,
-                    bottomStart = 0f,
-                    bottomEnd = 48f
+    val loggedUser = AppState.loggedUser
+    val ownComment = loggedUser.value?.name == creatorName
+    Column(modifier = Modifier.fillMaxSize()) {
+        Box(
+            modifier = Modifier
+                .align(if (ownComment) Alignment.End else Alignment.Start)
+                .clip(
+                    RoundedCornerShape(
+                        topStart = 48f,
+                        topEnd = 48f,
+                        bottomStart = if (ownComment) 48f else 0f,
+                        bottomEnd = if (ownComment) 0f else 48f
+                    )
                 )
-            )
-            .background(MaterialTheme.colorScheme.primary)
-            .padding(16.dp)
-    ) {
-        Column(horizontalAlignment = Alignment.Start) {
-            Text(text = message, color = MaterialTheme.colorScheme.onSurfaceVariant)
-            Text(
-                text = creatorName,
-                color = MaterialTheme.colorScheme.onSecondary,
-                modifier = Modifier.align(Alignment.End),
-                fontSize = 12.sp
-            )
+                .background(MaterialTheme.colorScheme.primary)
+                .padding(16.dp)
+        ) {
+            Column() {
+                Text(text = message, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Text(
+                    text = creatorName,
+                    color = MaterialTheme.colorScheme.onSecondary,
+                    modifier = Modifier.align(Alignment.End),
+                    fontSize = 12.sp
+                )
+            }
         }
+        Spacer(modifier = Modifier.padding(top = 8.dp))
     }
-    Spacer(modifier = Modifier.padding(top = 8.dp))
 }
