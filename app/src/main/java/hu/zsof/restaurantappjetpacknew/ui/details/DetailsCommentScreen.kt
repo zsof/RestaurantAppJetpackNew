@@ -1,12 +1,17 @@
 package hu.zsof.restaurantappjetpacknew.ui.details
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -32,11 +37,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import hu.zsof.restaurantappjetpacknew.R
 import hu.zsof.restaurantappjetpacknew.ui.common.field.SearchTextField
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
+@RequiresApi(Build.VERSION_CODES.O)
+@OptIn(
+    ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class,
+    ExperimentalLayoutApi::class
+)
 @Composable
 fun DetailsCommentScreen(
     viewModel: DetailsViewModel = hiltViewModel(),
@@ -53,21 +63,11 @@ fun DetailsCommentScreen(
         content = {
             Column(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding(bottom = 44.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
+                    .padding(bottom = 56.dp),
+                horizontalAlignment = Alignment.Start,
             ) {
-                LazyColumn(
-                    contentPadding = PaddingValues(8.dp),
-                    modifier = Modifier.weight(1f)
-                ) {
-                    items(comments.value) {
-                        ChatBoxItem(
-                            message = it.message
-                        )
-                    }
-                }
-                Row(verticalAlignment = Alignment.Bottom) {
+
+                Row {
                     SearchTextField(
                         value = viewModel.newComment.value,
                         label = stringResource(id = R.string.comment_label),
@@ -76,17 +76,43 @@ fun DetailsCommentScreen(
                         },
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Text,
-                            imeAction = ImeAction.Send,
+                            imeAction = ImeAction.Done,
                         ),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(5f)
+                            .padding(8.dp),
                         leadingIcon = null,
                         placeholder = stringResource(id = R.string.comment_label),
                         keyboardActions = KeyboardActions(onSearch = { keyboardController?.hide() })
                     )
-                    IconButton(onClick = {}) {
+                    IconButton(
+                        onClick = {
+                            viewModel.addComment(placeId)
+                            keyboardController?.hide()
+                            viewModel.newComment.value = ""
+                        },
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .weight(1f)
+                            .align(Alignment.CenterVertically),
+                    ) {
                         Icon(
                             imageVector = Icons.Filled.Send,
                             contentDescription = null,
-                            tint = MaterialTheme.colorScheme.surfaceVariant
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.size(36.dp),
+                        )
+                    }
+                }
+                LazyColumn(
+                    contentPadding = PaddingValues(8.dp),
+                    modifier = Modifier.weight(1f)
+                ) {
+                    items(comments.value) {
+                        ChatBoxItem(
+                            message = it.message,
+                            creatorName = it.userName
                         )
                     }
                 }
@@ -96,7 +122,7 @@ fun DetailsCommentScreen(
 }
 
 @Composable
-fun ChatBoxItem(message: String) {
+fun ChatBoxItem(message: String, creatorName: String) {
     Box(
         modifier = Modifier
             .clip(
@@ -107,9 +133,18 @@ fun ChatBoxItem(message: String) {
                     bottomEnd = 48f
                 )
             )
-            .background(MaterialTheme.colorScheme.surfaceVariant)
+            .background(MaterialTheme.colorScheme.primary)
             .padding(16.dp)
     ) {
-        Text(text = message)
+        Column(horizontalAlignment = Alignment.Start) {
+            Text(text = message, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Text(
+                text = creatorName,
+                color = MaterialTheme.colorScheme.onSecondary,
+                modifier = Modifier.align(Alignment.End),
+                fontSize = 12.sp
+            )
+        }
     }
+    Spacer(modifier = Modifier.padding(top = 8.dp))
 }

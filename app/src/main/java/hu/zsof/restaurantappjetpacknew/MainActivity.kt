@@ -1,6 +1,5 @@
 package hu.zsof.restaurantappjetpacknew
 
-import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -10,8 +9,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
-import hu.zsof.restaurantappjetpacknew.navigation.NavGraph
 import hu.zsof.restaurantappjetpacknew.module.AppState
+import hu.zsof.restaurantappjetpacknew.navigation.NavGraph
 import hu.zsof.restaurantappjetpacknew.ui.theme.RestaurantAppJetpackNewTheme
 import hu.zsof.restaurantappjetpacknew.util.Constants
 
@@ -30,11 +29,6 @@ class MainActivity : ComponentActivity() {
                 NavGraph(navController = navController, viewModel = viewModel)
             }
         }
-
-        // TODO email verifikélés után nyíljon meg az app, esetleg írja ki h sikeres, jelentkezz be
-        val action: String? = intent?.action
-        val data: Uri? = intent?.data
-        println("action: $action  data: $data")
     }
 
     @Composable

@@ -9,6 +9,7 @@ import hu.zsof.restaurantappjetpacknew.model.Comment
 import hu.zsof.restaurantappjetpacknew.model.Place
 import hu.zsof.restaurantappjetpacknew.network.repository.CommentRepository
 import hu.zsof.restaurantappjetpacknew.network.repository.PlaceRepository
+import hu.zsof.restaurantappjetpacknew.network.request.CommentDataRequest
 import hu.zsof.restaurantappjetpacknew.util.SharedPreferences
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -28,6 +29,13 @@ class DetailsViewModel @Inject constructor(
     val comments = MutableLiveData<List<Comment>>()
     fun getCommentsByPlaceId(placeId: Long) {
         viewModelScope.launch {
+            comments.postValue(commentRepository.getCommentsById(placeId))
+        }
+    }
+
+    fun addComment(placeId: Long) {
+        viewModelScope.launch {
+            commentRepository.addNewComment(CommentDataRequest(placeId, newComment.value))
             comments.postValue(commentRepository.getCommentsById(placeId))
         }
     }
