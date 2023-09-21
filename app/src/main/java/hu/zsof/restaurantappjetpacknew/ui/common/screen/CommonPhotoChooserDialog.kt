@@ -2,6 +2,7 @@ package hu.zsof.restaurantappjetpacknew.ui.common.screen
 
 import android.Manifest
 import android.net.Uri
+import android.os.Build
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -48,8 +49,10 @@ fun PhotoChooserDialog(
     galleryOpenPermission: MutableState<Boolean>,
     cameraOpenPermission: MutableState<Boolean>,
 ) {
-    val permissionStateGallery =
-        rememberPermissionState(permission = Manifest.permission.READ_EXTERNAL_STORAGE)
+    val permissionStateGallery = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+        rememberPermissionState(permission = Manifest.permission.READ_MEDIA_IMAGES)
+    else rememberPermissionState(permission = Manifest.permission.READ_EXTERNAL_STORAGE)
+
     GalleryPermission(
         permissionState = permissionStateGallery,
         selectedImageUri = selectedImageUri,
@@ -151,7 +154,7 @@ fun PhotoChooserDialog(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.Start,
 
-                    ) {
+                        ) {
                         Image(
                             painter = painterResource(id = R.drawable.gallery),
                             contentDescription = null,

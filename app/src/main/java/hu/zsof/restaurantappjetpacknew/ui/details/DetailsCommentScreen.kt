@@ -109,7 +109,7 @@ fun DetailsCommentScreen(
                     modifier = Modifier.weight(1f)
                 ) {
                     items(comments.value) {
-                        ChatBoxItem(
+                        MessageBoxItem(
                             message = it.message,
                             creatorName = it.userName
                         )
@@ -121,7 +121,7 @@ fun DetailsCommentScreen(
 }
 
 @Composable
-fun ChatBoxItem(message: String, creatorName: String) {
+fun MessageBoxItem(message: String, creatorName: String) {
     val loggedUser = AppState.loggedUser
     val ownComment = loggedUser.value?.name == creatorName
     Column(modifier = Modifier.fillMaxSize()) {
@@ -149,6 +149,6 @@ fun ChatBoxItem(message: String, creatorName: String) {
                 )
             }
         }
-        Spacer(modifier = Modifier.padding(top = 8.dp))
+        Spacer(modifier = Modifier.padding(top = 16.dp))
     }
 }
