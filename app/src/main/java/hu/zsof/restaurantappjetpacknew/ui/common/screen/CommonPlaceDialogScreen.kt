@@ -112,9 +112,23 @@ fun CommonPlaceDialogScreen(
 
     val selectionArgs = arrayOf(Environment.DIRECTORY_DOCUMENTS)
 
-    var imageFile: File = File("")
+    //var imageFile = File("")
+    viewModel.selectedImageUri.value?.let {
+        contentResolver.query(
+            it,
+            projection,
+            null,
+            null,
+            null,
+        )
+    }
+        ?.use { metaCursor ->
+            if (metaCursor.moveToFirst()) {
+                imagePath = metaCursor.getString(0)
+            }
+        }
 
-    viewModel.selectedImageUri.value?.let { uri ->
+ /*   viewModel.selectedImageUri.value?.let { uri ->
         println("SELECTED URL: $uri : ${uri.path} ")
         contentResolver.query(
             uri,
@@ -134,7 +148,7 @@ fun CommonPlaceDialogScreen(
             }
         }*/
         }
-    }
+    } */
 
     if (viewModel.dialogOpen.value) {
         Dialog(
@@ -425,7 +439,7 @@ fun CommonPlaceDialogScreen(
                                 viewModel.addOrEditPlace(
                                     typeValue = Type.getByName(selectedOptionText),
                                     priceValue = viewModel.priceValue.value,
-                                    image = imageFile, //image = imagePath
+                                    image = imagePath, //image = imagePath
                                 )
                                 viewModel.dialogOpen.value = false
 

@@ -13,7 +13,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
@@ -24,7 +23,7 @@ class EditPlaceViewModel @Inject constructor(
     override fun addOrEditPlace(
         typeValue: Type,
         priceValue: Price,
-        image: File,
+        image: String,
     ) {
         try {
             CoroutineScope(Job() + Dispatchers.IO).launch {
@@ -82,7 +81,7 @@ class EditPlaceViewModel @Inject constructor(
 
                 if (placeResponse != null) {
                     resourceRepository.addNewImage(
-                        file = image,
+                        filePath = image,
                         type = "place",
                         itemId = placeResponse.id,
                     )

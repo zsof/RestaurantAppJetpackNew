@@ -15,7 +15,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
@@ -34,7 +33,7 @@ class NewPlaceDialogViewModel @Inject constructor(
     override fun addOrEditPlace(
         typeValue: Type,
         priceValue: Price,
-        image: File, //image: String
+        image: String, //image: String
     ) {
         try {
             // viewmodel scope megszűnik, amint bezáródik a dialog, ezért kell coroutinescope
@@ -92,7 +91,7 @@ class NewPlaceDialogViewModel @Inject constructor(
 
                 if (placeResponse != null) {
                     resourceRepository.addNewImage(
-                        file = image, //filePath = image
+                        filePath = image, //filePath = image
                         type = "place",
                         itemId = placeResponse.id,
                     )

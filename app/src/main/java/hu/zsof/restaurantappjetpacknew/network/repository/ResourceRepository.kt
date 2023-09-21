@@ -9,17 +9,17 @@ import javax.inject.Inject
 
 class ResourceRepository @Inject constructor(private val apiService: ApiService) {
     suspend fun addNewImage(
-        file: File, //filePath: String
+        filePath: String, //filePath: String
         itemId: Long,
         type: String,
     ) {
         return try {
-            //val file = File(filePath)
+            val file = File(filePath)
             val requestFile = file.asRequestBody("file".toMediaTypeOrNull())
             val multipartFile =
                 MultipartBody.Part.createFormData(
                     "image",
-                    file.name,
+                    filePath,
                     requestFile,
                 )
 
