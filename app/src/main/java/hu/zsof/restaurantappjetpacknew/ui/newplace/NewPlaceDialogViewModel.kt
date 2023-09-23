@@ -91,7 +91,7 @@ class NewPlaceDialogViewModel @Inject constructor(
 
                 if (placeResponse != null) {
                     resourceRepository.addNewImage(
-                        filePath = image, //filePath = image
+                        filePath = image,
                         type = "place",
                         itemId = placeResponse.id,
                     )

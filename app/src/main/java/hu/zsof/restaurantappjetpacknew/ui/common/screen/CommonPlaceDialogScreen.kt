@@ -2,7 +2,6 @@ package hu.zsof.restaurantappjetpacknew.ui.common.screen
 
 import android.annotation.SuppressLint
 import android.content.ContentResolver
-import android.os.Environment
 import android.provider.MediaStore
 import android.provider.Settings.*
 import androidx.activity.compose.BackHandler
@@ -47,36 +46,6 @@ import okio.use
 import java.io.*
 import java.util.*
 
-
-/*@Composable
-private fun returnCursorData(uri: Uri?): String? {
-    val context = LocalContext.current
-
-    if (DocumentsContract.isDocumentUri(context, uri)) {
-        val wholeID = DocumentsContract.getDocumentId(uri)
-        val splits = wholeID.split(":".toRegex()).toTypedArray()
-        if (splits.size == 2) {
-            val id = splits[1]
-            val column = arrayOf(MediaStore.Images.Media.DATA)
-            val sel = MediaStore.Images.Media._ID + "=?"
-
-            val cursor: Cursor? = context.contentResolver.query(
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                column, sel, arrayOf(id), null
-            )
-
-            val columnIndex: Int? = cursor?.getColumnIndex(column[0])
-            if (cursor?.moveToFirst() == true) {
-                return columnIndex?.let { cursor.getString(it) }
-            }
-            cursor?.close()
-        }
-    } else {
-        return uri?.path
-    }
-    return null
-}*/
-
 @SuppressLint("ResourceType")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -106,13 +75,7 @@ fun CommonPlaceDialogScreen(
     val projection = arrayOf(MediaStore.Images.ImageColumns.DATA)
     val contentResolver: ContentResolver = context.contentResolver
     var imagePath = ""
-    val contentUri = MediaStore.Files.getContentUri("external")
 
-    val selection = MediaStore.MediaColumns.RELATIVE_PATH + "=?"
-
-    val selectionArgs = arrayOf(Environment.DIRECTORY_DOCUMENTS)
-
-    //var imageFile = File("")
     viewModel.selectedImageUri.value?.let {
         contentResolver.query(
             it,
@@ -127,28 +90,6 @@ fun CommonPlaceDialogScreen(
                 imagePath = metaCursor.getString(0)
             }
         }
-
- /*   viewModel.selectedImageUri.value?.let { uri ->
-        println("SELECTED URL: $uri : ${uri.path} ")
-        contentResolver.query(
-            uri,
-            projection,
-            null,
-            null,
-            null,
-        )?.use { cursor ->
-            /*  cursor.moveToFirst()
-            val cursorData =
-                cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA))
-            println("CURSOS data $cursorData")
-            if (cursorData == null) {
-               imageFile = returnCursorData(uri)?.let { File(it) }!!
-            } else {
-                 imageFile = File(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)))
-            }
-        }*/
-        }
-    } */
 
     if (viewModel.dialogOpen.value) {
         Dialog(
@@ -435,11 +376,10 @@ fun CommonPlaceDialogScreen(
                             } else if (viewModel.addressValue.value.isEmpty()) {
                                 viewModel.addressError.value = true
                             } else {
-
                                 viewModel.addOrEditPlace(
                                     typeValue = Type.getByName(selectedOptionText),
                                     priceValue = viewModel.priceValue.value,
-                                    image = imagePath, //image = imagePath
+                                    image = imagePath,
                                 )
                                 viewModel.dialogOpen.value = false
 
