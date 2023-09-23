@@ -1,11 +1,13 @@
 package hu.zsof.restaurantappjetpacknew.ui.common.screen
 
+import android.net.Uri
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.ReportProblem
 import androidx.compose.material.icons.outlined.Attachment
@@ -59,7 +61,8 @@ fun CommonDetailsScreen(
     multiFloatingState: MutableState<MultiFloatingState>? = null,
     fabItems: List<FabItem> = emptyList(),
     reviewPlaceViewModel: ReviewPlaceViewModel = hiltViewModel(),
-    openingHoursOpen: MutableState<Boolean>
+    openingHoursOpen: MutableState<Boolean>,
+    selectedImage: Uri? = null
 ) {
     val openingHoursArrowIcon = if (openingHoursOpen.value) {
         Icons.Outlined.KeyboardArrowUp
@@ -120,7 +123,27 @@ fun CommonDetailsScreen(
                     .padding(bottom = 32.dp),
             ) {
                 if (place != null) {
-                    if (place.image.imageUrl().isEmpty().not()) {
+                    if (selectedImage != null) {
+                        AsyncImage(
+                            model = selectedImage,
+                            contentDescription = null,
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier
+                                .wrapContentSize()
+                                .wrapContentHeight()
+                                .wrapContentWidth()
+                                .align(CenterHorizontally)
+                                .padding(16.dp)
+                                .clip(RoundedCornerShape(8.dp))
+                                .clickable {
+                                    if (isPlaceByOwner && place is Place) {
+                                        if (onEditImageClick != null) {
+                                            onEditImageClick()
+                                        }
+                                    }
+                                },
+                        )
+                    } else if (place.image != null) {
                         AsyncImage(
                             model = place.image.imageUrl(),
                             contentDescription = null,
@@ -141,7 +164,22 @@ fun CommonDetailsScreen(
                                 },
                             imageLoader = imageLoader
                         )
-
+                    } else {
+                        Icon(
+                            imageVector = Icons.Filled.CameraAlt,
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(120.dp)
+                                .align(CenterHorizontally)
+                                .clickable {
+                                    if (isPlaceByOwner && place is Place) {
+                                        if (onEditImageClick != null) {
+                                            onEditImageClick()
+                                        }
+                                    }
+                                },
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
                     }
                     Column(
                         horizontalAlignment = CenterHorizontally,
