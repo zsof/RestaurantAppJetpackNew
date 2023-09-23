@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import hu.zsof.restaurantappjetpacknew.model.CustomFilter
 import hu.zsof.restaurantappjetpacknew.module.AppState
+import hu.zsof.restaurantappjetpacknew.network.repository.ResourceRepository
 import hu.zsof.restaurantappjetpacknew.network.repository.UserRepository
 import hu.zsof.restaurantappjetpacknew.network.request.UserUpdateProfileRequest
 import hu.zsof.restaurantappjetpacknew.util.SharedPreferences
@@ -16,6 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
     private val userRepository: UserRepository,
+    private val resourceRepository: ResourceRepository,
     private val sharedPref: SharedPreferences,
 ) :
     ViewModel() {
@@ -53,7 +55,6 @@ class ProfileViewModel @Inject constructor(
 
     fun updateUserProfile() {
         viewModelScope.launch {
-            // todo update userporfile o localdata
             userRepository.updateUserProfile(
                 UserUpdateProfileRequest(
                     filters = CustomFilter(
@@ -75,11 +76,25 @@ class ProfileViewModel @Inject constructor(
 
     fun updateUserProfileName() {
         viewModelScope.launch {
-            AppState.loggedUser.postValue(userRepository.updateUserProfile(
-                UserUpdateProfileRequest(
-                    name = userName.value
-                ),
-            ))
+            AppState.loggedUser.postValue(
+                userRepository.updateUserProfile(
+                    UserUpdateProfileRequest(
+                        name = userName.value
+                    ),
+                )
+            )
+        }
+    }
+
+    fun updateUserProfileImage(image: String) {
+        viewModelScope.launch {
+            if (userProfile.value != null) {
+                resourceRepository.addNewImage(
+                    filePath = image,
+                    type = "user",
+                    itemId = userProfile.value!!.id,
+                )
+            }
         }
     }
 

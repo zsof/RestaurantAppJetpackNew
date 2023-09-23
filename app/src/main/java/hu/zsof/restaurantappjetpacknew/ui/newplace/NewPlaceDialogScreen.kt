@@ -32,8 +32,6 @@ fun NewPlaceDialogScreen(
              viewModel.addressValue.value = address.getAddressLine(0)
         }
     }
-    //viewModel.addressValue.value = "Budapest, Hollán Ernő u. 3, 1136"
-
 
     CommonPlaceDialogScreen(
         viewModel = viewModel,

@@ -1,8 +1,12 @@
 package hu.zsof.restaurantappjetpacknew.ui.profile
 
+import android.content.ContentResolver
+import android.provider.MediaStore
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -14,20 +18,30 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.ImageLoader
+import coil.compose.AsyncImage
 import hu.zsof.restaurantappjetpacknew.R
 import hu.zsof.restaurantappjetpacknew.model.User
 import hu.zsof.restaurantappjetpacknew.module.AppState
+import hu.zsof.restaurantappjetpacknew.module.NetworkModule
 import hu.zsof.restaurantappjetpacknew.ui.common.button.TextChip
 import hu.zsof.restaurantappjetpacknew.ui.common.screen.CommonEditTextDialog
 import hu.zsof.restaurantappjetpacknew.ui.common.screen.PhotoChooserDialog
 import hu.zsof.restaurantappjetpacknew.util.Constants
+import hu.zsof.restaurantappjetpacknew.util.extension.imageUrl
+import okhttp3.OkHttpClient
+import okio.use
 
 @ExperimentalMaterial3Api
 @Composable
@@ -39,6 +53,27 @@ fun ProfileScreen(
         viewModel.getUserProfile()
     }
 
+    val context = LocalContext.current
+
+    val projection = arrayOf(MediaStore.Images.ImageColumns.DATA)
+    val contentResolver: ContentResolver = context.contentResolver
+    var imagePath = ""
+
+    viewModel.selectedImageUri.value?.let {
+        contentResolver.query(
+            it,
+            projection,
+            null,
+            null,
+            null,
+        )
+    }
+        ?.use { metaCursor ->
+            if (metaCursor.moveToFirst()) {
+                imagePath = metaCursor.getString(0)
+            }
+        }
+
     if (viewModel.photoDialogOpen.value) {
         PhotoChooserDialog(
             showPhotoPickerDialog = viewModel.photoDialogOpen.value,
@@ -49,6 +84,7 @@ fun ProfileScreen(
         )
         if (viewModel.selectedImageUri.value != null) {
             viewModel.photoDialogOpen.value = false
+            viewModel.updateUserProfileImage(imagePath)
         }
     }
 
@@ -95,7 +131,7 @@ fun ProfileScreen(
                     Column(modifier = Modifier.padding(bottom = 44.dp)) {
                         Column(Modifier.verticalScroll(rememberScrollState())) {
                             BaseProfile(user, viewModel)
-                            ChipSettings(user, viewModel)
+                            ChipSettings(viewModel)
                             OtherSettings(viewModel = viewModel)
                         }
                     }
@@ -107,7 +143,7 @@ fun ProfileScreen(
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun ChipSettings(user: User, viewModel: ProfileViewModel) {
+fun ChipSettings(viewModel: ProfileViewModel) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -214,6 +250,16 @@ fun ChipSettings(user: User, viewModel: ProfileViewModel) {
 
 @Composable
 fun BaseProfile(user: User, viewModel: ProfileViewModel) {
+    val context = LocalContext.current
+
+    val imageLoader = ImageLoader.Builder(context)
+        .okHttpClient {
+            OkHttpClient.Builder()
+                .addInterceptor(NetworkModule.AuthInterceptor(context))
+                .build()
+        }
+        .build()
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -221,15 +267,43 @@ fun BaseProfile(user: User, viewModel: ProfileViewModel) {
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
         shape = RoundedCornerShape(8.dp),
     ) {
-        Icon(
-            imageVector = Icons.Filled.Person2,
-            contentDescription = null,
-            modifier = Modifier
-                .size(120.dp)
-                .align(Alignment.CenterHorizontally)
-                .clickable { viewModel.photoDialogOpen.value = true },
-            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
+        if (viewModel.selectedImageUri.value != null) {
+            AsyncImage(
+                model = viewModel.selectedImageUri.value,
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .size(160.dp, 160.dp)
+                    .padding(8.dp)
+                    .border(2.dp, color = MaterialTheme.colorScheme.primary, CircleShape)
+                    .clip(CircleShape)
+                    .zIndex(1f),
+            )
+        } else if (user.image != null) {
+            AsyncImage(
+                model = user.image.imageUrl(),
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .size(160.dp, 160.dp)
+                    .padding(8.dp)
+                    .border(2.dp, color = MaterialTheme.colorScheme.primary, CircleShape)
+                    .clip(CircleShape)
+                    .clickable { viewModel.photoDialogOpen.value = true },
+                imageLoader = imageLoader
+            )
+        } else
+            Icon(
+                imageVector = Icons.Filled.Person2,
+                contentDescription = null,
+                modifier = Modifier
+                    .size(120.dp)
+                    .align(Alignment.CenterHorizontally)
+                    .clickable { viewModel.photoDialogOpen.value = true },
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
 
         Row(
             modifier = Modifier

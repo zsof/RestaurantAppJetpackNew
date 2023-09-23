@@ -23,14 +23,12 @@ class ResourceRepository @Inject constructor(private val apiService: ApiService)
                     requestFile,
                 )
 
-            println("kép ${multipartFile.body}")
             apiService.addNewImage(
                 multipartFile,
                 type,
                 itemId.toString(),
             )
         } catch (e: Exception) {
-            println("körte ${e.message}")
             e.printStackTrace()
         }
     }
