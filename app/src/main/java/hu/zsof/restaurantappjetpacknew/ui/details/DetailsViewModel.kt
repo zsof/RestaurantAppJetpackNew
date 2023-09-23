@@ -1,5 +1,6 @@
 package hu.zsof.restaurantappjetpacknew.ui.details
 
+import android.net.Uri
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,7 +10,9 @@ import hu.zsof.restaurantappjetpacknew.model.Comment
 import hu.zsof.restaurantappjetpacknew.model.Place
 import hu.zsof.restaurantappjetpacknew.network.repository.CommentRepository
 import hu.zsof.restaurantappjetpacknew.network.repository.PlaceRepository
+import hu.zsof.restaurantappjetpacknew.network.repository.ResourceRepository
 import hu.zsof.restaurantappjetpacknew.network.request.CommentDataRequest
+import hu.zsof.restaurantappjetpacknew.util.Constants
 import hu.zsof.restaurantappjetpacknew.util.SharedPreferences
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -18,6 +21,7 @@ import javax.inject.Inject
 class DetailsViewModel @Inject constructor(
     private val placeRepository: PlaceRepository,
     private val commentRepository: CommentRepository,
+    private val resourceRepository: ResourceRepository,
     private val sharedPref: SharedPreferences,
 ) :
     ViewModel() {
@@ -25,6 +29,12 @@ class DetailsViewModel @Inject constructor(
 
     val isPlaceByOwner = mutableStateOf(false)
     val newComment = mutableStateOf("")
+
+    val galleryPermissionOpen = mutableStateOf(false)
+    val cameraPermissionOpen = mutableStateOf(false)
+
+    val photoDialogOpen = mutableStateOf(false)
+    val selectedImageUri = mutableStateOf<Uri?>(null)
 
     val comments = MutableLiveData<List<Comment>>()
     fun getCommentsByPlaceId(placeId: Long) {
@@ -44,6 +54,17 @@ class DetailsViewModel @Inject constructor(
     fun getPlaceById(placeId: Long) {
         viewModelScope.launch {
             placeById.postValue(placeRepository.getPlaceById(placeId))
+        }
+    }
+
+    fun updatePlaceImage(imagePath: String, placeId: Long, previousImage: String?) {
+        viewModelScope.launch {
+            resourceRepository.addNewImage(
+                filePath = imagePath,
+                type = Constants.IMAGE_PLACE_TYPE,
+                itemId = placeId,
+                previousImagePath = previousImage
+            )
         }
     }
 

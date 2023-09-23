@@ -6,10 +6,10 @@ object Constants {
     //const val BASE_URL = "http://wildfire.ddns.net:8092"
 
     // local
-   //  const val BASE_URL = "http://192.168.2.48:8080"
+     const val BASE_URL = "http://192.168.2.48:8080"
 
     //remote
-    const val BASE_URL = "https://dolphin-casual-deer.ngrok-free.app/restaurant/"
+ //   const val BASE_URL = "https://dolphin-casual-deer.ngrok-free.app/restaurant/"
 
     // azure
     // const val BASE_URL = "http://restaurant.ceeeaufagderbhhg.germanywestcentral.azurecontainer.io:8080"

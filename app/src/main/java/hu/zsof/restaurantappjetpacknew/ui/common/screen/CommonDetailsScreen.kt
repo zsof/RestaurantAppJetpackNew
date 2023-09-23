@@ -51,13 +51,14 @@ import okhttp3.OkHttpClient
 fun CommonDetailsScreen(
     placeId: Long,
     onEditPlaceClick: ((Long) -> Unit)? = null,
+    onEditImageClick: (() -> Unit)? = null,
     place: BasePlace?,
     showProblemDialog: MutableState<Boolean>? = null,
     placeType: PlaceType = PlaceType.PLACE,
     isPlaceByOwner: Boolean,
     multiFloatingState: MutableState<MultiFloatingState>? = null,
     fabItems: List<FabItem> = emptyList(),
-    viewModel: ReviewPlaceViewModel = hiltViewModel(),
+    reviewPlaceViewModel: ReviewPlaceViewModel = hiltViewModel(),
     openingHoursOpen: MutableState<Boolean>
 ) {
     val openingHoursArrowIcon = if (openingHoursOpen.value) {
@@ -106,7 +107,7 @@ fun CommonDetailsScreen(
                         multiFloatingState.value = it
                     },
                     items = fabItems,
-                    viewModel = viewModel,
+                    viewModel = reviewPlaceViewModel,
                     placeId = placeId,
                 )
             }
@@ -130,7 +131,14 @@ fun CommonDetailsScreen(
                                 .wrapContentWidth()
                                 .align(CenterHorizontally)
                                 .padding(16.dp)
-                                .clip(RoundedCornerShape(8.dp)),
+                                .clip(RoundedCornerShape(8.dp))
+                                .clickable {
+                                    if (isPlaceByOwner && place is Place) {
+                                        if (onEditImageClick != null) {
+                                            onEditImageClick()
+                                        }
+                                    }
+                                },
                             imageLoader = imageLoader
                         )
 

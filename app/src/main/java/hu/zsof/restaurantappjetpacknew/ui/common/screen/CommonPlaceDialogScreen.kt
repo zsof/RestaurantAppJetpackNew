@@ -33,7 +33,6 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
-import coil.ImageLoader
 import coil.compose.AsyncImage
 import com.google.accompanist.permissions.*
 import com.google.maps.android.compose.*
@@ -41,11 +40,8 @@ import hu.zsof.restaurantappjetpacknew.R
 import hu.zsof.restaurantappjetpacknew.model.enums.Price
 import hu.zsof.restaurantappjetpacknew.model.enums.Type
 import hu.zsof.restaurantappjetpacknew.module.AppState
-import hu.zsof.restaurantappjetpacknew.module.NetworkModule
 import hu.zsof.restaurantappjetpacknew.ui.common.field.NormalTextField
 import hu.zsof.restaurantappjetpacknew.ui.common.field.TextFieldForDialog
-import hu.zsof.restaurantappjetpacknew.util.extension.imageUrl
-import okhttp3.OkHttpClient
 import okio.use
 import java.io.*
 import java.util.*
@@ -94,14 +90,6 @@ fun CommonPlaceDialogScreen(
                 imagePath = metaCursor.getString(0)
             }
         }
-
-    val imageLoader = ImageLoader.Builder(context)
-        .okHttpClient {
-            OkHttpClient.Builder()
-                .addInterceptor(NetworkModule.AuthInterceptor(context))
-                .build()
-        }
-        .build()
 
     if (viewModel.dialogOpen.value) {
         Dialog(
@@ -318,28 +306,29 @@ fun CommonPlaceDialogScreen(
                         }
 
                         Spacer(modifier = Modifier.height(10.dp))
-
-                        Button(
-                            onClick = {
-                                viewModel.photoDialogOpen.value = true
-                            },
-                            contentPadding = PaddingValues(
-                                start = 20.dp,
-                                top = 12.dp,
-                                end = 20.dp,
-                                bottom = 12.dp,
-                            ),
-                            modifier = Modifier.align(CenterHorizontally),
-                        ) {
-                            Icon(
-                                Icons.Outlined.PhotoCamera,
-                                contentDescription = "Camera",
-                                modifier = Modifier.size(ButtonDefaults.IconSize),
-                            )
-                            Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-                            Text("Image")
+                        if (isNewPlace) {
+                            Button(
+                                onClick = {
+                                    viewModel.photoDialogOpen.value = true
+                                },
+                                contentPadding = PaddingValues(
+                                    start = 20.dp,
+                                    top = 12.dp,
+                                    end = 20.dp,
+                                    bottom = 12.dp,
+                                ),
+                                modifier = Modifier.align(CenterHorizontally),
+                            ) {
+                                Icon(
+                                    Icons.Outlined.PhotoCamera,
+                                    contentDescription = "Camera",
+                                    modifier = Modifier.size(ButtonDefaults.IconSize),
+                                )
+                                Spacer(Modifier.size(ButtonDefaults.IconSpacing))
+                                Text("Image")
+                            }
                         }
-                        if (isNewPlace || viewModel.selectedImageUri.value != null)
+                        if (isNewPlace && viewModel.selectedImageUri.value != null)
                             AsyncImage(
                                 model = viewModel.selectedImageUri.value,
                                 contentDescription = null,
@@ -351,20 +340,6 @@ fun CommonPlaceDialogScreen(
                                     .align(CenterHorizontally)
                                     .padding(16.dp)
                                     .clip(RoundedCornerShape(8.dp)),
-                            )
-                        else if (viewModel.savedImageUri.value != "")
-                            AsyncImage(
-                                model = viewModel.savedImageUri.value.imageUrl(),
-                                contentDescription = null,
-                                contentScale = ContentScale.Crop,
-                                modifier = Modifier
-                                    .wrapContentSize()
-                                    .wrapContentHeight()
-                                    .wrapContentWidth()
-                                    .align(CenterHorizontally)
-                                    .padding(16.dp)
-                                    .clip(RoundedCornerShape(8.dp)),
-                                imageLoader = imageLoader
                             )
                         Text(
                             text = stringResource(id = R.string.filters),

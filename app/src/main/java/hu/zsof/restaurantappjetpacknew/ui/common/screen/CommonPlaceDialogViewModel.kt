@@ -37,7 +37,6 @@ open class CommonPlaceDialogViewModel @Inject constructor(
 
     val photoDialogOpen = mutableStateOf(false)
     val selectedImageUri = mutableStateOf<Uri?>(null)
-    val savedImageUri = mutableStateOf(place.value?.image ?: "")
 
     val sliderValue = when (place.value?.price) {
         Price.LOW -> mutableStateOf(0f)
