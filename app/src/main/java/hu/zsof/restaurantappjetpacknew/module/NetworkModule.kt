@@ -110,6 +110,9 @@ class NetworkModule() {
                                 Context.MODE_PRIVATE,
                             )
                         sharedPreferences.edit().putString("bearer", "").apply()
+
+                        AppState.startDestination.value = Constants.LOGIN_START
+                        AppState.loggedUser.value = null
                     } else {
                         backgroundThreadToast(context, "Váratlan hiba történt.")
                     }
