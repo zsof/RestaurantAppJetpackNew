@@ -111,6 +111,7 @@ fun DetailsCommentScreen(
                     items(comments.value) {
                         MessageBoxItem(
                             message = it.message,
+                            creatorId = it.id,
                             creatorName = it.userName
                         )
                     }
@@ -121,9 +122,9 @@ fun DetailsCommentScreen(
 }
 
 @Composable
-fun MessageBoxItem(message: String, creatorName: String) {
+fun MessageBoxItem(message: String, creatorId: Long, creatorName: String) {
     val loggedUser = AppState.loggedUser
-    val ownComment = loggedUser.value?.name == creatorName
+    val ownComment = loggedUser.value?.id == creatorId
     Column(modifier = Modifier.fillMaxSize()) {
         Box(
             modifier = Modifier
