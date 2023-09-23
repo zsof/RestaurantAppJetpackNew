@@ -7,5 +7,7 @@ fun String?.imageUrl(): String {
     if (this == null) {
         return ""
     }
-    return "${Constants.BASE_URL}/images?image=$this"
+    val a= "${Constants.BASE_URL}images?image=$this"
+    println("get full IMG URL $a")
+    return a
 }

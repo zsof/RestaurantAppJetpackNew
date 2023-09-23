@@ -29,16 +29,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.ImageLoader
 import coil.compose.AsyncImage
 import hu.zsof.restaurantappjetpacknew.model.BasePlace
 import hu.zsof.restaurantappjetpacknew.model.PlaceInReview
 import hu.zsof.restaurantappjetpacknew.model.enums.Price
+import hu.zsof.restaurantappjetpacknew.module.NetworkModule
 import hu.zsof.restaurantappjetpacknew.util.extension.imageUrl
+import okhttp3.OkHttpClient
 
 @ExperimentalMaterial3Api
 @Composable
@@ -57,6 +61,16 @@ fun PlaceListItem(
     } else {
         Icons.Default.FavoriteBorder
     }
+
+    //Add request header to get image - to jump the ngrok website and load the image
+    val context = LocalContext.current
+    val imageLoader = ImageLoader.Builder(context)
+        .okHttpClient {
+            OkHttpClient.Builder()
+                .addInterceptor(NetworkModule.AuthInterceptor(context))
+                .build()
+        }
+        .build()
 
     Card(
         modifier = Modifier
@@ -82,6 +96,7 @@ fun PlaceListItem(
                             .padding(8.dp)
                             .border(2.dp, color = MaterialTheme.colorScheme.primary, CircleShape)
                             .clip(CircleShape),
+                        imageLoader = imageLoader
                     )
                 }
                 Column() {

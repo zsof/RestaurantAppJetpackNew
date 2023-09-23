@@ -21,12 +21,14 @@ import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.ImageLoader
 import coil.compose.AsyncImage
 import hu.zsof.restaurantappjetpacknew.R
 import hu.zsof.restaurantappjetpacknew.model.BasePlace
@@ -35,12 +37,14 @@ import hu.zsof.restaurantappjetpacknew.model.PlaceInReview
 import hu.zsof.restaurantappjetpacknew.model.enums.PlaceType
 import hu.zsof.restaurantappjetpacknew.model.enums.Type
 import hu.zsof.restaurantappjetpacknew.module.AppState
+import hu.zsof.restaurantappjetpacknew.module.NetworkModule
 import hu.zsof.restaurantappjetpacknew.ui.common.button.TextChip
 import hu.zsof.restaurantappjetpacknew.ui.review.FabItem
 import hu.zsof.restaurantappjetpacknew.ui.review.MultiFloatingButton
 import hu.zsof.restaurantappjetpacknew.ui.review.MultiFloatingState
 import hu.zsof.restaurantappjetpacknew.ui.review.ReviewPlaceViewModel
 import hu.zsof.restaurantappjetpacknew.util.extension.imageUrl
+import okhttp3.OkHttpClient
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -61,6 +65,16 @@ fun CommonDetailsScreen(
     } else {
         Icons.Outlined.KeyboardArrowDown
     }
+
+    //Add request header to get image - to jump the ngrok website and load the image
+    val context = LocalContext.current
+    val imageLoader = ImageLoader.Builder(context)
+        .okHttpClient {
+            OkHttpClient.Builder()
+                .addInterceptor(NetworkModule.AuthInterceptor(context))
+                .build()
+        }
+        .build()
 
     if (showProblemDialog != null) {
         if (showProblemDialog.value) {
@@ -117,7 +131,9 @@ fun CommonDetailsScreen(
                                 .align(CenterHorizontally)
                                 .padding(16.dp)
                                 .clip(RoundedCornerShape(8.dp)),
+                            imageLoader = imageLoader
                         )
+
                     }
                     Column(
                         horizontalAlignment = CenterHorizontally,
@@ -178,7 +194,7 @@ fun CommonDetailsScreen(
                                 if (it.value) {
                                     TextChip(
                                         isSelected = true,
-                                        text = stringResource(id = it.key) ,
+                                        text = stringResource(id = it.key),
                                     )
                                 }
                             }
