@@ -42,6 +42,7 @@ import hu.zsof.restaurantappjetpacknew.model.enums.Type
 import hu.zsof.restaurantappjetpacknew.module.AppState
 import hu.zsof.restaurantappjetpacknew.ui.common.field.NormalTextField
 import hu.zsof.restaurantappjetpacknew.ui.common.field.TextFieldForDialog
+import hu.zsof.restaurantappjetpacknew.util.extension.imageUrl
 import okio.use
 import java.io.*
 import java.util.*
@@ -159,11 +160,7 @@ fun CommonPlaceDialogScreen(
                         NormalTextField(
                             value = viewModel.addressValue.value,
                             label = stringResource(id = R.string.address_text),
-                            onValueChange = {
-                                /* newValue ->
-                            addressValue = newValue
-                            addressError = false*/
-                            },
+                            onValueChange = {},
                             isError = viewModel.addressError.value,
                             keyboardOptions = KeyboardOptions(
                                 keyboardType = KeyboardType.Text,
@@ -331,18 +328,32 @@ fun CommonPlaceDialogScreen(
                             Spacer(Modifier.size(ButtonDefaults.IconSpacing))
                             Text("Image")
                         }
-                        AsyncImage(
-                            model = viewModel.selectedImageUri.value,
-                            contentDescription = null,
-                            contentScale = ContentScale.Crop,
-                            modifier = Modifier
-                                .wrapContentSize()
-                                .wrapContentHeight()
-                                .wrapContentWidth()
-                                .align(CenterHorizontally)
-                                .padding(16.dp)
-                                .clip(RoundedCornerShape(8.dp)),
-                        )
+                        if (isNewPlace || viewModel.selectedImageUri.value != null)
+                            AsyncImage(
+                                model = viewModel.selectedImageUri.value,
+                                contentDescription = null,
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier
+                                    .wrapContentSize()
+                                    .wrapContentHeight()
+                                    .wrapContentWidth()
+                                    .align(CenterHorizontally)
+                                    .padding(16.dp)
+                                    .clip(RoundedCornerShape(8.dp)),
+                            )
+                        else if (viewModel.savedImageUri.value != "")
+                            AsyncImage(
+                                model = viewModel.savedImageUri.value.imageUrl(),
+                                contentDescription = null,
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier
+                                    .wrapContentSize()
+                                    .wrapContentHeight()
+                                    .wrapContentWidth()
+                                    .align(CenterHorizontally)
+                                    .padding(16.dp)
+                                    .clip(RoundedCornerShape(8.dp)),
+                            )
                         Text(
                             text = stringResource(id = R.string.filters),
                             style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold),
