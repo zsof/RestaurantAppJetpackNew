@@ -22,24 +22,24 @@ class ProfileViewModel @Inject constructor(
     private val sharedPref: SharedPreferences,
 ) :
     ViewModel() {
-    var userProfile = AppState.loggedUser
+    val userProfile = AppState.loggedUser
 
-    var glutenFreeChecked = mutableStateOf(false)
-    var lactoseFreeChecked = mutableStateOf(false)
-    var vegetarianChecked = mutableStateOf(false)
-    var veganChecked = mutableStateOf(false)
-    var fastFoodChecked = mutableStateOf(false)
-    var parkingChecked = mutableStateOf(false)
-    var familyPlaceChecked = mutableStateOf(false)
-    var dogFriendlyChecked = mutableStateOf(false)
-    var deliveryChecked = mutableStateOf(false)
-    var creditCardChecked = mutableStateOf(false)
+    val glutenFreeChecked = mutableStateOf(false)
+    val lactoseFreeChecked = mutableStateOf(false)
+    val vegetarianChecked = mutableStateOf(false)
+    val veganChecked = mutableStateOf(false)
+    val fastFoodChecked = mutableStateOf(false)
+    val parkingChecked = mutableStateOf(false)
+    val familyPlaceChecked = mutableStateOf(false)
+    val dogFriendlyChecked = mutableStateOf(false)
+    val deliveryChecked = mutableStateOf(false)
+    val creditCardChecked = mutableStateOf(false)
 
-    var switchCheckedState = mutableStateOf(false)
+    val switchCheckedState = mutableStateOf(false)
 
     val photoDialogOpen = mutableStateOf(false)
-    var galleryPermissionOpen = mutableStateOf(false)
-    var cameraPermissionOpen = mutableStateOf(false)
+    val galleryPermissionOpen = mutableStateOf(false)
+    val cameraPermissionOpen = mutableStateOf(false)
     val selectedImageUri = mutableStateOf<Uri?>(null)
 
     val changeNameDialogOpen = mutableStateOf(false)

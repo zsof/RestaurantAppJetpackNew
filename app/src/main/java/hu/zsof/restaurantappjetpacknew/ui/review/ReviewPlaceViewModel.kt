@@ -28,14 +28,14 @@ class ReviewPlaceViewModel @Inject constructor(
     val openingHoursOpenDetails = mutableStateOf(false)
 
 
-    var placesInReview = MutableLiveData<List<PlaceInReview>>()
+    val placesInReview = MutableLiveData<List<PlaceInReview>>()
     fun showPlacesInReview() {
         viewModelScope.launch {
             placesInReview.postValue(placeInReviewRepository.getAllPlaceFromInReview())
         }
     }
 
-    var modifiedPlaces = MutableLiveData<List<Place>>()
+    val modifiedPlaces = MutableLiveData<List<Place>>()
 
     fun showModifiedPlaces() {
         viewModelScope.launch {

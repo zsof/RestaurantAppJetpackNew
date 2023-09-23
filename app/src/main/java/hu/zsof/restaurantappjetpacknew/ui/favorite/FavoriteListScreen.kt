@@ -26,7 +26,9 @@ import hu.zsof.restaurantappjetpacknew.R
 import hu.zsof.restaurantappjetpacknew.ui.common.screen.PlaceListItem
 import hu.zsof.restaurantappjetpacknew.util.internet.ConnectionState
 import hu.zsof.restaurantappjetpacknew.util.internet.connectivityState
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @ExperimentalMaterial3Api
 @Composable
 fun FavoriteListScreen(

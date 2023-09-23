@@ -18,7 +18,7 @@ class FavoriteViewModel @Inject constructor(
 
     val isNetworkConnected = mutableStateOf(false)
 
-    var favPlaces = MutableLiveData<List<Place>>()
+    val favPlaces = MutableLiveData<List<Place>>()
     fun showFavPlaces() {
         viewModelScope.launch {
             if (isNetworkConnected.value)

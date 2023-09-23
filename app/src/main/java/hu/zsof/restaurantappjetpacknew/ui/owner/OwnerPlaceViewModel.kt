@@ -37,7 +37,7 @@ class OwnerPlaceViewModel @Inject constructor(
         }
     }
 
-    var ownerPlaces = MutableLiveData<List<Place>>()
+    val ownerPlaces = MutableLiveData<List<Place>>()
 
     fun showPlaces() {
         viewModelScope.launch {
@@ -45,7 +45,7 @@ class OwnerPlaceViewModel @Inject constructor(
         }
     }
 
-    var ownerPlacesInReview = MutableLiveData<List<PlaceInReview>>()
+    val ownerPlacesInReview = MutableLiveData<List<PlaceInReview>>()
 
     fun showPlacesInReview() {
         viewModelScope.launch {

@@ -20,15 +20,15 @@ class MapViewModel @Inject constructor(
 ) :
     ViewModel() {
 
-    var places = MutableLiveData<List<PlaceMapResponse>>()
+    val places = MutableLiveData<List<PlaceMapResponse>>()
     fun requestPlaceData() {
         viewModelScope.launch {
             places.postValue(placeRepository.getAllPlaceInMap())
         }
     }
 
-    var favPlaceIds = MutableLiveData<List<Long>?>()
-    var userData = MutableLiveData<User>()
+    val favPlaceIds = MutableLiveData<List<Long>?>()
+    val userData = MutableLiveData<User>()
     fun getUser() {
         viewModelScope.launch {
             val user = userRepository.getUserProfile()
