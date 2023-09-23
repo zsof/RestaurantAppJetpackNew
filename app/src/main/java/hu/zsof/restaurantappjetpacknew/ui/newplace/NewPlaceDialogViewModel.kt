@@ -11,6 +11,7 @@ import hu.zsof.restaurantappjetpacknew.network.repository.PlaceOwnerRepository
 import hu.zsof.restaurantappjetpacknew.network.repository.ResourceRepository
 import hu.zsof.restaurantappjetpacknew.network.request.PlaceDataRequest
 import hu.zsof.restaurantappjetpacknew.ui.common.screen.CommonPlaceDialogViewModel
+import hu.zsof.restaurantappjetpacknew.util.Constants
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -92,8 +93,8 @@ class NewPlaceDialogViewModel @Inject constructor(
                 if (placeResponse != null) {
                     resourceRepository.addNewImage(
                         filePath = image,
-                        type = "place",
-                        itemId = placeResponse.id,
+                        type = Constants.IMAGE_PLACE_IN_REVIEW_TYPE,
+                        itemId = placeResponse.id
                     )
                 }
             }

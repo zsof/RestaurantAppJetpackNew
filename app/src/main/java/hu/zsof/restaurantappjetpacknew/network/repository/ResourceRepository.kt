@@ -9,9 +9,10 @@ import javax.inject.Inject
 
 class ResourceRepository @Inject constructor(private val apiService: ApiService) {
     suspend fun addNewImage(
-        filePath: String, //filePath: String
+        filePath: String,
         itemId: Long,
         type: String,
+        previousImagePath: String? = null
     ) {
         return try {
             val file = File(filePath)
@@ -27,6 +28,7 @@ class ResourceRepository @Inject constructor(private val apiService: ApiService)
                 multipartFile,
                 type,
                 itemId.toString(),
+                previousImagePath
             )
         } catch (e: Exception) {
             e.printStackTrace()

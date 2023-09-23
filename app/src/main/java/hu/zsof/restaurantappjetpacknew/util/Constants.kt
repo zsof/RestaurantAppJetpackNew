@@ -6,7 +6,7 @@ object Constants {
     //const val BASE_URL = "http://wildfire.ddns.net:8092"
 
     // local
-    // const val BASE_URL = "http://100.81.207.103:8092"
+   //  const val BASE_URL = "http://192.168.2.48:8080"
 
     //remote
     const val BASE_URL = "https://dolphin-casual-deer.ngrok-free.app/restaurant/"
@@ -55,4 +55,11 @@ object Constants {
     const val ROLE_ADMIN = "ROLE_ADMIN"
     const val ROLE_OWNER = "ROLE_OWNER"
     const val ROLE_USER = "ROLE_USER"
+
+    /**
+     * Image handle - type
+     */
+    const val IMAGE_PLACE_TYPE = "place"
+    const val IMAGE_PLACE_IN_REVIEW_TYPE = "place-in-review"
+    const val IMAGE_USER_TYPE = "user"
 }

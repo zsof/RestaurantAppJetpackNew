@@ -104,6 +104,7 @@ interface ApiService {
         @Part file: MultipartBody.Part,
         @Part("type") type: String,
         @Part("itemId") typeId: String,
+        @Part("previous-image") previousImagePath: String?,
     )
 
     /**

@@ -10,6 +10,7 @@ import hu.zsof.restaurantappjetpacknew.module.AppState
 import hu.zsof.restaurantappjetpacknew.network.repository.ResourceRepository
 import hu.zsof.restaurantappjetpacknew.network.repository.UserRepository
 import hu.zsof.restaurantappjetpacknew.network.request.UserUpdateProfileRequest
+import hu.zsof.restaurantappjetpacknew.util.Constants
 import hu.zsof.restaurantappjetpacknew.util.SharedPreferences
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -91,8 +92,9 @@ class ProfileViewModel @Inject constructor(
             if (userProfile.value != null) {
                 resourceRepository.addNewImage(
                     filePath = image,
-                    type = "user",
+                    type = Constants.IMAGE_USER_TYPE,
                     itemId = userProfile.value!!.id,
+                    previousImagePath = userProfile.value?.image
                 )
             }
         }
