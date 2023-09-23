@@ -18,7 +18,6 @@ import org.json.JSONObject
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
-import java.util.prefs.Preferences
 import javax.inject.Singleton
 
 @Module
@@ -86,7 +85,6 @@ class NetworkModule() {
             val token = originalResponse.headers["Authorization"]
             if (token != null) {
                 sharedPreferences.edit().putString("bearer", token).apply()
-                Preferences.userRoot().put("bearer", token)
             }
             return originalResponse
         }
@@ -106,7 +104,12 @@ class NetworkModule() {
                     backgroundThreadToast(context, errorBody.getString("error"))
                 } else {
                     if (originalResponse.code == 401) {
-                        backgroundThreadToast(context, "Belépés sikertelen.")
+                        val sharedPreferences =
+                            context.getSharedPreferences(
+                                Constants.Prefs.AUTH_SHARED_PREFERENCES,
+                                Context.MODE_PRIVATE,
+                            )
+                        sharedPreferences.edit().putString("bearer", "").apply()
                     } else {
                         backgroundThreadToast(context, "Váratlan hiba történt.")
                     }

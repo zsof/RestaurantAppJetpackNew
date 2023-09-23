@@ -188,6 +188,7 @@ fun SetStartDestination(
             }
         } else if (viewModel.getAppPreference(Constants.Prefs.USER_LOGGED)) {
             AppState.startDestination.value = FAV_START
+            showToast(context, "Az internet nem elérhető!")
         } else {
             AppState.startDestination.value = LOGIN_START
             showToast(context, "Az internet nem elérhető!")
@@ -243,11 +244,15 @@ fun setBottomBar(
 
 
     //ha más wifin vagyok, nem wildfire-n, akkor azt hiszi nincs internet todo
-   /* if (isConnected.not()) {
+    if (isConnected.not()) {
         when (navBackStackEntry?.destination?.route) {
             "fav" -> isItemEnable.value = true
 
             else -> isItemEnable.value = false
         }
-    }*/
+    } else {
+        navBackStackEntry?.destination?.route?.forEach { _ ->
+            isItemEnable.value = true
+        }
+    }
 }
