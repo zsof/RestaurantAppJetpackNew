@@ -9,6 +9,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import hu.zsof.restaurantappjetpacknew.BuildConfig
+import hu.zsof.restaurantappjetpacknew.navigation.Navigator
 import hu.zsof.restaurantappjetpacknew.navigation.ScreenModel
 import hu.zsof.restaurantappjetpacknew.network.ApiService
 import hu.zsof.restaurantappjetpacknew.ui.common.showToast
@@ -28,6 +29,7 @@ class NetworkModule() {
     @Provides
     operator fun invoke(
         @ApplicationContext context: Context,
+        navigator: Navigator
     ): ApiService {
         val interceptor = HttpLoggingInterceptor()
         if (BuildConfig.DEBUG) {
@@ -41,7 +43,7 @@ class NetworkModule() {
             .readTimeout(30, TimeUnit.SECONDS)
             .addInterceptor(interceptor)
             .addInterceptor(AuthInterceptor(context))
-            .addInterceptor(ErrorInterceptor(context))
+            .addInterceptor(ErrorInterceptor(context, navigator))
             .build()
 
         val retrofit =
@@ -91,7 +93,7 @@ class NetworkModule() {
         }
     }
 
-    class ErrorInterceptor(private val context: Context) : Interceptor {
+    class ErrorInterceptor(private val context: Context, private val navigator: Navigator) : Interceptor {
         override fun intercept(chain: Interceptor.Chain): Response {
             val originalResponse: Response = chain.proceed(chain.request())
 
@@ -111,7 +113,7 @@ class NetworkModule() {
                                 Context.MODE_PRIVATE,
                             )
                         sharedPreferences.edit().putString("bearer", "").apply()
-                        AppState.navController?.navigate(ScreenModel.NavigationScreen.Login.route)
+                        navigator.destination.postValue(ScreenModel.NavigationScreen.Login)
                     } else {
                         backgroundThreadToast(context, "Váratlan hiba történt.")
                     }

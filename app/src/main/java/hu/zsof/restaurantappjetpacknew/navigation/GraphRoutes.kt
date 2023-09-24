@@ -7,7 +7,6 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
-import hu.zsof.restaurantappjetpacknew.module.AppState
 import hu.zsof.restaurantappjetpacknew.ui.auth.login.LoginScreen
 import hu.zsof.restaurantappjetpacknew.ui.auth.register.RegisterScreen
 import hu.zsof.restaurantappjetpacknew.ui.details.TabLayoutDetails
@@ -27,21 +26,24 @@ import hu.zsof.restaurantappjetpacknew.util.Constants
 @ExperimentalMaterial3Api
 fun NavGraphBuilder.authNavGraph(
     navController: NavHostController,
+    navigator: Navigator
 ) {
-    navigation(
-        startDestination = when (AppState.startDestination.value) {
-            Constants.LOGIN_START -> {
-                ScreenModel.NavigationScreen.Login.route
-            }
+    navigator.destination.value?.route?.let {
+        navigation(
+        startDestination = it,
+            /*  ?: when (AppState.startDestination.value) {
+                    Constants.LOGIN_START -> {
+                        ScreenModel.NavigationScreen.Login.route
+                    }
 
-            Constants.HOME_START -> {
-                ScreenModel.NavigationScreen.Home.route
-            }
+                    Constants.HOME_START -> {
+                        ScreenModel.NavigationScreen.Home.route
+                    }
 
-            else -> {
-                ScreenModel.NavigationScreen.FavPlace.route
-            }
-        },
+                    else -> {
+                        ScreenModel.NavigationScreen.FavPlace.route
+                    }
+                },*/
         route = Constants.LOGIN_START,
     ) {
         composable(
@@ -216,5 +218,6 @@ fun NavGraphBuilder.authNavGraph(
             )
         }
 
+    }
     }
 }

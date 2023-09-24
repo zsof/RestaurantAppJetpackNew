@@ -11,13 +11,18 @@ import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import hu.zsof.restaurantappjetpacknew.module.AppState
 import hu.zsof.restaurantappjetpacknew.navigation.NavGraph
+import hu.zsof.restaurantappjetpacknew.navigation.Navigator
 import hu.zsof.restaurantappjetpacknew.ui.theme.RestaurantAppJetpackNewTheme
 import hu.zsof.restaurantappjetpacknew.util.Constants
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     val viewModel: MainViewModel by viewModels()
+
+    @Inject
+    lateinit var navigator: Navigator
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -26,8 +31,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             RestaurantAppJetpackNewTheme(darkTheme = isNightMode()) {
                 val navController = rememberNavController()
-                AppState.navController = navController
-                NavGraph(navController = navController, viewModel = viewModel)
+                NavGraph(navController = navController, viewModel = viewModel, navigator = navigator)
             }
         }
     }

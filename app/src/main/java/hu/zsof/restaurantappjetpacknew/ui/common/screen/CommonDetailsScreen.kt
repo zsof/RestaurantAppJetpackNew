@@ -198,7 +198,7 @@ fun CommonDetailsScreen(
                                 fontWeight = FontWeight.Bold,
                                 fontStyle = FontStyle.Italic,
                                 modifier = Modifier
-                                    .padding(16.dp, 16.dp, 16.dp, 8.dp),
+                                    .padding(16.dp, 8.dp, 16.dp, 8.dp),
                             )
 
                             if (place is PlaceInReview && !place.problem.isNullOrEmpty()) {

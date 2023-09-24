@@ -42,8 +42,6 @@ import hu.zsof.restaurantappjetpacknew.R
 import hu.zsof.restaurantappjetpacknew.module.AppState
 import hu.zsof.restaurantappjetpacknew.ui.common.showToast
 import hu.zsof.restaurantappjetpacknew.util.Constants
-import hu.zsof.restaurantappjetpacknew.util.Constants.FAV_START
-import hu.zsof.restaurantappjetpacknew.util.Constants.HOME_START
 import hu.zsof.restaurantappjetpacknew.util.Constants.LOGIN_START
 import hu.zsof.restaurantappjetpacknew.util.Constants.ROOT_GRAPH_ROUTE
 import hu.zsof.restaurantappjetpacknew.util.internet.ConnectionState
@@ -54,12 +52,13 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalCoroutinesApi::class)
 @SuppressLint(
     "UnusedMaterial3ScaffoldPaddingParameter",
-    "UnusedMaterialScaffoldPaddingParameter",
+    "UnusedMaterialScaffoldPaddingParameter", "StateFlowValueCalledInComposition",
 )
 @Composable
 fun NavGraph(
     navController: NavHostController,
     viewModel: MainViewModel = hiltViewModel(),
+    navigator: Navigator,
 ) {
     val scaffoldState = rememberScaffoldState(rememberDrawerState(DrawerValue.Closed))
     val scope = rememberCoroutineScope()
@@ -76,7 +75,12 @@ fun NavGraph(
     val connection by connectivityState()
     val isConnected = connection === ConnectionState.Available
 
-    SetStartDestination(context = context, viewModel = viewModel, isConnected = isConnected)
+    SetStartDestination(
+        context = context,
+        viewModel = viewModel,
+        isConnected = isConnected,
+        navigator = navigator
+    )
     setBottomBar(
         navBackStackEntry = navBackStackEntry,
         bottomBarState = bottomBarState,
@@ -148,7 +152,7 @@ fun NavGraph(
                         startDestination = LOGIN_START,
                         route = ROOT_GRAPH_ROUTE,
                     ) {
-                        authNavGraph(navController = navController)
+                        authNavGraph(navController = navController, navigator = navigator)
                     }
                 }
             }
@@ -161,6 +165,7 @@ fun SetStartDestination(
     context: Context,
     viewModel: MainViewModel,
     isConnected: Boolean,
+    navigator: Navigator
 ) {
     val sharedPreferences =
         context.getSharedPreferences(Constants.Prefs.AUTH_SHARED_PREFERENCES, Context.MODE_PRIVATE)
@@ -170,7 +175,7 @@ fun SetStartDestination(
         if (isConnected) {
             val userResponse = viewModel.user.observeAsState().value
 
-            AppState.startDestination.value = HOME_START
+            navigator.destination.value = ScreenModel.NavigationScreen.Home
             viewModel.setAppPreference(Constants.Prefs.USER_LOGGED, true)
 
             when (userResponse?.userType) {
@@ -187,10 +192,12 @@ fun SetStartDestination(
                 }
             }
         } else if (viewModel.getAppPreference(Constants.Prefs.USER_LOGGED)) {
-            AppState.startDestination.value = FAV_START
+            navigator.destination.value = ScreenModel.NavigationScreen.FavPlace
+
             showToast(context, "Az internet nem elérhető!")
         } else {
-            AppState.startDestination.value = LOGIN_START
+            navigator.destination.value = ScreenModel.NavigationScreen.Login
+
             showToast(context, "Az internet nem elérhető!")
         }
     } else {
@@ -199,7 +206,8 @@ fun SetStartDestination(
             Constants.Prefs.USER_LOGGED,
             false,
         )
-        AppState.startDestination.value = LOGIN_START
+        navigator.destination.value = ScreenModel.NavigationScreen.Login
+
     }
 }
 
