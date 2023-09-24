@@ -111,7 +111,7 @@ fun DetailsCommentScreen(
                     items(comments.value) {
                         MessageBoxItem(
                             message = it.message,
-                            creatorId = it.id,
+                            creatorId = it.userId,
                             creatorName = it.userName
                         )
                     }

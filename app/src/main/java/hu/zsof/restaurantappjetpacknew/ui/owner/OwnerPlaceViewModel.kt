@@ -28,12 +28,14 @@ class OwnerPlaceViewModel @Inject constructor(
     fun deletePlace(placeId: Long) {
         viewModelScope.launch {
             placeOwnerRepository.deletePlace(placeId)
+            ownerPlaces.postValue(placeOwnerRepository.getAllPlaceByOwner())
         }
     }
 
     fun deletePlaceInReview(placeId: Long) {
         viewModelScope.launch {
             placeInReviewRepository.deletePlaceFromInReview(placeId)
+            ownerPlacesInReview.postValue(placeOwnerRepository.getAllPlaceInReviewByOwner())
         }
     }
 
