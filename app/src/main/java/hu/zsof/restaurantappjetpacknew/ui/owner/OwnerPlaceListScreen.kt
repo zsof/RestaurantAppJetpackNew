@@ -47,7 +47,7 @@ fun OwnerPlaceListScreen(
                     LazyColumn(
                         contentPadding = PaddingValues(8.dp),
                     ) {
-                        items(places.value) { place ->
+                        items(places.value.sortedBy { it.name }) { place ->
                             viewModel.isPlaceByOwner.value =
                                 AppState.loggedUser.value?.id == place.creatorId
 
@@ -63,7 +63,7 @@ fun OwnerPlaceListScreen(
                     LazyColumn(
                         contentPadding = PaddingValues(8.dp),
                     ) {
-                        items(placesInReview.value) { placeInReview ->
+                        items(placesInReview.value.sortedBy { it.name }) { placeInReview ->
                             viewModel.isPlaceInReviewByOwner.value =
                                 AppState.loggedUser.value?.id == placeInReview.creatorId
 

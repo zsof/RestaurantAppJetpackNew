@@ -140,7 +140,7 @@ fun HomeListScreen(
                     LazyColumn(
                         contentPadding = PaddingValues(8.dp),
                     ) {
-                        items(searchFilteredPlaces.value!!) {
+                        items(searchFilteredPlaces.value!!.sortedBy { it.name }) {
                             PlaceListItem(
                                 place = it,
                                 onClickPlaceItem = onClickPlaceItem,
@@ -165,7 +165,7 @@ fun HomeListScreen(
                     LazyColumn(
                         contentPadding = PaddingValues(8.dp),
                     ) {
-                        items(globalFilteredPlaces.value!!) { filteredPlace ->
+                        items(globalFilteredPlaces.value!!.sortedBy { it.name }) { filteredPlace ->
                             PlaceListItem(
                                 place = filteredPlace,
                                 onClickPlaceItem = onClickPlaceItem,
@@ -180,7 +180,7 @@ fun HomeListScreen(
                     LazyColumn(
                         contentPadding = PaddingValues(8.dp),
                     ) {
-                        items(userFilteredPlaces) { userFilteredPlaces ->
+                        items(userFilteredPlaces.sortedBy { it.name }) { userFilteredPlaces ->
                             PlaceListItem(
                                 place = userFilteredPlaces,
                                 onClickPlaceItem = onClickPlaceItem,

@@ -70,7 +70,7 @@ fun MultiFloatingButton(
     if (isPlaceAccept.value == true && !acceptBtnIsClicked.value) {
         Toast.makeText(
             context,
-            "The place has accepted successfully!",
+            "Sikeresen elfogadtad a helyet!",
             Toast.LENGTH_SHORT,
         ).show()
         acceptBtnIsClicked.value = true
@@ -100,7 +100,7 @@ fun MultiFloatingButton(
                                     viewModel.acceptPlace(placeId, false)
                                 }
                             } else {
-                                showToast(context, "This place has already accepted!")
+                                showToast(context, "A hely már el van fogadva!")
                             }
                         }
 
@@ -176,7 +176,7 @@ fun ProblemDialog(
 ) {
     val isPlaceReported = viewModel.isPlaceReported.observeAsState()
     if (isPlaceReported.value == true) {
-        showToast(context, "This place has reported successfully!")
+        showToast(context, "Sikeresen jelentetted a problémát!")
         viewModel.problemReportDialogOpen.value = false
     }
 

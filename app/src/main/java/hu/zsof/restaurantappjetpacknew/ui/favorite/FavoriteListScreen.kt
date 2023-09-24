@@ -65,7 +65,9 @@ fun FavoriteListScreen(
                 LazyColumn(
                     contentPadding = PaddingValues(8.dp),
                 ) {
-                    items(places.value) {
+                    items(
+                        items = places.value.sortedBy { it.name }
+                    ) {
                         PlaceListItem(place = it, onClickPlaceItem = onClickPlaceItem)
                     }
                 }

@@ -93,7 +93,8 @@ class NetworkModule() {
         }
     }
 
-    class ErrorInterceptor(private val context: Context, private val navigator: Navigator) : Interceptor {
+    class ErrorInterceptor(private val context: Context, private val navigator: Navigator) :
+        Interceptor {
         override fun intercept(chain: Interceptor.Chain): Response {
             val originalResponse: Response = chain.proceed(chain.request())
 
@@ -114,6 +115,9 @@ class NetworkModule() {
                             )
                         sharedPreferences.edit().putString("bearer", "").apply()
                         navigator.destination.postValue(ScreenModel.NavigationScreen.Login)
+                    } else if (originalResponse.code == 418) {
+                        backgroundThreadToast(context, "Az email cím még nincs aktiválva!")
+
                     } else {
                         backgroundThreadToast(context, "Váratlan hiba történt.")
                     }

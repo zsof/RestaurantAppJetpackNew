@@ -46,7 +46,7 @@ fun ReviewPlaceListScreen(
                         contentPadding = PaddingValues(8.dp),
                     ) {
                         // To save isModified value for backend
-                        items(modifiedPlaces.value) {
+                        items(modifiedPlaces.value.sortedBy { it.name }) {
                             PlaceListItem(
                                 place = it,
                                 onClickPlaceItem = onClickPlaceItem,
@@ -57,7 +57,7 @@ fun ReviewPlaceListScreen(
                     LazyColumn(
                         contentPadding = PaddingValues(8.dp),
                     ) {
-                        items(newPlaces.value) {
+                        items(newPlaces.value.sortedBy { it.name }) {
                             PlaceListItem(
                                 place = it,
                                 onClickPlaceItem = onClickPlaceItem,
