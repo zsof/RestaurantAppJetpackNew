@@ -1,6 +1,7 @@
 package hu.zsof.restaurantappjetpacknew.module
 
 import androidx.lifecycle.MutableLiveData
+import androidx.navigation.NavController
 import com.google.android.gms.maps.model.LatLng
 import hu.zsof.restaurantappjetpacknew.model.Place
 import hu.zsof.restaurantappjetpacknew.model.User
@@ -12,6 +13,8 @@ object AppState {
     val place = MutableLiveData<Place?>(null)
 
     private var latLng: LatLng? = null
+
+    var navController: NavController? = null
 
     val loggedUser = MutableLiveData<User?>(null)
     val startDestination = MutableLiveData(LOGIN_START)

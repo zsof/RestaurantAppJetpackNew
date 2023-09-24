@@ -9,6 +9,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import hu.zsof.restaurantappjetpacknew.BuildConfig
+import hu.zsof.restaurantappjetpacknew.navigation.ScreenModel
 import hu.zsof.restaurantappjetpacknew.network.ApiService
 import hu.zsof.restaurantappjetpacknew.ui.common.showToast
 import hu.zsof.restaurantappjetpacknew.util.Constants
@@ -110,9 +111,7 @@ class NetworkModule() {
                                 Context.MODE_PRIVATE,
                             )
                         sharedPreferences.edit().putString("bearer", "").apply()
-
-                        AppState.startDestination.value = Constants.LOGIN_START
-                        AppState.loggedUser.value = null
+                        AppState.navController?.navigate(ScreenModel.NavigationScreen.Login.route)
                     } else {
                         backgroundThreadToast(context, "Váratlan hiba történt.")
                     }

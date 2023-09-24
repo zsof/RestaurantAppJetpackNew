@@ -22,7 +22,6 @@ class AuthRepository @Inject constructor(private val apiService: ApiService) {
         }
     }
 
-    // @RequiresApi(Build.VERSION_CODES.O)
     suspend fun loginUser(loginDataRequest: LoginDataRequest): LoggedUserResponse {
         return try {
             val simpleData = "${loginDataRequest.email}:${loginDataRequest.password}"
