@@ -162,6 +162,7 @@ fun NavGraphBuilder.authNavGraph(
             ReviewDetailsScreen(
                 placeId = navController.currentBackStackEntry?.arguments?.getLong(ScreenModel.NavigationScreen.Details.Args.placeId)
                     ?: 0,
+                onPlaceAccepted = { navController.popBackStack() }
             )
         }
         composable(route = ScreenModel.NavigationScreen.Profile.route) {

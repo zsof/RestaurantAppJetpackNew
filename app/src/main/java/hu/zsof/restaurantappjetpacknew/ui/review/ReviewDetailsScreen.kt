@@ -22,6 +22,7 @@ import hu.zsof.restaurantappjetpacknew.ui.common.screen.CommonDetailsScreen
 fun ReviewDetailsScreen(
     viewModel: ReviewPlaceViewModel = hiltViewModel(),
     placeId: Long,
+    onPlaceAccepted: () -> Unit
 ) {
     val placeInReviewOrModifiedPlace = viewModel.reviewPlaceById.observeAsState().value
     LaunchedEffect(key1 = "ReviewDetails") {
@@ -34,13 +35,13 @@ fun ReviewDetailsScreen(
             identifier = FabButton.REPORT.name,
             color = Color.Red,
 
-        ),
+            ),
         FabItem(
             icon = ImageBitmap.imageResource(id = R.drawable.ic_accept),
             identifier = FabButton.ACCEPT.name,
             color = Color.Green,
 
-        ),
+            ),
     )
 
     val showProblemDialog = remember {
@@ -71,6 +72,7 @@ fun ReviewDetailsScreen(
         showProblemDialog = viewModel.showProblemDialog,
         multiFloatingState = viewModel.multiFloatingState,
         fabItems = items,
-        openingHoursOpen = viewModel.openingHoursOpenDetails
+        openingHoursOpen = viewModel.openingHoursOpenDetails,
+        onPlaceAccepted = onPlaceAccepted
     )
 }

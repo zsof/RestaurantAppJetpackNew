@@ -55,6 +55,7 @@ fun MultiFloatingButton(
     items: List<FabItem>,
     viewModel: ReviewPlaceViewModel,
     placeId: Long,
+    onPlaceAccepted: () -> Unit
 ) {
     val context = LocalContext.current
     val transition = updateTransition(targetState = multiFloatingState, label = "transition")
@@ -73,6 +74,7 @@ fun MultiFloatingButton(
             Toast.LENGTH_SHORT,
         ).show()
         acceptBtnIsClicked.value = true
+        onPlaceAccepted()
     }
 
     if (viewModel.problemReportDialogOpen.value) {

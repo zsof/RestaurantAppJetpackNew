@@ -62,7 +62,8 @@ fun CommonDetailsScreen(
     fabItems: List<FabItem> = emptyList(),
     reviewPlaceViewModel: ReviewPlaceViewModel = hiltViewModel(),
     openingHoursOpen: MutableState<Boolean>,
-    selectedImage: Uri? = null
+    selectedImage: Uri? = null,
+    onPlaceAccepted: (() -> Unit)? = null
 ) {
     val openingHoursArrowIcon = if (openingHoursOpen.value) {
         Icons.Outlined.KeyboardArrowUp
@@ -112,6 +113,11 @@ fun CommonDetailsScreen(
                     items = fabItems,
                     viewModel = reviewPlaceViewModel,
                     placeId = placeId,
+                    onPlaceAccepted = {
+                        if (onPlaceAccepted != null) {
+                            onPlaceAccepted()
+                        }
+                    }
                 )
             }
         },
