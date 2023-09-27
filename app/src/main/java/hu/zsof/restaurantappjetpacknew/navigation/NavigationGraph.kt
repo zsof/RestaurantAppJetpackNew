@@ -66,6 +66,7 @@ fun NavGraph(
 
     val bottomBarState = rememberSaveable { (mutableStateOf(true)) }
     val drawerOpenState = rememberSaveable { (mutableStateOf(true)) }
+    val drawerGestureEnabled = rememberSaveable { (mutableStateOf(true)) }
     val isItemEnable = rememberSaveable { mutableStateOf(true) }
     val isDrawableEnable = rememberSaveable { mutableStateOf(true) }
 
@@ -87,7 +88,8 @@ fun NavGraph(
         drawerOpenState = drawerOpenState,
         isItemEnable = isItemEnable,
         isConnected = isConnected,
-        isDrawableEnable = isDrawableEnable
+        isDrawableEnable = isDrawableEnable,
+        drawerGestureEnabled = drawerGestureEnabled
     )
 
     CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
@@ -107,7 +109,7 @@ fun NavGraph(
                 }
             },
             scaffoldState = scaffoldState,
-            drawerGesturesEnabled = drawerOpenState.value,
+            drawerGesturesEnabled = drawerGestureEnabled.value,
             drawerContent = {
                 CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
                     Drawer(
@@ -218,6 +220,7 @@ fun setBottomBar(
     isItemEnable: MutableState<Boolean>,
     isDrawableEnable: MutableState<Boolean>,
     isConnected: Boolean,
+    drawerGestureEnabled: MutableState<Boolean>,
 ) {
     // Control BottomBar
     when (navBackStackEntry?.destination?.route) {
@@ -238,8 +241,7 @@ fun setBottomBar(
         }
 
         "map" -> {
-            drawerOpenState.value = false
-            isDrawableEnable.value = false
+            drawerGestureEnabled.value = false
         }
 
         else -> {

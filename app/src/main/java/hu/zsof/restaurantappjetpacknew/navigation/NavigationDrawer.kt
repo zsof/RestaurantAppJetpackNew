@@ -17,6 +17,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.Icon
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -64,6 +66,17 @@ fun Drawer(
                     .fillMaxSize()
                     .background(brush = Brush.verticalGradient(colors = gradientColors)),
             ) {
+                Icon(
+                    imageVector = Icons.Filled.Close,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .clickable(enabled = true, onClick = {
+                            scope.launch {
+                                scaffoldState.drawerState.close()
+                            }
+                        })
+                        .padding(start = 16.dp, top = 16.dp, bottom = 8.dp)
+                )
                 Text(
                     text = stringResource(id = R.string.welcome_text),
                     style = MaterialTheme.typography.headlineLarge,
@@ -141,7 +154,10 @@ fun ScreenItems(
                                             Constants.Prefs.AUTH_SHARED_PREFERENCES,
                                             Context.MODE_PRIVATE,
                                         )
-                                        sharedPreferences.edit().putString("bearer", "").apply()
+                                        sharedPreferences
+                                            .edit()
+                                            .putString("bearer", "")
+                                            .apply()
                                         popUpTo(ScreenModel.NavigationScreen.Login.route)
                                         AppState.loggedUser.value = null
                                         viewModel.setAppPreference(

@@ -31,19 +31,6 @@ fun NavGraphBuilder.authNavGraph(
     navigator.destination.value?.route?.let {
         navigation(
         startDestination = it,
-            /*  ?: when (AppState.startDestination.value) {
-                    Constants.LOGIN_START -> {
-                        ScreenModel.NavigationScreen.Login.route
-                    }
-
-                    Constants.HOME_START -> {
-                        ScreenModel.NavigationScreen.Home.route
-                    }
-
-                    else -> {
-                        ScreenModel.NavigationScreen.FavPlace.route
-                    }
-                },*/
         route = Constants.LOGIN_START,
     ) {
         composable(
