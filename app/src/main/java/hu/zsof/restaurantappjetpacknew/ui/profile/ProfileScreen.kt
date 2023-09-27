@@ -91,7 +91,7 @@ fun ProfileScreen(
     if (viewModel.changeNameDialogOpen.value) {
         CommonEditTextDialog(
             changingValue = viewModel.userName,
-            changingTitle = "Név",
+            changingTitle = stringResource(R.string.profile_change_dialog_title_name),
             keyboardType = KeyboardType.Text,
             onDismiss = { viewModel.changeNameDialogOpen.value = false },
             onDismissSave = {

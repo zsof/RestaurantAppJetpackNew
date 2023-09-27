@@ -108,6 +108,21 @@
     <string name="map_bottom_sheet_place_description">Piros ikonnal vannak jelölve a hozzáadott helyek, kékkel a kedvencnek jelöltek. Adott ikonra kattintáskor, megjelenik a hely neve. Ha a névre kattint, megjelennek a hely adatai.</string>
     <string name="map_bottom_sheet_new_place">Helyszín felvétele:</string>
     <string name="map_bottom_sheet_new_place_description">Ha Tulajdonosként regisztráltál, lehetőséged van új helyszínt felvenni, a térkép egy adott pontjára hosszan kattintva. Ekkor megjelenik a felület, ahol további adatokat tudsz megadni. A hely címe a térképre kattintás alapján töltődik ki, ezt módosítani kézzel nem lehet!</string>
+    <string name="tab_details">Részletek</string>
+    <string name="tab_comments">Kommentek</string>
+    <string name="request_permission">Request permission</string>
+    <string name="permission_map_explanation">The Location is important for this app. Please grant the Permission.</string>
+    <string name="tab_accepted_places">Elfogadott</string>
+    <string name="tab_wait_for_accept_places">Elfogadásra vár</string>
+    <string name="profile_change_dialog_title_name">Név</string>
+    <string name="accept_place_success">Sikeresen elfogadtad a helyet!</string>
+    <string name="accept_place_succes">Sikeresen jelentetted a problémát!</string>
+    <string name="tab_new_places">Új</string>
+    <string name="tab_modified_places">Módosított Helyek</string>
+    <string name="request_gallery_explanation">Using the gallery is important for this feature to be available. Please grant the permission.</string>
+    <string name="permission_gallery_denied_message">You could not use this function because the permission was denied. Please go to Settings and add permission to use the Gallery</string>
+    <string name="permission_camera_explanation">Using the camera is important for this feature to be available. Please grant the permission.</string>
+    <string name="permission_camera_denied_message">You can\'t use this feature because the permission was denied. Please go to Settings and add permission to use the Camera</string>
 
     <string-array name="filter_category_items">
         <item>Étterem</item>

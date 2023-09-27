@@ -1,5 +1,7 @@
 package hu.zsof.restaurantappjetpacknew.ui.details
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Tab
 import androidx.compose.material.TabRow
@@ -12,10 +14,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.*
 import com.google.accompanist.pager.*
+import hu.zsof.restaurantappjetpacknew.R
 import kotlinx.coroutines.launch
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun TabLayoutDetails(placeId: Long, onEditPlaceClick: (Long) -> Unit) {
@@ -35,8 +40,8 @@ fun TabLayoutDetails(placeId: Long, onEditPlaceClick: (Long) -> Unit) {
 @Composable
 fun Tabs(pagerState: PagerState) {
     val list = listOf(
-        "Részletek" to Icons.Default.Details,
-        "Kommentek" to Icons.Default.Image,
+        stringResource(R.string.tab_details) to Icons.Default.Details,
+        stringResource(R.string.tab_comments) to Icons.Default.Image,
     )
 
     val scope = rememberCoroutineScope()
@@ -71,6 +76,7 @@ fun Tabs(pagerState: PagerState) {
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @ExperimentalPagerApi
 @Composable
 fun TabsContent(pagerState: PagerState, placeId: Long, onEditPlaceClick: (Long) -> Unit) {

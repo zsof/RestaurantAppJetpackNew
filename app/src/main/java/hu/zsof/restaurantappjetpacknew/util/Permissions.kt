@@ -10,9 +10,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionRequired
 import com.google.accompanist.permissions.PermissionState
+import hu.zsof.restaurantappjetpacknew.R
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
@@ -38,10 +40,10 @@ fun GalleryPermission(
                         onDismissRequest = {},
                         confirmButton = {
                             Button(onClick = { permissionState.launchPermissionRequest() }) {
-                                Text("Request permission")
+                                Text(stringResource(id = R.string.request_permission))
                             }
                         },
-                        text = { Text("Using the gallery is important for this feature to be available. Please grant the permission.") },
+                        text = { Text(stringResource(R.string.request_gallery_explanation)) },
                     )
                 }
             },
@@ -51,7 +53,7 @@ fun GalleryPermission(
                     onDismissRequest = {
                         galleryOpenPermission.value = false
                     },
-                    text = { Text("You could not use this function because the permission was denied. Please go to Settings and add permission to use the Gallery") },
+                    text = { Text(stringResource(R.string.permission_gallery_denied_message)) },
                     confirmButton = {
                         // The Google Play store has a policy that limits usage of MANAGE_EXTERNAL_STORAGE
                         /*  if (Build.VERSION.SDK_INT >= 30) {
@@ -92,10 +94,10 @@ fun CameraPermission(
                         },
                         confirmButton = {
                             Button(onClick = { permissionState.launchPermissionRequest() }) {
-                                Text("Request permission")
+                                Text(stringResource(id = R.string.request_permission))
                             }
                         },
-                        text = { Text("Using the camera is important for this feature to be available. Please grant the permission.") },
+                        text = { Text(stringResource(R.string.permission_camera_explanation)) },
                     )
                 }
             },
@@ -105,7 +107,7 @@ fun CameraPermission(
                     onDismissRequest = {
                         cameraOpenPermission.value = false
                     },
-                    text = { Text("You can't use this feature because the permission was denied. Please go to Settings and add permission to use the Camera") },
+                    text = { Text(stringResource(R.string.permission_camera_denied_message)) },
                     confirmButton = {},
                 )
             },

@@ -13,8 +13,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.*
 import com.google.accompanist.pager.*
+import hu.zsof.restaurantappjetpacknew.R
 import hu.zsof.restaurantappjetpacknew.model.enums.PlaceType
 import kotlinx.coroutines.launch
 
@@ -38,8 +40,8 @@ fun TabLayoutReviewList(
 @Composable
 fun Tabs(pagerState: PagerState) {
     val list = listOf(
-        "Új" to Icons.Default.Details,
-        "Módosított Helyek" to Icons.Default.Image,
+        stringResource(R.string.tab_new_places) to Icons.Default.Details,
+        stringResource(R.string.tab_modified_places) to Icons.Default.Image,
     )
 
     val scope = rememberCoroutineScope()

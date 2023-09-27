@@ -80,10 +80,10 @@ fun LocationPermissions(
                     onDismissRequest = {},
                     confirmButton = {
                         Button(onClick = { multiplePermissionState.launchMultiplePermissionRequest() }) {
-                            Text("Request permission")
+                            Text(stringResource(R.string.request_permission))
                         }
                     },
-                    text = { Text("The Location is important for this app. Please grant the Permission.") },
+                    text = { Text(stringResource(R.string.permission_map_explanation)) },
                 )
             }
         },
