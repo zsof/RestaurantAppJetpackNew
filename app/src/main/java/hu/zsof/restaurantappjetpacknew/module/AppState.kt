@@ -1,5 +1,6 @@
 package hu.zsof.restaurantappjetpacknew.module
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.maps.model.LatLng
 import hu.zsof.restaurantappjetpacknew.model.Place
@@ -18,6 +19,8 @@ object AppState {
     val searchedPlaces = MutableLiveData<List<Place>>()
 
     val darkTheme = MutableLiveData<Boolean>()
+    
+    val mapInfoClicked = mutableStateOf(false)
 
     fun getLatLng(): LatLng {
         if (latLng == null) {

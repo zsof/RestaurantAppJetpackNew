@@ -103,6 +103,11 @@
     <string name="modified_places_for_review">Módosított helyek:</string>
     <string name="new_places_for_review">Új helyek:</string>
     <string name="comment_label">Hozzászólás</string>
+    <string name="map_bottom_sheet_title">Információk</string>
+    <string name="map_bottom_sheet_places">Helyszínek:</string>
+    <string name="map_bottom_sheet_place_description">Piros ikonnal vannak jelölve a hozzáadott helyek, kékkel a kedvencnek jelöltek. Adott ikonra kattintáskor, megjelenik a hely neve. Ha a névre kattint, megjelennek a hely adatai.</string>
+    <string name="map_bottom_sheet_new_place">Helyszín felvétele:</string>
+    <string name="map_bottom_sheet_new_place_description">Ha Tulajdonosként regisztráltál, lehetőséged van új helyszínt felvenni, a térkép egy adott pontjára hosszan kattintva. Ekkor megjelenik a felület, ahol további adatokat tudsz megadni. A hely címe a térképre kattintás alapján töltődik ki, ezt módosítani kézzel nem lehet!</string>
 
     <string-array name="filter_category_items">
         <item>Étterem</item>

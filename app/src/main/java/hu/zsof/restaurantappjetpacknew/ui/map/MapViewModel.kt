@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import hu.zsof.restaurantappjetpacknew.model.User
+import hu.zsof.restaurantappjetpacknew.module.AppState
 import hu.zsof.restaurantappjetpacknew.network.repository.PlaceRepository
 import hu.zsof.restaurantappjetpacknew.network.repository.UserRepository
 import hu.zsof.restaurantappjetpacknew.network.response.PlaceMapResponse
@@ -17,8 +18,9 @@ class MapViewModel @Inject constructor(
     private val placeRepository: PlaceRepository,
     private val userRepository: UserRepository,
     private val sharedPref: SharedPreferences,
-) :
-    ViewModel() {
+) : ViewModel() {
+
+    val isBottomSheetOpen = AppState.mapInfoClicked
 
     val places = MutableLiveData<List<PlaceMapResponse>>()
     fun requestPlaceData() {

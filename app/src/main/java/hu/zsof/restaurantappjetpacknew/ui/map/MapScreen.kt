@@ -1,28 +1,35 @@
 package hu.zsof.restaurantappjetpacknew.ui.map
 
 import android.Manifest
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.permissions.*
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
+import hu.zsof.restaurantappjetpacknew.R
 import hu.zsof.restaurantappjetpacknew.model.convertToPlaceMapResponse
 import hu.zsof.restaurantappjetpacknew.module.AppState
 import hu.zsof.restaurantappjetpacknew.network.response.PlaceMapResponse
 import hu.zsof.restaurantappjetpacknew.util.Constants
 import hu.zsof.restaurantappjetpacknew.util.Constants.ROLE_OWNER
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 @ExperimentalMaterial3Api
-fun MapScreen(onLongClick: (latLng: LatLng) -> Unit) {
+fun MapScreen(onLongClick: (latLng: LatLng) -> Unit, onMarkerInfoClick: (Long) -> Unit) {
     val multiplePermissionState = rememberMultiplePermissionsState(
         permissions = listOf(
             Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -33,6 +40,7 @@ fun MapScreen(onLongClick: (latLng: LatLng) -> Unit) {
     LocationPermissions(
         multiplePermissionState = multiplePermissionState,
         onLongClick,
+        onMarkerInfoClick
     )
 
     // This way, the permission request is immediately started when the Screen is loaded (it could also be started by pressing a button)
@@ -41,14 +49,28 @@ fun MapScreen(onLongClick: (latLng: LatLng) -> Unit) {
     }
 }
 
-@OptIn(ExperimentalPermissionsApi::class)
+@OptIn(
+    ExperimentalPermissionsApi::class, ExperimentalMaterial3Api::class,
+)
 @Composable
 fun LocationPermissions(
     multiplePermissionState: MultiplePermissionsState,
     onLongClick: (latLng: LatLng) -> Unit,
+    onMarkerInfoClick: (Long) -> Unit,
     viewModel: MapViewModel = hiltViewModel(),
 ) {
     val userType = viewModel.getAppPreference<String>(Constants.Prefs.USER_TYPE)
+    val coroutineScope = rememberCoroutineScope()
+
+    val modalSheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = false,
+        confirmValueChange = { viewModel.isBottomSheetOpen.value },
+    )
+
+    BackHandler(modalSheetState.isVisible) {
+        coroutineScope.launch { modalSheetState.hide() }
+    }
+
     PermissionsRequired(
         multiplePermissionsState = multiplePermissionState,
         permissionsNotGrantedContent = {
@@ -69,6 +91,12 @@ fun LocationPermissions(
         permissionsNotAvailableContent = { // TODO
         },
     ) {
+        if (viewModel.isBottomSheetOpen.value) {
+            BottomSheet() {
+                viewModel.isBottomSheetOpen.value = false
+            }
+        }
+
         GoogleMap(
             modifier = Modifier
                 .fillMaxSize()
@@ -90,13 +118,17 @@ fun LocationPermissions(
                 }
             },
         ) {
-            PlaceMarkers(viewModel)
+            PlaceMarkers(viewModel, onMarkerInfoClick, viewModel.isBottomSheetOpen)
         }
     }
 }
 
 @Composable
-fun PlaceMarkers(viewModel: MapViewModel) {
+fun PlaceMarkers(
+    viewModel: MapViewModel,
+    onMarkerInfoClick: (Long) -> Unit,
+    showSheet: MutableState<Boolean>
+) {
     LaunchedEffect(key1 = Unit) {
         viewModel.requestPlaceData()
         viewModel.getUser()
@@ -123,6 +155,8 @@ fun PlaceMarkers(viewModel: MapViewModel) {
         userFilteredPlaces
     }
 
+    val scope = rememberCoroutineScope()
+
     for (place in mapPlacesToShow) {
         val mapIcon = if (favIdList?.contains(place.id) == true) {
             BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN)
@@ -134,11 +168,57 @@ fun PlaceMarkers(viewModel: MapViewModel) {
             state = MarkerState(LatLng(place.latitude, place.longitude)),
             title = place.name,
             icon = mapIcon,
-            /*onInfoWindowClick = {
-                ScreenModel.NavigationScreen.Details.passPlaceId(
-                    place.id,
-                )
-            },*/
+            onInfoWindowClick = {
+                showSheet.value = true
+                scope.launch {
+                    onMarkerInfoClick(place.id)
+                }
+            }
         )
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun BottomSheet(onDismiss: () -> Unit) {
+    val modalBottomSheetState = rememberModalBottomSheetState()
+
+    ModalBottomSheet(
+        onDismissRequest = { onDismiss() },
+        sheetState = modalBottomSheetState,
+        dragHandle = { BottomSheetDefaults.DragHandle() },
+    ) {
+        Column(modifier = Modifier.padding(bottom = 16.dp, start = 16.dp, end = 16.dp)) {
+            Text(
+                text = stringResource(R.string.map_bottom_sheet_title),
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(bottom = 24.dp)
+            )
+            Text(
+                text = stringResource(R.string.map_bottom_sheet_places),
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier
+                    .padding(vertical = 8.dp)
+            )
+            Text(
+                text = stringResource(R.string.map_bottom_sheet_place_description),
+                modifier = Modifier
+                    .padding(8.dp)
+            )
+            Text(
+                text = stringResource(R.string.map_bottom_sheet_new_place),
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier
+                    .padding(vertical = 8.dp)
+            )
+            Text(
+                text = stringResource(R.string.map_bottom_sheet_new_place_description),
+                modifier = Modifier
+                    .padding(8.dp)
+            )
+        }
     }
 }
