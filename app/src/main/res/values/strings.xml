@@ -119,7 +119,7 @@
     <string name="accept_place_succes">Sikeresen jelentetted a problémát!</string>
     <string name="tab_new_places">Új</string>
     <string name="tab_modified_places">Módosított Helyek</string>
-    <string name="request_gallery_explanation">Using the gallery is important for this feature to be available. Please grant the permission.</string>
+    <string name="permission_gallery_explanation">Using the gallery is important for this feature to be available. Please grant the permission.</string>
     <string name="permission_gallery_denied_message">You could not use this function because the permission was denied. Please go to Settings and add permission to use the Gallery</string>
     <string name="permission_camera_explanation">Using the camera is important for this feature to be available. Please grant the permission.</string>
     <string name="permission_camera_denied_message">You can\'t use this feature because the permission was denied. Please go to Settings and add permission to use the Camera</string>

@@ -43,7 +43,7 @@ fun GalleryPermission(
                                 Text(stringResource(id = R.string.request_permission))
                             }
                         },
-                        text = { Text(stringResource(R.string.request_gallery_explanation)) },
+                        text = { Text(stringResource(R.string.permission_gallery_explanation)) },
                     )
                 }
             },

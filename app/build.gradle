@@ -133,7 +133,6 @@ dependencies {
     implementation "androidx.camera:camera-lifecycle:$camerax_version"
     implementation "androidx.camera:camera-view:1.0.0-alpha28"
 
-
     //Map
     def map_version = "18.1.0"
     implementation "com.google.android.gms:play-services-maps:$map_version"
@@ -141,7 +140,7 @@ dependencies {
     implementation "com.google.maps.android:maps-compose:2.0.0"
 
     // Coroutine Lifecycle Scopes
-    def lifecycle_version = "2.6.1"
+    def lifecycle_version = "2.6.2"
     def coroutine_version = "1.6.4"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version"
@@ -167,6 +166,6 @@ dependencies {
 
     implementation "com.google.accompanist:accompanist-systemuicontroller:0.27.0"
 
-    /*// Rating bar
-    implementation 'com.github.a914-gowtham:compose-ratingbar:1.2.5'*/
+    //Timber
+    implementation 'com.jakewharton.timber:timber:4.7.1'
 }

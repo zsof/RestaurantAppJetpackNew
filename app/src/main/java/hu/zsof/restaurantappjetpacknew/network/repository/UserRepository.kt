@@ -5,6 +5,7 @@ import hu.zsof.restaurantappjetpacknew.model.Place
 import hu.zsof.restaurantappjetpacknew.model.User
 import hu.zsof.restaurantappjetpacknew.network.ApiService
 import hu.zsof.restaurantappjetpacknew.network.request.UserUpdateProfileRequest
+import hu.zsof.restaurantappjetpacknew.util.recordErrorToFirebase
 import javax.inject.Inject
 
 class UserRepository @Inject constructor(
@@ -16,7 +17,7 @@ class UserRepository @Inject constructor(
         return try {
             apiService.getUserProfile()
         } catch (e: Exception) {
-            e.printStackTrace()
+            recordErrorToFirebase(e)
             User()
         }
     }
@@ -25,7 +26,7 @@ class UserRepository @Inject constructor(
         return try {
             apiService.updateUserProfile(userUpdateProfileRequest)
         } catch (e: Exception) {
-            e.printStackTrace()
+            recordErrorToFirebase(e)
             null
         }
     }
@@ -34,7 +35,7 @@ class UserRepository @Inject constructor(
         return try {
             apiService.addPlaceToFav(placeId)
         } catch (e: Exception) {
-            e.printStackTrace()
+            recordErrorToFirebase(e)
             null
         }
     }
@@ -43,7 +44,7 @@ class UserRepository @Inject constructor(
         return try {
             apiService.getFavPlaces()
         } catch (e: Exception) {
-            e.printStackTrace()
+            recordErrorToFirebase(e)
             mutableListOf()
         }
     }

@@ -2,6 +2,7 @@ package hu.zsof.restaurantappjetpacknew.network.repository
 
 import hu.zsof.restaurantappjetpacknew.model.User
 import hu.zsof.restaurantappjetpacknew.network.ApiService
+import hu.zsof.restaurantappjetpacknew.util.recordErrorToFirebase
 import javax.inject.Inject
 
 class AdminRepository @Inject constructor(private val apiService: ApiService) {
@@ -10,7 +11,7 @@ class AdminRepository @Inject constructor(private val apiService: ApiService) {
         return try {
             apiService.getUserById(userId)
         } catch (e: Exception) {
-            e.printStackTrace()
+            recordErrorToFirebase(e)
             null
         }
     }
@@ -19,7 +20,7 @@ class AdminRepository @Inject constructor(private val apiService: ApiService) {
         return try {
             apiService.getAllUser()
         } catch (e: Exception) {
-            e.printStackTrace()
+            recordErrorToFirebase(e)
             mutableListOf()
         }
     }
@@ -28,7 +29,7 @@ class AdminRepository @Inject constructor(private val apiService: ApiService) {
         try {
             apiService.deleteUserById(userId)
         } catch (e: Exception) {
-            e.printStackTrace()
+            recordErrorToFirebase(e)
         }
     }
 }

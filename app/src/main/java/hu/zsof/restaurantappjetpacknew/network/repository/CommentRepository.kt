@@ -3,6 +3,7 @@ package hu.zsof.restaurantappjetpacknew.network.repository
 import hu.zsof.restaurantappjetpacknew.model.Comment
 import hu.zsof.restaurantappjetpacknew.network.ApiService
 import hu.zsof.restaurantappjetpacknew.network.request.CommentDataRequest
+import hu.zsof.restaurantappjetpacknew.util.recordErrorToFirebase
 import javax.inject.Inject
 
 class CommentRepository @Inject constructor(private val apiService: ApiService) {
@@ -10,7 +11,7 @@ class CommentRepository @Inject constructor(private val apiService: ApiService) 
         return try {
             apiService.getCommentsByPlaceId(placeId)
         } catch (e: Exception) {
-            e.printStackTrace()
+            recordErrorToFirebase(e)
             mutableListOf()
         }
     }
@@ -21,7 +22,7 @@ class CommentRepository @Inject constructor(private val apiService: ApiService) 
         return try {
             apiService.addNewComment(commentDataRequest)
         } catch (e: Exception) {
-            e.printStackTrace()
+            recordErrorToFirebase(e)
             null
         }
     }
@@ -30,7 +31,7 @@ class CommentRepository @Inject constructor(private val apiService: ApiService) 
         try {
             apiService.deleteComment(id)
         } catch (e: Exception) {
-            e.printStackTrace()
+            recordErrorToFirebase(e)
         }
     }
 }

@@ -1,6 +1,7 @@
 package hu.zsof.restaurantappjetpacknew.network.repository
 
 import hu.zsof.restaurantappjetpacknew.network.ApiService
+import hu.zsof.restaurantappjetpacknew.util.recordErrorToFirebase
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -31,7 +32,7 @@ class ResourceRepository @Inject constructor(private val apiService: ApiService)
                 previousImagePath
             )
         } catch (e: Exception) {
-            e.printStackTrace()
+            recordErrorToFirebase(e)
         }
     }
 }

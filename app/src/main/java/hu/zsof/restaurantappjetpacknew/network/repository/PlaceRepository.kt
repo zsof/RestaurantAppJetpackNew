@@ -4,6 +4,7 @@ import hu.zsof.restaurantappjetpacknew.model.Place
 import hu.zsof.restaurantappjetpacknew.network.ApiService
 import hu.zsof.restaurantappjetpacknew.network.request.FilterRequest
 import hu.zsof.restaurantappjetpacknew.network.response.PlaceMapResponse
+import hu.zsof.restaurantappjetpacknew.util.recordErrorToFirebase
 import javax.inject.Inject
 
 class PlaceRepository @Inject constructor(private val apiService: ApiService) {
@@ -12,7 +13,7 @@ class PlaceRepository @Inject constructor(private val apiService: ApiService) {
         return try {
             apiService.getAllPlace()
         } catch (e: Exception) {
-            e.printStackTrace()
+            recordErrorToFirebase(e)
             mutableListOf()
         }
     }
@@ -21,7 +22,7 @@ class PlaceRepository @Inject constructor(private val apiService: ApiService) {
         return try {
             apiService.getAllPlaceInMap()
         } catch (e: Exception) {
-            e.printStackTrace()
+            recordErrorToFirebase(e)
             mutableListOf()
         }
     }
@@ -30,7 +31,7 @@ class PlaceRepository @Inject constructor(private val apiService: ApiService) {
         return try {
             apiService.getPlaceById(placeId)
         } catch (e: Exception) {
-            e.printStackTrace()
+            recordErrorToFirebase(e)
             null
         }
     }
@@ -39,7 +40,7 @@ class PlaceRepository @Inject constructor(private val apiService: ApiService) {
         return try {
             apiService.filterPlaces(filterItems)
         } catch (e: Exception) {
-            e.printStackTrace()
+            recordErrorToFirebase(e)
             mutableListOf()
         }
     }

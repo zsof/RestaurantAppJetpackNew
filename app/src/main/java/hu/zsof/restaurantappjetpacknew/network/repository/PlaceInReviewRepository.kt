@@ -3,6 +3,7 @@ package hu.zsof.restaurantappjetpacknew.network.repository
 import hu.zsof.restaurantappjetpacknew.model.Place
 import hu.zsof.restaurantappjetpacknew.model.PlaceInReview
 import hu.zsof.restaurantappjetpacknew.network.ApiService
+import hu.zsof.restaurantappjetpacknew.util.recordErrorToFirebase
 import javax.inject.Inject
 
 class PlaceInReviewRepository @Inject constructor(private val apiService: ApiService) {
@@ -11,7 +12,7 @@ class PlaceInReviewRepository @Inject constructor(private val apiService: ApiSer
         return try {
             apiService.getAllPlaceFromInReview()
         } catch (e: Exception) {
-            e.printStackTrace()
+            recordErrorToFirebase(e)
             mutableListOf()
         }
     }
@@ -20,7 +21,7 @@ class PlaceInReviewRepository @Inject constructor(private val apiService: ApiSer
         return try {
             apiService.getAllModifiedPlace()
         } catch (e: Exception) {
-            e.printStackTrace()
+            recordErrorToFirebase(e)
             mutableListOf()
         }
     }
@@ -29,7 +30,7 @@ class PlaceInReviewRepository @Inject constructor(private val apiService: ApiSer
         return try {
             apiService.getPlaceByIdFromInReview(placeId)
         } catch (e: Exception) {
-            e.printStackTrace()
+            recordErrorToFirebase(e)
             null
         }
     }
@@ -38,7 +39,7 @@ class PlaceInReviewRepository @Inject constructor(private val apiService: ApiSer
         try {
             apiService.acceptPlaceFromInReview(placeId, isModifiedPlace)
         } catch (e: Exception) {
-            e.printStackTrace()
+            recordErrorToFirebase(e)
         }
     }
 
@@ -50,7 +51,7 @@ class PlaceInReviewRepository @Inject constructor(private val apiService: ApiSer
         try {
             apiService.reportProblemPlaceInReview(placeId, problemMessage, isModifiedPlace)
         } catch (e: Exception) {
-            e.printStackTrace()
+            recordErrorToFirebase(e)
         }
     }
 
@@ -58,7 +59,7 @@ class PlaceInReviewRepository @Inject constructor(private val apiService: ApiSer
         try {
             apiService.deletePlaceFromInReview(placeId)
         } catch (e: Exception) {
-            e.printStackTrace()
+            recordErrorToFirebase(e)
         }
     }
 }

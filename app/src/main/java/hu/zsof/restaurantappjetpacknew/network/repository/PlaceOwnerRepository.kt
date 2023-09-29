@@ -4,6 +4,7 @@ import hu.zsof.restaurantappjetpacknew.model.Place
 import hu.zsof.restaurantappjetpacknew.model.PlaceInReview
 import hu.zsof.restaurantappjetpacknew.network.ApiService
 import hu.zsof.restaurantappjetpacknew.network.request.PlaceDataRequest
+import hu.zsof.restaurantappjetpacknew.util.recordErrorToFirebase
 import javax.inject.Inject
 
 class PlaceOwnerRepository @Inject constructor(private val apiService: ApiService) {
@@ -14,7 +15,7 @@ class PlaceOwnerRepository @Inject constructor(private val apiService: ApiServic
         return try {
             apiService.addNewPlace(placeDataRequest)
         } catch (e: Exception) {
-            e.printStackTrace()
+            recordErrorToFirebase(e)
             null
         }
     }
@@ -23,7 +24,7 @@ class PlaceOwnerRepository @Inject constructor(private val apiService: ApiServic
         try {
             apiService.deletePlace(placeId)
         } catch (e: Exception) {
-            e.printStackTrace()
+            recordErrorToFirebase(e)
         }
     }
 
@@ -31,7 +32,7 @@ class PlaceOwnerRepository @Inject constructor(private val apiService: ApiServic
         return try {
             apiService.getAllPlaceByOwner()
         } catch (e: Exception) {
-            e.printStackTrace()
+            recordErrorToFirebase(e)
             mutableListOf()
         }
     }
@@ -40,7 +41,7 @@ class PlaceOwnerRepository @Inject constructor(private val apiService: ApiServic
         return try {
             apiService.getAllPlaceInReviewByOwner()
         } catch (e: Exception) {
-            e.printStackTrace()
+            recordErrorToFirebase(e)
             mutableListOf()
         }
     }
@@ -49,7 +50,7 @@ class PlaceOwnerRepository @Inject constructor(private val apiService: ApiServic
         return try {
             apiService.updatePlace(placeDataRequest)
         } catch (e: Exception) {
-            e.printStackTrace()
+            recordErrorToFirebase(e)
             null
         }
     }
