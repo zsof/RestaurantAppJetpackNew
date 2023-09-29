@@ -13,6 +13,7 @@ import com.google.accompanist.permissions.*
 import com.google.maps.android.compose.*
 import hu.zsof.restaurantappjetpacknew.module.AppState
 import hu.zsof.restaurantappjetpacknew.ui.common.screen.CommonPlaceDialogScreen
+import hu.zsof.restaurantappjetpacknew.util.recordErrorToFirebase
 import java.io.*
 import java.util.*
 
@@ -55,6 +56,7 @@ fun Geocoder.getAddress(
         address(getFromLocation(latitude, longitude, 1)?.firstOrNull())
     } catch (e: Exception) {
         // will catch if there is an internet problem
+        recordErrorToFirebase(e)
         address(null)
     }
 }

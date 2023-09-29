@@ -18,8 +18,6 @@ fun EditPlaceDialogScreen(
     viewModel: EditPlaceViewModel = hiltViewModel(),
     onDialogClose: () -> Unit,
 ) {
-    //todo esetleg mentéskor egy toast h tuti jó a cím? mert később nem módosíthatod
-
     CommonPlaceDialogScreen(
         viewModel = viewModel,
         onDialogClose = onDialogClose,

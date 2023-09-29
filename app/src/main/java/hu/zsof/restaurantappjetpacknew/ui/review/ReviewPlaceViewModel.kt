@@ -19,7 +19,6 @@ class ReviewPlaceViewModel @Inject constructor(
 ) :
     ViewModel() {
 
-    //TODO módosított helyre kattintva a place in review.ban keres, félig megoldva, má id átadva nav graph-ban!!
     val problemMessage = mutableStateOf("")
     val problemMessageError = mutableStateOf(false)
     val problemReportDialogOpen = mutableStateOf(false)

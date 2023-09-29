@@ -51,14 +51,6 @@ class SharedPreferences @Inject constructor(@ApplicationContext context: Context
 
     companion object {
 
-        // private val integerPreferences = arrayOf(0)
-
-        /* private val longPreferences = arrayOf(
-             Constants.Prefs.FIRST_COUNTRY_ID,
-         )*/
-
-        // private val floatPreferences = arrayOf()
-
         private val booleanPreferences = arrayOf(
             Constants.Prefs.DARK_MODE,
             Constants.Prefs.USER_RATED,

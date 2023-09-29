@@ -118,7 +118,7 @@ fun LocationPermissions(
                 }
             },
         ) {
-            PlaceMarkers(viewModel, onMarkerInfoClick, viewModel.isBottomSheetOpen)
+            PlaceMarkers(viewModel, onMarkerInfoClick)
         }
     }
 }
@@ -126,8 +126,7 @@ fun LocationPermissions(
 @Composable
 fun PlaceMarkers(
     viewModel: MapViewModel,
-    onMarkerInfoClick: (Long) -> Unit,
-    showSheet: MutableState<Boolean>
+    onMarkerInfoClick: (Long) -> Unit
 ) {
     LaunchedEffect(key1 = Unit) {
         viewModel.requestPlaceData()
@@ -169,7 +168,6 @@ fun PlaceMarkers(
             title = place.name,
             icon = mapIcon,
             onInfoWindowClick = {
-                showSheet.value = true
                 scope.launch {
                     onMarkerInfoClick(place.id)
                 }

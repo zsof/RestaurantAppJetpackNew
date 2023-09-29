@@ -123,6 +123,8 @@
     <string name="permission_gallery_denied_message">You could not use this function because the permission was denied. Please go to Settings and add permission to use the Gallery</string>
     <string name="permission_camera_explanation">Using the camera is important for this feature to be available. Please grant the permission.</string>
     <string name="permission_camera_denied_message">You can\'t use this feature because the permission was denied. Please go to Settings and add permission to use the Camera</string>
+    <string name="email_address_not_activated">Az email cím még nincs aktiválva!</string>
+    <string name="unexcepted_eerror">Váratlan hiba történt.</string>
 
     <string-array name="filter_category_items">
         <item>Étterem</item>

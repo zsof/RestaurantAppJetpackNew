@@ -44,7 +44,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import hu.zsof.restaurantappjetpacknew.MainViewModel
 import hu.zsof.restaurantappjetpacknew.R
 import hu.zsof.restaurantappjetpacknew.module.AppState
-import hu.zsof.restaurantappjetpacknew.ui.common.showToast
+import hu.zsof.restaurantappjetpacknew.util.extension.showToast
 import hu.zsof.restaurantappjetpacknew.util.Constants
 import hu.zsof.restaurantappjetpacknew.util.Constants.LOGIN_START
 import hu.zsof.restaurantappjetpacknew.util.Constants.ROOT_GRAPH_ROUTE

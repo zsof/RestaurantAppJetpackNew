@@ -18,11 +18,6 @@ object Constants {
     const val PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[A-Z])(?=\\S+$).{6,24}$"
     const val EMAIL_PATTERN = "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$"
 
-    object Room {
-        const val TRUE = "1"
-        const val FALSE = "0"
-    }
-
     /**
      * Shared preferences
      */
@@ -43,11 +38,6 @@ object Constants {
     const val LOGIN_START = "login_start"
     const val HOME_START = "home_start"
     const val FAV_START = "fav_start"
-
-    /**
-     * Nav controller
-     */
-    const val FILTERED_PLACES = "filtered_items"
 
     /**
      * User tpye

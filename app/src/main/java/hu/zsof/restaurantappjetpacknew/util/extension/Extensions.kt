@@ -1,4 +1,4 @@
-package hu.zsof.restaurantappjetpacknew.ui.common
+package hu.zsof.restaurantappjetpacknew.util.extension
 
 import android.content.Context
 import android.widget.Toast

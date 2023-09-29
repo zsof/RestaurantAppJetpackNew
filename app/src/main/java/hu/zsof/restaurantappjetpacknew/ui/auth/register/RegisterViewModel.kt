@@ -17,19 +17,19 @@ class RegisterViewModel @Inject constructor(
 
 ) : ViewModel() {
 
-    var email = mutableStateOf("")
-    var isEmailError = mutableStateOf(false)
+    val email = mutableStateOf("")
+    val isEmailError = mutableStateOf(false)
 
-    var userName = mutableStateOf("")
-    var isUserNameError = mutableStateOf(false)
+    val userName = mutableStateOf("")
+    val isUserNameError = mutableStateOf(false)
 
-    var nickName = mutableStateOf("")
+    val nickName = mutableStateOf("")
 
-    var password = mutableStateOf("")
-    var isPasswordVisible = mutableStateOf(false)
-    var isPasswordError = mutableStateOf(false)
+    val password = mutableStateOf("")
+    val isPasswordVisible = mutableStateOf(false)
+    val isPasswordError = mutableStateOf(false)
 
-    var isOwner = mutableStateOf(false)
+    val isOwner = mutableStateOf(false)
     suspend fun register(): NetworkResponse {
         return authRepository.registerUser(
             LoginDataRequest(

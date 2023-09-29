@@ -17,12 +17,12 @@ class LoginViewModel @Inject constructor(
     private val sharedPref: SharedPreferences,
 ) : ViewModel() {
 
-    var email = mutableStateOf("test@test.hu")
-    var isEmailError = mutableStateOf(false)
+    val email = mutableStateOf("test@test.hu")
+    val isEmailError = mutableStateOf(false)
 
-    var password = mutableStateOf("Alma1234")
-    var isPasswordVisible = mutableStateOf(false)
-    var isPasswordError = mutableStateOf(false)
+    val password = mutableStateOf("Alma1234")
+    val isPasswordVisible = mutableStateOf(false)
+    val isPasswordError = mutableStateOf(false)
 
     suspend fun login() = runBlocking {
         return@runBlocking authRepository.loginUser(

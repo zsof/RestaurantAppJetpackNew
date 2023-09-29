@@ -37,7 +37,7 @@ import hu.zsof.restaurantappjetpacknew.module.AppState
 import hu.zsof.restaurantappjetpacknew.ui.common.button.LoginButton
 import hu.zsof.restaurantappjetpacknew.ui.common.field.NormalTextField
 import hu.zsof.restaurantappjetpacknew.ui.common.field.PasswordTextField
-import hu.zsof.restaurantappjetpacknew.ui.common.showToast
+import hu.zsof.restaurantappjetpacknew.util.extension.showToast
 import hu.zsof.restaurantappjetpacknew.util.Constants
 import kotlinx.coroutines.launch
 
@@ -57,7 +57,6 @@ fun LoginScreen(
     Surface(
         modifier = modifier
             .fillMaxSize(),
-        // contentAlignment = Alignment.TopCenter,
         content =
         {
             Column(

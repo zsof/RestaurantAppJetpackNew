@@ -56,7 +56,6 @@ fun ReviewDetailsScreen(
                     Text(stringResource(R.string.ok_btn))
                 }
             },
-            // TODO valamiért a "" is visszajön backendtpl "szöveg"  <-- így, ezt meg kellene szüntetni
             text = {
                 placeInReviewOrModifiedPlace?.problem?.substringAfter('"')
                     ?.let { Text(text = it.substringBeforeLast('"')) }

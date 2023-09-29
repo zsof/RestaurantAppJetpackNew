@@ -46,7 +46,7 @@ import hu.zsof.restaurantappjetpacknew.R
 import hu.zsof.restaurantappjetpacknew.model.enums.FabButton
 import hu.zsof.restaurantappjetpacknew.module.AppState
 import hu.zsof.restaurantappjetpacknew.ui.common.field.NormalTextField
-import hu.zsof.restaurantappjetpacknew.ui.common.showToast
+import hu.zsof.restaurantappjetpacknew.util.extension.showToast
 
 @Composable
 fun MultiFloatingButton(

@@ -1,5 +1,6 @@
 package hu.zsof.restaurantappjetpacknew.ui.profile
 
+import android.annotation.SuppressLint
 import android.content.ContentResolver
 import android.provider.MediaStore
 import androidx.compose.foundation.border

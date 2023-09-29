@@ -68,10 +68,6 @@ class DetailsViewModel @Inject constructor(
         }
     }
 
-    fun <T> setAppPreference(key: String, value: T) {
-        sharedPref.setPreference(key, value)
-    }
-
     fun <T> getAppPreference(key: String): T {
         return sharedPref.getPreference(key)
     }

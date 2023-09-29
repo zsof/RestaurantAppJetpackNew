@@ -9,10 +9,11 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import hu.zsof.restaurantappjetpacknew.BuildConfig
+import hu.zsof.restaurantappjetpacknew.R
 import hu.zsof.restaurantappjetpacknew.navigation.Navigator
 import hu.zsof.restaurantappjetpacknew.navigation.ScreenModel
 import hu.zsof.restaurantappjetpacknew.network.ApiService
-import hu.zsof.restaurantappjetpacknew.ui.common.showToast
+import hu.zsof.restaurantappjetpacknew.util.extension.showToast
 import hu.zsof.restaurantappjetpacknew.util.Constants
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
@@ -116,10 +117,16 @@ class NetworkModule() {
                         sharedPreferences.edit().putString("bearer", "").apply()
                         navigator.destination.postValue(ScreenModel.NavigationScreen.Login)
                     } else if (originalResponse.code == 418) {
-                        backgroundThreadToast(context, "Az email cím még nincs aktiválva!")
+                        backgroundThreadToast(
+                            context,
+                            context.getString(R.string.email_address_not_activated)
+                        )
 
                     } else {
-                        backgroundThreadToast(context, "Váratlan hiba történt.")
+                        backgroundThreadToast(
+                            context,
+                            context.getString(R.string.unexcepted_eerror)
+                        )
                     }
                 }
             }

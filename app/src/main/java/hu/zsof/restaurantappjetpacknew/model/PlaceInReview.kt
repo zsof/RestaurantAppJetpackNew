@@ -1,4 +1,3 @@
 package hu.zsof.restaurantappjetpacknew.model
 
-class PlaceInReview(
-) : BasePlace()
+class PlaceInReview : BasePlace()
