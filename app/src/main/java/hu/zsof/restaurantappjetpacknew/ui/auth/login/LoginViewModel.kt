@@ -27,8 +27,8 @@ class LoginViewModel @Inject constructor(
     suspend fun login() = runBlocking {
         return@runBlocking authRepository.loginUser(
             LoginDataRequest(
-                email.value,
-                password.value,
+                email = email.value,
+                password = password.value,
             ),
         )
     }

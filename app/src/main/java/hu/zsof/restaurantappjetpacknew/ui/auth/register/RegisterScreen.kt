@@ -22,6 +22,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -63,6 +65,8 @@ fun RegisterScreen(
     onLoginClick: () -> Unit,
     viewModel: RegisterViewModel = hiltViewModel(),
 ) {
+    val registerUiState by viewModel.uiState.collectAsState()
+
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -88,16 +92,17 @@ fun RegisterScreen(
                         .padding(top = 8.dp)
                         .align(Alignment.CenterHorizontally),
 
-                )
+                    )
                 Spacer(modifier = Modifier.height(20.dp))
                 NormalTextField(
-                    value = viewModel.email.value,
+                    value = registerUiState.email,
                     label = stringResource(id = R.string.email_address),
                     onValueChange = { newValue ->
-                        viewModel.email.value = newValue
+                        //viewModel::uiState.get().value.email(email = newValue)
+                        viewModel.setEmail(newValue)
                         viewModel.validateEmail()
                     },
-                    isError = viewModel.isEmailError.value,
+                    isError = registerUiState.isEmailError,
                     leadingIcon = {
                         Icon(
                             imageVector = Icons.Default.Email,
@@ -114,13 +119,12 @@ fun RegisterScreen(
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 NormalTextField(
-                    value = viewModel.userName.value,
+                    value = registerUiState.userName,
                     label = stringResource(id = R.string.user_name),
                     onValueChange = { newValue ->
-                        viewModel.userName.value = newValue
-                        viewModel.validateUserName()
+                        viewModel.setName(newValue)
                     },
-                    isError = viewModel.isUserNameError.value,
+                    isError = registerUiState.isUserNameError,
                     leadingIcon = {
                         Icon(
                             imageVector = Icons.Default.Person,
@@ -137,29 +141,31 @@ fun RegisterScreen(
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 PasswordTextField(
-                    value = viewModel.password.value,
+                    value = registerUiState.password,
                     label = stringResource(id = R.string.password_text),
                     onValueChange = { newValue ->
-                        viewModel.password.value = newValue
+                        viewModel.setPassword(newValue)
                         viewModel.validatePassword()
                     },
-                    isError = viewModel.isPasswordError.value,
-                    isVisible = viewModel.isPasswordVisible.value,
+                    isError = registerUiState.isPasswordError,
+                    isVisible = registerUiState.isPasswordVisible,
                     onVisibilityChanged = {
-                        viewModel.isPasswordVisible.value = !viewModel.isPasswordVisible.value
+                        viewModel.setPasswordVisibility(registerUiState.isPasswordVisible)
                     },
                     onDone = { },
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 Row(
                     horizontalArrangement = Arrangement.Start,
-                    modifier = Modifier.fillMaxWidth().padding(start = 8.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 8.dp),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Checkbox(
-                        checked = viewModel.isOwner.value,
+                        checked = registerUiState.isOwner,
                         onCheckedChange = { checkedNew ->
-                            viewModel.isOwner.value = checkedNew
+                            viewModel.setIsOwner(checkedNew)
                         },
                     )
                     Text(

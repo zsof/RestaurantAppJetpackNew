@@ -10,8 +10,10 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.CAMERA" />
 
@@ -27,6 +29,7 @@
         android:theme="@style/Theme.RestaurantAppJetpackNew"
         android:usesCleartextTraffic="true"
         android:windowSoftInputMode="adjustResize"
+        android:requestLegacyExternalStorage="true"
         tools:targetApi="31">
 
         <meta-data
@@ -43,32 +46,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-       <!-- <intent-filter
-       TODO email verifikálás után nyíljon meg az app
-            android:autoVerify="true"
-            android:label="@string/filter_view_http_gizmos">
-            <action android:name="android.intent.action.VIEW" />
-
-            <category android:name="android.intent.category.DEFAULT" />
-            <category android:name="android.intent.category.BROWSABLE" />
-
-            <data android:scheme="https" />
-            <data android:host="wwww.mail.google.com" />
-            <data android:pathPrefix="/mail" />
-            <data android:scheme="app" />
-            <data android:host="hu.zsof.restaurantappjetpacknew" />
-
-        </intent-filter>-->
-        <!--   <service android:name="com.google.android.gms.metadata.MODULE_DEPENDENCIES"
-               android:enabled="false"
-               android:exported="false"
-               tools:ignore="MissingClass">
-               <intent-filter>
-                   <action android:name="com.google.android.gms.metadata.MODULE_DEPENDENCIES" />
-               </intent-filter>
-               <meta-data android:name="photopicker_activity:0:required" android:value="" />
-           </service>-->
     </application>
 
 </manifest>

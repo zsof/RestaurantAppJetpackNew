@@ -1,6 +1,5 @@
 package hu.zsof.restaurantappjetpacknew.ui.profile
 
-import android.annotation.SuppressLint
 import android.content.ContentResolver
 import android.provider.MediaStore
 import androidx.compose.foundation.border
@@ -71,7 +70,7 @@ fun ProfileScreen(
     }
         ?.use { metaCursor ->
             if (metaCursor.moveToFirst()) {
-                imagePath = metaCursor.getString(0)
+                imagePath = metaCursor.getString(0) ?: ""
             }
         }
 

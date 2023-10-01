@@ -1,6 +1,5 @@
 package hu.zsof.restaurantappjetpacknew.ui.auth.register
 
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import hu.zsof.restaurantappjetpacknew.network.repository.AuthRepository
@@ -8,6 +7,10 @@ import hu.zsof.restaurantappjetpacknew.network.request.LoginDataRequest
 import hu.zsof.restaurantappjetpacknew.network.response.NetworkResponse
 import hu.zsof.restaurantappjetpacknew.util.Constants
 import hu.zsof.restaurantappjetpacknew.util.Constants.PASSWORD_PATTERN
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import java.util.regex.Pattern
 import javax.inject.Inject
 
@@ -15,55 +18,87 @@ import javax.inject.Inject
 class RegisterViewModel @Inject constructor(
     private val authRepository: AuthRepository,
 
-) : ViewModel() {
+    ) : ViewModel() {
 
-    val email = mutableStateOf("")
-    val isEmailError = mutableStateOf(false)
+    private val _uiState = MutableStateFlow(RegisterUiState())
+    val uiState: StateFlow<RegisterUiState> = _uiState.asStateFlow()
+    fun setEmail(changedValue: String) {
+        _uiState.update {
+            it.copy(email = changedValue)
+        }
+    }
 
-    val userName = mutableStateOf("")
-    val isUserNameError = mutableStateOf(false)
+    fun setName(changedValue: String) {
+        _uiState.update {
+            it.copy(userName = changedValue)
+        }
+    }
 
-    val nickName = mutableStateOf("")
+    fun setPassword(changedValue: String) {
+        _uiState.update {
+            it.copy(password = changedValue)
+        }
+    }
 
-    val password = mutableStateOf("")
-    val isPasswordVisible = mutableStateOf(false)
-    val isPasswordError = mutableStateOf(false)
+    fun setIsOwner(changedValue: Boolean) {
+        _uiState.update {
+            it.copy(isOwner = changedValue)
+        }
+    }
 
-    val isOwner = mutableStateOf(false)
+    fun setPasswordVisibility(changedValue: Boolean) {
+        _uiState.update {
+            it.copy(isPasswordVisible = changedValue)
+        }
+    }
+
     suspend fun register(): NetworkResponse {
-        return authRepository.registerUser(
-            LoginDataRequest(
-                email.value,
-                password.value,
-                userName.value,
-                nickName.value,
-            ),
-            isAdmin = false,
-            isOwner = isOwner.value,
-        )
+        validateUserName()
+
+        return if (_uiState.value.isUserNameError.not())
+            authRepository.registerUser(
+                LoginDataRequest(
+                    _uiState.value.email,
+                    _uiState.value.password,
+                    _uiState.value.userName,
+                ),
+                isAdmin = false,
+                isOwner = _uiState.value.isOwner,
+            )
+        else NetworkResponse(isSuccess = false, error = "Felhasználó név nem lehet üres!")
     }
 
     fun validateEmail() {
         val pattern = Pattern.compile(Constants.EMAIL_PATTERN, Pattern.CASE_INSENSITIVE)
 
-        if (pattern.matcher(email.value).matches()) {
-            isEmailError.value = email.value.isEmpty()
+        if (pattern.matcher(_uiState.value.email).matches()) {
+            _uiState.update {
+                it.copy(isEmailError = it.email.isEmpty())
+            }
         } else {
-            isEmailError.value = false
+            _uiState.update {
+                it.copy(isEmailError = false)
+            }
         }
     }
 
     fun validatePassword() {
         val pattern = Pattern.compile(PASSWORD_PATTERN)
 
-        if (pattern.matcher(password.value).matches()) {
-            isPasswordError.value = password.value.isEmpty()
+        if (pattern.matcher(_uiState.value.password).matches()) {
+            _uiState.update {
+                it.copy(isPasswordError = it.password.isEmpty())
+            }
         } else {
-            isPasswordError.value = false
+            _uiState.update {
+                it.copy(isPasswordError = false)
+            }
         }
     }
 
-    fun validateUserName() {
-        isUserNameError.value = userName.value.isEmpty()
+    private fun validateUserName() {
+        _uiState.update {
+            it.copy(isUserNameError = it.userName.isEmpty())
+        }
     }
 }

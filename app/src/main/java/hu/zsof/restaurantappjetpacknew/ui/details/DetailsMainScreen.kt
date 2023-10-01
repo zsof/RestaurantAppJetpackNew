@@ -42,7 +42,7 @@ fun DetailsMainScreen(
     }
         ?.use { metaCursor ->
             if (metaCursor.moveToFirst()) {
-                imagePath = metaCursor.getString(0)
+                imagePath = metaCursor.getString(0) ?: ""
             }
         }
 
