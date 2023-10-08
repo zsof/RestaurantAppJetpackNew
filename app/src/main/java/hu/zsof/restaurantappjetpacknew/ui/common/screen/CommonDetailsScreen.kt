@@ -27,6 +27,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -35,7 +36,6 @@ import coil.compose.AsyncImage
 import hu.zsof.restaurantappjetpacknew.R
 import hu.zsof.restaurantappjetpacknew.model.BasePlace
 import hu.zsof.restaurantappjetpacknew.model.Place
-import hu.zsof.restaurantappjetpacknew.model.PlaceInReview
 import hu.zsof.restaurantappjetpacknew.model.enums.PlaceType
 import hu.zsof.restaurantappjetpacknew.model.enums.Type
 import hu.zsof.restaurantappjetpacknew.module.AppState
@@ -90,12 +90,20 @@ fun CommonDetailsScreen(
                         Text(stringResource(R.string.ok_btn))
                     }
                 },
-                // TODO valamiért a "" is visszajön backendtpl "szöveg"  <-- így, ezt meg kellene szüntetni
+                title = {
+                    Text(
+                        text = "Probléma a hellyel:",
+                        textAlign = TextAlign.Start,
+                        fontWeight = FontWeight.Bold
+                    )
+                },
                 text = {
-                    if (place is PlaceInReview) {
-                        place.problem?.substringAfter('"')
-                            ?.let { Text(text = it.substringBeforeLast('"')) }
-                    }
+                    place?.problem?.substringAfter('"')
+                        ?.let {
+                            Text(
+                                text = it.substringBeforeLast('"'),
+                            )
+                        }
                 },
             )
         }
@@ -198,13 +206,13 @@ fun CommonDetailsScreen(
                                 fontWeight = FontWeight.Bold,
                                 fontStyle = FontStyle.Italic,
                                 modifier = Modifier
-                                    .padding(16.dp, 8.dp, 16.dp, 8.dp),
+                                    .padding(16.dp, 8.dp, 4.dp, 8.dp),
                             )
 
-                            if (place is PlaceInReview && !place.problem.isNullOrEmpty()) {
+                            if (!place.problem.isNullOrEmpty()) {
                                 IconButton(onClick = {
                                     showProblemDialog?.value = true
-                                }, modifier = Modifier.padding(top = 16.dp)) {
+                                }, modifier = Modifier.padding(4.dp, 8.dp, 4.dp, 8.dp)) {
                                     Icon(
                                         imageVector = Icons.Filled.ReportProblem,
                                         contentDescription = null,
@@ -218,7 +226,7 @@ fun CommonDetailsScreen(
                                         onEditPlaceClick(placeId)
                                     }
 
-                                }, modifier = Modifier.padding(top = 16.dp)) {
+                                }, modifier = Modifier.padding(4.dp, 8.dp, 4.dp, 8.dp)) {
                                     Icon(
                                         imageVector = Icons.Filled.Edit,
                                         contentDescription = null,
@@ -231,7 +239,11 @@ fun CommonDetailsScreen(
                     TextChip(
                         isSelected = true,
                         text = Type.getByType(place.type),
-                        modifier = Modifier.align(CenterHorizontally),
+                        modifier = Modifier
+                            .align(CenterHorizontally)
+                            .width(128.dp)
+                            .height(56.dp)
+                            .fillMaxWidth(),
                         shouldShowIcon = false
                     )
 

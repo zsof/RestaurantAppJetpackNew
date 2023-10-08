@@ -36,6 +36,8 @@ class DetailsViewModel @Inject constructor(
     val photoDialogOpen = mutableStateOf(false)
     val selectedImageUri = mutableStateOf<Uri?>(null)
 
+    val showProblemDialog = mutableStateOf(false)
+
     val comments = MutableLiveData<List<Comment>>()
     fun getCommentsByPlaceId(placeId: Long) {
         viewModelScope.launch {

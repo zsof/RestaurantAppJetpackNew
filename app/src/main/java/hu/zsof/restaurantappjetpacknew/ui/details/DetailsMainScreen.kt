@@ -73,6 +73,7 @@ fun DetailsMainScreen(
         placeType = PlaceType.PLACE,
         isPlaceByOwner = viewModel.isPlaceByOwner.value,
         openingHoursOpen = viewModel.openingHoursOpenDetails,
+        showProblemDialog = viewModel.showProblemDialog,
         selectedImage = viewModel.selectedImageUri.value
     )
 }

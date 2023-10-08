@@ -28,7 +28,7 @@ class LoginViewModel @Inject constructor(
         validateEmail()
         validatePassword()
 
-        return if (isEmailError.value && isPasswordError.value.not())
+        return if (isEmailError.value.not() && isPasswordError.value.not())
             authRepository.loginUser(
                 LoginDataRequest(
                     email = email.value,
