@@ -96,6 +96,8 @@ class ProfileViewModel @Inject constructor(
                     itemId = userProfile.value!!.id,
                     previousImagePath = userProfile.value?.image
                 )
+
+                println("imageprofile $image")
             }
         }
     }

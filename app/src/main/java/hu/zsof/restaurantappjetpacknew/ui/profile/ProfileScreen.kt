@@ -41,7 +41,55 @@ import hu.zsof.restaurantappjetpacknew.ui.common.screen.PhotoChooserDialog
 import hu.zsof.restaurantappjetpacknew.util.Constants
 import hu.zsof.restaurantappjetpacknew.util.extension.imageUrl
 import okhttp3.OkHttpClient
-import okio.use
+
+
+/*fun getRealPath(uriString: String): String? {
+    var realPath: String? = null
+    val isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT
+
+    // DocumentProvider
+    if (isKitKat) {
+        var cursor: Cursor = cordova.getActivity().getContentResolver()
+            .query(Uri.parse(uriString), null, null, null, null)
+        cursor.moveToFirst()
+        var document_id = cursor.getString(0)
+        document_id = document_id.substring(document_id.lastIndexOf(":") + 1)
+        cursor.close()
+        cursor = cordova.getActivity().getContentResolver().query(
+            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+            null, MediaStore.Images.Media._ID + " = ? ", arrayOf(document_id), null
+        )
+        cursor.moveToFirst()
+        val path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA))
+        realPath = path
+        cursor.close()
+    } else {
+        if (uriString.startsWith("content://")) {
+            val proj = arrayOf(_DATA)
+            val cursor: Cursor =
+                cordova.getActivity().managedQuery(Uri.parse(uriString), proj, null, null, null)
+            val column_index = cursor.getColumnIndexOrThrow(_DATA)
+            cursor.moveToFirst()
+            realPath = cursor.getString(column_index)
+            if (realPath == null) {
+                LOG.e(LOG_TAG, "Could get real path for URI string %s", uriString)
+            }
+        } else if (uriString.startsWith("file://")) {
+            realPath = uriString.substring(7)
+            if (realPath.startsWith("/android_asset/")) {
+                LOG.e(
+                    LOG_TAG,
+                    "Cannot get real path for URI string %s because it is a file:///android_asset/ URI.",
+                    uriString
+                )
+                realPath = null
+            }
+        } else {
+            realPath = uriString
+        }
+    }
+    return realPath
+}*/
 
 @ExperimentalMaterial3Api
 @Composable

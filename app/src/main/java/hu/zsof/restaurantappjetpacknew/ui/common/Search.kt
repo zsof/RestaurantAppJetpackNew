@@ -42,7 +42,7 @@ fun search(
         if (searchItems.isNotEmpty())
             AppState.searchedPlaces.value = searchItems
         else {
-            //Azért mert ha üres, akkor a placeList-nél
+            //Azért mert ha üres a találat, akkor a placeList-nél
             // nem is menne ezeknek a megjelenítésébe (ami ugye üres lista lenne),
             // hanem megjeleníti az összeset
             viewModel.isSearchListNotMatchWithPlaces.value = true

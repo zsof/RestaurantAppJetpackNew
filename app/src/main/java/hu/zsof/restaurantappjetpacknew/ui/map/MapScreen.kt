@@ -15,6 +15,8 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.permissions.*
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.BitmapDescriptorFactory.HUE_CYAN
+import com.google.android.gms.maps.model.BitmapDescriptorFactory.HUE_RED
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
@@ -137,11 +139,15 @@ fun PlaceMarkers(
     val user = viewModel.userData.observeAsState().value
     val favIdList = viewModel.favPlaceIds.observeAsState().value
 
-    // User által (profilban) beállított alap filterek, ha nincs benne semmi, marad a simma places
+    /**
+     *  User által (profilban) beállított alap filterek, ha nincs benne semmi, marad a sima places
+     */
     var userFilteredPlaces = mutableListOf<PlaceMapResponse>()
     if (user != null) {
         userFilteredPlaces = places.value.filter { place ->
-            user.filterItems.convertToList().compare(place.filterItems.convertToList())
+            user.filterItems
+                .convertToList()
+                .compare(place.filterItems.convertToList())
         }.toMutableList()
     }
 
@@ -157,11 +163,11 @@ fun PlaceMarkers(
     val scope = rememberCoroutineScope()
 
     for (place in mapPlacesToShow) {
-        val mapIcon = if (favIdList?.contains(place.id) == true) {
-            BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN)
-        } else {
-            BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)
-        }
+            val mapIcon = if (favIdList?.contains(place.id) == true) {
+                BitmapDescriptorFactory.defaultMarker(HUE_CYAN)
+            } else {
+                BitmapDescriptorFactory.defaultMarker(HUE_RED)
+            }
 
         Marker(
             state = MarkerState(LatLng(place.latitude, place.longitude)),

@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.DarkGray
 import androidx.compose.ui.graphics.Color.Companion.LightGray
 import androidx.compose.ui.graphics.Color.Companion.Transparent
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -67,4 +68,10 @@ fun TextChip(
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
     }
+}
+
+@Preview
+@Composable
+fun TextChipPreview(){
+    TextChip(isSelected = false, text = "Teszt chip")
 }
