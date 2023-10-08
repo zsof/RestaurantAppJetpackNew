@@ -98,9 +98,7 @@ fun RegisterScreen(
                     value = registerUiState.email,
                     label = stringResource(id = R.string.email_address),
                     onValueChange = { newValue ->
-                        //viewModel::uiState.get().value.email(email = newValue)
                         viewModel.setEmail(newValue)
-                        viewModel.validateEmail()
                     },
                     isError = registerUiState.isEmailError,
                     leadingIcon = {
@@ -114,7 +112,7 @@ fun RegisterScreen(
                         imeAction = ImeAction.Next,
                     ),
                     trailingIcon = { },
-                    onDone = { },
+                    onDone = { viewModel.validateEmail() },
                     placeholder = stringResource(id = R.string.email_address),
                 )
                 Spacer(modifier = Modifier.height(10.dp))
@@ -136,7 +134,7 @@ fun RegisterScreen(
                         imeAction = ImeAction.Next,
                     ),
                     trailingIcon = { },
-                    onDone = { },
+                    onDone = { viewModel.validateUserName() },
                     placeholder = stringResource(id = R.string.user_name),
                 )
                 Spacer(modifier = Modifier.height(10.dp))
@@ -145,14 +143,13 @@ fun RegisterScreen(
                     label = stringResource(id = R.string.password_text),
                     onValueChange = { newValue ->
                         viewModel.setPassword(newValue)
-                        viewModel.validatePassword()
                     },
                     isError = registerUiState.isPasswordError,
                     isVisible = registerUiState.isPasswordVisible,
                     onVisibilityChanged = {
                         viewModel.setPasswordVisibility(registerUiState.isPasswordVisible)
                     },
-                    onDone = { },
+                    onDone = { viewModel.validatePassword() },
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 Row(
@@ -180,9 +177,9 @@ fun RegisterScreen(
                     onClick = {
                         scope.launch {
                             val response = viewModel.register()
-                            if (response.isSuccess) {
+                            if (response.isSuccess)
                                 showToast(context, response.successMessage)
-                            }
+                            else showToast(context, response.error)
                         }
                         keyboardController?.hide()
                     },

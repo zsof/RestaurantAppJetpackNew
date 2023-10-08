@@ -37,8 +37,8 @@ import hu.zsof.restaurantappjetpacknew.module.AppState
 import hu.zsof.restaurantappjetpacknew.ui.common.button.LoginButton
 import hu.zsof.restaurantappjetpacknew.ui.common.field.NormalTextField
 import hu.zsof.restaurantappjetpacknew.ui.common.field.PasswordTextField
-import hu.zsof.restaurantappjetpacknew.util.extension.showToast
 import hu.zsof.restaurantappjetpacknew.util.Constants
+import hu.zsof.restaurantappjetpacknew.util.extension.showToast
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -74,14 +74,13 @@ fun LoginScreen(
                         .padding(top = 8.dp)
                         .align(Alignment.CenterHorizontally),
 
-                )
+                    )
                 Spacer(modifier = Modifier.height(20.dp))
                 NormalTextField(
                     value = viewModel.email.value,
                     label = stringResource(id = R.string.email_address),
                     onValueChange = { newValue ->
                         viewModel.email.value = newValue
-                        viewModel.validateEmail()
                     },
                     isError = viewModel.isEmailError.value,
                     leadingIcon = {
@@ -95,7 +94,7 @@ fun LoginScreen(
                         imeAction = ImeAction.Next,
                     ),
                     trailingIcon = { },
-                    onDone = { },
+                    onDone = { viewModel.validateEmail() },
                     placeholder = stringResource(id = R.string.email_address),
                 )
                 Spacer(modifier = Modifier.height(10.dp))
@@ -104,14 +103,13 @@ fun LoginScreen(
                     label = stringResource(id = R.string.password_text),
                     onValueChange = { newValue ->
                         viewModel.password.value = newValue
-                        viewModel.validatePassword()
                     },
                     isError = viewModel.isPasswordError.value,
                     isVisible = viewModel.isPasswordVisible.value,
                     onVisibilityChanged = {
                         viewModel.isPasswordVisible.value = !viewModel.isPasswordVisible.value
                     },
-                    onDone = { },
+                    onDone = { viewModel.validatePassword() },
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 LoginButton(
@@ -127,19 +125,30 @@ fun LoginScreen(
                                 onLoginClick(viewModel.email.value)
                                 when (response.user.userType) {
                                     Constants.ROLE_ADMIN -> {
-                                        viewModel.setAppPreference(Constants.Prefs.USER_TYPE, Constants.ROLE_ADMIN)
+                                        viewModel.setAppPreference(
+                                            Constants.Prefs.USER_TYPE,
+                                            Constants.ROLE_ADMIN
+                                        )
                                     }
 
                                     Constants.ROLE_USER -> {
-                                        viewModel.setAppPreference(Constants.Prefs.USER_TYPE, Constants.ROLE_USER)
+                                        viewModel.setAppPreference(
+                                            Constants.Prefs.USER_TYPE,
+                                            Constants.ROLE_USER
+                                        )
                                     }
 
                                     Constants.ROLE_OWNER -> {
-                                        viewModel.setAppPreference(Constants.Prefs.USER_TYPE, Constants.ROLE_OWNER)
+                                        viewModel.setAppPreference(
+                                            Constants.Prefs.USER_TYPE,
+                                            Constants.ROLE_OWNER
+                                        )
                                     }
                                 }
                                 viewModel.setAppPreference(Constants.Prefs.USER_LOGGED, true)
                                 AppState.loggedUser.value = response.user
+                            } else {
+                                showToast(context, response.error)
                             }
                         }
                         keyboardController?.hide()
@@ -159,7 +168,7 @@ fun LoginScreen(
                         fontSize = 16.sp,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
 
-                    )
+                        )
                     Text(
                         text = stringResource(id = R.string.register),
                         fontSize = 16.sp,

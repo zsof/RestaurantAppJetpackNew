@@ -5,9 +5,9 @@ import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import hu.zsof.restaurantappjetpacknew.network.repository.AuthRepository
 import hu.zsof.restaurantappjetpacknew.network.request.LoginDataRequest
+import hu.zsof.restaurantappjetpacknew.network.response.LoggedUserResponse
 import hu.zsof.restaurantappjetpacknew.util.Constants
 import hu.zsof.restaurantappjetpacknew.util.SharedPreferences
-import kotlinx.coroutines.runBlocking
 import java.util.regex.Pattern
 import javax.inject.Inject
 
@@ -24,33 +24,37 @@ class LoginViewModel @Inject constructor(
     val isPasswordVisible = mutableStateOf(false)
     val isPasswordError = mutableStateOf(false)
 
-    suspend fun login() = runBlocking {
-        return@runBlocking authRepository.loginUser(
-            LoginDataRequest(
-                email = email.value,
-                password = password.value,
-            ),
+    suspend fun login(): LoggedUserResponse {
+        validateEmail()
+        validatePassword()
+
+        return if (isEmailError.value && isPasswordError.value.not())
+            authRepository.loginUser(
+                LoginDataRequest(
+                    email = email.value,
+                    password = password.value,
+                ),
+            )
+        else LoggedUserResponse(
+            isSuccess = false,
+            error = "Belépés sikertelen! Ellenőrizze adatait!"
         )
     }
 
     fun validateEmail() {
         val pattern = Pattern.compile(Constants.EMAIL_PATTERN, Pattern.CASE_INSENSITIVE)
 
-        if (pattern.matcher(email.value).matches()) {
-            isEmailError.value = email.value.isEmpty()
-        } else {
-            isEmailError.value = false
-        }
+        if (email.value.isEmpty()) {
+            isEmailError.value = true
+        } else isEmailError.value = pattern.matcher(email.value).matches().not()
     }
 
     fun validatePassword() {
         val pattern = Pattern.compile(Constants.PASSWORD_PATTERN)
 
-        if (pattern.matcher(password.value).matches()) {
-            isPasswordError.value = password.value.isEmpty()
-        } else {
-            isPasswordError.value = false
-        }
+        if (password.value.isEmpty()) {
+            isPasswordError.value = true
+        } else isPasswordError.value = pattern.matcher(password.value).matches().not()
     }
 
     fun <T> setAppPreference(key: String, value: T) {

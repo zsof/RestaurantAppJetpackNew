@@ -54,8 +54,13 @@ class RegisterViewModel @Inject constructor(
 
     suspend fun register(): NetworkResponse {
         validateUserName()
+        validateEmail()
+        validatePassword()
 
-        return if (_uiState.value.isUserNameError.not())
+        return if (_uiState.value.isUserNameError.not()
+            && _uiState.value.isEmailError.not()
+            && _uiState.value.isPasswordError.not()
+        )
             authRepository.registerUser(
                 LoginDataRequest(
                     _uiState.value.email,
@@ -65,19 +70,22 @@ class RegisterViewModel @Inject constructor(
                 isAdmin = false,
                 isOwner = _uiState.value.isOwner,
             )
-        else NetworkResponse(isSuccess = false, error = "Felhasználó név nem lehet üres!")
+        else NetworkResponse(
+            isSuccess = false,
+            error = "Regisztráció sikertelen! Ellenőrizze adatait!"
+        )
     }
 
     fun validateEmail() {
         val pattern = Pattern.compile(Constants.EMAIL_PATTERN, Pattern.CASE_INSENSITIVE)
 
-        if (pattern.matcher(_uiState.value.email).matches()) {
+        if (_uiState.value.email.isEmpty()) {
             _uiState.update {
-                it.copy(isEmailError = it.email.isEmpty())
+                it.copy(isEmailError = true)
             }
         } else {
             _uiState.update {
-                it.copy(isEmailError = false)
+                it.copy(isEmailError = pattern.matcher(_uiState.value.email).matches().not())
             }
         }
     }
@@ -85,18 +93,18 @@ class RegisterViewModel @Inject constructor(
     fun validatePassword() {
         val pattern = Pattern.compile(PASSWORD_PATTERN)
 
-        if (pattern.matcher(_uiState.value.password).matches()) {
+        if (_uiState.value.password.isEmpty()) {
             _uiState.update {
-                it.copy(isPasswordError = it.password.isEmpty())
+                it.copy(isPasswordError = true)
             }
         } else {
             _uiState.update {
-                it.copy(isPasswordError = false)
+                it.copy(isPasswordError = pattern.matcher(_uiState.value.password).matches().not())
             }
         }
     }
 
-    private fun validateUserName() {
+    fun validateUserName() {
         _uiState.update {
             it.copy(isUserNameError = it.userName.isEmpty())
         }
