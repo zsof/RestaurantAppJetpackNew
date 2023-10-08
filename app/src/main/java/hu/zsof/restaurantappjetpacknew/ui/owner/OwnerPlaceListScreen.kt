@@ -55,7 +55,8 @@ fun OwnerPlaceListScreen(
                                 place = place,
                                 onClickPlaceItem = onClickPlaceItem,
                                 isPlaceByOwner = viewModel.isPlaceByOwner.value,
-                                deletePlace = { viewModel.deletePlace(it) }
+                                deletePlace = { viewModel.deletePlace(it) },
+                                showDeleteConfirmDialog = viewModel.showDeleteConfirmDialog
                             )
                         }
                     }
@@ -71,7 +72,8 @@ fun OwnerPlaceListScreen(
                                 place = placeInReview,
                                 onClickPlaceItem = onClickPlaceInReviewItem,
                                 isPlaceByOwner = viewModel.isPlaceInReviewByOwner.value,
-                                deletePlace = { viewModel.deletePlaceInReview(it) }
+                                deletePlace = { viewModel.deletePlaceInReview(it) },
+                                showDeleteConfirmDialog = viewModel.showDeleteConfirmDialog
                             )
                         }
                     }

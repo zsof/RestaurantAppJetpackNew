@@ -16,6 +16,8 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.PushPin
 import androidx.compose.material.icons.filled.ReportProblem
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -30,13 +32,16 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.ImageLoader
 import coil.compose.AsyncImage
+import hu.zsof.restaurantappjetpacknew.R
 import hu.zsof.restaurantappjetpacknew.model.BasePlace
 import hu.zsof.restaurantappjetpacknew.model.PlaceInReview
 import hu.zsof.restaurantappjetpacknew.model.enums.Price
@@ -52,6 +57,7 @@ fun PlaceListItem(
     favIdList: List<Long>? = emptyList(),
     needFavButton: Boolean = false,
     addOrRemoveFavIdList: (() -> Unit)? = null,
+    showDeleteConfirmDialog: MutableState<Boolean>? = null,
     isFavPlace: MutableState<Boolean>? = null,
     isPlaceByOwner: Boolean = false,
     deletePlace: ((Long) -> Unit)? = null
@@ -71,6 +77,43 @@ fun PlaceListItem(
                 .build()
         }
         .build()
+
+    if (showDeleteConfirmDialog != null) {
+        if (showDeleteConfirmDialog.value) {
+            AlertDialog(
+                onDismissRequest = { showDeleteConfirmDialog.value = false },
+                confirmButton = {
+                    Button(onClick = {
+                        if (deletePlace != null) {
+                            deletePlace(place.id)
+                        }
+                        showDeleteConfirmDialog.value = false
+                    }) {
+                        Text(stringResource(R.string.ok_btn))
+                    }
+                },
+                dismissButton = {
+                    Button(onClick = {
+                        showDeleteConfirmDialog.value = false
+                    }) {
+                        Text(stringResource(R.string.cancel_btn))
+                    }
+                },
+                title = {
+                    Text(
+                        text = "Törlés megerősítése",
+                        textAlign = TextAlign.Start,
+                        fontWeight = FontWeight.Bold
+                    )
+                },
+                text = {
+                    Text(
+                        text = "Biztos törlöd a helyet?",
+                    )
+                },
+            )
+        }
+    }
 
     Card(
         modifier = Modifier
@@ -150,8 +193,7 @@ fun PlaceListItem(
                         if (isPlaceByOwner) {
                             Spacer(modifier = Modifier.weight(1f))
                             IconButton(onClick = {
-                                if (deletePlace != null)
-                                    deletePlace(place.id)
+                                showDeleteConfirmDialog?.value = true
                             }) {
                                 Icon(
                                     imageVector = Icons.Filled.Delete,

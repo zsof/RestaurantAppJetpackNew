@@ -20,6 +20,8 @@ class OwnerPlaceViewModel @Inject constructor(
     ViewModel() {
 
     val showProblemDialog = mutableStateOf(false)
+    val showDeleteConfirmDialog = mutableStateOf(false)
+
     val isPlaceByOwner = mutableStateOf(false)
     val isPlaceInReviewByOwner = mutableStateOf(false)
 
