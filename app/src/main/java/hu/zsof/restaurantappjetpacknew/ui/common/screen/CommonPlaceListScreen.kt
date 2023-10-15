@@ -16,6 +16,7 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.PushPin
 import androidx.compose.material.icons.filled.ReportProblem
+import androidx.compose.material.icons.outlined.EditLocationAlt
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -43,7 +44,6 @@ import coil.ImageLoader
 import coil.compose.AsyncImage
 import hu.zsof.restaurantappjetpacknew.R
 import hu.zsof.restaurantappjetpacknew.model.BasePlace
-import hu.zsof.restaurantappjetpacknew.model.PlaceInReview
 import hu.zsof.restaurantappjetpacknew.model.enums.Price
 import hu.zsof.restaurantappjetpacknew.module.NetworkModule
 import hu.zsof.restaurantappjetpacknew.util.extension.imageUrl
@@ -153,12 +153,22 @@ fun PlaceListItem(
                             maxLines = 3,
                         )
 
-                        if (place is PlaceInReview && !place.problem.isNullOrEmpty()) {
-                            Spacer(modifier = Modifier.weight(1f))
-
+                        if (!place.problem.isNullOrEmpty()) {
                             Icon(
                                 imageVector = Icons.Filled.ReportProblem,
                                 contentDescription = null,
+                                modifier = Modifier
+                                    .padding(start = 8.dp, top = 10.dp)
+                            )
+                        }
+
+                        if (place.isModified) {
+                            Spacer(modifier = Modifier.weight(5f))
+                            Icon(
+                                imageVector = Icons.Outlined.EditLocationAlt,
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .padding(start = 8.dp, top = 12.dp),
                             )
                         }
 
@@ -181,14 +191,7 @@ fun PlaceListItem(
                             }
                         }
 
-                        if (place.isModified) {
-                            Icon(
-                                imageVector = Icons.Filled.ReportProblem,
-                                contentDescription = null,
-                                modifier = Modifier
-                                    .padding(start = 8.dp, top = 12.dp),
-                            )
-                        }
+
 
                         if (isPlaceByOwner) {
                             Spacer(modifier = Modifier.weight(1f))

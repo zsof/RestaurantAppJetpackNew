@@ -36,6 +36,7 @@ import coil.compose.AsyncImage
 import hu.zsof.restaurantappjetpacknew.R
 import hu.zsof.restaurantappjetpacknew.model.BasePlace
 import hu.zsof.restaurantappjetpacknew.model.Place
+import hu.zsof.restaurantappjetpacknew.model.PlaceInReview
 import hu.zsof.restaurantappjetpacknew.model.enums.PlaceType
 import hu.zsof.restaurantappjetpacknew.model.enums.Type
 import hu.zsof.restaurantappjetpacknew.module.AppState
@@ -209,7 +210,7 @@ fun CommonDetailsScreen(
                                     .padding(16.dp, 8.dp, 4.dp, 8.dp),
                             )
 
-                            if (!place.problem.isNullOrEmpty()) {
+                            if (!place.problem.isNullOrEmpty() && (place is Place || place is PlaceInReview)) {
                                 IconButton(onClick = {
                                     showProblemDialog?.value = true
                                 }, modifier = Modifier.padding(4.dp, 8.dp, 4.dp, 8.dp)) {

@@ -98,7 +98,6 @@ fun TabsContent(
                 onClickPlaceInReviewItem = onClickPlaceInReviewItem,
                 placeType = PlaceType.PLACE_IN_REVIEW
             )
-
         }
     }
 }

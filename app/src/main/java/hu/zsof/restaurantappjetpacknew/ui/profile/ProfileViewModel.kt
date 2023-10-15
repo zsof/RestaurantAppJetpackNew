@@ -54,7 +54,7 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
-    fun updateUserProfile() {
+    fun updateUserProfileFilters() {
         viewModelScope.launch {
             userRepository.updateUserProfile(
                 UserUpdateProfileRequest(

@@ -1,5 +1,7 @@
 package hu.zsof.restaurantappjetpacknew.navigation
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -23,6 +25,7 @@ import hu.zsof.restaurantappjetpacknew.ui.review.ReviewDetailsScreen
 import hu.zsof.restaurantappjetpacknew.ui.review.TabLayoutReviewList
 import hu.zsof.restaurantappjetpacknew.util.Constants
 
+@RequiresApi(Build.VERSION_CODES.O)
 @ExperimentalMaterial3Api
 fun NavGraphBuilder.authNavGraph(
     navController: NavHostController,

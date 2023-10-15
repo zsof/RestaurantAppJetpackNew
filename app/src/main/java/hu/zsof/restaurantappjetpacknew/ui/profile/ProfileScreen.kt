@@ -271,7 +271,6 @@ fun ChipSettings(viewModel: ProfileViewModel) {
                 text = stringResource(id = R.string.credit_card),
                 onChecked = {
                     viewModel.creditCardChecked.value = it
-                    AppState.filteredPlaces
                 },
             )
         }
@@ -284,7 +283,7 @@ fun ChipSettings(viewModel: ProfileViewModel) {
         ) {
             Button(
                 onClick = {
-                    viewModel.updateUserProfile()
+                    viewModel.updateUserProfileFilters()
                 },
             ) {
                 Text(
@@ -385,17 +384,6 @@ fun BaseProfile(user: User, viewModel: ProfileViewModel) {
                 modifier = Modifier
                     .padding(start = 8.dp, end = 8.dp),
                 text = user.email,
-                fontSize = 20.sp,
-            )
-        }
-        Row(
-            modifier = Modifier
-                .padding(vertical = 16.dp),
-        ) {
-            Text(
-                modifier = Modifier
-                    .padding(start = 8.dp, end = 8.dp),
-                text = "*******",
                 fontSize = 20.sp,
             )
         }
