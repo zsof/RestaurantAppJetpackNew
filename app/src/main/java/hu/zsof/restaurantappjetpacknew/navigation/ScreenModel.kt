@@ -108,11 +108,6 @@ class ScreenModel {
         }
     }
 
-    val authItems = listOf(
-        NavigationScreen.Login,
-        NavigationScreen.Register,
-    )
-
     val userScreensNavigationDrawer = listOf(
         NavigationScreen.Profile,
         NavigationScreen.Logout,

@@ -2,6 +2,8 @@ package hu.zsof.restaurantappjetpacknew.navigation
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -44,15 +46,16 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import hu.zsof.restaurantappjetpacknew.MainViewModel
 import hu.zsof.restaurantappjetpacknew.R
 import hu.zsof.restaurantappjetpacknew.module.AppState
-import hu.zsof.restaurantappjetpacknew.util.extension.showToast
 import hu.zsof.restaurantappjetpacknew.util.Constants
 import hu.zsof.restaurantappjetpacknew.util.Constants.LOGIN_START
 import hu.zsof.restaurantappjetpacknew.util.Constants.ROOT_GRAPH_ROUTE
+import hu.zsof.restaurantappjetpacknew.util.extension.showToast
 import hu.zsof.restaurantappjetpacknew.util.internet.ConnectionState
 import hu.zsof.restaurantappjetpacknew.util.internet.connectivityState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalCoroutinesApi::class)
 @SuppressLint(
     "UnusedMaterial3ScaffoldPaddingParameter",
@@ -170,7 +173,7 @@ fun NavGraph(
                         startDestination = LOGIN_START,
                         route = ROOT_GRAPH_ROUTE,
                     ) {
-                        authNavGraph(navController = navController, navigator = navigator)
+                        mainNavGraph(navController = navController, navigator = navigator)
                     }
                 }
             }

@@ -27,7 +27,7 @@ import hu.zsof.restaurantappjetpacknew.util.Constants
 
 @RequiresApi(Build.VERSION_CODES.O)
 @ExperimentalMaterial3Api
-fun NavGraphBuilder.authNavGraph(
+fun NavGraphBuilder.mainNavGraph(
     navController: NavHostController,
     navigator: Navigator
 ) {
@@ -46,9 +46,9 @@ fun NavGraphBuilder.authNavGraph(
                     onRegisterClick = {
                         navController.navigate(ScreenModel.NavigationScreen.Register.route)
                     },
-
-                    )
+                )
             }
+
             composable(route = ScreenModel.NavigationScreen.Register.route) {
                 RegisterScreen(
                     onLoginClick = { navController.navigate(ScreenModel.NavigationScreen.Login.route) },
@@ -60,28 +60,30 @@ fun NavGraphBuilder.authNavGraph(
             ) {
                 HomeListScreen(
                     onFabClick = { navController.navigate(ScreenModel.NavigationScreen.Map.route) },
-                    onClickPlaceItem = {
+                    onClickPlaceItem = { placeId ->
                         navController.navigate(
                             ScreenModel.NavigationScreen.Details.passPlaceId(
-                                it,
+                                placeId,
                             ),
                         )
                     },
                     onFilterClick = { navController.navigate(ScreenModel.NavigationScreen.FilterPlace.route) },
                 )
             }
+
             composable(route = ScreenModel.NavigationScreen.NewPlace.route) {
                 NewPlaceDialogScreen(
                     onDialogClose = { navController.popBackStack() },
                 )
             }
+
             composable(route = ScreenModel.NavigationScreen.Map.route) {
                 MapScreen(
                     onLongClick = { navController.navigate(ScreenModel.NavigationScreen.NewPlace.route) },
-                    onMarkerInfoClick = {
+                    onMarkerInfoClick = { placeId ->
                         navController.navigate(
                             ScreenModel.NavigationScreen.Details.passPlaceId(
-                                it
+                                placeId
                             )
                         )
                     },
@@ -97,10 +99,10 @@ fun NavGraphBuilder.authNavGraph(
 
             composable(route = ScreenModel.NavigationScreen.ReviewPlace.route) {
                 TabLayoutReviewList(
-                    onClickPlaceItem = {
+                    onClickPlaceItem = { placeId ->
                         navController.navigate(
                             ScreenModel.NavigationScreen.ReviewDetails.passPlaceId(
-                                it,
+                                placeId,
                             ),
                         )
                     },
@@ -109,15 +111,16 @@ fun NavGraphBuilder.authNavGraph(
 
             composable(ScreenModel.NavigationScreen.FavPlace.route) {
                 FavoriteListScreen(
-                    onClickPlaceItem = {
+                    onClickPlaceItem = { placeId ->
                         navController.navigate(
                             ScreenModel.NavigationScreen.Details.passPlaceId(
-                                it,
+                                placeId,
                             ),
                         )
                     },
                 )
             }
+
             composable(
                 route = ScreenModel.NavigationScreen.Logout.route,
             ) {
@@ -130,6 +133,7 @@ fun NavGraphBuilder.authNavGraph(
                     },
                 )
             }
+
             composable(
                 route = ScreenModel.NavigationScreen.Details.route,
                 arguments = listOf(
@@ -141,15 +145,16 @@ fun NavGraphBuilder.authNavGraph(
                 TabLayoutDetails(
                     placeId = navController.currentBackStackEntry?.arguments?.getLong(ScreenModel.NavigationScreen.Details.Args.placeId)
                         ?: 0,
-                    onEditPlaceClick = {
+                    onEditPlaceClick = { placeId ->
                         navController.navigate(
                             ScreenModel.NavigationScreen.EditPlace.passPlaceId(
-                                it,
+                                placeId,
                             ),
                         )
                     },
                 )
             }
+
             composable(
                 route = ScreenModel.NavigationScreen.ReviewDetails.route,
                 arguments = listOf(
@@ -164,28 +169,30 @@ fun NavGraphBuilder.authNavGraph(
                     onPlaceAccepted = { navController.popBackStack() }
                 )
             }
+
             composable(route = ScreenModel.NavigationScreen.Profile.route) {
                 ProfileScreen()
             }
 
             composable(route = ScreenModel.NavigationScreen.OwnerPlace.route) {
                 TabLayoutOwnerList(
-                    onClickPlaceItem = {
+                    onClickPlaceItem = { placeId ->
                         navController.navigate(
                             ScreenModel.NavigationScreen.Details.passPlaceId(
-                                it,
+                                placeId,
                             ),
                         )
                     },
-                    onClickPlaceInReviewItem = {
+                    onClickPlaceInReviewItem = { placeInReviewId ->
                         navController.navigate(
                             ScreenModel.NavigationScreen.OwnerDetails.passPlaceId(
-                                it,
+                                placeInReviewId,
                             ),
                         )
                     },
                 )
             }
+
             composable(
                 route = ScreenModel.NavigationScreen.OwnerDetails.route,
                 arguments = listOf(
@@ -214,7 +221,6 @@ fun NavGraphBuilder.authNavGraph(
                     },
                 )
             }
-
         }
     }
 }
