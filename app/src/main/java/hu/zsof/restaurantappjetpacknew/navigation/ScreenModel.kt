@@ -71,6 +71,8 @@ class ScreenModel {
         object NewPlace : NavigationScreen(route = "newPlace")
         object FilterPlace : NavigationScreen(route = "filterPlace")
 
+        object Camera : NavigationScreen(route = "camera")
+
         object Details : NavigationScreen(route = "details/{${Args.placeId}}") {
             fun passPlaceId(placeId: Long) = "details/$placeId"
 

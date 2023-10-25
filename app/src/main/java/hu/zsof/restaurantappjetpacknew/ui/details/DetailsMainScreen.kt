@@ -49,11 +49,12 @@ fun DetailsMainScreen(
 
     if (viewModel.photoDialogOpen.value) {
         PhotoChooserDialog(
-            showPhotoPickerDialog = viewModel.photoDialogOpen.value,
+            showPhotoPickerDialog = viewModel.photoDialogOpen,
             onDismiss = { viewModel.photoDialogOpen.value = false },
             selectedImageUri = viewModel.selectedImageUri,
             galleryOpenPermission = viewModel.galleryPermissionOpen,
             cameraOpenPermission = viewModel.cameraPermissionOpen,
+            onCameraOpenClick = {}
         )
         if (viewModel.selectedImageUri.value != null) {
             viewModel.photoDialogOpen.value = false

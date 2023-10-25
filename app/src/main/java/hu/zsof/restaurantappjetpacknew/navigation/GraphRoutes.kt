@@ -11,6 +11,7 @@ import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
 import hu.zsof.restaurantappjetpacknew.ui.auth.login.LoginScreen
 import hu.zsof.restaurantappjetpacknew.ui.auth.register.RegisterScreen
+import hu.zsof.restaurantappjetpacknew.ui.common.screen.CameraScreen
 import hu.zsof.restaurantappjetpacknew.ui.details.TabLayoutDetails
 import hu.zsof.restaurantappjetpacknew.ui.edit.EditPlaceDialogScreen
 import hu.zsof.restaurantappjetpacknew.ui.favorite.FavoriteListScreen
@@ -171,7 +172,13 @@ fun NavGraphBuilder.mainNavGraph(
             }
 
             composable(route = ScreenModel.NavigationScreen.Profile.route) {
-                ProfileScreen()
+                ProfileScreen(
+                    onCameraOpenClick = {
+                        navController.navigate(
+                            ScreenModel.NavigationScreen.Camera.route
+                        )
+                    }
+                )
             }
 
             composable(route = ScreenModel.NavigationScreen.OwnerPlace.route) {
@@ -220,6 +227,12 @@ fun NavGraphBuilder.mainNavGraph(
                         navController.popBackStack()
                     },
                 )
+            }
+
+            composable(
+                route = ScreenModel.NavigationScreen.Camera.route
+            ) {
+                CameraScreen()
             }
         }
     }

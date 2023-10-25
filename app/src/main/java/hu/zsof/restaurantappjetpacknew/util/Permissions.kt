@@ -81,6 +81,7 @@ fun CameraPermission(
     permissionState: PermissionState,
     selectedImageUri: MutableState<Uri?>,
     cameraOpenPermission: MutableState<Boolean>,
+    onCameraOpenClick: () -> Unit
 ) {
     val context = LocalContext.current
     if (cameraOpenPermission.value) {
@@ -112,6 +113,7 @@ fun CameraPermission(
                 )
             },
         ) {
+            onCameraOpenClick()
         }
     }
 }

@@ -95,6 +95,7 @@ import okhttp3.OkHttpClient
 @Composable
 fun ProfileScreen(
     viewModel: ProfileViewModel = hiltViewModel(),
+    onCameraOpenClick: () -> Unit
 ) {
     val user = viewModel.userProfile.observeAsState().value
     LaunchedEffect(key1 = "Profile") {
@@ -124,11 +125,12 @@ fun ProfileScreen(
 
     if (viewModel.photoDialogOpen.value) {
         PhotoChooserDialog(
-            showPhotoPickerDialog = viewModel.photoDialogOpen.value,
+            showPhotoPickerDialog = viewModel.photoDialogOpen,
             onDismiss = { viewModel.photoDialogOpen.value = false },
             selectedImageUri = viewModel.selectedImageUri,
             galleryOpenPermission = viewModel.galleryPermissionOpen,
             cameraOpenPermission = viewModel.cameraPermissionOpen,
+            onCameraOpenClick = onCameraOpenClick
         )
         if (viewModel.selectedImageUri.value != null) {
             viewModel.photoDialogOpen.value = false

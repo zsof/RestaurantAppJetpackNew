@@ -1,5 +1,6 @@
 package hu.zsof.restaurantappjetpacknew.ui.profile
 
+import android.graphics.Bitmap
 import android.net.Uri
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -12,6 +13,8 @@ import hu.zsof.restaurantappjetpacknew.network.repository.UserRepository
 import hu.zsof.restaurantappjetpacknew.network.request.UserUpdateProfileRequest
 import hu.zsof.restaurantappjetpacknew.util.Constants
 import hu.zsof.restaurantappjetpacknew.util.SharedPreferences
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -45,6 +48,13 @@ class ProfileViewModel @Inject constructor(
     val changeNameDialogOpen = mutableStateOf(false)
 
     val userName = mutableStateOf(userProfile.value?.name)
+
+    private val _bitmaps = MutableStateFlow<List<Bitmap>>(emptyList())
+    val bitmaps = _bitmaps.asStateFlow()
+
+    fun onTakePhoto(bitmap: Bitmap) {
+        _bitmaps.value += bitmap
+    }
 
     fun getUserProfile() {
         viewModelScope.launch {
