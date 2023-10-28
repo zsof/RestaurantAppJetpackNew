@@ -1,7 +1,9 @@
 package hu.zsof.restaurantappjetpacknew.ui.common.screen
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.ContentResolver
+import android.os.Build
 import android.provider.MediaStore
 import android.provider.Settings.*
 import androidx.activity.compose.BackHandler
@@ -42,12 +44,13 @@ import hu.zsof.restaurantappjetpacknew.model.enums.Type
 import hu.zsof.restaurantappjetpacknew.module.AppState
 import hu.zsof.restaurantappjetpacknew.ui.common.field.NormalTextField
 import hu.zsof.restaurantappjetpacknew.ui.common.field.TextFieldForDialog
+import hu.zsof.restaurantappjetpacknew.util.GalleryPermission
 import okio.use
 import java.io.*
 import java.util.*
 
 @SuppressLint("ResourceType")
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class)
 @Composable
 fun CommonPlaceDialogScreen(
     viewModel: CommonPlaceDialogViewModel = hiltViewModel(),
@@ -56,16 +59,17 @@ fun CommonPlaceDialogScreen(
 ) {
     val context = LocalContext.current
 
-    if (viewModel.photoDialogOpen.value) {
-        PhotoChooserDialog(
-            showPhotoPickerDialog = viewModel.photoDialogOpen.value,
-            onDismiss = { viewModel.photoDialogOpen.value = false },
+    val permissionStateGallery = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+        rememberPermissionState(permission = Manifest.permission.READ_MEDIA_IMAGES)
+    else rememberPermissionState(permission = Manifest.permission.READ_EXTERNAL_STORAGE)
+
+    if (viewModel.photoPickerOpen.value) {
+        GalleryPermission(
+            permissionState = permissionStateGallery,
             selectedImageUri = viewModel.selectedImageUri,
-            galleryOpenPermission = viewModel.galleryPermissionOpen,
-            cameraOpenPermission = viewModel.cameraPermissionOpen,
         )
         if (viewModel.selectedImageUri.value != null) {
-            viewModel.photoDialogOpen.value = false
+            viewModel.photoPickerOpen.value = false
         }
     }
 
@@ -309,7 +313,8 @@ fun CommonPlaceDialogScreen(
                         if (isNewPlace) {
                             Button(
                                 onClick = {
-                                    viewModel.photoDialogOpen.value = true
+                                    permissionStateGallery.launchPermissionRequest()
+                                    viewModel.photoPickerOpen.value = true
                                 },
                                 contentPadding = PaddingValues(
                                     start = 20.dp,

@@ -9,7 +9,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.res.stringResource
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionRequired
@@ -20,8 +20,7 @@ import hu.zsof.restaurantappjetpacknew.R
 @Composable
 fun GalleryPermission(
     permissionState: PermissionState,
-    selectedImageUri: MutableState<Uri?>,
-    galleryOpenPermission: MutableState<Boolean>,
+    selectedImageUri: MutableState<Uri?>
 ) {
     val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
@@ -30,88 +29,49 @@ fun GalleryPermission(
         },
     )
 
-    if (galleryOpenPermission.value) {
-        PermissionRequired(
-            permissionState = permissionState,
-            permissionNotGrantedContent = {
-                // if there was already a Manifest.permission request, but the user rejected it
-                if (permissionState.permissionRequested) {
-                    AlertDialog(
-                        onDismissRequest = {},
-                        confirmButton = {
-                            Button(onClick = { permissionState.launchPermissionRequest() }) {
-                                Text(stringResource(id = R.string.request_permission))
-                            }
-                        },
-                        text = { Text(stringResource(R.string.permission_gallery_explanation)) },
-                    )
-                }
-            },
-            // if the user has already denied permission twice
-            permissionNotAvailableContent = {
+
+    PermissionRequired(
+        permissionState = permissionState,
+        permissionNotGrantedContent = {
+            // if there was already a Manifest.permission request, but the user rejected it
+            if (permissionState.permissionRequested) {
                 AlertDialog(
-                    onDismissRequest = {
-                        galleryOpenPermission.value = false
-                    },
-                    text = { Text(stringResource(R.string.permission_gallery_denied_message)) },
+                    onDismissRequest = {},
                     confirmButton = {
-                        // The Google Play store has a policy that limits usage of MANAGE_EXTERNAL_STORAGE
-                        /*  if (Build.VERSION.SDK_INT >= 30) {
-                              Button(onClick = {
-                                  val i = Intent(ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
-                                  context.startActivity(i)
-                              }) {
-                                  Text("Go to Settings")
-                              }
-                          }*/
+                        Button(onClick = { permissionState.launchPermissionRequest() }) {
+                            Text(stringResource(id = R.string.request_permission))
+                        }
                     },
+                    text = { Text(stringResource(R.string.permission_gallery_explanation)) },
                 )
-            },
-        ) {
+            }
+        },
+        // if the user has already denied permission twice
+        permissionNotAvailableContent = {
+            AlertDialog(
+                onDismissRequest = {},
+                text = { Text(stringResource(R.string.permission_gallery_denied_message)) },
+                confirmButton = {
+                    // The Google Play store has a policy that limits usage of MANAGE_EXTERNAL_STORAGE
+                    /*  if (Build.VERSION.SDK_INT >= 30) {
+                          Button(onClick = {
+                              val i = Intent(ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
+                              context.startActivity(i)
+                          }) {
+                              Text("Go to Settings")
+                          }
+                      }*/
+                },
+            )
+        },
+    ) {
+        SideEffect {
             singlePhotoPickerLauncher.launch(
-                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly),
+                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
             )
         }
     }
 }
 
-@OptIn(ExperimentalPermissionsApi::class)
-@Composable
-fun CameraPermission(
-    permissionState: PermissionState,
-    selectedImageUri: MutableState<Uri?>,
-    cameraOpenPermission: MutableState<Boolean>,
-) {
-    val context = LocalContext.current
-    if (cameraOpenPermission.value) {
-        PermissionRequired(
-            permissionState = permissionState,
-            permissionNotGrantedContent = {
-                // if there was already a Manifest.permission request, but the user rejected it
-                if (permissionState.permissionRequested) {
-                    AlertDialog(
-                        onDismissRequest = {
-                        },
-                        confirmButton = {
-                            Button(onClick = { permissionState.launchPermissionRequest() }) {
-                                Text(stringResource(id = R.string.request_permission))
-                            }
-                        },
-                        text = { Text(stringResource(R.string.permission_camera_explanation)) },
-                    )
-                }
-            },
-            // if the user has already denied permission twice
-            permissionNotAvailableContent = {
-                AlertDialog(
-                    onDismissRequest = {
-                        cameraOpenPermission.value = false
-                    },
-                    text = { Text(stringResource(R.string.permission_camera_denied_message)) },
-                    confirmButton = {},
-                )
-            },
-        ) {
-        }
-    }
-}
+
+

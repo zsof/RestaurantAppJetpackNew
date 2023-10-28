@@ -13,11 +13,13 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import hu.zsof.restaurantappjetpacknew.R
 import hu.zsof.restaurantappjetpacknew.model.enums.FabButton
 import hu.zsof.restaurantappjetpacknew.model.enums.PlaceType
 import hu.zsof.restaurantappjetpacknew.ui.common.screen.CommonDetailsScreen
 
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun ReviewDetailsScreen(
     viewModel: ReviewPlaceViewModel = hiltViewModel(),
@@ -66,9 +68,9 @@ fun ReviewDetailsScreen(
     CommonDetailsScreen(
         placeId = placeId,
         place = placeInReviewOrModifiedPlace,
+        showProblemDialog = viewModel.showProblemDialog,
         placeType = PlaceType.PLACE_IN_REVIEW,
         isPlaceByOwner = false,
-        showProblemDialog = viewModel.showProblemDialog,
         multiFloatingState = viewModel.multiFloatingState,
         fabItems = items,
         openingHoursOpen = viewModel.openingHoursOpenDetails,

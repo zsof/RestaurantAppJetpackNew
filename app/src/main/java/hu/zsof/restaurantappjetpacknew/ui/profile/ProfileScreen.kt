@@ -1,6 +1,8 @@
 package hu.zsof.restaurantappjetpacknew.ui.profile
 
+import android.Manifest
 import android.content.ContentResolver
+import android.os.Build
 import android.provider.MediaStore
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -31,65 +33,18 @@ import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.ImageLoader
 import coil.compose.AsyncImage
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.rememberPermissionState
 import hu.zsof.restaurantappjetpacknew.R
 import hu.zsof.restaurantappjetpacknew.model.User
 import hu.zsof.restaurantappjetpacknew.module.AppState
 import hu.zsof.restaurantappjetpacknew.module.NetworkModule
 import hu.zsof.restaurantappjetpacknew.ui.common.button.TextChip
 import hu.zsof.restaurantappjetpacknew.ui.common.screen.CommonEditTextDialog
-import hu.zsof.restaurantappjetpacknew.ui.common.screen.PhotoChooserDialog
 import hu.zsof.restaurantappjetpacknew.util.Constants
+import hu.zsof.restaurantappjetpacknew.util.GalleryPermission
 import hu.zsof.restaurantappjetpacknew.util.extension.imageUrl
 import okhttp3.OkHttpClient
-
-
-/*fun getRealPath(uriString: String): String? {
-    var realPath: String? = null
-    val isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT
-
-    // DocumentProvider
-    if (isKitKat) {
-        var cursor: Cursor = cordova.getActivity().getContentResolver()
-            .query(Uri.parse(uriString), null, null, null, null)
-        cursor.moveToFirst()
-        var document_id = cursor.getString(0)
-        document_id = document_id.substring(document_id.lastIndexOf(":") + 1)
-        cursor.close()
-        cursor = cordova.getActivity().getContentResolver().query(
-            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-            null, MediaStore.Images.Media._ID + " = ? ", arrayOf(document_id), null
-        )
-        cursor.moveToFirst()
-        val path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA))
-        realPath = path
-        cursor.close()
-    } else {
-        if (uriString.startsWith("content://")) {
-            val proj = arrayOf(_DATA)
-            val cursor: Cursor =
-                cordova.getActivity().managedQuery(Uri.parse(uriString), proj, null, null, null)
-            val column_index = cursor.getColumnIndexOrThrow(_DATA)
-            cursor.moveToFirst()
-            realPath = cursor.getString(column_index)
-            if (realPath == null) {
-                LOG.e(LOG_TAG, "Could get real path for URI string %s", uriString)
-            }
-        } else if (uriString.startsWith("file://")) {
-            realPath = uriString.substring(7)
-            if (realPath.startsWith("/android_asset/")) {
-                LOG.e(
-                    LOG_TAG,
-                    "Cannot get real path for URI string %s because it is a file:///android_asset/ URI.",
-                    uriString
-                )
-                realPath = null
-            }
-        } else {
-            realPath = uriString
-        }
-    }
-    return realPath
-}*/
 
 @ExperimentalMaterial3Api
 @Composable
@@ -99,54 +54,6 @@ fun ProfileScreen(
     val user = viewModel.userProfile.observeAsState().value
     LaunchedEffect(key1 = "Profile") {
         viewModel.getUserProfile()
-    }
-
-    val context = LocalContext.current
-
-    val projection = arrayOf(MediaStore.Images.ImageColumns.DATA)
-    val contentResolver: ContentResolver = context.contentResolver
-    var imagePath = ""
-
-    viewModel.selectedImageUri.value?.let {
-        contentResolver.query(
-            it,
-            projection,
-            null,
-            null,
-            null,
-        )
-    }
-        ?.use { metaCursor ->
-            if (metaCursor.moveToFirst()) {
-                imagePath = metaCursor.getString(0) ?: ""
-            }
-        }
-
-    if (viewModel.photoDialogOpen.value) {
-        PhotoChooserDialog(
-            showPhotoPickerDialog = viewModel.photoDialogOpen.value,
-            onDismiss = { viewModel.photoDialogOpen.value = false },
-            selectedImageUri = viewModel.selectedImageUri,
-            galleryOpenPermission = viewModel.galleryPermissionOpen,
-            cameraOpenPermission = viewModel.cameraPermissionOpen,
-        )
-        if (viewModel.selectedImageUri.value != null) {
-            viewModel.photoDialogOpen.value = false
-            viewModel.updateUserProfileImage(imagePath)
-        }
-    }
-
-    if (viewModel.changeNameDialogOpen.value) {
-        CommonEditTextDialog(
-            changingValue = viewModel.userName,
-            changingTitle = stringResource(R.string.profile_change_dialog_title_name),
-            keyboardType = KeyboardType.Text,
-            onDismiss = { viewModel.changeNameDialogOpen.value = false },
-            onDismissSave = {
-                viewModel.updateUserProfileName()
-                viewModel.changeNameDialogOpen.value = false
-            }
-        )
     }
 
     Scaffold(
@@ -295,9 +202,29 @@ fun ChipSettings(viewModel: ProfileViewModel) {
     }
 }
 
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun BaseProfile(user: User, viewModel: ProfileViewModel) {
     val context = LocalContext.current
+
+    val projection = arrayOf(MediaStore.Images.ImageColumns.DATA)
+    val contentResolver: ContentResolver = context.contentResolver
+    var imagePath = ""
+
+    viewModel.selectedImageUri.value?.let {
+        contentResolver.query(
+            it,
+            projection,
+            null,
+            null,
+            null,
+        )
+    }
+        ?.use { metaCursor ->
+            if (metaCursor.moveToFirst()) {
+                imagePath = metaCursor.getString(0) ?: ""
+            }
+        }
 
     val imageLoader = ImageLoader.Builder(context)
         .okHttpClient {
@@ -306,6 +233,34 @@ fun BaseProfile(user: User, viewModel: ProfileViewModel) {
                 .build()
         }
         .build()
+
+    val permissionStateGallery = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+        rememberPermissionState(permission = Manifest.permission.READ_MEDIA_IMAGES)
+    else rememberPermissionState(permission = Manifest.permission.READ_EXTERNAL_STORAGE)
+
+    if (viewModel.photoPickerOpen.value) {
+        GalleryPermission(
+            permissionState = permissionStateGallery,
+            selectedImageUri = viewModel.selectedImageUri,
+        )
+        if (viewModel.selectedImageUri.value != null) {
+            viewModel.photoPickerOpen.value = false
+            viewModel.updateUserProfileImage(imagePath)
+        }
+    }
+
+    if (viewModel.changeNameDialogOpen.value) {
+        CommonEditTextDialog(
+            changingValue = viewModel.userName,
+            changingTitle = stringResource(R.string.profile_change_dialog_title_name),
+            keyboardType = KeyboardType.Text,
+            onDismiss = { viewModel.changeNameDialogOpen.value = false },
+            onDismissSave = {
+                viewModel.updateUserProfileName()
+                viewModel.changeNameDialogOpen.value = false
+            }
+        )
+    }
 
     Card(
         modifier = Modifier
@@ -338,7 +293,10 @@ fun BaseProfile(user: User, viewModel: ProfileViewModel) {
                     .padding(8.dp)
                     .border(2.dp, color = MaterialTheme.colorScheme.primary, CircleShape)
                     .clip(CircleShape)
-                    .clickable { viewModel.photoDialogOpen.value = true },
+                    .clickable {
+                        permissionStateGallery.launchPermissionRequest()
+                        viewModel.photoPickerOpen.value = true
+                    },
                 imageLoader = imageLoader
             )
         } else
@@ -348,7 +306,11 @@ fun BaseProfile(user: User, viewModel: ProfileViewModel) {
                 modifier = Modifier
                     .size(120.dp)
                     .align(Alignment.CenterHorizontally)
-                    .clickable { viewModel.photoDialogOpen.value = true },
+                    .clickable(onClick = {
+                        permissionStateGallery.launchPermissionRequest()
+                        viewModel.photoPickerOpen.value = true
+
+                    }),
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
             )
 

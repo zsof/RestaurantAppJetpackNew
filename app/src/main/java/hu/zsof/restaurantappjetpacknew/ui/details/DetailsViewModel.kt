@@ -30,10 +30,7 @@ class DetailsViewModel @Inject constructor(
     val isPlaceByOwner = mutableStateOf(false)
     val newComment = mutableStateOf("")
 
-    val galleryPermissionOpen = mutableStateOf(false)
-    val cameraPermissionOpen = mutableStateOf(false)
-
-    val photoDialogOpen = mutableStateOf(false)
+    val photoPickerOpen = mutableStateOf(false)
     val selectedImageUri = mutableStateOf<Uri?>(null)
 
     val showProblemDialog = mutableStateOf(false)

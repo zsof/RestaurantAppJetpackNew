@@ -2,7 +2,21 @@ package hu.zsof.restaurantappjetpacknew.ui.common.screen
 
 import android.net.Uri
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -16,7 +30,13 @@ import androidx.compose.material.icons.outlined.KeyboardArrowDown
 import androidx.compose.material.icons.outlined.KeyboardArrowUp
 import androidx.compose.material.icons.outlined.Phone
 import androidx.compose.material.icons.outlined.PushPin
-import androidx.compose.material3.*
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
@@ -33,6 +53,8 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.ImageLoader
 import coil.compose.AsyncImage
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.PermissionState
 import hu.zsof.restaurantappjetpacknew.R
 import hu.zsof.restaurantappjetpacknew.model.BasePlace
 import hu.zsof.restaurantappjetpacknew.model.Place
@@ -49,7 +71,7 @@ import hu.zsof.restaurantappjetpacknew.ui.review.ReviewPlaceViewModel
 import hu.zsof.restaurantappjetpacknew.util.extension.imageUrl
 import okhttp3.OkHttpClient
 
-@OptIn(ExperimentalLayoutApi::class)
+@OptIn(ExperimentalLayoutApi::class, ExperimentalPermissionsApi::class)
 @Composable
 fun CommonDetailsScreen(
     placeId: Long,
@@ -64,7 +86,8 @@ fun CommonDetailsScreen(
     reviewPlaceViewModel: ReviewPlaceViewModel = hiltViewModel(),
     openingHoursOpen: MutableState<Boolean>,
     selectedImage: Uri? = null,
-    onPlaceAccepted: (() -> Unit)? = null
+    onPlaceAccepted: (() -> Unit)? = null,
+    permissionStateGallery: PermissionState? = null
 ) {
     val openingHoursArrowIcon = if (openingHoursOpen.value) {
         Icons.Outlined.KeyboardArrowUp
@@ -173,6 +196,7 @@ fun CommonDetailsScreen(
                                 .clickable {
                                     if (isPlaceByOwner && place is Place) {
                                         if (onEditImageClick != null) {
+                                            permissionStateGallery?.launchPermissionRequest()
                                             onEditImageClick()
                                         }
                                     }
@@ -189,6 +213,7 @@ fun CommonDetailsScreen(
                                 .clickable {
                                     if (isPlaceByOwner && place is Place) {
                                         if (onEditImageClick != null) {
+                                            permissionStateGallery?.launchPermissionRequest()
                                             onEditImageClick()
                                         }
                                     }

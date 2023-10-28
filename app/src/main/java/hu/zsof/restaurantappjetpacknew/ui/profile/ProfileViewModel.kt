@@ -37,9 +37,7 @@ class ProfileViewModel @Inject constructor(
 
     val switchCheckedState = mutableStateOf(false)
 
-    val photoDialogOpen = mutableStateOf(false)
-    val galleryPermissionOpen = mutableStateOf(false)
-    val cameraPermissionOpen = mutableStateOf(false)
+    val photoPickerOpen = mutableStateOf(false)
     val selectedImageUri = mutableStateOf<Uri?>(null)
 
     val changeNameDialogOpen = mutableStateOf(false)
@@ -88,6 +86,7 @@ class ProfileViewModel @Inject constructor(
     }
 
     fun updateUserProfileImage(image: String) {
+        println("update image")
         viewModelScope.launch {
             if (userProfile.value != null) {
                 resourceRepository.addNewImage(

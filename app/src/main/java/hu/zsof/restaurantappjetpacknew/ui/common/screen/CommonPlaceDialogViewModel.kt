@@ -32,10 +32,7 @@ open class CommonPlaceDialogViewModel @Inject constructor(
         else -> mutableStateOf(0)
     }
 
-    val galleryPermissionOpen = mutableStateOf(false)
-    val cameraPermissionOpen = mutableStateOf(false)
-
-    val photoDialogOpen = mutableStateOf(false)
+    val photoPickerOpen = mutableStateOf(false)
     val selectedImageUri = mutableStateOf<Uri?>(null)
 
     val sliderValue = when (place.value?.price) {

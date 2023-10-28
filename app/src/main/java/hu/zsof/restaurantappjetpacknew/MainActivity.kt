@@ -1,9 +1,11 @@
 package hu.zsof.restaurantappjetpacknew
 
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
@@ -23,6 +25,8 @@ class MainActivity : ComponentActivity() {
 
     @Inject
     lateinit var navigator: Navigator
+
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -31,7 +35,11 @@ class MainActivity : ComponentActivity() {
         setContent {
             RestaurantAppJetpackNewTheme(darkTheme = isNightMode()) {
                 val navController = rememberNavController()
-                NavGraph(navController = navController, viewModel = viewModel, navigator = navigator)
+                NavGraph(
+                    navController = navController,
+                    viewModel = viewModel,
+                    navigator = navigator
+                )
             }
         }
     }

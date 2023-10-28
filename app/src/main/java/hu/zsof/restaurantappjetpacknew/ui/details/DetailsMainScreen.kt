@@ -1,18 +1,23 @@
 package hu.zsof.restaurantappjetpacknew.ui.details
 
+import android.Manifest
 import android.content.ContentResolver
+import android.os.Build
 import android.provider.MediaStore
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.rememberPermissionState
 import hu.zsof.restaurantappjetpacknew.model.enums.PlaceType
 import hu.zsof.restaurantappjetpacknew.module.AppState
 import hu.zsof.restaurantappjetpacknew.ui.common.screen.CommonDetailsScreen
-import hu.zsof.restaurantappjetpacknew.ui.common.screen.PhotoChooserDialog
+import hu.zsof.restaurantappjetpacknew.util.GalleryPermission
 import okio.use
 
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun DetailsMainScreen(
     viewModel: DetailsViewModel = hiltViewModel(),
@@ -46,17 +51,17 @@ fun DetailsMainScreen(
             }
         }
 
+    val permissionStateGallery = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+        rememberPermissionState(permission = Manifest.permission.READ_MEDIA_IMAGES)
+    else rememberPermissionState(permission = Manifest.permission.READ_EXTERNAL_STORAGE)
 
-    if (viewModel.photoDialogOpen.value) {
-        PhotoChooserDialog(
-            showPhotoPickerDialog = viewModel.photoDialogOpen.value,
-            onDismiss = { viewModel.photoDialogOpen.value = false },
+    if (viewModel.photoPickerOpen.value) {
+        GalleryPermission(
+            permissionState = permissionStateGallery,
             selectedImageUri = viewModel.selectedImageUri,
-            galleryOpenPermission = viewModel.galleryPermissionOpen,
-            cameraOpenPermission = viewModel.cameraPermissionOpen,
         )
         if (viewModel.selectedImageUri.value != null) {
-            viewModel.photoDialogOpen.value = false
+            viewModel.photoPickerOpen.value = false
             viewModel.updatePlaceImage(
                 imagePath = imagePath,
                 placeId = placeId,
@@ -68,7 +73,8 @@ fun DetailsMainScreen(
     CommonDetailsScreen(
         placeId = placeId,
         onEditPlaceClick = onEditPlaceClick,
-        onEditImageClick = { viewModel.photoDialogOpen.value = true },
+        onEditImageClick = { viewModel.photoPickerOpen.value = true },
+        permissionStateGallery = permissionStateGallery,
         place = place,
         placeType = PlaceType.PLACE,
         isPlaceByOwner = viewModel.isPlaceByOwner.value,
