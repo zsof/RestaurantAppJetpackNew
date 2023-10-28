@@ -58,7 +58,7 @@ fun CommonPlaceDialogScreen(
 
     if (viewModel.photoDialogOpen.value) {
         PhotoChooserDialog(
-            showPhotoPickerDialog = viewModel.photoDialogOpen,
+            showPhotoPickerDialog = viewModel.photoDialogOpen.value,
             onDismiss = { viewModel.photoDialogOpen.value = false },
             selectedImageUri = viewModel.selectedImageUri,
             galleryOpenPermission = viewModel.galleryPermissionOpen,

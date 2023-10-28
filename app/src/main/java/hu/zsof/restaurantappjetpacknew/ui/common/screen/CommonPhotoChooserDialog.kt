@@ -43,7 +43,7 @@ import hu.zsof.restaurantappjetpacknew.util.GalleryPermission
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun PhotoChooserDialog(
-    showPhotoPickerDialog: MutableState<Boolean>,
+    showPhotoPickerDialog: Boolean,
     onDismiss: () -> Unit,
     selectedImageUri: MutableState<Uri?>,
     galleryOpenPermission: MutableState<Boolean>,
@@ -69,7 +69,7 @@ fun PhotoChooserDialog(
         onCameraOpenClick = onCameraOpenClick
     )
 
-    if (showPhotoPickerDialog.value) {
+    if (showPhotoPickerDialog) {
         Dialog(
             onDismissRequest = onDismiss,
 
@@ -122,7 +122,7 @@ fun PhotoChooserDialog(
                                 permissionStateCamera.launchPermissionRequest()
                                 cameraOpenPermission.value =
                                     true // Necessary to be able to close the dialog
-                                // onDismiss()
+                                onDismiss()
                             }),
                         horizontalArrangement = Arrangement.Start,
                     ) {
