@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -173,6 +174,7 @@ fun CommonDetailsScreen(
                                 .align(CenterHorizontally)
                                 .padding(16.dp)
                                 .clip(RoundedCornerShape(8.dp))
+                                .aspectRatio(1280f / 847f)
                                 .clickable {
                                     if (isPlaceByOwner && place is Place) {
                                         if (onEditImageClick != null) {
@@ -193,6 +195,7 @@ fun CommonDetailsScreen(
                                 .align(CenterHorizontally)
                                 .padding(16.dp)
                                 .clip(RoundedCornerShape(8.dp))
+                                .aspectRatio(1280f / 847f)
                                 .clickable {
                                     if (isPlaceByOwner && place is Place) {
                                         if (onEditImageClick != null) {
