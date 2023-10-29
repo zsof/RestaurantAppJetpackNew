@@ -1,5 +1,6 @@
 package hu.zsof.restaurantappjetpacknew.ui.common.screen
 
+import android.content.Context
 import android.net.Uri
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -45,6 +46,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -52,7 +54,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import coil.ImageLoader
 import coil.compose.AsyncImage
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
@@ -63,14 +64,13 @@ import hu.zsof.restaurantappjetpacknew.model.PlaceInReview
 import hu.zsof.restaurantappjetpacknew.model.enums.PlaceType
 import hu.zsof.restaurantappjetpacknew.model.enums.Type
 import hu.zsof.restaurantappjetpacknew.module.AppState
-import hu.zsof.restaurantappjetpacknew.module.NetworkModule
 import hu.zsof.restaurantappjetpacknew.ui.common.button.TextChip
 import hu.zsof.restaurantappjetpacknew.ui.review.FabItem
 import hu.zsof.restaurantappjetpacknew.ui.review.MultiFloatingButton
 import hu.zsof.restaurantappjetpacknew.ui.review.MultiFloatingState
 import hu.zsof.restaurantappjetpacknew.ui.review.ReviewPlaceViewModel
+import hu.zsof.restaurantappjetpacknew.util.Constants
 import hu.zsof.restaurantappjetpacknew.util.extension.imageUrl
-import okhttp3.OkHttpClient
 
 @OptIn(ExperimentalLayoutApi::class, ExperimentalPermissionsApi::class)
 @Composable
@@ -96,15 +96,14 @@ fun CommonDetailsScreen(
         Icons.Outlined.KeyboardArrowDown
     }
 
-    //Add request header to get image - to jump the ngrok website and load the image
     val context = LocalContext.current
-    val imageLoader = ImageLoader.Builder(context)
-        .okHttpClient {
-            OkHttpClient.Builder()
-                .addInterceptor(NetworkModule.AuthInterceptor(context))
-                .build()
-        }
-        .build()
+
+    val sharedPref =
+        context.getSharedPreferences(Constants.Prefs.SHARED_PREFERENCES, Context.MODE_PRIVATE)
+
+    val drawableResource = if (sharedPref.getBoolean(Constants.Prefs.DARK_MODE, false))
+        R.drawable.loading_blue
+    else R.drawable.loading_yellow
 
     if (showProblemDialog != null) {
         if (showProblemDialog.value) {
@@ -204,7 +203,7 @@ fun CommonDetailsScreen(
                                         }
                                     }
                                 },
-                            imageLoader = imageLoader
+                            placeholder = painterResource(id = drawableResource),
                         )
                     } else {
                         Icon(

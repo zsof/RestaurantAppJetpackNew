@@ -1,5 +1,6 @@
 package hu.zsof.restaurantappjetpacknew.ui.common.screen
 
+import android.content.Context
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -33,6 +34,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
@@ -40,14 +42,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.ImageLoader
 import coil.compose.AsyncImage
 import hu.zsof.restaurantappjetpacknew.R
 import hu.zsof.restaurantappjetpacknew.model.BasePlace
 import hu.zsof.restaurantappjetpacknew.model.enums.Price
-import hu.zsof.restaurantappjetpacknew.module.NetworkModule
+import hu.zsof.restaurantappjetpacknew.util.Constants
 import hu.zsof.restaurantappjetpacknew.util.extension.imageUrl
-import okhttp3.OkHttpClient
 
 @ExperimentalMaterial3Api
 @Composable
@@ -68,15 +68,14 @@ fun PlaceListItem(
         Icons.Default.FavoriteBorder
     }
 
-    //Add request header to get image - to jump the ngrok website and load the image
     val context = LocalContext.current
-    val imageLoader = ImageLoader.Builder(context)
-        .okHttpClient {
-            OkHttpClient.Builder()
-                .addInterceptor(NetworkModule.AuthInterceptor(context))
-                .build()
-        }
-        .build()
+
+    val sharedPref =
+        context.getSharedPreferences(Constants.Prefs.SHARED_PREFERENCES, Context.MODE_PRIVATE)
+
+    val drawableResource = if (sharedPref.getBoolean(Constants.Prefs.DARK_MODE, false))
+        R.drawable.loading_blue
+    else R.drawable.loading_yellow
 
     if (showDeleteConfirmDialog != null) {
         if (showDeleteConfirmDialog.value) {
@@ -135,11 +134,11 @@ fun PlaceListItem(
                         contentDescription = null,
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
-                            .size(70.dp, 70.dp)
+                            .size(100.dp, 100.dp)
                             .padding(8.dp)
                             .border(2.dp, color = MaterialTheme.colorScheme.primary, CircleShape)
                             .clip(CircleShape),
-                        imageLoader = imageLoader
+                        placeholder = painterResource(id = drawableResource),
                     )
                 }
                 Column() {

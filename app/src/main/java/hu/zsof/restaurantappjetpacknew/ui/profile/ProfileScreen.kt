@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -31,20 +32,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
-import coil.ImageLoader
 import coil.compose.AsyncImage
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
 import hu.zsof.restaurantappjetpacknew.R
 import hu.zsof.restaurantappjetpacknew.model.User
 import hu.zsof.restaurantappjetpacknew.module.AppState
-import hu.zsof.restaurantappjetpacknew.module.NetworkModule
 import hu.zsof.restaurantappjetpacknew.ui.common.button.TextChip
 import hu.zsof.restaurantappjetpacknew.ui.common.screen.CommonEditTextDialog
 import hu.zsof.restaurantappjetpacknew.util.Constants
 import hu.zsof.restaurantappjetpacknew.util.GalleryPermission
 import hu.zsof.restaurantappjetpacknew.util.extension.imageUrl
-import okhttp3.OkHttpClient
 
 @ExperimentalMaterial3Api
 @Composable
@@ -226,14 +224,6 @@ fun BaseProfile(user: User, viewModel: ProfileViewModel) {
             }
         }
 
-    val imageLoader = ImageLoader.Builder(context)
-        .okHttpClient {
-            OkHttpClient.Builder()
-                .addInterceptor(NetworkModule.AuthInterceptor(context))
-                .build()
-        }
-        .build()
-
     val permissionStateGallery = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
         rememberPermissionState(permission = Manifest.permission.READ_MEDIA_IMAGES)
     else rememberPermissionState(permission = Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -262,6 +252,10 @@ fun BaseProfile(user: User, viewModel: ProfileViewModel) {
         )
     }
 
+    val drawableResource = if (viewModel.getAppPreference(Constants.Prefs.DARK_MODE))
+        R.drawable.loading_blue
+    else R.drawable.loading_yellow
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -280,7 +274,7 @@ fun BaseProfile(user: User, viewModel: ProfileViewModel) {
                     .padding(8.dp)
                     .border(2.dp, color = MaterialTheme.colorScheme.primary, CircleShape)
                     .clip(CircleShape)
-                    .zIndex(1f),
+                    .zIndex(1f)
             )
         } else if (user.image != null) {
             AsyncImage(
@@ -297,7 +291,7 @@ fun BaseProfile(user: User, viewModel: ProfileViewModel) {
                         permissionStateGallery.launchPermissionRequest()
                         viewModel.photoPickerOpen.value = true
                     },
-                imageLoader = imageLoader
+                placeholder = painterResource(id = drawableResource),
             )
         } else
             Icon(
