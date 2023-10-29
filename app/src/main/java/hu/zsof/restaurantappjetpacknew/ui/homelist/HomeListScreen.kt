@@ -66,6 +66,8 @@ fun HomeListScreen(
     val searchFilteredPlaces = AppState.searchedPlaces.observeAsState()
     // Globális szűrés, felülírja az alap beállított szűrést -> minden elemen keres
     val globalFilteredPlaces = AppState.filteredPlaces.observeAsState()
+    //Ha volt globális szűrés, de nem egyezett semmivel - üres listát ad vissza, ezt kell megjenelíteni
+    val isPlacedFilteredGlobally = AppState.isPlacesFiltered.observeAsState()
 
     // A homeScreen minden változáskor lefut, ezáltal a viewmodelles dolgok is, ha nem lennének launchedeffectben
     LaunchedEffect(key1 = "HomeList") {
@@ -148,13 +150,14 @@ fun HomeListScreen(
                         }
                     }
                     // Ha van globális szűrés, erősebb mint a user mentett szűrői
-                } else if (!globalFilteredPlaces.value.isNullOrEmpty()) {
+                } else if (isPlacedFilteredGlobally.value == true) {
                     Text(
                         text = stringResource(id = R.string.clear_filters),
                         modifier = Modifier
                             .align(Alignment.End)
                             .padding(8.dp)
                             .clickable(onClick = {
+                                AppState.isPlacesFiltered.value = false
                                 AppState.filteredPlaces.value = mutableListOf()
                             }),
                     )

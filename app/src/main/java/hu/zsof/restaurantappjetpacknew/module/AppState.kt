@@ -14,6 +14,7 @@ object AppState {
     val loggedUser = MutableLiveData<User?>(null)
 
     val filteredPlaces = MutableLiveData<List<Place>>()
+    val isPlacesFiltered = MutableLiveData(false)
 
     val searchedPlaces = MutableLiveData<List<Place>>()
     val darkTheme = MutableLiveData<Boolean>()

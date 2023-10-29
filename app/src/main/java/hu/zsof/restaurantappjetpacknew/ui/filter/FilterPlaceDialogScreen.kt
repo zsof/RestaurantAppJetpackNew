@@ -209,6 +209,7 @@ fun FilterPlaceDialogScreen(
                                     typeValue = Type.getByName(selectedOptionText),
                                 )
                                 AppState.filteredPlaces.value = filterResult
+                                AppState.isPlacesFiltered.value = true
                                 navController.navigate(ScreenModel.NavigationScreen.Home.route)
                                 viewModel.dialogOpen.value = false
                             },
