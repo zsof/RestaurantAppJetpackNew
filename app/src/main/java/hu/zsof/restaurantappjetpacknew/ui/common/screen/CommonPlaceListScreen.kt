@@ -40,6 +40,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
@@ -141,15 +142,17 @@ fun PlaceListItem(
                         placeholder = painterResource(id = drawableResource),
                     )
                 }
-                Column() {
-                    Row() {
+                Column(modifier = Modifier.fillMaxWidth()) {
+                    Row(modifier = Modifier.fillMaxWidth()) {
                         Text(
                             modifier = Modifier
-                                .padding(start = 8.dp, top = 8.dp, end = 8.dp),
+                                .padding(start = 8.dp, top = 8.dp, end = 4.dp)
+                                .weight(20f, fill = false),
                             text = place.name,
                             style = TextStyle(fontWeight = FontWeight.Bold),
                             fontSize = 20.sp,
-                            maxLines = 3,
+                            maxLines = 2,
+                            overflow = TextOverflow.Ellipsis
                         )
 
                         if (!place.problem.isNullOrEmpty()) {
@@ -157,7 +160,7 @@ fun PlaceListItem(
                                 imageVector = Icons.Filled.ReportProblem,
                                 contentDescription = null,
                                 modifier = Modifier
-                                    .padding(start = 8.dp, top = 10.dp)
+                                    .padding(start = 4.dp, top = 10.dp)
                             )
                         }
 
@@ -167,7 +170,7 @@ fun PlaceListItem(
                                 imageVector = Icons.Outlined.EditLocationAlt,
                                 contentDescription = null,
                                 modifier = Modifier
-                                    .padding(start = 8.dp, top = 12.dp),
+                                    .padding(start = 4.dp, top = 12.dp),
                             )
                         }
 

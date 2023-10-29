@@ -227,14 +227,18 @@ fun CommonDetailsScreen(
                         horizontalAlignment = CenterHorizontally,
                         modifier = Modifier.fillMaxWidth(),
                     ) {
-                        Row(horizontalArrangement = Arrangement.Center) {
+                        Row(
+                            horizontalArrangement = Arrangement.Center,
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
                             Text(
                                 text = place.name,
                                 style = MaterialTheme.typography.headlineLarge,
                                 fontWeight = FontWeight.Bold,
                                 fontStyle = FontStyle.Italic,
                                 modifier = Modifier
-                                    .padding(16.dp, 8.dp, 4.dp, 8.dp),
+                                    .padding(16.dp, 8.dp, 4.dp, 8.dp)
+                                    .weight(1f, fill = false),
                             )
 
                             if (!place.problem.isNullOrEmpty() && (place is Place || place is PlaceInReview)) {
