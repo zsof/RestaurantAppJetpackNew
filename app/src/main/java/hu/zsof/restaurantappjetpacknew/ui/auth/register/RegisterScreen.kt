@@ -37,7 +37,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -47,15 +46,6 @@ import hu.zsof.restaurantappjetpacknew.ui.common.field.NormalTextField
 import hu.zsof.restaurantappjetpacknew.ui.common.field.PasswordTextField
 import hu.zsof.restaurantappjetpacknew.util.extension.showToast
 import kotlinx.coroutines.launch
-
-@ExperimentalMaterial3Api
-@Preview(showBackground = true)
-@Composable
-fun RegisterScreen_Preview() {
-    RegisterScreen(
-        onLoginClick = { },
-    )
-}
 
 @OptIn(ExperimentalComposeUiApi::class)
 @ExperimentalMaterial3Api

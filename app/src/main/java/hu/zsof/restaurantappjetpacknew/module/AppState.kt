@@ -11,16 +11,16 @@ object AppState {
     val isModifiedPlace = MutableLiveData(false)
     val place = MutableLiveData<Place?>(null)
 
-    private var latLng: LatLng? = null
-
     val loggedUser = MutableLiveData<User?>(null)
 
     val filteredPlaces = MutableLiveData<List<Place>>()
-    val searchedPlaces = MutableLiveData<List<Place>>()
 
+    val searchedPlaces = MutableLiveData<List<Place>>()
     val darkTheme = MutableLiveData<Boolean>()
-    
+
     val mapInfoClicked = mutableStateOf(false)
+
+    private var latLng: LatLng? = null
 
     fun getLatLng(): LatLng {
         if (latLng == null) {

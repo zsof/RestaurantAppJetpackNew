@@ -29,6 +29,7 @@ import hu.zsof.restaurantappjetpacknew.model.enums.Price
 import hu.zsof.restaurantappjetpacknew.model.enums.Type
 import hu.zsof.restaurantappjetpacknew.module.AppState
 import hu.zsof.restaurantappjetpacknew.navigation.ScreenModel
+import hu.zsof.restaurantappjetpacknew.ui.common.screen.CommonPlaceFilter
 import java.util.*
 
 @SuppressLint("ResourceType")
@@ -157,17 +158,18 @@ fun FilterPlaceDialogScreen(
                                 },
                                 onValueChangeFinished = {
                                     // this is called when the user completed selecting the value
-                                    viewModel.priceValue = when (viewModel.sliderValue.value) {
-                                        0f -> {
-                                            Price.LOW
-                                        }
+                                    viewModel.priceValue.value =
+                                        when (viewModel.sliderValue.value) {
+                                            0f -> {
+                                                Price.LOW
+                                            }
 
-                                        5.0f -> {
-                                            Price.MIDDLE
-                                        }
+                                            5.0f -> {
+                                                Price.MIDDLE
+                                            }
 
-                                        else -> {
-                                            Price.HIGH
+                                            else -> {
+                                                Price.HIGH
                                         }
                                     }
                                 },
@@ -187,7 +189,7 @@ fun FilterPlaceDialogScreen(
                     )
                     Spacer(modifier = Modifier.height(10.dp))
 
-                    PlaceFilter()
+                    CommonPlaceFilter(viewModel = viewModel)
                     Spacer(modifier = Modifier.height(10.dp))
 
                     Row() {

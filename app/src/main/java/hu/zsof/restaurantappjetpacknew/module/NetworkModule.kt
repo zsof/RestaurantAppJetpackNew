@@ -125,7 +125,7 @@ class NetworkModule() {
                     } else {
                         backgroundThreadToast(
                             context,
-                            context.getString(R.string.unexcepted_eerror)
+                            context.getString(R.string.unexcepted_error)
                         )
                     }
                 }

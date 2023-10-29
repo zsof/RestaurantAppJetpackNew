@@ -61,7 +61,9 @@ fun Tabs(pagerState: PagerState) {
                 text = {
                     Text(
                         list[index].first,
-                        color = if (pagerState.currentPage == index) MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.surfaceVariant,
+                        color = if (pagerState.currentPage == index)
+                            MaterialTheme.colorScheme.onSurfaceVariant
+                        else MaterialTheme.colorScheme.surfaceVariant,
                     )
                 },
                 selected = pagerState.currentPage == index,

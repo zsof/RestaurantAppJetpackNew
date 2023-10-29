@@ -11,7 +11,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @ExperimentalMaterial3Api
@@ -41,19 +40,5 @@ fun TextFieldForDialog(
         keyboardActions = KeyboardActions(
             onDone = onDone,
         ),
-    )
-}
-
-@ExperimentalMaterial3Api
-@Preview
-@Composable
-fun TextFieldForDialog_Preview() {
-    TextFieldForDialog(
-        value = "abc",
-        label = "Mennyiség (kg)",
-        onValueChange = {},
-        onDone = {},
-        keyboardOptions = KeyboardOptions(),
-        placeholder = "alma",
     )
 }

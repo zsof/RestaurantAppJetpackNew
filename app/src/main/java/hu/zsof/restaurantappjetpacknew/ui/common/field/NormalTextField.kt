@@ -14,7 +14,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @ExperimentalMaterial3Api
@@ -60,22 +59,5 @@ fun NormalTextField(
         keyboardActions = KeyboardActions(
             onDone = onDone,
         ),
-    )
-}
-
-@ExperimentalMaterial3Api
-@Preview
-@Composable
-fun NormalTextView_Error_Preview() {
-    NormalTextField(
-        value = "abc",
-        label = "Mennyiség (kg)",
-        onValueChange = {},
-        leadingIcon = {},
-        trailingIcon = {},
-        onDone = {},
-        keyboardOptions = KeyboardOptions(),
-        isError = true,
-        placeholder = "alma",
     )
 }

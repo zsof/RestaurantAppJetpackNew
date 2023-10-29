@@ -20,8 +20,8 @@ open class CommonPlaceDialogViewModel @Inject constructor(
 
     val place = AppState.place
 
-    val dialogOpen = mutableStateOf(true)
-    val expandedCategoryMenu = mutableStateOf(false)
+    open val dialogOpen = mutableStateOf(true)
+    open val expandedCategoryMenu = mutableStateOf(false)
     val selectedOptionIndex = when (place.value?.type) {
         Type.RESTAURANT -> mutableStateOf(0)
         Type.CAFE -> mutableStateOf(1)
@@ -35,14 +35,14 @@ open class CommonPlaceDialogViewModel @Inject constructor(
     val photoPickerOpen = mutableStateOf(false)
     val selectedImageUri = mutableStateOf<Uri?>(null)
 
-    val sliderValue = when (place.value?.price) {
+    open val sliderValue = when (place.value?.price) {
         Price.LOW -> mutableStateOf(0f)
         Price.MIDDLE -> mutableStateOf(5.0f)
         Price.HIGH -> mutableStateOf(10f)
         else -> mutableStateOf(0f)
     }
 
-    val priceValue = mutableStateOf(place.value?.price ?: Price.LOW)
+    open val priceValue = mutableStateOf(place.value?.price ?: Price.LOW)
 
     val placeId = mutableStateOf(place.value?.id ?: -1)
     val latitudeValue = mutableStateOf(place.value?.latitude ?: 0.0)

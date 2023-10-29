@@ -101,14 +101,14 @@ fun PlaceListItem(
                 },
                 title = {
                     Text(
-                        text = "Törlés megerősítése",
+                        text = stringResource(R.string.confirm_delete),
                         textAlign = TextAlign.Start,
                         fontWeight = FontWeight.Bold
                     )
                 },
                 text = {
                     Text(
-                        text = "Biztos törlöd a helyet?",
+                        text = stringResource(R.string.delete_place_text),
                     )
                 },
             )
@@ -177,7 +177,6 @@ fun PlaceListItem(
                         if (needFavButton) {
                             Spacer(modifier = Modifier.weight(1f))
                             IconButton(onClick = {
-                                // Ide nem kell launchedeffect, mert ez csak akkor fut le, ha gombnyomás történik, ez már nem a homescreen content-jében van, hanem a gombbéban
                                 if (favIdList?.contains(place.id) == true) {
                                     addOrRemoveFavIdList?.invoke()
                                     isFavPlace?.value = false
@@ -192,8 +191,6 @@ fun PlaceListItem(
                                 )
                             }
                         }
-
-
 
                         if (isPlaceByOwner) {
                             Spacer(modifier = Modifier.weight(1f))
@@ -217,14 +214,14 @@ fun PlaceListItem(
                                 .padding(8.dp, 0.dp, 0.dp, 0.dp),
                             text = when (place.price) {
                                 Price.LOW -> {
-                                    "$"
+                                    stringResource(R.string.price_low)
                                 }
 
                                 Price.MIDDLE -> {
-                                    "$$"
+                                    stringResource(R.string.price_middle)
                                 }
 
-                                else -> "$$$"
+                                else -> stringResource(R.string.price_high)
                             },
                             fontSize = 16.sp,
                             style = TextStyle(

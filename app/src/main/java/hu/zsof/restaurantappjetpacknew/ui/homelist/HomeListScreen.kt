@@ -49,10 +49,6 @@ fun HomeListScreen(
     onClickPlaceItem: (Long) -> Unit,
     onFilterClick: () -> Unit,
 ) {
-    // LaunchedEffect should be used when you want that some action must be taken
-    // when your composable is first launched/relaunched (or when the key parameter has changed).
-    // For example, when you want to request some data from your ViewModel or run some sort of animation
-
     val places = viewModel.places.observeAsState(listOf())
     val user = viewModel.userData.observeAsState().value
 

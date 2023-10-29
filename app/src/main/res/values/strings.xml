@@ -112,6 +112,7 @@
     <string name="tab_comments">Kommentek</string>
     <string name="request_permission">Request permission</string>
     <string name="permission_map_explanation">The Location is important for this app. Please grant the Permission.</string>
+    <string name="permission_map_denied_message">You could not use this function because the permission was denied. Please go to Settings and add permission to use the Map</string>
     <string name="tab_accepted_places">Elfogadott</string>
     <string name="tab_wait_for_accept_places">Elfogadásra vár</string>
     <string name="profile_change_dialog_title_name">Név</string>
@@ -121,10 +122,13 @@
     <string name="tab_modified_places">Módosított Helyek</string>
     <string name="permission_gallery_explanation">Using the gallery is important for this feature to be available. Please grant the permission.</string>
     <string name="permission_gallery_denied_message">You could not use this function because the permission was denied. Please go to Settings and add permission to use the Gallery</string>
-    <string name="permission_camera_explanation">Using the camera is important for this feature to be available. Please grant the permission.</string>
-    <string name="permission_camera_denied_message">You can\'t use this feature because the permission was denied. Please go to Settings and add permission to use the Camera</string>
     <string name="email_address_not_activated">Az email cím még nincs aktiválva!</string>
-    <string name="unexcepted_eerror">Váratlan hiba történt.</string>
+    <string name="unexcepted_error">Váratlan hiba történt.</string>
+    <string name="confirm_delete">Törlés megerősítése</string>
+    <string name="delete_place_text">Biztos törlöd a helyet?</string>
+    <string name="price_low">$</string>
+    <string name="price_middle">$$</string>
+    <string name="price_high">$$$</string>
 
     <string-array name="filter_category_items">
         <item>Étterem</item>

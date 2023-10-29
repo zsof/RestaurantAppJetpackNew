@@ -36,9 +36,6 @@ object Constants {
      */
     const val ROOT_GRAPH_ROUTE = "root"
     const val LOGIN_START = "login_start"
-    const val HOME_START = "home_start"
-    const val FAV_START = "fav_start"
-
     /**
      * User tpye
      */

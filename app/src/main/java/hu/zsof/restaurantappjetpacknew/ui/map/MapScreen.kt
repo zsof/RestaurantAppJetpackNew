@@ -90,7 +90,12 @@ fun LocationPermissions(
             }
         },
         // if the user has already denied permission twice
-        permissionsNotAvailableContent = { // TODO
+        permissionsNotAvailableContent = {
+            AlertDialog(
+                onDismissRequest = {},
+                text = { Text(stringResource(R.string.permission_map_denied_message)) },
+                confirmButton = {},
+            )
         },
     ) {
         if (viewModel.isBottomSheetOpen.value) {
@@ -163,11 +168,11 @@ fun PlaceMarkers(
     val scope = rememberCoroutineScope()
 
     for (place in mapPlacesToShow) {
-            val mapIcon = if (favIdList?.contains(place.id) == true) {
-                BitmapDescriptorFactory.defaultMarker(HUE_CYAN)
-            } else {
-                BitmapDescriptorFactory.defaultMarker(HUE_RED)
-            }
+        val mapIcon = if (favIdList?.contains(place.id) == true) {
+            BitmapDescriptorFactory.defaultMarker(HUE_CYAN)
+        } else {
+            BitmapDescriptorFactory.defaultMarker(HUE_RED)
+        }
 
         Marker(
             state = MarkerState(LatLng(place.latitude, place.longitude)),

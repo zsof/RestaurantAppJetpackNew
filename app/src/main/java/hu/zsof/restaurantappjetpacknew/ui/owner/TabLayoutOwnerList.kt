@@ -63,7 +63,9 @@ fun Tabs(pagerState: PagerState) {
                 text = {
                     Text(
                         list[index].first,
-                        color = if (pagerState.currentPage == index) MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.surfaceVariant,
+                        color = if (pagerState.currentPage == index)
+                            MaterialTheme.colorScheme.onSurfaceVariant
+                        else MaterialTheme.colorScheme.surfaceVariant,
                     )
                 },
                 selected = pagerState.currentPage == index,
@@ -93,7 +95,7 @@ fun TabsContent(
                 placeType = PlaceType.PLACE
             )
 
-            1 ->  OwnerPlaceListScreen(
+            1 -> OwnerPlaceListScreen(
                 onClickPlaceItem = onClickPlaceItem,
                 onClickPlaceInReviewItem = onClickPlaceInReviewItem,
                 placeType = PlaceType.PLACE_IN_REVIEW
