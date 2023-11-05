@@ -71,7 +71,7 @@ fun LoginScreen(
                     ),
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier
-                        .padding(top = 8.dp)
+                        .padding(8.dp)
                         .align(Alignment.CenterHorizontally),
 
                     )
@@ -109,7 +109,10 @@ fun LoginScreen(
                     onVisibilityChanged = {
                         viewModel.isPasswordVisible.value = !viewModel.isPasswordVisible.value
                     },
-                    onDone = { viewModel.validatePassword() },
+                    onDone = {
+                        viewModel.validatePassword()
+                        keyboardController?.hide()
+                    },
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 LoginButton(

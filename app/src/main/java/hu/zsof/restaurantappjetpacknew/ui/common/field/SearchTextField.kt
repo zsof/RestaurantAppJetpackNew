@@ -39,7 +39,7 @@ fun SearchTextField(
         onValueChange = onValueChange,
         label = { Text(text = label) },
         shape = shape,
-        leadingIcon = {
+        prefix = {
             if (leadingIcon != null) {
                 Icon(imageVector = leadingIcon, contentDescription = null)
             }

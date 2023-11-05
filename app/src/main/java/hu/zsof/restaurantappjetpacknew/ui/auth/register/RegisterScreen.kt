@@ -79,7 +79,7 @@ fun RegisterScreen(
                     ),
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier
-                        .padding(top = 8.dp)
+                        .padding(8.dp)
                         .align(Alignment.CenterHorizontally),
 
                     )
@@ -139,7 +139,10 @@ fun RegisterScreen(
                     onVisibilityChanged = {
                         viewModel.setPasswordVisibility(registerUiState.isPasswordVisible)
                     },
-                    onDone = { viewModel.validatePassword() },
+                    onDone = {
+                        viewModel.validatePassword()
+                        keyboardController?.hide()
+                    },
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 Row(

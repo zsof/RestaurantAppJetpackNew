@@ -2,9 +2,7 @@ package hu.zsof.restaurantappjetpacknew.ui.common.screen
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.ContentResolver
 import android.os.Build
-import android.provider.MediaStore
 import android.provider.Settings.*
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.*
@@ -45,7 +43,7 @@ import hu.zsof.restaurantappjetpacknew.module.AppState
 import hu.zsof.restaurantappjetpacknew.ui.common.field.NormalTextField
 import hu.zsof.restaurantappjetpacknew.ui.common.field.TextFieldForDialog
 import hu.zsof.restaurantappjetpacknew.util.GalleryPermission
-import okio.use
+import hu.zsof.restaurantappjetpacknew.util.extension.getRealPathFromURI
 import java.io.*
 import java.util.*
 
@@ -76,24 +74,12 @@ fun CommonPlaceDialogScreen(
     val categoryOptions = stringArrayResource(id = R.array.filter_category_items)
     var selectedOptionText by remember { mutableStateOf(categoryOptions[viewModel.selectedOptionIndex.value]) }
 
-    val projection = arrayOf(MediaStore.Images.ImageColumns.DATA)
-    val contentResolver: ContentResolver = context.contentResolver
+
     var imagePath = ""
 
     viewModel.selectedImageUri.value?.let {
-        contentResolver.query(
-            it,
-            projection,
-            null,
-            null,
-            null,
-        )
+        imagePath = getRealPathFromURI(it, context) ?: ""
     }
-        ?.use { metaCursor ->
-            if (metaCursor.moveToFirst()) {
-                imagePath = metaCursor.getString(0) ?: ""
-            }
-        }
 
     if (viewModel.dialogOpen.value) {
         Dialog(

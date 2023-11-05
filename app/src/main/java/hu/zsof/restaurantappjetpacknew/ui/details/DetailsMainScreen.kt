@@ -1,9 +1,7 @@
 package hu.zsof.restaurantappjetpacknew.ui.details
 
 import android.Manifest
-import android.content.ContentResolver
 import android.os.Build
-import android.provider.MediaStore
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
@@ -15,7 +13,7 @@ import hu.zsof.restaurantappjetpacknew.model.enums.PlaceType
 import hu.zsof.restaurantappjetpacknew.module.AppState
 import hu.zsof.restaurantappjetpacknew.ui.common.screen.CommonDetailsScreen
 import hu.zsof.restaurantappjetpacknew.util.GalleryPermission
-import okio.use
+import hu.zsof.restaurantappjetpacknew.util.extension.getRealPathFromURI
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
@@ -24,6 +22,8 @@ fun DetailsMainScreen(
     placeId: Long,
     onEditPlaceClick: (Long) -> Unit,
 ) {
+    val context = LocalContext.current
+
     val place = viewModel.placeById.observeAsState().value
     LaunchedEffect(key1 = "Details") {
         viewModel.getPlaceById(placeId)
@@ -31,25 +31,10 @@ fun DetailsMainScreen(
 
     viewModel.isPlaceByOwner.value = AppState.loggedUser.value?.id == place?.creatorId
 
-    val context = LocalContext.current
-    val projection = arrayOf(MediaStore.Images.ImageColumns.DATA)
-    val contentResolver: ContentResolver = context.contentResolver
     var imagePath = ""
-
     viewModel.selectedImageUri.value?.let {
-        contentResolver.query(
-            it,
-            projection,
-            null,
-            null,
-            null,
-        )
+        imagePath = getRealPathFromURI(it, context) ?: ""
     }
-        ?.use { metaCursor ->
-            if (metaCursor.moveToFirst()) {
-                imagePath = metaCursor.getString(0) ?: ""
-            }
-        }
 
     val permissionStateGallery = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
         rememberPermissionState(permission = Manifest.permission.READ_MEDIA_IMAGES)
