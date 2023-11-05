@@ -1,9 +1,14 @@
 package hu.zsof.restaurantappjetpacknew.ui.profile
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.ContentResolver
+import android.content.Context
+import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
+import android.provider.OpenableColumns
+import android.util.Log
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -43,6 +48,9 @@ import hu.zsof.restaurantappjetpacknew.ui.common.screen.CommonEditTextDialog
 import hu.zsof.restaurantappjetpacknew.util.Constants
 import hu.zsof.restaurantappjetpacknew.util.GalleryPermission
 import hu.zsof.restaurantappjetpacknew.util.extension.imageUrl
+import java.io.File
+import java.io.FileOutputStream
+import java.io.InputStream
 
 @ExperimentalMaterial3Api
 @Composable
@@ -200,6 +208,39 @@ fun ChipSettings(viewModel: ProfileViewModel) {
     }
 }
 
+@SuppressLint("Recycle")
+fun getRealPathFromURI(uri: Uri, context: Context): String? {
+
+    val returnCursor = context.contentResolver.query(uri, null, null, null, null)
+    val nameIndex = returnCursor!!.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+    returnCursor.moveToFirst()
+    val name = returnCursor.getString(nameIndex)
+    val file = File(context.filesDir, name)
+    try {
+        val inputStream: InputStream? = context.contentResolver.openInputStream(uri)
+        val outputStream = FileOutputStream(file)
+        var read = 0
+        val maxBufferSize = 1 * 1024 * 1024
+        val bytesAvailable: Int = inputStream?.available() ?: 0
+        //int bufferSize = 1024;
+        val bufferSize = Math.min(bytesAvailable, maxBufferSize)
+        val buffers = ByteArray(bufferSize)
+        while (inputStream?.read(buffers).also {
+                if (it != null) {
+                    read = it
+                }
+            } != -1) {
+            outputStream.write(buffers, 0, read)
+        }
+        inputStream?.close()
+        outputStream.close()
+
+    } catch (e: java.lang.Exception) {
+        Log.e("Exception", e.message!!)
+    }
+    return file.path
+}
+
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun BaseProfile(user: User, viewModel: ProfileViewModel) {
@@ -210,19 +251,20 @@ fun BaseProfile(user: User, viewModel: ProfileViewModel) {
     var imagePath = ""
 
     viewModel.selectedImageUri.value?.let {
-        contentResolver.query(
-            it,
-            projection,
-            null,
-            null,
-            null,
-        )
+        imagePath = getRealPathFromURI(it, context) ?: ""
+        /*   contentResolver.query(
+               it,
+               projection,
+               null,
+               null,
+               null,
+           )*/
     }
-        ?.use { metaCursor ->
-            if (metaCursor.moveToFirst()) {
-                imagePath = metaCursor.getString(0) ?: ""
-            }
-        }
+    /* ?.use { metaCursor ->
+         if (metaCursor.moveToFirst()) {
+             imagePath = metaCursor.getString(0) ?: ""
+         }
+     }*/
 
     val permissionStateGallery = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
         rememberPermissionState(permission = Manifest.permission.READ_MEDIA_IMAGES)
