@@ -177,13 +177,8 @@ fun PlaceListItem(
                         if (needFavButton) {
                             Spacer(modifier = Modifier.weight(1f))
                             IconButton(onClick = {
-                                if (favIdList?.contains(place.id) == true) {
-                                    addOrRemoveFavIdList?.invoke()
-                                    isFavPlace?.value = false
-                                } else {
-                                    addOrRemoveFavIdList?.invoke()
-                                    isFavPlace?.value = true
-                                }
+                                addOrRemoveFavIdList?.invoke()
+                                isFavPlace?.value = favIdList?.contains(place.id) != true
                             }) {
                                 Icon(
                                     imageVector = favouriteIcon,

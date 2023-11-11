@@ -8,7 +8,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import hu.zsof.restaurantappjetpacknew.BuildConfig
 import hu.zsof.restaurantappjetpacknew.R
 import hu.zsof.restaurantappjetpacknew.navigation.Navigator
 import hu.zsof.restaurantappjetpacknew.navigation.ScreenModel
@@ -33,11 +32,7 @@ class NetworkModule() {
         navigator: Navigator
     ): ApiService {
         val interceptor = HttpLoggingInterceptor()
-        if (BuildConfig.DEBUG) {
-            interceptor.level = HttpLoggingInterceptor.Level.BODY
-        } else {
-            interceptor.level = HttpLoggingInterceptor.Level.BODY
-        }
+        interceptor.level = HttpLoggingInterceptor.Level.BODY
 
         val okHttpClient = OkHttpClient.Builder()
             .connectTimeout(15, TimeUnit.SECONDS)

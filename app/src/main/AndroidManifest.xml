@@ -20,7 +20,7 @@
         android:roundIcon="@mipmap/ic_eats_easy_launcher_round"
         android:supportsRtl="false"
         android:theme="@style/Theme.RestaurantAppJetpackNew"
-        android:usesCleartextTraffic="true"
+        android:usesCleartextTraffic="false"
         android:windowSoftInputMode="adjustResize"
         android:requestLegacyExternalStorage="true"
         tools:targetApi="31">
