@@ -114,7 +114,7 @@ class NetworkModule() {
                     } else if (originalResponse.code == 418) {
                         backgroundThreadToast(
                             context,
-                            context.getString(R.string.email_address_not_activated)
+                            context.getString(R.string.wrong_authentication)
                         )
 
                     } else {

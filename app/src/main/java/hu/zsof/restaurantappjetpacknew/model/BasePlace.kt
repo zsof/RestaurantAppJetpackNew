@@ -19,14 +19,12 @@ open class BasePlace(
     open var email: String? = null,
     open var web: String? = null,
     open var type: Type = Type.RESTAURANT,
-    open var rate: Float = 2.0f,
     open var price: Price = Price.LOW,
     open var image: String? = null,
     @TypeConverters(FilterConverter::class)
     open var filter: CustomFilter = CustomFilter(),
     open var latitude: Double = 0.0,
     open var longitude: Double = 0.0,
-    open var usersNumber: Int = 0,
     @TypeConverters(OpenDetailsConverter::class)
     open var openDetails: OpenDetails = OpenDetails(),
     open var creatorName: String = "",
