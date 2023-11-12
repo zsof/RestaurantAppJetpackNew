@@ -48,7 +48,7 @@ class RegisterViewModel @Inject constructor(
 
     fun setPasswordVisibility(changedValue: Boolean) {
         _uiState.update {
-            it.copy(isPasswordVisible = changedValue)
+            it.copy(isPasswordVisible = changedValue.not())
         }
     }
 
