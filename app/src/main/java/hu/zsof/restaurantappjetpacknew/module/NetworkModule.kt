@@ -40,6 +40,7 @@ class NetworkModule() {
             .addInterceptor(interceptor)
             .addInterceptor(AuthInterceptor(context))
             .addInterceptor(ErrorInterceptor(context, navigator))
+            .protocols(listOf(Protocol.HTTP_1_1, Protocol.HTTP_2))
             .build()
 
         val retrofit =
@@ -103,25 +104,37 @@ class NetworkModule() {
                     // To show Toast
                     backgroundThreadToast(context, errorBody.getString("error"))
                 } else {
-                    if (originalResponse.code == 401) {
-                        val sharedPreferences =
-                            context.getSharedPreferences(
-                                Constants.Prefs.AUTH_SHARED_PREFERENCES,
-                                Context.MODE_PRIVATE,
-                            )
-                        sharedPreferences.edit().putString("bearer", "").apply()
-                        navigator.destination.postValue(ScreenModel.NavigationScreen.Login)
-                    } else if (originalResponse.code == 418) {
-                        backgroundThreadToast(
-                            context,
-                            context.getString(R.string.wrong_authentication)
-                        )
+                    when (originalResponse.code) {
+                        401 -> {
+                            val sharedPreferences =
+                                context.getSharedPreferences(
+                                    Constants.Prefs.AUTH_SHARED_PREFERENCES,
+                                    Context.MODE_PRIVATE,
+                                )
+                            sharedPreferences.edit().putString("bearer", "").apply()
+                            navigator.destination.postValue(ScreenModel.NavigationScreen.Login)
+                        }
 
-                    } else {
-                        backgroundThreadToast(
-                            context,
-                            context.getString(R.string.unexcepted_error)
-                        )
+                        418 -> {
+                            backgroundThreadToast(
+                                context,
+                                context.getString(R.string.wrong_authentication)
+                            )
+                        }
+
+                        500 -> {
+                            backgroundThreadToast(
+                                context,
+                                context.getString(R.string.unexcepted_error)
+                            )
+                        }
+
+                        else -> {
+                            backgroundThreadToast(
+                                context,
+                                context.getString(R.string.unexcepted_error)
+                            )
+                        }
                     }
                 }
             }
