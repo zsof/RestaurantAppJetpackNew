@@ -17,10 +17,10 @@ class LoginViewModel @Inject constructor(
     private val sharedPref: SharedPreferences,
 ) : ViewModel() {
 
-    val email = mutableStateOf("test@test.hu")
+    val email = mutableStateOf("")
     val isEmailError = mutableStateOf(false)
 
-    val password = mutableStateOf("Alma1234")
+    val password = mutableStateOf("")
     val isPasswordVisible = mutableStateOf(false)
     val isPasswordError = mutableStateOf(false)
 
