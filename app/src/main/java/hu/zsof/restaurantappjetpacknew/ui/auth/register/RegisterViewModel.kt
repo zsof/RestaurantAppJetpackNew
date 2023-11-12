@@ -67,7 +67,6 @@ class RegisterViewModel @Inject constructor(
                     _uiState.value.password,
                     _uiState.value.userName,
                 ),
-                isAdmin = false,
                 isOwner = _uiState.value.isOwner,
             )
         else NetworkResponse(
