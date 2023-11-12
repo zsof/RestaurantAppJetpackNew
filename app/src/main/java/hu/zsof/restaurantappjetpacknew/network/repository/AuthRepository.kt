@@ -1,6 +1,9 @@
 package hu.zsof.restaurantappjetpacknew.network.repository
 
+import android.content.Context
 import android.util.Base64
+import dagger.hilt.android.qualifiers.ApplicationContext
+import hu.zsof.restaurantappjetpacknew.R
 import hu.zsof.restaurantappjetpacknew.network.ApiService
 import hu.zsof.restaurantappjetpacknew.network.request.LoginDataRequest
 import hu.zsof.restaurantappjetpacknew.network.response.LoggedUserResponse
@@ -8,7 +11,10 @@ import hu.zsof.restaurantappjetpacknew.network.response.NetworkResponse
 import hu.zsof.restaurantappjetpacknew.util.recordErrorToFirebase
 import javax.inject.Inject
 
-class AuthRepository @Inject constructor(private val apiService: ApiService) {
+class AuthRepository @Inject constructor(
+    @ApplicationContext private val context: Context,
+    private val apiService: ApiService
+) {
 
     suspend fun registerUser(
         loginDataRequest: LoginDataRequest,
@@ -19,7 +25,7 @@ class AuthRepository @Inject constructor(private val apiService: ApiService) {
             apiService.registerUser(loginDataRequest, isAdmin, isOwner)
         } catch (e: Exception) {
             recordErrorToFirebase(e)
-            NetworkResponse(false, e.localizedMessage ?: "Network error")
+            NetworkResponse(false, e.localizedMessage ?: context.getString(R.string.network_error))
         }
     }
 
@@ -30,7 +36,10 @@ class AuthRepository @Inject constructor(private val apiService: ApiService) {
             apiService.loginUser("Basic $encodedData")
         } catch (e: Exception) {
             recordErrorToFirebase(e)
-            LoggedUserResponse(false, e.localizedMessage ?: "Network error")
+            LoggedUserResponse(
+                false,
+                e.localizedMessage ?: context.getString(R.string.network_error)
+            )
         }
     }
 
@@ -39,7 +48,10 @@ class AuthRepository @Inject constructor(private val apiService: ApiService) {
             apiService.authUser()
         } catch (e: Exception) {
             recordErrorToFirebase(e)
-            LoggedUserResponse(false, e.localizedMessage ?: "Network error")
+            LoggedUserResponse(
+                false,
+                e.localizedMessage ?: context.getString(R.string.network_error)
+            )
         }
     }
 }

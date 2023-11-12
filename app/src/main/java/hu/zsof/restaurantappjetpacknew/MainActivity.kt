@@ -49,8 +49,8 @@ class MainActivity : ComponentActivity() {
         val darkTheme = AppState.darkTheme.observeAsState()
 
         // Changes the theme when user click
-        if (darkTheme.value != null) {
-            return if (darkTheme.value == true) {
+        return if (darkTheme.value != null) {
+            if (darkTheme.value == true) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
                 true
             } else {

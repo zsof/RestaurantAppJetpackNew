@@ -129,6 +129,7 @@
     <string name="price_low">$</string>
     <string name="price_middle">$$</string>
     <string name="price_high">$$$</string>
+    <string name="network_error">Network error</string>
 
     <string-array name="filter_category_items">
         <item>Étterem</item>

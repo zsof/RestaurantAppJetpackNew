@@ -105,32 +105,30 @@ fun CommonDetailsScreen(
         R.drawable.loading_blue
     else R.drawable.loading_yellow
 
-    if (showProblemDialog != null) {
-        if (showProblemDialog.value) {
-            AlertDialog(
-                onDismissRequest = { showProblemDialog.value = false },
-                confirmButton = {
-                    Button(onClick = { showProblemDialog.value = false }) {
-                        Text(stringResource(R.string.ok_btn))
+    if (showProblemDialog != null && showProblemDialog.value) {
+        AlertDialog(
+            onDismissRequest = { showProblemDialog.value = false },
+            confirmButton = {
+                Button(onClick = { showProblemDialog.value = false }) {
+                    Text(stringResource(R.string.ok_btn))
+                }
+            },
+            title = {
+                Text(
+                    text = "Probléma a hellyel:",
+                    textAlign = TextAlign.Start,
+                    fontWeight = FontWeight.Bold
+                )
+            },
+            text = {
+                place?.problem?.substringAfter('"')
+                    ?.let {
+                        Text(
+                            text = it.substringBeforeLast('"'),
+                        )
                     }
-                },
-                title = {
-                    Text(
-                        text = "Probléma a hellyel:",
-                        textAlign = TextAlign.Start,
-                        fontWeight = FontWeight.Bold
-                    )
-                },
-                text = {
-                    place?.problem?.substringAfter('"')
-                        ?.let {
-                            Text(
-                                text = it.substringBeforeLast('"'),
-                            )
-                        }
-                },
-            )
-        }
+            },
+        )
     }
 
     Scaffold(
@@ -161,68 +159,72 @@ fun CommonDetailsScreen(
                     .padding(bottom = 32.dp),
             ) {
                 if (place != null) {
-                    if (selectedImage != null) {
-                        AsyncImage(
-                            model = selectedImage,
-                            contentDescription = null,
-                            contentScale = ContentScale.Crop,
-                            modifier = Modifier
-                                .wrapContentSize()
-                                .wrapContentHeight()
-                                .wrapContentWidth()
-                                .align(CenterHorizontally)
-                                .padding(16.dp)
-                                .clip(RoundedCornerShape(8.dp))
-                                .aspectRatio(1280f / 847f)
-                                .clickable {
-                                    if (isPlaceByOwner && place is Place) {
-                                        if (onEditImageClick != null) {
-                                            onEditImageClick()
+                    when {
+                        selectedImage != null ->
+                            AsyncImage(
+                                model = selectedImage,
+                                contentDescription = null,
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier
+                                    .wrapContentSize()
+                                    .wrapContentHeight()
+                                    .wrapContentWidth()
+                                    .align(CenterHorizontally)
+                                    .padding(16.dp)
+                                    .clip(RoundedCornerShape(8.dp))
+                                    .aspectRatio(1280f / 847f)
+                                    .clickable {
+                                        if (isPlaceByOwner && place is Place) {
+                                            if (onEditImageClick != null) {
+                                                onEditImageClick()
+                                            }
                                         }
-                                    }
-                                },
-                        )
-                    } else if (place.image != null) {
-                        AsyncImage(
-                            model = place.image.imageUrl(),
-                            contentDescription = null,
-                            contentScale = ContentScale.Crop,
-                            modifier = Modifier
-                                .wrapContentSize()
-                                .wrapContentHeight()
-                                .wrapContentWidth()
-                                .align(CenterHorizontally)
-                                .padding(16.dp)
-                                .clip(RoundedCornerShape(8.dp))
-                                .aspectRatio(1280f / 847f)
-                                .clickable {
-                                    if (isPlaceByOwner && place is Place) {
-                                        if (onEditImageClick != null) {
-                                            permissionStateGallery?.launchPermissionRequest()
-                                            onEditImageClick()
+                                    },
+                            )
+
+                        place.image != null ->
+                            AsyncImage(
+                                model = place.image.imageUrl(),
+                                contentDescription = null,
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier
+                                    .wrapContentSize()
+                                    .wrapContentHeight()
+                                    .wrapContentWidth()
+                                    .align(CenterHorizontally)
+                                    .padding(16.dp)
+                                    .clip(RoundedCornerShape(8.dp))
+                                    .aspectRatio(1280f / 847f)
+                                    .clickable {
+                                        if (isPlaceByOwner && place is Place) {
+                                            if (onEditImageClick != null) {
+                                                permissionStateGallery?.launchPermissionRequest()
+                                                onEditImageClick()
+                                            }
                                         }
-                                    }
-                                },
-                            placeholder = painterResource(id = drawableResource),
-                        )
-                    } else {
-                        Icon(
-                            imageVector = Icons.Filled.CameraAlt,
-                            contentDescription = null,
-                            modifier = Modifier
-                                .size(120.dp)
-                                .align(CenterHorizontally)
-                                .clickable {
-                                    if (isPlaceByOwner && place is Place) {
-                                        if (onEditImageClick != null) {
-                                            permissionStateGallery?.launchPermissionRequest()
-                                            onEditImageClick()
+                                    },
+                                placeholder = painterResource(id = drawableResource),
+                            )
+
+                        else ->
+                            Icon(
+                                imageVector = Icons.Filled.CameraAlt,
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .size(120.dp)
+                                    .align(CenterHorizontally)
+                                    .clickable {
+                                        if (isPlaceByOwner && place is Place) {
+                                            if (onEditImageClick != null) {
+                                                permissionStateGallery?.launchPermissionRequest()
+                                                onEditImageClick()
+                                            }
                                         }
-                                    }
-                                },
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
+                                    },
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
                     }
+
                     Column(
                         horizontalAlignment = CenterHorizontally,
                         modifier = Modifier.fillMaxWidth(),

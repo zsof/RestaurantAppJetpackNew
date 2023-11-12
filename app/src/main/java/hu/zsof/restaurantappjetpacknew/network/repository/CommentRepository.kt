@@ -26,12 +26,4 @@ class CommentRepository @Inject constructor(private val apiService: ApiService) 
             null
         }
     }
-
-    suspend fun deleteComment(id: Long) {
-        try {
-            apiService.deleteComment(id)
-        } catch (e: Exception) {
-            recordErrorToFirebase(e)
-        }
-    }
 }

@@ -78,41 +78,39 @@ fun PlaceListItem(
         R.drawable.loading_blue
     else R.drawable.loading_yellow
 
-    if (showDeleteConfirmDialog != null) {
-        if (showDeleteConfirmDialog.value) {
-            AlertDialog(
-                onDismissRequest = { showDeleteConfirmDialog.value = false },
-                confirmButton = {
-                    Button(onClick = {
-                        if (deletePlace != null) {
-                            deletePlace(place.id)
-                        }
-                        showDeleteConfirmDialog.value = false
-                    }) {
-                        Text(stringResource(R.string.ok_btn))
+    if (showDeleteConfirmDialog != null && showDeleteConfirmDialog.value) {
+        AlertDialog(
+            onDismissRequest = { showDeleteConfirmDialog.value = false },
+            confirmButton = {
+                Button(onClick = {
+                    if (deletePlace != null) {
+                        deletePlace(place.id)
                     }
-                },
-                dismissButton = {
-                    Button(onClick = {
-                        showDeleteConfirmDialog.value = false
-                    }) {
-                        Text(stringResource(R.string.cancel_btn))
-                    }
-                },
-                title = {
-                    Text(
-                        text = stringResource(R.string.confirm_delete),
-                        textAlign = TextAlign.Start,
-                        fontWeight = FontWeight.Bold
-                    )
-                },
-                text = {
-                    Text(
-                        text = stringResource(R.string.delete_place_text),
-                    )
-                },
-            )
-        }
+                    showDeleteConfirmDialog.value = false
+                }) {
+                    Text(stringResource(R.string.ok_btn))
+                }
+            },
+            dismissButton = {
+                Button(onClick = {
+                    showDeleteConfirmDialog.value = false
+                }) {
+                    Text(stringResource(R.string.cancel_btn))
+                }
+            },
+            title = {
+                Text(
+                    text = stringResource(R.string.confirm_delete),
+                    textAlign = TextAlign.Start,
+                    fontWeight = FontWeight.Bold
+                )
+            },
+            text = {
+                Text(
+                    text = stringResource(R.string.delete_place_text),
+                )
+            },
+        )
     }
 
     Card(
