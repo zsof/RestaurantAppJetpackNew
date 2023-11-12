@@ -71,6 +71,7 @@ import hu.zsof.restaurantappjetpacknew.ui.review.MultiFloatingState
 import hu.zsof.restaurantappjetpacknew.ui.review.ReviewPlaceViewModel
 import hu.zsof.restaurantappjetpacknew.util.Constants
 import hu.zsof.restaurantappjetpacknew.util.extension.imageUrl
+import hu.zsof.restaurantappjetpacknew.util.extension.showToast
 
 @OptIn(ExperimentalLayoutApi::class, ExperimentalPermissionsApi::class)
 @Composable
@@ -174,11 +175,20 @@ fun CommonDetailsScreen(
                                     .clip(RoundedCornerShape(8.dp))
                                     .aspectRatio(1280f / 847f)
                                     .clickable {
-                                        if (isPlaceByOwner && place is Place) {
-                                            if (onEditImageClick != null) {
-                                                onEditImageClick()
-                                            }
-                                        }
+                                        if (isPlaceByOwner) {
+                                            if (place is Place) {
+                                                handlePhotoClick(
+                                                    onEditImageClick,
+                                                    permissionStateGallery
+                                                )
+                                            } else showToast(
+                                                context,
+                                                context.getString(R.string.cannot_upload_photo_to_place_in_review)
+                                            )
+                                        } else showToast(
+                                            context,
+                                            context.getString(R.string.no_permission_to_upload_image)
+                                        )
                                     },
                             )
 
@@ -196,12 +206,20 @@ fun CommonDetailsScreen(
                                     .clip(RoundedCornerShape(8.dp))
                                     .aspectRatio(1280f / 847f)
                                     .clickable {
-                                        if (isPlaceByOwner && place is Place) {
-                                            if (onEditImageClick != null) {
-                                                permissionStateGallery?.launchPermissionRequest()
-                                                onEditImageClick()
-                                            }
-                                        }
+                                        if (isPlaceByOwner) {
+                                            if (place is Place) {
+                                                handlePhotoClick(
+                                                    onEditImageClick,
+                                                    permissionStateGallery
+                                                )
+                                            } else showToast(
+                                                context,
+                                                context.getString(R.string.cannot_upload_photo_to_place_in_review)
+                                            )
+                                        } else showToast(
+                                            context,
+                                            context.getString(R.string.no_permission_to_upload_image)
+                                        )
                                     },
                                 placeholder = painterResource(id = drawableResource),
                             )
@@ -214,12 +232,20 @@ fun CommonDetailsScreen(
                                     .size(120.dp)
                                     .align(CenterHorizontally)
                                     .clickable {
-                                        if (isPlaceByOwner && place is Place) {
-                                            if (onEditImageClick != null) {
-                                                permissionStateGallery?.launchPermissionRequest()
-                                                onEditImageClick()
-                                            }
-                                        }
+                                        if (isPlaceByOwner) {
+                                            if (place is Place) {
+                                                handlePhotoClick(
+                                                    onEditImageClick,
+                                                    permissionStateGallery
+                                                )
+                                            } else showToast(
+                                                context,
+                                                context.getString(R.string.cannot_upload_photo_to_place_in_review)
+                                            )
+                                        } else showToast(
+                                            context,
+                                            context.getString(R.string.no_permission_to_upload_image)
+                                        )
                                     },
                                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
                             )
@@ -378,4 +404,15 @@ fun CommonDetailsScreen(
             }
         },
     )
+}
+
+@OptIn(ExperimentalPermissionsApi::class)
+fun handlePhotoClick(
+    onEditImageClick: (() -> Unit)?,
+    permissionStateGallery: PermissionState? = null
+) {
+    if (onEditImageClick != null) {
+        permissionStateGallery?.launchPermissionRequest()
+        onEditImageClick()
+    }
 }

@@ -215,11 +215,11 @@ fun SetStartDestination(
         } else if (viewModel.getAppPreference(Constants.Prefs.USER_LOGGED)) {
             navigator.destination.value = ScreenModel.NavigationScreen.FavPlace
 
-            showToast(context, "Az internet nem elérhető!")
+            showToast(context, context.getString(R.string.no_internet_connection))
         } else {
             navigator.destination.value = ScreenModel.NavigationScreen.Login
 
-            showToast(context, "Az internet nem elérhető!")
+            showToast(context, context.getString(R.string.no_internet_connection))
         }
     } else {
         AppState.loggedUser.value = null

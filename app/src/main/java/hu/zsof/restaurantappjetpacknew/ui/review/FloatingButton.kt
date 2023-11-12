@@ -100,7 +100,10 @@ fun MultiFloatingButton(
                                     viewModel.acceptPlace(placeId, false)
                                 }
                             } else {
-                                showToast(context, "A hely már el van fogadva!")
+                                showToast(
+                                    context,
+                                    context.getString(R.string.place_already_accepted)
+                                )
                             }
                         }
 
