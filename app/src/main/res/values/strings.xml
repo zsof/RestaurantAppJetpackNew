@@ -95,7 +95,7 @@
     <string name="tab_modified_places">Módosított Helyek</string>
     <string name="permission_gallery_explanation">A galéria elérése nélkülözhetetlen a fotó feltöltéshez. Kérlek engedélyezd!</string>
     <string name="permission_gallery_denied_message">Nem tudod használni a Fotó feltöltés funkciót, mivel az engedély el lett utasítva. Kérlek menj az eszköz Beállításaiba, és engedélyezd a Fotók elérését!</string>
-    <string name="wrong_authentication">Hibás autentikáció, ellenőrizd adataid!</string>
+    <string name="wrong_authentication">Hibás autentikáció!</string>
     <string name="unexcepted_error">Váratlan hiba történt.</string>
     <string name="confirm_delete">Törlés megerősítése</string>
     <string name="delete_place_text">Biztos törlöd a helyet?</string>

@@ -14,9 +14,9 @@ import hu.zsof.restaurantappjetpacknew.navigation.ScreenModel
 import hu.zsof.restaurantappjetpacknew.network.ApiService
 import hu.zsof.restaurantappjetpacknew.util.Constants
 import hu.zsof.restaurantappjetpacknew.util.extension.showToast
+import hu.zsof.restaurantappjetpacknew.util.recordErrorToFirebase
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
-import org.json.JSONObject
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
@@ -96,45 +96,56 @@ class NetworkModule() {
             val originalResponse: Response = chain.proceed(chain.request())
 
             if (!originalResponse.isSuccessful) {
-                // To get custom error messages from server
-                val errorBodyResponse = originalResponse.peekBody(2048).string()
-                if (errorBodyResponse.isNotEmpty()) {
-                    val errorBody = JSONObject(errorBodyResponse)
-
-                    // To show Toast
-                    backgroundThreadToast(context, errorBody.getString("error"))
-                } else {
-                    when (originalResponse.code) {
-                        401 -> {
-                            val sharedPreferences =
-                                context.getSharedPreferences(
-                                    Constants.Prefs.AUTH_SHARED_PREFERENCES,
-                                    Context.MODE_PRIVATE,
-                                )
-                            sharedPreferences.edit().putString("bearer", "").apply()
-                            navigator.destination.postValue(ScreenModel.NavigationScreen.Login)
-                        }
-
-                        418 -> {
-                            backgroundThreadToast(
-                                context,
-                                context.getString(R.string.wrong_authentication)
+                when (originalResponse.code) {
+                    401 -> {
+                        val sharedPreferences =
+                            context.getSharedPreferences(
+                                Constants.Prefs.AUTH_SHARED_PREFERENCES,
+                                Context.MODE_PRIVATE,
                             )
-                        }
-
-                        500 -> {
-                            backgroundThreadToast(
-                                context,
-                                context.getString(R.string.unexcepted_error)
+                        sharedPreferences.edit().putString("bearer", "").apply()
+                        navigator.destination.postValue(ScreenModel.NavigationScreen.Login)
+                        recordErrorToFirebase(
+                            Exception(
+                                originalResponse.message + originalResponse.code
                             )
-                        }
+                        )
+                    }
 
-                        else -> {
-                            backgroundThreadToast(
-                                context,
-                                context.getString(R.string.unexcepted_error)
+                    418 -> {
+                        backgroundThreadToast(
+                            context,
+                            context.getString(R.string.wrong_authentication)
+                        )
+                        recordErrorToFirebase(
+                            Exception(
+                                originalResponse.message + originalResponse.code
                             )
-                        }
+                        )
+                    }
+
+                    500 -> {
+                        backgroundThreadToast(
+                            context,
+                            context.getString(R.string.unexcepted_error)
+                        )
+                        recordErrorToFirebase(
+                            Exception(
+                                originalResponse.message + originalResponse.code
+                            )
+                        )
+                    }
+
+                    else -> {
+                        backgroundThreadToast(
+                            context,
+                            context.getString(R.string.unexcepted_error)
+                        )
+                        recordErrorToFirebase(
+                            Exception(
+                                originalResponse.message + originalResponse.code
+                            )
+                        )
                     }
                 }
             }
