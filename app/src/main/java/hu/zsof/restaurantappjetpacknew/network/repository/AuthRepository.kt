@@ -18,11 +18,10 @@ class AuthRepository @Inject constructor(
 
     suspend fun registerUser(
         loginDataRequest: LoginDataRequest,
-        isAdmin: Boolean,
         isOwner: Boolean,
     ): NetworkResponse {
         return try {
-            apiService.registerUser(loginDataRequest, isAdmin, isOwner)
+            apiService.registerUser(loginDataRequest, isOwner)
         } catch (e: Exception) {
             recordErrorToFirebase(e)
             NetworkResponse(false, e.localizedMessage ?: context.getString(R.string.network_error))

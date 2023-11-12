@@ -43,13 +43,9 @@ interface ApiService {
         @Body commentDataRequest: CommentDataRequest,
     ): Comment
 
-    @DELETE("places/comment/{id}")
-    suspend fun deleteComment(@Path("id") commentId: Long)
-
     /**
      * Place by Owner (role: owner, admin)
      */
-
     @POST("places-owner/new-place")
     suspend fun addNewPlace(
         @Body placeDataRequest: PlaceDataRequest,
@@ -113,7 +109,6 @@ interface ApiService {
     @POST("auth/register")
     suspend fun registerUser(
         @Body loginDataRequest: LoginDataRequest,
-        @Header("isAdmin") isAdmin: Boolean,
         @Header("isOwner") isOwner: Boolean,
     ): NetworkResponse
 
@@ -122,18 +117,6 @@ interface ApiService {
 
     @GET("auth")
     suspend fun authUser(): LoggedUserResponse
-
-    /**
-     * Admin
-     */
-    @GET("admin/users/{id}")
-    suspend fun getUserById(@Path("id") userId: Long): User
-
-    @GET("admin/users")
-    suspend fun getAllUser(): List<User>
-
-    @DELETE("admin/users/{id}")
-    suspend fun deleteUserById(@Path("id") userId: Long)
 
     /**
      * User
