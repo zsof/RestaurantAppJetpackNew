@@ -12,7 +12,7 @@ import hu.zsof.restaurantappjetpacknew.model.converter.OpenDetailsConverter
     entities = [
         Place::class,
     ],
-    version = 2,
+    version = 3,
     exportSchema = false,
 )
 @TypeConverters(FilterConverter::class, OpenDetailsConverter::class)

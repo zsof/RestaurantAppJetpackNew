@@ -51,17 +51,7 @@ fun GalleryPermission(
             AlertDialog(
                 onDismissRequest = {},
                 text = { Text(stringResource(R.string.permission_gallery_denied_message)) },
-                confirmButton = {
-                    // The Google Play store has a policy that limits usage of MANAGE_EXTERNAL_STORAGE
-                    /*  if (Build.VERSION.SDK_INT >= 30) {
-                          Button(onClick = {
-                              val i = Intent(ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
-                              context.startActivity(i)
-                          }) {
-                              Text("Go to Settings")
-                          }
-                      }*/
-                },
+                confirmButton = {},
             )
         },
     ) {

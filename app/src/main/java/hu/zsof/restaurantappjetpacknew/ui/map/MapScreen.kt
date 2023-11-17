@@ -45,7 +45,6 @@ fun MapScreen(onLongClick: (latLng: LatLng) -> Unit, onMarkerInfoClick: (Long) -
         onMarkerInfoClick
     )
 
-    // This way, the permission request is immediately started when the Screen is loaded (it could also be started by pressing a button)
     LaunchedEffect(Unit) {
         multiplePermissionState.launchMultiplePermissionRequest()
     }

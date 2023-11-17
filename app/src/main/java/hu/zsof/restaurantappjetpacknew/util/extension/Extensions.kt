@@ -33,7 +33,7 @@ fun getRealPathFromURI(uri: Uri, context: Context): String? {
         val maxBufferSize = 1 * 1024 * 1024
         val bytesAvailable: Int = inputStream?.available() ?: 0
         //int bufferSize = 1024;
-        val bufferSize = Math.min(bytesAvailable, maxBufferSize)
+        val bufferSize = bytesAvailable.coerceAtMost(maxBufferSize)
         val buffers = ByteArray(bufferSize)
         while (inputStream?.read(buffers).also {
                 if (it != null) {

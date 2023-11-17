@@ -1,18 +1,7 @@
 package hu.zsof.restaurantappjetpacknew.util
 
 object Constants {
-
-    // raspberry
-    //const val BASE_URL = "http://wildfire.ddns.net:8092"
-
-    // local
-    //  const val BASE_URL = "http://192.168.2.48:8080"
-
-    //remote
     const val BASE_URL = "https://dolphin-casual-deer.ngrok-free.app/restaurant/"
-
-    // azure
-    // const val BASE_URL = "http://restaurant.ceeeaufagderbhhg.germanywestcentral.azurecontainer.io:8080"
 
     // Length: 6-24 char, at least 1 Uppercase, 1 Number
     const val PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[A-Z])(?=\\S+$).{6,24}$"

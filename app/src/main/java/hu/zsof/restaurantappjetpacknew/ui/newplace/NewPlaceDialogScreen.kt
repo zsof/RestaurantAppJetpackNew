@@ -55,7 +55,6 @@ fun Geocoder.getAddress(
     try {
         address(getFromLocation(latitude, longitude, 1)?.firstOrNull())
     } catch (e: Exception) {
-        // will catch if there is an internet problem
         recordErrorToFirebase(e)
         address(null)
     }
