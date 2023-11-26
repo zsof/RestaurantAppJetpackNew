@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -53,6 +54,8 @@ fun BottomNavBar(
         } else {
             RoundedCornerShape(32.dp, 32.dp, 0.dp, 0.dp)
         }
+
+    val context = LocalContext.current
 
     AnimatedVisibility(
         visible = bottomBarState,
@@ -100,18 +103,7 @@ fun BottomNavBar(
                                     selected = currentRoute,
                                     selectedContentColor = MaterialTheme.colorScheme.primary,
                                     onClick = {
-                                        item.route.let {
-                                            navController.navigate(it) {
-                                                navController.graph.startDestinationRoute?.let { route ->
-                                                    popUpTo(route) {
-                                                        saveState = false
-                                                    }
-                                                }
-
-                                                launchSingleTop = true
-                                                restoreState = true
-                                            }
-                                        }
+                                        navigateToItem(context, item, navController, viewModel)
                                     },
                                     alwaysShowLabel = true,
                                     enabled = isItemEnable,
@@ -148,18 +140,7 @@ fun BottomNavBar(
                                     selected = currentRoute,
                                     selectedContentColor = MaterialTheme.colorScheme.primary,
                                     onClick = {
-                                        item.route.let {
-                                            navController.navigate(it) {
-                                                navController.graph.startDestinationRoute?.let { route ->
-                                                    popUpTo(route) {
-                                                        saveState = false
-                                                    }
-                                                }
-
-                                                launchSingleTop = true
-                                                restoreState = true
-                                            }
-                                        }
+                                        navigateToItem(context, item, navController, viewModel)
                                     },
                                     alwaysShowLabel = true,
                                     enabled = isItemEnable,
@@ -196,18 +177,7 @@ fun BottomNavBar(
                                     selected = currentRoute,
                                     selectedContentColor = MaterialTheme.colorScheme.primary,
                                     onClick = {
-                                        item.route.let {
-                                            navController.navigate(it) {
-                                                navController.graph.startDestinationRoute?.let { route ->
-                                                    popUpTo(route) {
-                                                        saveState = false
-                                                    }
-                                                }
-
-                                                launchSingleTop = true
-                                                restoreState = true
-                                            }
-                                        }
+                                        navigateToItem(context, item, navController, viewModel)
                                     },
                                     alwaysShowLabel = true,
                                     enabled = isItemEnable,

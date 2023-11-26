@@ -188,47 +188,33 @@ fun SetStartDestination(
     isConnected: Boolean,
     navigator: Navigator
 ) {
-    val sharedPreferences =
-        context.getSharedPreferences(Constants.Prefs.AUTH_SHARED_PREFERENCES, Context.MODE_PRIVATE)
-    val token = sharedPreferences.getString("bearer", "")
+    if (isConnected) {
+        val userResponse = viewModel.user.observeAsState().value
 
-    if (token.isNullOrEmpty().not()) {
-        if (isConnected) {
-            val userResponse = viewModel.user.observeAsState().value
+        navigator.destination.value = ScreenModel.NavigationScreen.Home
+        viewModel.setAppPreference(Constants.Prefs.USER_LOGGED, true)
 
-            navigator.destination.value = ScreenModel.NavigationScreen.Home
-            viewModel.setAppPreference(Constants.Prefs.USER_LOGGED, true)
-
-            when (userResponse?.userType) {
-                Constants.ROLE_ADMIN -> {
-                    viewModel.setAppPreference(Constants.Prefs.USER_TYPE, Constants.ROLE_ADMIN)
-                }
-
-                Constants.ROLE_USER -> {
-                    viewModel.setAppPreference(Constants.Prefs.USER_TYPE, Constants.ROLE_USER)
-                }
-
-                Constants.ROLE_OWNER -> {
-                    viewModel.setAppPreference(Constants.Prefs.USER_TYPE, Constants.ROLE_OWNER)
-                }
+        when (userResponse?.userType) {
+            Constants.ROLE_ADMIN -> {
+                viewModel.setAppPreference(Constants.Prefs.USER_TYPE, Constants.ROLE_ADMIN)
             }
-        } else if (viewModel.getAppPreference(Constants.Prefs.USER_LOGGED)) {
-            navigator.destination.value = ScreenModel.NavigationScreen.FavPlace
 
-            showToast(context, context.getString(R.string.no_internet_connection))
-        } else {
-            navigator.destination.value = ScreenModel.NavigationScreen.Login
+            Constants.ROLE_USER -> {
+                viewModel.setAppPreference(Constants.Prefs.USER_TYPE, Constants.ROLE_USER)
+            }
 
-            showToast(context, context.getString(R.string.no_internet_connection))
+            Constants.ROLE_OWNER -> {
+                viewModel.setAppPreference(Constants.Prefs.USER_TYPE, Constants.ROLE_OWNER)
+            }
         }
+    } else if (viewModel.getAppPreference(Constants.Prefs.USER_LOGGED)) {
+        navigator.destination.value = ScreenModel.NavigationScreen.FavPlace
+
+        showToast(context, context.getString(R.string.no_internet_connection))
     } else {
-        AppState.loggedUser.value = null
-        viewModel.setAppPreference(
-            Constants.Prefs.USER_LOGGED,
-            false,
-        )
         navigator.destination.value = ScreenModel.NavigationScreen.Login
 
+        showToast(context, context.getString(R.string.no_internet_connection))
     }
 }
 
@@ -267,6 +253,7 @@ fun setBottomBar(
             // Show BottomBar
             bottomBarState.value = true
             drawerOpenState.value = true
+            drawerGestureEnabled.value = true
             isDrawableEnable.value = true
         }
     }

@@ -33,7 +33,6 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import hu.zsof.restaurantappjetpacknew.MainViewModel
 import hu.zsof.restaurantappjetpacknew.R
-import hu.zsof.restaurantappjetpacknew.module.AppState
 import hu.zsof.restaurantappjetpacknew.util.Constants
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -133,45 +132,12 @@ fun ScreenItems(
                 .fillMaxWidth()
                 .clickable(onClick = {
                     if (item.route == ScreenModel.NavigationScreen.FavPlace.route) {
-                        item.route.let {
-                            navController.navigate(it) {
-                                navController.graph.startDestinationRoute?.let { route ->
-                                    popUpTo(route) {
-                                        saveState = true
-                                    }
-                                }
-                            }
-                        }
+                        navigateToItem(context, item, navController, viewModel)
                         scope.launch {
                             scaffoldState.drawerState.close()
                         }
                     } else if (isItemEnable) {
-                        item.route.let {
-                            navController.navigate(it) {
-                                navController.graph.startDestinationRoute?.let { route ->
-                                    if (item.route == ScreenModel.NavigationScreen.Logout.route) {
-                                        val sharedPreferences = context.getSharedPreferences(
-                                            Constants.Prefs.AUTH_SHARED_PREFERENCES,
-                                            Context.MODE_PRIVATE,
-                                        )
-                                        sharedPreferences
-                                            .edit()
-                                            .putString("bearer", "")
-                                            .apply()
-                                        popUpTo(ScreenModel.NavigationScreen.Login.route)
-                                        AppState.loggedUser.value = null
-                                        viewModel.setAppPreference(
-                                            Constants.Prefs.USER_LOGGED,
-                                            false,
-                                        )
-                                    } else {
-                                        popUpTo(route) {
-                                            saveState = true
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                        navigateToItem(context, item, navController, viewModel)
                         scope.launch {
                             scaffoldState.drawerState.close()
                         }
