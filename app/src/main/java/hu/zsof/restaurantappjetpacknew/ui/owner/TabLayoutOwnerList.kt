@@ -28,7 +28,7 @@ fun TabLayoutOwnerList(
 ) {
     val pagerState = rememberPagerState(pageCount = 2, infiniteLoop = true)
 
-    Column() {
+    Column {
         Tabs(pagerState = pagerState)
         TabsContent(
             pagerState = pagerState,

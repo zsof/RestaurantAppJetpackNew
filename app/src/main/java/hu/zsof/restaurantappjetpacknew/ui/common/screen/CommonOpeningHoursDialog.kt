@@ -254,7 +254,7 @@ fun OpeningHoursItem(
         }
 
         Spacer(modifier = Modifier.weight(1f))
-        Column() {
+        Column {
             Text(
                 text = openTimeText,
                 fontSize = 14.sp,

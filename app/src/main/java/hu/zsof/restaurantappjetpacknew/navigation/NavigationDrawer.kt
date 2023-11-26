@@ -126,7 +126,7 @@ fun ScreenItems(
     viewModel: MainViewModel,
     isItemEnable: Boolean,
 ) {
-    role.forEach() { item ->
+    role.forEach { item ->
         Row(
             modifier = Modifier
                 .fillMaxWidth()

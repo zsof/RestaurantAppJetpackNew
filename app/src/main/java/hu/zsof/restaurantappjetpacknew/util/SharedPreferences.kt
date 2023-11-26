@@ -15,18 +15,6 @@ class SharedPreferences @Inject constructor(@ApplicationContext context: Context
     @Suppress("UNCHECKED_CAST")
     fun <T> getPreference(key: String, defaultValue: T? = null): T {
         return when {
-            /* integerPreferences.contains(key) -> defaultValue ?: sharedPreferences.getInt(
-                 key,
-                 -1,
-             ) as T*/
-            /* longPreferences.contains(key) -> defaultValue ?: sharedPreferences.getLong(
-                 key,
-                 -1,
-             ) as T*/
-            /* floatPreferences.contains(key) -> defaultValue ?: sharedPreferences.getFloat(
-                 key,
-                 0.0f,
-             ) as T*/
             booleanPreferences.contains(key) -> defaultValue ?: sharedPreferences.getBoolean(
                 key,
                 false,
@@ -39,9 +27,6 @@ class SharedPreferences @Inject constructor(@ApplicationContext context: Context
     fun <T> setPreference(key: String, value: T) {
         sharedPreferences.edit {
             when {
-                // integerPreferences.contains(key) -> putInt(key, value as Int)
-                // longPreferences.contains(key) -> putLong(key, value as Long)
-                // floatPreferences.contains(key) -> putFloat(key, value as Float)
                 booleanPreferences.contains(key) -> putBoolean(key, value as Boolean)
                 else -> putString(key, value as String)
             }

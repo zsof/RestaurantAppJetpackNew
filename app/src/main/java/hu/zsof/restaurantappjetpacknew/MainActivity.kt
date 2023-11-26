@@ -1,5 +1,6 @@
 package hu.zsof.restaurantappjetpacknew
 
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -30,7 +31,13 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel.authenticateLoggedUser()
+        val sharedPreferences =
+            this.getSharedPreferences(
+                Constants.Prefs.AUTH_SHARED_PREFERENCES,
+                Context.MODE_PRIVATE,
+            )
+
+        viewModel.authenticateLoggedUser(sharedPreferences)
 
         setContent {
             RestaurantAppJetpackNewTheme(darkTheme = isNightMode()) {

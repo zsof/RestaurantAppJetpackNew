@@ -36,7 +36,7 @@ fun OwnerPlaceListScreen(
     }
 
     Scaffold(
-        content = { padding ->
+        content = { _ ->
             Column(
                 modifier = Modifier
                     .padding(0.dp, 0.dp, 0.dp, 38.dp)

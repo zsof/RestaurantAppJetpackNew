@@ -33,7 +33,9 @@ fun GalleryPermission(
     PermissionRequired(
         permissionState = permissionState,
         permissionNotGrantedContent = {
-            // if there was already a Manifest.permission request, but the user rejected it
+            /**
+             * If there was already a Manifest.permission request, but the user rejected it
+             */
             if (permissionState.permissionRequested) {
                 AlertDialog(
                     onDismissRequest = {},
@@ -46,7 +48,9 @@ fun GalleryPermission(
                 )
             }
         },
-        // if the user has already denied permission twice
+        /**
+         * If the user has already denied permission twice
+         */
         permissionNotAvailableContent = {
             AlertDialog(
                 onDismissRequest = {},

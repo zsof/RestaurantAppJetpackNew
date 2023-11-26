@@ -31,7 +31,6 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import hu.zsof.restaurantappjetpacknew.R
 import hu.zsof.restaurantappjetpacknew.model.Place
 import hu.zsof.restaurantappjetpacknew.module.AppState
@@ -40,7 +39,7 @@ import hu.zsof.restaurantappjetpacknew.ui.common.screen.PlaceListItem
 import hu.zsof.restaurantappjetpacknew.ui.common.search
 import hu.zsof.restaurantappjetpacknew.util.Constants.ROLE_OWNER
 
-@OptIn(ExperimentalPermissionsApi::class, ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalComposeUiApi::class)
 @ExperimentalMaterial3Api
 @Composable
 fun HomeListScreen(
@@ -52,7 +51,9 @@ fun HomeListScreen(
     val places = viewModel.places.observeAsState(listOf())
     val user = viewModel.userData.observeAsState().value
 
-    // User által beállításokban beállított alapértelmezett szűrők
+    /**
+     * User által beállításokban beállított alapértelmezett szűrők
+     */
     var userFilteredPlaces = mutableListOf<Place>()
     if (user != null) {
         userFilteredPlaces = places.value.filter { place ->
@@ -60,19 +61,28 @@ fun HomeListScreen(
         }.toMutableList()
     }
 
-    // Keresésben az elemek
+    /**
+     * Keresésben az elemek
+     */
     val searchItems = mutableListOf<Place>()
-    // Keresésben elemek, csak observable
+
+    /**
+     * Keresésben elemek, csak observable
+     */
     val searchFilteredPlaces = AppState.searchedPlaces.observeAsState()
-    // Globális szűrés, felülírja az alap beállított szűrést -> minden elemen keres
+
+    /**
+     * Globális szűrés, felülírja az alap beállított szűrést -> minden elemen keres
+     */
     val globalFilteredPlaces = AppState.filteredPlaces.observeAsState()
-    //Ha volt globális szűrés, de nem egyezett semmivel - üres listát ad vissza, ezt kell megjenelíteni
+
+    /**
+     * Ha volt globális szűrés, de nem egyezett semmivel - üres listát ad vissza, ezt kell megjenelíteni
+     */
     val isPlacedFilteredGlobally = AppState.isPlacesFiltered.observeAsState()
 
-    // A homeScreen minden változáskor lefut, ezáltal a viewmodelles dolgok is, ha nem lennének launchedeffectben
     LaunchedEffect(key1 = "HomeList") {
         viewModel.showPlaces()
-        // Ha ez a homeListItem-ben lenne, akkor meg minden egyes item-re lefutna, de elég egyszer lekérni ezt
         viewModel.getUser()
     }
 
@@ -90,13 +100,13 @@ fun HomeListScreen(
                 }
             }
         },
-        content = { padding ->
+        content = { _ ->
             Column(
                 modifier = Modifier
                     .padding(0.dp, 0.dp, 0.dp, 38.dp)
                     .background(MaterialTheme.colorScheme.background),
             ) {
-                Row() {
+                Row {
                     SearchTextField(
                         onValueChange = {
                             viewModel.searchText.value = it
@@ -133,7 +143,9 @@ fun HomeListScreen(
                     }
                 }
 
-                // Keresés a legerőseb, ha van ->  keresés globális szűrésben levő elemeken (ha létezik ilyen lista), vagy ha nem létezik, akkor user által mentett szűrésben levő elemeken
+                /**
+                 * Keresés a legerőseb, ha van ->  keresés globális szűrésben levő elemeken (ha létezik ilyen lista), vagy ha nem létezik, akkor user által mentett szűrésben levő elemeken
+                 */
                 if (!searchFilteredPlaces.value.isNullOrEmpty() || viewModel.isSearchListNotMatchWithPlaces.value) {
                     LazyColumn(
                         contentPadding = PaddingValues(8.dp),
@@ -149,7 +161,9 @@ fun HomeListScreen(
                             )
                         }
                     }
-                    // Ha van globális szűrés, erősebb mint a user mentett szűrői
+                    /**
+                     * Ha van globális szűrés, erősebb mint a user mentett szűrői
+                     */
                 } else if (isPlacedFilteredGlobally.value == true) {
                     Text(
                         text = stringResource(id = R.string.clear_filters),

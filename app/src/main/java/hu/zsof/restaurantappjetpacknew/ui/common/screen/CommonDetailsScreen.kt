@@ -116,7 +116,7 @@ fun CommonDetailsScreen(
             },
             title = {
                 Text(
-                    text = "Probléma a hellyel:",
+                    text = stringResource(R.string.problem_with_place),
                     textAlign = TextAlign.Start,
                     fontWeight = FontWeight.Bold
                 )
@@ -352,7 +352,7 @@ fun CommonDetailsScreen(
                             fontSize = 18.sp,
                         )
                     }
-                    Row() {
+                    Row {
                         Icon(
                             imageVector = Icons.Outlined.Email,
                             contentDescription = null,
@@ -366,7 +366,7 @@ fun CommonDetailsScreen(
                             fontSize = 18.sp,
                         )
                     }
-                    Row() {
+                    Row {
                         Icon(
                             imageVector = Icons.Outlined.Phone,
                             contentDescription = null,

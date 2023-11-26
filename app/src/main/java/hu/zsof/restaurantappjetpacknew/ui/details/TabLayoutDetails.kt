@@ -26,7 +26,7 @@ import kotlinx.coroutines.launch
 fun TabLayoutDetails(placeId: Long, onEditPlaceClick: (Long) -> Unit) {
     val pagerState = rememberPagerState(pageCount = 2, infiniteLoop = true)
 
-    Column() {
+    Column {
         Tabs(pagerState = pagerState)
         TabsContent(
             pagerState = pagerState,

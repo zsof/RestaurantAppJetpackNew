@@ -201,7 +201,7 @@ fun PlaceListItem(
                         }
                     }
 
-                    Row() {
+                    Row {
                         Text(
                             modifier = Modifier
                                 .padding(8.dp, 0.dp, 0.dp, 0.dp),
@@ -225,7 +225,7 @@ fun PlaceListItem(
                     }
                 }
             }
-            Row() {
+            Row {
                 Icon(
                     imageVector = Icons.Filled.PushPin,
                     contentDescription = null,

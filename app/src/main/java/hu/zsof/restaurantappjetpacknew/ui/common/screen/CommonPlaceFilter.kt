@@ -22,7 +22,7 @@ import hu.zsof.restaurantappjetpacknew.R
 fun CommonPlaceFilter(
     viewModel: CommonPlaceDialogViewModel = hiltViewModel(),
 ) {
-    Row() {
+    Row {
         Column(horizontalAlignment = Alignment.Start) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Checkbox(

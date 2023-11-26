@@ -75,7 +75,9 @@ fun LocationPermissions(
     PermissionsRequired(
         multiplePermissionsState = multiplePermissionState,
         permissionsNotGrantedContent = {
-            // if there was already a Manifest.permission request, but the user rejected it
+            /**
+             * If there was already a Manifest.permission request, but the user rejected it
+             */
             if (multiplePermissionState.permissionRequested) {
                 AlertDialog(
                     onDismissRequest = {},
@@ -88,7 +90,9 @@ fun LocationPermissions(
                 )
             }
         },
-        // if the user has already denied permission twice
+        /**
+         * If the user has already denied permission twice
+         */
         permissionsNotAvailableContent = {
             AlertDialog(
                 onDismissRequest = {},
@@ -98,7 +102,7 @@ fun LocationPermissions(
         },
     ) {
         if (viewModel.isBottomSheetOpen.value) {
-            BottomSheet() {
+            BottomSheet {
                 viewModel.isBottomSheetOpen.value = false
             }
         }
@@ -155,7 +159,9 @@ fun PlaceMarkers(
         }.toMutableList()
     }
 
-    // Szűrőben beállított ideiglenes filterek
+    /**
+     * Szűrőben beállított ideiglenes filterek
+     */
     val globalFilteredPlaces = AppState.filteredPlaces.observeAsState(listOf())
 
     val mapPlacesToShow = if (!globalFilteredPlaces.value.isNullOrEmpty()) {

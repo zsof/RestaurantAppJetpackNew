@@ -106,6 +106,7 @@
     <string name="no_permission_to_upload_image">Nincs jogosultságod képet feltölteni!</string>
     <string name="cannot_upload_photo_to_place_in_review">Elfogadásra váró helyhez nem tölthetsz fel képet!</string>
     <string name="place_already_accepted">A hely már el van fogadva!</string>
+    <string name="problem_with_place">Probléma a hellyel:</string>
 
     <string-array name="filter_category_items">
         <item>Étterem</item>

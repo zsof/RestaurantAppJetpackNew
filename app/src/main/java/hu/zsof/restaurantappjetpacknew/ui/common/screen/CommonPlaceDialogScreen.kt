@@ -206,7 +206,7 @@ fun CommonPlaceDialogScreen(
 
                         Spacer(modifier = Modifier.height(20.dp))
 
-                        Row() {
+                        Row {
                             Text(
                                 text = stringResource(id = R.string.type_text),
                                 modifier = Modifier.padding(top = 16.dp, end = 16.dp, start = 8.dp),
@@ -254,7 +254,7 @@ fun CommonPlaceDialogScreen(
                         }
                         Spacer(modifier = Modifier.height(10.dp))
 
-                        Row() {
+                        Row {
                             Text(
                                 text = stringResource(id = R.string.price_text),
                                 style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold),

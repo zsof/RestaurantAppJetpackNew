@@ -97,5 +97,4 @@ open class CommonPlaceDialogViewModel @Inject constructor(
     val fridayCheckbox = mutableStateOf(place.value?.openDetails?.friday ?: true)
     val saturdayCheckbox = mutableStateOf(place.value?.openDetails?.saturday ?: true)
     val sundayCheckbox = mutableStateOf(place.value?.openDetails?.sunday ?: true)
-
 }

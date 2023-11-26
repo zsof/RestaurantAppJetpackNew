@@ -140,7 +140,7 @@ fun MessageBoxItem(message: String, creatorId: Long, creatorName: String) {
                 .background(MaterialTheme.colorScheme.primary)
                 .padding(16.dp)
         ) {
-            Column() {
+            Column {
                 Text(text = message, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 Text(
                     text = creatorName,

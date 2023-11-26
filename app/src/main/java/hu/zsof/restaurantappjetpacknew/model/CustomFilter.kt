@@ -50,7 +50,7 @@ data class CustomFilter(
 }
 
 class FilterList(
-    val filters: MutableList<Boolean> = mutableListOf(),
+    private val filters: MutableList<Boolean> = mutableListOf(),
 ) {
     fun compare(compareTo: FilterList): Boolean {
         if (this.filters.size == compareTo.filters.size) {

@@ -81,7 +81,6 @@ class ScreenModel {
 
         object ReviewDetails :
             NavigationScreen(route = "reviewDetails/{${Args.placeId}}") {
-            fun passReviewPlaceId(reviewPlaceId: Long) = "reviewDetails/$reviewPlaceId"
             fun passPlaceId(placeId: Long) = "reviewDetails/$placeId"
 
             object Args {

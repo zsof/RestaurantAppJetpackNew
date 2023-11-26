@@ -80,7 +80,7 @@ fun FilterPlaceDialogScreen(
                     )
                     Spacer(modifier = Modifier.height(20.dp))
 
-                    Row() {
+                    Row {
                         Text(
                             text = stringResource(id = R.string.type_text),
                             modifier = Modifier.padding(top = 16.dp, end = 16.dp, start = 8.dp),
@@ -192,7 +192,7 @@ fun FilterPlaceDialogScreen(
                     CommonPlaceFilter(viewModel = viewModel)
                     Spacer(modifier = Modifier.height(10.dp))
 
-                    Row() {
+                    Row {
                         Spacer(Modifier.weight(1f))
                         TextButton(onClick = {
                             navController.navigate(ScreenModel.NavigationScreen.Home.route)
