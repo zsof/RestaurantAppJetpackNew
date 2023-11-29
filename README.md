@@ -5,7 +5,7 @@ Az alkalmazás elérhető a Google Play-en: https://play.google.com/store/apps/d
 Ehhez biztosítva van a szerver folyamatos működése.
 
 Azonban lokális futtatásra is lehetőség van, ehhez szükséges egy saját adatbázis biztosítása. 
-A Backend-hez tartozó README fájlban egy H2 adatbázis létrehozását, és a Backend-el való összekapcsolást mutatom be:
+A Backend-hez tartozó README fájlban egy H2 adatbázis létrehozását, és a Backend-del való összekapcsolást mutatom be:
 https://github.com/zsof/restaurantApp/tree/master
 
 Androidon teendők:
