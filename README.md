@@ -5,14 +5,14 @@ Az alkalmazás elérhető a Google Play-en: https://play.google.com/store/apps/d
 Ehhez biztosítva van a szerver folyamatos működése.
 
 Azonban lokális futtatásra is lehetőség van, ehhez szükséges egy saját adatbázis biztosítása. 
-A Backend-hez tartozó README fájlban egy H2 adatbázis létrehozását, és a Backend-el való összekapcsolást mutatom be:
+A Backend-hez tartozó README fájlban egy H2 adatbázis létrehozását, és a Backend-del való összekapcsolást mutatom be:
 https://github.com/zsof/restaurantApp/tree/master
 
 Androidon teendők:
-1. lépés: A projekt klónozása:
+1. lépés: A projekt klónozása
 2. lépés: A *Constants.kt* fájlban a **BASE_URL** helyére a lokális Backend elérhetőséget kell írni
 3. lépés: A *Manifest* fájlban az **android:usesCleartextTraffic="false"**-t át kell írni *"true"*-ra
-4. lépés: Futtatás után az alkalmazás értelemszerűen használható. Regisztrációt követően az email-címre érkező verifikációs email-en a linkre kattintás kötelező, ezzel válik érvényesség a regisztrálás.
+4. lépés: Futtatás után az alkalmazás értelemszerűen használható. Regisztrációt követően az email-címre érkező verifikációs email-en a linkre kattintás kötelező, ezzel válik érvényessé a regisztrálás.
 
 ### About
 This project is being prepared as thesis work of the BME master's degree in Computer Science. The application consists of an Android project and a Spring Boot backend written in Kotlin. The Android part is completed with XML description language and in Jetpack Compose.
@@ -36,5 +36,3 @@ Other information about the places is also available in the detailed view of the
 - Firebase
 - Google Map Api
 - The app will be published on Google Play
-
-### Screenshots about the app
