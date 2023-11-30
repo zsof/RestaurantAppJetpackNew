@@ -23,8 +23,8 @@
     <string name="type_text">Típus</string>
     <string name="price_text">Ár</string>
     <string name="category_text">Kategória</string>
-    <string name="gluten_free">Glutén mentes</string>
-    <string name="lactose_free">Laktóz mentes</string>
+    <string name="gluten_free">Gluténmentes</string>
+    <string name="lactose_free">Laktózmentes</string>
     <string name="vegetarian">Vegetáriánus</string>
     <string name="vegan">Vegán</string>
     <string name="fast_food">Gyors étterem</string>

@@ -189,32 +189,35 @@ fun SetStartDestination(
     navigator: Navigator
 ) {
     if (isConnected) {
-        val userResponse = viewModel.user.observeAsState().value
+        if (viewModel.getAppPreference(Constants.Prefs.USER_LOGGED)) {
+            val userResponse = viewModel.user.observeAsState().value
 
-        navigator.destination.value = ScreenModel.NavigationScreen.Home
-        viewModel.setAppPreference(Constants.Prefs.USER_LOGGED, true)
+            navigator.destination.value = ScreenModel.NavigationScreen.Home
 
-        when (userResponse?.userType) {
-            Constants.ROLE_ADMIN -> {
-                viewModel.setAppPreference(Constants.Prefs.USER_TYPE, Constants.ROLE_ADMIN)
+            when (userResponse?.userType) {
+                Constants.ROLE_ADMIN -> {
+                    viewModel.setAppPreference(Constants.Prefs.USER_TYPE, Constants.ROLE_ADMIN)
+                }
+
+                Constants.ROLE_USER -> {
+                    viewModel.setAppPreference(Constants.Prefs.USER_TYPE, Constants.ROLE_USER)
+                }
+
+                Constants.ROLE_OWNER -> {
+                    viewModel.setAppPreference(Constants.Prefs.USER_TYPE, Constants.ROLE_OWNER)
+                }
             }
-
-            Constants.ROLE_USER -> {
-                viewModel.setAppPreference(Constants.Prefs.USER_TYPE, Constants.ROLE_USER)
-            }
-
-            Constants.ROLE_OWNER -> {
-                viewModel.setAppPreference(Constants.Prefs.USER_TYPE, Constants.ROLE_OWNER)
-            }
+        } else {
+            navigator.destination.value = ScreenModel.NavigationScreen.Login
         }
-    } else if (viewModel.getAppPreference(Constants.Prefs.USER_LOGGED)) {
-        navigator.destination.value = ScreenModel.NavigationScreen.FavPlace
-
-        showToast(context, context.getString(R.string.no_internet_connection))
     } else {
-        navigator.destination.value = ScreenModel.NavigationScreen.Login
-
-        showToast(context, context.getString(R.string.no_internet_connection))
+        if (viewModel.getAppPreference(Constants.Prefs.USER_LOGGED)) {
+            navigator.destination.value = ScreenModel.NavigationScreen.FavPlace
+            showToast(context, context.getString(R.string.no_internet_connection))
+        } else {
+            navigator.destination.value = ScreenModel.NavigationScreen.Login
+            showToast(context, context.getString(R.string.no_internet_connection))
+        }
     }
 }
 
