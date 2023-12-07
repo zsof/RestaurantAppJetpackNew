@@ -4,6 +4,21 @@ Az alkalmazás elérhető a Google Play-en: https://play.google.com/store/apps/d
 
 Ehhez biztosítva van a szerver folyamatos működése.
 
+Teszteléshez elérhető teszt felhasználók:
+
+**Sima felhasználó:**
+  - Email: user@test.hu
+  - Jelszó: Alma1234
+
+**Tulajdonos:**
+  - Email: owner@test.hu
+  - Jelszó: Alma1234
+
+**Adminisztrátor:**
+  - Email: admin@test.hu
+  - Jelszó: Alma1234
+    
+
 Azonban lokális futtatásra is lehetőség van, ehhez szükséges egy saját adatbázis biztosítása. 
 A Backend-hez tartozó README fájlban egy H2 adatbázis létrehozását, és a Backend-del való összekapcsolást mutatom be:
 https://github.com/zsof/restaurantApp/tree/master
